@@ -43,12 +43,14 @@ wiki-tsd/
 1. Leggi il file raw indicato
 2. Discuti con l'utente i punti chiave e cosa enfatizzare **prima** di scrivere
 3. Crea `wiki/fonti/[titolo-kebab-case].md` con il sommario strutturato
-4. Aggiorna le pagine in `wiki/concetti/` rilevanti (o creane di nuove)
-5. Aggiorna le pagine in `wiki/entità/` rilevanti (o creane di nuove)
-6. Se la fonte contiene esercizi, aggiorna/crea le pagine in `wiki/esercizi/`
-7. Aggiorna `wiki/overview.md`
-8. Aggiorna `wiki/index.md`
-9. Appendi a `wiki/log.md`: `## [YYYY-MM-DD] ingest | [titolo fonte]`
+4. **Espandi ogni calcolo** della fonte secondo le regole in *Espansione dei calcoli* — un risultato riportato nel PDF senza passaggi va ricostruito passo-passo, non copiato
+5. Aggiorna le pagine in `wiki/concetti/` rilevanti (o creane di nuove)
+6. Aggiorna le pagine in `wiki/entità/` rilevanti (o creane di nuove)
+7. Se la fonte contiene esercizi, aggiorna/crea le pagine in `wiki/esercizi/`
+8. **Ancora ogni affermazione alla fonte** con il link a pagina/slide (vedi *Tracciabilità*)
+9. Aggiorna `wiki/overview.md`
+10. Aggiorna `wiki/index.md`
+11. Appendi a `wiki/log.md`: `## [YYYY-MM-DD] ingest | [titolo fonte] | pagine coperte: [range]`
 
 > Una singola fonte può toccare 5–15 pagine. È normale e desiderato.
 
@@ -58,7 +60,7 @@ wiki-tsd/
 
 1. Leggi `wiki/index.md` per identificare le pagine rilevanti
 2. Leggi quelle pagine
-3. Rispondi con citazioni esplicite (`→ [[nome-pagina]]`)
+3. Rispondi con citazioni esplicite (`→ [[nome-pagina]]`) e, per ogni dato o formula, il riferimento alla fonte primaria (`→ [[slide-03.pdf#page=14]]`)
 4. Se la risposta è sostanziale (analisi, confronto, connessione nuova), proponi di salvarla come nuova pagina in `wiki/concetti/` — le esplorazioni devono capitalizzarsi nel wiki
 
 ---
@@ -93,6 +95,10 @@ Scorri tutto il wiki e riporta:
 - Link interni rotti
 - Pagine con `TODO` aperto
 - Formule senza definizione dei simboli o senza unità di misura
+- **Risultati senza derivazione** (numero o formula finale senza catena di passaggi)
+- **Pagine o sezioni senza link alla fonte** `raw/` (pagina/slide mancante)
+- Link `[[*.pdf#page=N]]` che puntano a file inesistenti in `raw/`
+- Salti `❓` ancora aperti
 - Proponi nuove domande da investigare
 
 ---
@@ -105,6 +111,8 @@ Scorri tutto il wiki e riporta:
 ---
 tipo: fonte
 titolo: ""
+file_raw: ""         # percorso in raw/, es. "slide-04-modulazioni.pdf"
+pagine: ""           # range coperto, es. "1-42"
 data_ingest: YYYY-MM-DD
 formato: slide-pdf | appunti | paper | esercizi | video
 argomenti: []
@@ -127,16 +135,18 @@ Sezioni obbligatorie:
 tipo: concetto
 importanza_esame: alta | media | bassa
 prerequisiti: []
+fonti_pdf: []        # es. ["slide-04-modulazioni.pdf#page=17"]
 ---
 ```
 
 Sezioni obbligatorie:
 - **Definizione** — precisa, non colloquiale
-- **Formule** — se il concetto ne ha: formula, significato di ogni simbolo, unità di misura, ipotesi di validità
+- **Formule** — se il concetto ne ha: formula, significato di ogni simbolo, unità di misura, ipotesi di validità, pagina PDF di prima comparsa
+- **Derivazioni** — passaggi espansi per ogni risultato non banale (vedi *Espansione dei calcoli*)
 - **Spiegazione** — approfondita con esempi concreti
 - **Perché importa** — contesto d'uso nel corso
 - **Connessioni** — link a concetti correlati con spiegazione della relazione
-- **Fonti** — link alle pagine fonte dove appare
+- **Fonti** — link alle pagine fonte `wiki/fonti/` **e** ai PDF con pagina: `[[slide-04.pdf#page=17]]`
 
 ---
 
@@ -166,8 +176,86 @@ difficoltà: bassa | media | alta
 Sezioni obbligatorie:
 - **Metodo** — procedura generale per questo tipo di esercizio
 - **Formule usate** — con link `[[...]]` ai concetti
-- **Casi svolti** — traccia → svolgimento passo-passo → risultato
+- **Casi svolti** — traccia (con link alla pagina PDF di origine) → svolgimento passo-passo completo → risultato con unità
 - **Trappole** — errori ricorrenti, unità sbagliate, ipotesi dimenticate
+
+---
+
+## Espansione dei calcoli
+
+Regola centrale di questo wiki: **nessun risultato senza derivazione**.
+Le slide comprimono i passaggi; il wiki li decomprime. Se il PDF scrive «si ottiene $P_e = 10^{-5}$», la pagina wiki deve mostrare *come* ci si arriva.
+
+Per ogni risultato numerico o simbolico presente in una fonte:
+
+1. **Punto di partenza** — da quale formula/ipotesi si parte, con link `[[...]]` al concetto e alla pagina della fonte
+2. **Catena di passaggi** — un passaggio per riga, in blocco `$$...$$`. Vietato saltare da una riga all'altra senza dire cosa è stato fatto: ogni passaggio ha a destra un commento breve (sostituzione, identità usata, approssimazione, cambio di unità)
+3. **Sostituzione numerica** — valori con unità, esplicitati uno per uno
+4. **Risultato** — con unità e cifre significative
+5. **Verifica di sanità** — ordine di grandezza atteso, caso limite, o controllo dimensionale
+6. **Ipotesi usate** — elencate: cosa smette di valere il risultato se un'ipotesi cade
+
+Formato tipo:
+
+```markdown
+### Derivazione — [nome risultato]
+**Fonte:** [[slide-04-modulazioni.pdf#page=17]] (risultato dato senza passaggi)
+**Si parte da:** [[formula-x]] — $y = f(x)$
+
+$$
+\begin{aligned}
+y &= f(x)                 && \text{definizione, } [[formula-x]] \\
+  &= \dots                && \text{sostituisco } x = \dots \\
+  &\approx \dots          && \text{approx valida per } x \ll 1
+\end{aligned}
+$$
+
+**Numeri:** $A = 2\,\text{V}$, $B = 10\,\text{kHz}$ → $y = 3.2 \cdot 10^{-4}\,\text{W}$
+**Sanity check:** ordine di grandezza coerente con [[altro-risultato]]
+**Ipotesi:** rumore gaussiano bianco, canale AWGN, sincronizzazione ideale
+```
+
+Se un passaggio del PDF non è ricostruibile (manca un dato, il salto non torna):
+- scrivi `> ❓ Salto non ricostruito:` con cosa manca e cosa hai provato
+- **non** riempire il buco inventando — segnala e chiedi
+
+Le approssimazioni della fonte vanno rese esplicite: quale termine è stato trascurato e perché è lecito.
+
+---
+
+## Tracciabilità
+
+**Ogni affermazione del wiki deve essere rintracciabile su un PDF di lezione.**
+Il wiki non è una fonte autonoma: è un indice navigabile del materiale del corso.
+
+### Link alla fonte
+
+I PDF stanno in `raw/`, dentro il vault Obsidian, quindi il link a pagina funziona:
+
+```markdown
+[[nome-file.pdf#page=17]]              ← link diretto alla pagina 17
+![[nome-file.pdf#page=17]]             ← embed della pagina nella nota
+```
+
+Regole:
+- Il numero di pagina è quello **del PDF** (contatore del viewer), non quello stampato sulla slide. Se differiscono, annota entrambi: `[[slide-04.pdf#page=17]] (slide 15)`
+- Ogni **sezione** di una pagina concetto/entità porta il suo riferimento, non basta un riferimento unico in fondo alla pagina
+- Ogni **formula** porta la pagina dove compare per la prima volta
+- Ogni **valore numerico** preso dalle slide porta la pagina da cui viene
+- Le immagini estratte in `raw/assets/` mantengono nel nome il file e la pagina di origine: `slide-04-p17-costellazione-qam.png`, e la pagina che le usa cita comunque la fonte PDF
+
+### Contenuto non tracciabile
+
+Materiale che **non** viene da un PDF del corso (ragionamento tuo, libro esterno, mia elaborazione) va marcato in modo visibile:
+
+| Marcatore | Significato |
+|-----------|-------------|
+| `> 📄 Fonte: [[file.pdf#page=N]]` | Tracciato su lezione |
+| `> 🧩 Derivazione mia:` | Passaggi espansi da me, risultato presente nella fonte |
+| `> 📚 Fonte esterna:` | Libro/paper/web — citare titolo e punto preciso |
+| `> ❓ Salto non ricostruito:` | Passaggio della fonte non ricostruibile |
+
+Una pagina senza nemmeno un riferimento a `raw/` è sospetta: LINT la segnala.
 
 ---
 
@@ -193,9 +281,13 @@ Sezioni obbligatorie:
 | `TODO: da espandere`              | Placeholder per pagina incompleta            |
 | `_Aggiornato: [data] — [motivo]_` | In fondo a ogni pagina modificata            |
 
+Marcatori di provenienza (`📄 Fonte`, `🧩 Derivazione mia`, `📚 Fonte esterna`, `❓ Salto non ricostruito`): vedi *Tracciabilità*.
+
 **Regole rigide:**
 - `raw/` non si tocca mai
 - Non inventare: se non hai info, scrivi `TODO`. Vale anche per formule e valori numerici
+- Nessun risultato copiato senza derivazione: o lo espandi, o marchi `❓ Salto non ricostruito`
+- Nessuna affermazione senza riferimento `[[file.pdf#page=N]]`, o marcata come derivazione mia / fonte esterna
 - Aggiorna pagine esistenti invece di crearne di ridondanti
 - Nomi file in kebab-case, minuscolo, senza accenti (eccetto la cartella `entità/`)
 - Se hai dubbi su dove mettere qualcosa, chiedi prima di scrivere
