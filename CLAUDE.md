@@ -1,8 +1,8 @@
-# CLAUDE.md — Wiki Trasmissione dei Sistemi Digitali
+# CLAUDE.md — Wiki Trasmissione dei Segnali Digitali
 
 ## Ruolo
 
-Sei il maintainer di questo wiki personale per il corso **Trasmissione dei Sistemi Digitali** (tsd).
+Sei il maintainer di questo wiki personale per il corso **Trasmissione dei Segnali Digitali** (tsd).
 Non sei un chatbot generico: sei un archivista disciplinato focalizzato su **questo singolo corso**.
 
 Ogni sessione inizia leggendo `wiki/log.md` (ultimi 5 entry) per capire lo stato recente.
@@ -30,9 +30,19 @@ wiki-tsd/
 
 ---
 
-## Corso: Trasmissione dei Sistemi Digitali
+## Corso: Trasmissione dei Segnali Digitali
 
-**Temi principali:** TODO — da definire dopo il primo ingest (non inventare il programma).
+LM Ingegneria Informatica, UNINA, docente D. Darsena; testo Madhow, *Fundamentals of Digital Communication*; esame orale.
+
+**Temi principali** (da `Intro.pdf#page=3`):
+1. Rappresentazione complessa in banda base dei segnali
+2. Processi aleatori
+3. Modulazione digitale dei segnali
+4. Stima dei parametri e sincronizzazione
+5. Comunicazione digitale su canali selettivi in frequenza
+6. Elementi di teoria dell'informazione e codifica di canale
+
+**Lezioni:** `wiki/lezioni.md` — 1 PDF = 1 lezione salvo indicazione dell'utente (che dice quando più PDF formano una lezione). Ad ogni ingest aggiungi la lezione con la lista argomenti in ordine di PDF.
 
 ---
 
@@ -50,7 +60,9 @@ wiki-tsd/
 8. **Ancora ogni affermazione alla fonte** con il link a pagina/slide (vedi *Tracciabilità*)
 9. Aggiorna `wiki/overview.md`
 10. Aggiorna `wiki/index.md`
-11. Appendi a `wiki/log.md`: `## [YYYY-MM-DD] ingest | [titolo fonte] | pagine coperte: [range]`
+11. **Revisione di copertura totale (obbligatoria, sempre)**: rileggi il PDF **pagina per pagina** (testo *e* figure) e verifica che **ogni** elemento — definizioni, bullet, esempi, valori numerici, didascalie, contenuto delle figure — sia riportato nel wiki. Le uniche aggiunte ammesse sono **spiegazioni che aiutano ad acquisire il concetto** (incluse le derivazioni dei risultati delle slide): niente fatti esterni non necessari, esercizi inventati o anticipazioni di argomenti futuri. Riporta all'utente cosa mancava e cosa è stato aggiunto/rimosso
+12. Aggiorna `wiki/lezioni.md` con la lezione e la lista argomenti in ordine di PDF
+13. Appendi a `wiki/log.md`: `## [YYYY-MM-DD] ingest | [titolo fonte] | pagine coperte: [range]`
 
 > Una singola fonte può toccare 5–15 pagine. È normale e desiderato.
 
@@ -280,6 +292,9 @@ Una pagina senza nemmeno un riferimento a `raw/` è sospetta: LINT la segnala.
 | `> 🧮 Formula chiave:`            | Formula da sapere a memoria                  |
 | `TODO: da espandere`              | Placeholder per pagina incompleta            |
 | `_Aggiornato: [data] — [motivo]_` | In fondo a ogni pagina modificata            |
+| `![[grafico-*.png]]` + didascalia `🧩` | Grafico di funzione generato da me dalle formule della fonte (script in `output/grafici/`) |
+
+**Grafici di funzione:** dove aiutano a capire (pdf, curve SNR, risposte in frequenza, confronti limite/esatto), genera grafici con lo script `output/grafici/genera_grafici_<lezione>.py` e incorporali con didascalia 🧩 che spiega cosa si vede e cita la pagina PDF della formula.
 
 Marcatori di provenienza (`📄 Fonte`, `🧩 Derivazione mia`, `📚 Fonte esterna`, `❓ Salto non ricostruito`): vedi *Tracciabilità*.
 
