@@ -1,0 +1,9 @@
+/* Catppuccin Latte – Graph View */
+.graph-view.color-fill            { color: #1e66f5; } /* nodi normali (blu) */
+.graph-view.color-line            { color: #9ca0b0; } /* link, tenui */
+.graph-view.color-text            { color: #4c4f69; } /* etichette */
+.graph-view.color-circle          { color: #7287fd; } /* bordo nodo attivo (lavender) */
+.graph-view.color-arrow           { color: #6c6f85; } /* frecce */
+.graph-view.color-fill-tag        { color: #ea76cb; } /* nodi-tag (rosa) */
+.graph-view.color-fill-attachment { color: #df8e1d; } /* allegati (giallo) */
+.graph-view.color-fill-unresolved { color: #acb0be; } /* note inesistenti, smorzate */
