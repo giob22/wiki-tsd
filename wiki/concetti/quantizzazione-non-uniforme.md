@@ -29,8 +29,10 @@ $$Q(x) = q_i \quad \text{se } x\in R_i$$
 |---|---|---|
 | $f_X(x) = \frac\lambda2 e^{-\lambda\|x\|}$ | pdf di Laplace (ampiezze della voce) | [[Campionamento_AD_DA.pdf#page=32]] |
 | $\text{MSE} = E[e^2(n)] = \sum_{i=1}^M\int_{R_i}(q_i-x)^2f_X(x)\,dx$ | errore quadratico medio | [[Campionamento_AD_DA.pdf#page=34]] |
-| $q_i = E[x(n)\,\|\,x(n)\in R_i]$ | **condizione del centroide** | [[Campionamento_AD_DA.pdf#page=35]] |
+| $q_i = E[x(n)\,\|\,x(n)\in R_i] = \dfrac{\int_{x_{i-1}}^{x_i} x\,f_X(x)\,dx}{\int_{x_{i-1}}^{x_i} f_X(x)\,dx}$ | **condizione del centroide**: baricentro della pdf ristretta a $R_i=(x_{i-1},x_i)$ | [[Campionamento_AD_DA.pdf#page=35]] |
 | $x_i = \dfrac{q_i+q_{i+1}}{2}$ | **condizione del punto medio** (minima distanza) | [[Campionamento_AD_DA.pdf#page=35]] |
+
+> 🧩 Derivazione mia — perché quella frazione è una media: il numeratore $\int_{x_{i-1}}^{x_i}x\,f_X(x)\,dx$ pesa ogni valore $x$ per la sua densità di probabilità, come nella somma discreta $\sum_k x_k\,p(x_k)$ di [[media-e-varianza]], ma limitata all'intervallo $R_i$ invece che a tutto l'asse reale. Il denominatore $\int_{x_{i-1}}^{x_i}f_X(x)\,dx = P(x\in R_i)$ è l'area di $f_X$ dentro $R_i$: dividere per questa area **rinormalizza** i pesi, perché $f_X$ ristretta a $R_i$ non è di per sé una pdf valida (non integra a 1 su $R_i$). Il rapporto è quindi la media pesata dei valori di $x$ **condizionata** al fatto che $x$ sia caduto in $R_i$ ([[probabilita-condizionale]]) — cioè il baricentro (centro di massa) della sola fetta di pdf che sta in $R_i$, non di tutta $f_X$.
 
 Simboli: $f_X$ = pdf del segnale, supposto **stazionario del primo ordine** ([[Campionamento_AD_DA.pdf#page=34]]); $e(n) = Q[x(n)]-x(n)$. MSE nell'unità del segnale al quadrato (es. V²).
 
