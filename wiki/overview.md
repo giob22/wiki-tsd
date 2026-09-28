@@ -21,14 +21,18 @@ Elenco lezioni → [[lezioni]]
 | Quadro generale del sistema digitale | [[sistema-comunicazione-digitale]], [[ripetitore-rigenerativo]] | qualitativo |
 | Probabilità (prerequisito per i processi aleatori) | [[spazio-di-probabilita]], [[probabilita-condizionale]], [[probabilita-totale-e-bayes]], [[variabile-aleatoria]], [[variabili-aleatorie-notevoli]], [[variabile-aleatoria-gaussiana]], [[funzione-di-variabile-aleatoria]], [[media-e-varianza]], [[coppie-di-variabili-aleatorie]], [[correlazione-e-covarianza]], [[disuguaglianza-di-chebyshev]] | completo per la fonte |
 | Conversione A/D e D/A (codifica di sorgente) | [[conversione-ad-da]], [[teorema-del-campionamento]], [[aliasing]], [[interpolazione]], [[quantizzazione-uniforme]], [[snr-di-quantizzazione]], [[quantizzazione-non-uniforme]], [[companding]] | completo per la fonte |
+| **Tema 1** — Rappresentazione complessa in banda base | [[modulazione-digitale]], [[segnali-banda-base-e-passa-banda]], [[segnale-analitico]], [[inviluppo-complesso]], [[upconversion-e-downconversion]], [[equivalente-banda-base-dei-filtri]] | completo per la fonte |
+| **Tema 2** — Processi aleatori | [[processo-aleatorio]], [[momenti-di-un-processo]], [[stazionarieta]], [[autocorrelazione-processi-wss]], [[processi-e-sistemi-lti]], [[densita-spettrale-di-potenza]], [[processo-gaussiano]] | completo per la fonte |
 
-Filo logico finora: il sistema digitale ([[sistema-comunicazione-digitale]]) comincia con la conversione A/D della sorgente ([[conversione-ad-da]]), che ne fissa il bit rate $b\cdot f_c$ ([[dimensionamento-quantizzatore]]). La natura statistica del canale e del rumore richiede la teoria della probabilità, già usata nella quantizzazione ([[disuguaglianza-di-chebyshev]], $\Delta^2/12$).
+Filo logico finora:
+- Il sistema digitale ([[sistema-comunicazione-digitale]]) comincia con la conversione A/D della sorgente ([[conversione-ad-da]]), che ne fissa il bit rate $b\cdot f_c$ ([[dimensionamento-quantizzatore]]).
+- La natura statistica del canale e del rumore richiede la teoria della probabilità, già usata nella quantizzazione ([[disuguaglianza-di-chebyshev]], $\Delta^2/12$).
+- I bit vanno poi trasmessi su canali passa-banda. La rappresentazione complessa in banda base ([[inviluppo-complesso]]) permette di descrivere segnali e canali passa-banda con segnali in banda base, quindi di fare modulazione e demodulazione in digitale. Il passaggio alla portante resta ai soli upconverter e downconverter ([[upconversion-e-downconversion]]).
+- Rumore e segnali d'informazione non sono prevedibili: si modellano come processi aleatori ([[processo-aleatorio]]). Media, autocorrelazione e densità spettrale di potenza ([[densita-spettrale-di-potenza]]) dicono quanta potenza c'è e a quali frequenze, e come cambia attraverso i filtri ([[processi-e-sistemi-lti]]). Il processo gaussiano ([[processo-gaussiano]]) è il modello di riferimento per il rumore.
 
 ## Argomenti mancanti / da ingerire
 
-Nessuno dei sei temi principali ha ancora una fonte dedicata:
-- rappresentazione complessa in banda base — TODO
-- processi aleatori (base probabilistica pronta) — TODO
+Temi principali ancora senza fonte (il tema 1 è coperto da [[rappresentazione-complessa-banda-base]], il tema 2 da [[processi-aleatori]]):
 - modulazione digitale — TODO
 - stima dei parametri e sincronizzazione — TODO
 - canali selettivi in frequenza / equalizzazione — TODO
@@ -37,6 +41,6 @@ Nessuno dei sei temi principali ha ancora una fonte dedicata:
 
 ## Fonti ingerite
 
-3 — [[intro-corso]], [[elementi-teoria-probabilita]], [[campionamento-conversione-ad-da]]
+5 — [[intro-corso]], [[elementi-teoria-probabilita]], [[campionamento-conversione-ad-da]], [[rappresentazione-complessa-banda-base]], [[processi-aleatori]]
 
-_Aggiornato: 2026-09-23 — primo ingest (3 fonti)_
+_Aggiornato: 2026-09-28 — ingest random_processes.pdf (tema 2); 2026-09-25 — ingest Rappresentazione_Rice.pdf (tema 1); 2026-09-23 — primo ingest (3 fonti)_

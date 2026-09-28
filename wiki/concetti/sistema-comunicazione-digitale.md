@@ -86,7 +86,7 @@ Il blocco tratteggiato dello schema (codificatore di canale → ... → decodifi
 
 Il segnale ricevuto è corrotto dal **rumore termico** generato dai componenti elettronici. Un conduttore di resistenza $R$ (Ω) a temperatura sopra lo zero assoluto contiene elettroni liberi in moto casuale, che producono una tensione di rumore ai suoi capi. Il rumore è piccolo, ma diventa un problema quando viene amplificato da un ricevitore ad alto guadagno. Si caratterizza con la meccanica quantistica.
 
-TODO: da espandere — la slide non dà formule (densità spettrale, $kT$); verranno probabilmente con i processi aleatori.
+TODO: da espandere — la slide non dà formule (densità spettrale, $kT$). Le slide sui processi aleatori citano il rumore termico come esempio di segnale aleatorio ([[random_processes.pdf#page=2]], [[processo-aleatorio]]) e danno gli strumenti per descriverlo ([[densita-spettrale-di-potenza]], [[processo-gaussiano]]), ma non il suo modello quantitativo.
 
 ### Perché "going digital"
 > 📄 Fonte: [[Intro.pdf#page=10]] – [[Intro.pdf#page=13]]
@@ -111,7 +111,8 @@ TODO: da espandere — la slide non dà formule (densità spettrale, $kT$); verr
 ## Perché importa
 
 È il quadro di riferimento di tutto il corso: ogni argomento del programma ([[Intro.pdf#page=3]]) corrisponde a un blocco dello schema:
-- modulazione digitale → modulatore/demodulatore;
+- rappresentazione complessa in banda base → come modulatore e demodulatore lavorano in banda base, con upconverter e downconverter verso il canale ([[inviluppo-complesso]], [[upconversion-e-downconversion]]);
+- modulazione digitale → modulatore/demodulatore ([[modulazione-digitale]]);
 - stima dei parametri e sincronizzazione → demodulatore;
 - canali selettivi in frequenza → canale ed equalizzazione;
 - teoria dell'informazione e codifica di canale → codificatore/decodificatore di canale;
@@ -123,10 +124,12 @@ TODO: da espandere — la slide non dà formule (densità spettrale, $kT$); verr
 - [[spazio-di-probabilita]] — la natura statistica della comunicazione ([[Intro.pdf#page=9]]) motiva lo studio della probabilità.
 - [[ripetitore-rigenerativo]] — è il meccanismo concreto del vantaggio del digitale.
 - [[snr-di-quantizzazione]] — la "degradazione definibile" del passo 6 ha, per la quantizzazione, una misura precisa.
+- [[modulazione-digitale]] — il modulatore «traduce simboli in forme d'onda» ([[Intro.pdf#page=16]]); la lezione sulla banda base ne dà un primo esempio, la modulazione lineare binaria ([[Rappresentazione_Rice.pdf#page=3]]).
+- [[inviluppo-complesso]] — modulatore e demodulatore lavorano sull'inviluppo complesso in banda base; il canale fisico, tra upconverter e downconverter, si vede come un unico canale in banda base ([[Rappresentazione_Rice.pdf#page=18]]).
 
 ## Fonti
 
 - [[intro-corso]] — sommario della fonte
 - [[Intro.pdf#page=4]] – [[Intro.pdf#page=21]]
 
-_Aggiornato: 2026-09-23 — creazione da ingest Intro.pdf_
+_Aggiornato: 2026-09-28 — rumore termico: collegamenti ai processi aleatori; 2026-09-25 — collegamenti a modulazione digitale e inviluppo complesso (ingest Rappresentazione_Rice.pdf); 2026-09-23 — creazione da ingest Intro.pdf_

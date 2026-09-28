@@ -101,10 +101,12 @@ L'ipotesi "errore di quantizzazione incorrelato col segnale" (modello additivo $
 - [[media-e-varianza]] — per $X=Y$ le definizioni si riducono a valor quadratico medio e varianza.
 - [[coppie-di-variabili-aleatorie]] — i momenti misti sono calcolati dalla pdf congiunta.
 - [[variabili-aleatorie-notevoli]] — la varianza della binomiale ($npq$) usa la prop. 3 generalizzata.
+- [[momenti-di-un-processo]] — autocorrelazione e autocovarianza di un processo sono correlazione e covarianza di due suoi campioni; incoerenza e incorrelazione tra processi ricalcano ortogonalità e incorrelazione tra v.a.
+- [[autocorrelazione-processi-wss]] — la disuguaglianza di Schwarz dà $|R_{XX}(\tau)| \le R_{XX}(0)$.
 
 ## Fonti
 
 - [[elementi-teoria-probabilita]]
 - [[Probabilità.pdf#page=36]] – [[Probabilità.pdf#page=38]]
 
-_Aggiornato: 2026-09-23 — creazione da ingest Probabilità.pdf_
+_Aggiornato: 2026-09-28 — collegamenti ai processi aleatori; 2026-09-23 — creazione da ingest Probabilità.pdf_

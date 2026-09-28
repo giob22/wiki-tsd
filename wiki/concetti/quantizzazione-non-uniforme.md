@@ -34,7 +34,7 @@ $$Q(x) = q_i \quad \text{se } x\in R_i$$
 
 > 🧩 Derivazione mia — perché quella frazione è una media: il numeratore $\int_{x_{i-1}}^{x_i}x\,f_X(x)\,dx$ pesa ogni valore $x$ per la sua densità di probabilità, come nella somma discreta $\sum_k x_k\,p(x_k)$ di [[media-e-varianza]], ma limitata all'intervallo $R_i$ invece che a tutto l'asse reale. Il denominatore $\int_{x_{i-1}}^{x_i}f_X(x)\,dx = P(x\in R_i)$ è l'area di $f_X$ dentro $R_i$: dividere per questa area **rinormalizza** i pesi, perché $f_X$ ristretta a $R_i$ non è di per sé una pdf valida (non integra a 1 su $R_i$). Il rapporto è quindi la media pesata dei valori di $x$ **condizionata** al fatto che $x$ sia caduto in $R_i$ ([[probabilita-condizionale]]) — cioè il baricentro (centro di massa) della sola fetta di pdf che sta in $R_i$, non di tutta $f_X$.
 
-Simboli: $f_X$ = pdf del segnale, supposto **stazionario del primo ordine** ([[Campionamento_AD_DA.pdf#page=34]]); $e(n) = Q[x(n)]-x(n)$. MSE nell'unità del segnale al quadrato (es. V²).
+Simboli: $f_X$ = pdf del segnale, supposto **stazionario del primo ordine** ([[Campionamento_AD_DA.pdf#page=34]]; definizione in [[stazionarieta]]: tutti i campioni hanno la stessa pdf $f_X$); $e(n) = Q[x(n)]-x(n)$. MSE nell'unità del segnale al quadrato (es. V²).
 
 > 🧮 Formula chiave: le due condizioni di Lloyd-Max.
 
@@ -108,6 +108,8 @@ $$
 
 In telefonia serve una **quantizzazione robusta**, con prestazioni circa indipendenti dal livello, vista la grande variabilità dei parlatori. La soluzione è il [[companding]]: compressione, poi quantizzazione uniforme, e in decodifica espansione.
 
+L'idea del companding è non progettare più soglie e livelli uno per uno. Si sceglie una legge di compressione $F$ e si quantizza uniformemente il segnale compresso $F(x)$. Quantizzare uniformemente $F(x)$ equivale a quantizzare in modo non uniforme $x$: le soglie sull'asse $x$ sono $x_i = F^{-1}(y_i)$, dove $y_i$ sono le soglie equidistanti del quantizzatore uniforme ([[Campionamento_AD_DA.pdf#page=38]]). Così tutto il progetto si sposta sulla scelta di $F$ → [[companding#Idea chiave del companding]].
+
 > 🎯 Esame: derivare le due condizioni (centroide, punto medio), dire perché sono solo *necessarie*, spiegare i limiti che portano al companding.
 
 ## Perché importa
@@ -119,12 +121,13 @@ Mostra che il quantizzatore va progettato **sulla statistica** della sorgente: c
 - [[quantizzazione-uniforme]] — caso particolare, ottimo per pdf uniforme.
 - [[media-e-varianza]], [[probabilita-totale-e-bayes]] — il centroide è una media condizionale.
 - [[algoritmo-lloyd-max]] — procedura iterativa.
-- [[companding]] — l'alternativa robusta.
+- [[companding]] — l'alternativa robusta: realizza la quantizzazione non uniforme con compressione + quantizzazione uniforme + espansione, e riduce il progetto alla scelta di $F$.
 - [[variabili-aleatorie-notevoli]] — pdf di Laplace.
+- [[stazionarieta]] — l'ipotesi di stazionarietà del primo ordine: una sola $f_X$ vale per tutti i campioni, quindi un solo quantizzatore va bene in ogni istante.
 
 ## Fonti
 
 - [[campionamento-conversione-ad-da]]
 - [[Campionamento_AD_DA.pdf#page=32]] – [[Campionamento_AD_DA.pdf#page=36]]
 
-_Aggiornato: 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; aggiunta figura caratteristica p.28; revisione di copertura totale vs PDF (testo + figure)_
+_Aggiornato: 2026-09-28 — collegamento alla definizione di stazionarietà; 2026-09-24 — resa esplicita l'idea del companding (il progetto si sposta su $F$); 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; aggiunta figura caratteristica p.28; revisione di copertura totale vs PDF (testo + figure)_

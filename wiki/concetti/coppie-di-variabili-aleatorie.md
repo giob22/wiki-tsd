@@ -94,10 +94,11 @@ Segnale e rumore, oppure due campioni successivi dello stesso segnale, sono copp
 - [[correlazione-e-covarianza]] — descrizione sintetica (momenti misti) della coppia.
 - [[probabilita-totale-e-bayes]] — Bayes per densità: $f_X(x|y) = f_Y(y|x)f_X(x)/f_Y(y)$ (🧩 mio, combinando le due definizioni di [[Probabilità.pdf#page=34]]).
 - [[media-e-varianza]] — il teorema fondamentale della media si estende alle coppie.
+- [[processo-aleatorio]] — due campioni di un processo sono una coppia di v.a.; le marginali danno la coerenza delle distribuzioni di ordine $k$.
 
 ## Fonti
 
 - [[elementi-teoria-probabilita]]
 - [[Probabilità.pdf#page=31]] – [[Probabilità.pdf#page=35]]
 
-_Aggiornato: 2026-09-23 — creazione da ingest Probabilità.pdf_
+_Aggiornato: 2026-09-28 — collegamento al processo aleatorio; 2026-09-23 — creazione da ingest Probabilità.pdf_

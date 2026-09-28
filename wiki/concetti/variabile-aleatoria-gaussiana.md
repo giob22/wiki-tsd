@@ -148,10 +148,11 @@ Il rumore termico è somma di moltissimi contributi indipendenti (moto degli ele
 - [[media-e-varianza]] — interpretazione di $\mu$ e $\sigma$.
 - [[funzione-di-variabile-aleatoria]] — $aX+b$ resta gaussiana.
 - [[disuguaglianza-di-chebyshev]] — limite generico contro calcolo esatto con la Q.
+- [[processo-gaussiano]] — la versione a $n$ variabili (gaussiana multivariata); per $n = 1$ si ritrova questa pdf.
 
 ## Fonti
 
 - [[elementi-teoria-probabilita]]
 - [[Probabilità.pdf#page=23]] – [[Probabilità.pdf#page=26]]
 
-_Aggiornato: 2026-09-23 — creazione da ingest Probabilità.pdf_
+_Aggiornato: 2026-09-28 — collegamento al processo gaussiano; 2026-09-23 — creazione da ingest Probabilità.pdf_

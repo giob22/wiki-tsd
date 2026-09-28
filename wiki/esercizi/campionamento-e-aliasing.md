@@ -55,13 +55,15 @@ f_{alias} &= f_c - f_0 = 2 - 1.5 = 0.5\,\text{kHz} && f_c/2<f_0<f_c
 $$
 **Verifica sui campioni** (derivazione completa in [[aliasing]]): $\cos(2\pi\cdot0.75\,n) = \cos(2\pi\cdot0.25\,n)$ per $n$ intero, e $0.25\cdot2\,\text{kHz} = 0.5$ kHz ✓.
 **Risultato:** 0.5 kHz. Per evitare l'aliasing servirebbe $f_c\ge3$ kHz.
+**Perché proprio 0.5 kHz:** i campioni del coseno a 1.5 kHz (1, 0, −1, 0, 1, …) sono anche quelli dei coseni a 0.5, 2.5, 3.5 kHz, …, e il filtro di ricostruzione lascia passare solo $|f| < f_c/2 = 1$ kHz. Ragionamento completo, con due animazioni: [[aliasing#Perché il segnale ricostruito è a 0.5 kHz]].
 
 ## Trappole
 
 - $f_c\ge2f_m$ con $f_m$ banda **monolatera**, non la larghezza totale dello spettro bilatero.
 - Con $f_c = 2f_m$ esatto serve un filtro perfettamente ideale ($f_r = f_m$ esatta): in pratica si sovracampiona.
 - La formula $f_c-f_0$ vale solo per $f_c/2<f_0<f_c$. Per $f_0>f_c$ bisogna prima sottrarre multipli di $f_c$.
+- Il ricostruttore non "sa" quale fosse la frequenza vera: restituisce sempre la replica che cade sotto $f_c/2$ ([[aliasing#Perché il segnale ricostruito è a 0.5 kHz]]).
 - Il filtro **antialiasing** va *prima* del campionatore ed è analogico; il filtro di **ricostruzione** va *dopo*, nella D/A ([[aliasing]], [[interpolazione]]).
 - Stereo = 2 canali: raddoppiare campioni e bit.
 
-_Aggiornato: 2026-09-23 — revisione di copertura: rimosso caso inventato (scelta di f_r)_
+_Aggiornato: 2026-09-24 — Caso 3: perché si ricostruisce 0.5 kHz, link al ragionamento completo; 2026-09-23 — revisione di copertura: rimosso caso inventato (scelta di f_r)_

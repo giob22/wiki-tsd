@@ -27,7 +27,7 @@ Dopo aver motivato l'elaborazione digitale (tecnologie e vantaggi), la conversio
 9. $k_c = X_{max}/x_{rms}$; $P_s\le1/k_c^2$; four-sigma loading → 6.25% ([[Campionamento_AD_DA.pdf#page=29]]).
 10. $\text{SNR}_{dB} = 6.02b-[k_c]_{dB}+4.77$ ([[Campionamento_AD_DA.pdf#page=30]]); Esempio 7.6: 85 dB → 16 bit, 705.6 kbit/s per canale, 10.6 MB/min stereo ([[Campionamento_AD_DA.pdf#page=31]]).
 11. Lloyd-Max: centroidi + punti medi, iterati ([[Campionamento_AD_DA.pdf#page=35]]).
-12. Companding: $\Delta_i\approx\Delta/F'(x_i)$; la legge logaritmica rende l'SNR indipendente dalla pdf ([[Campionamento_AD_DA.pdf#page=38]] – [[Campionamento_AD_DA.pdf#page=40]]).
+12. Companding: quantizzare uniformemente il segnale compresso $F(x)$ equivale a quantizzare in modo non uniforme $x$, perché $F$ trasforma le soglie $x_i$ nelle soglie uniformi $F(x_i)$. Il progetto si riduce quindi alla scelta di $F$. Vale $\Delta_i\approx\Delta/F'(x_i)$, e la legge logaritmica rende l'SNR indipendente dalla pdf ([[Campionamento_AD_DA.pdf#page=36]], [[Campionamento_AD_DA.pdf#page=38]] – [[Campionamento_AD_DA.pdf#page=40]]).
 13. µ-law ($\mu = 255$) → $6.02b-10.11$ dB; A-law ($A = 87.6$) → $6.02b-9.99$ dB; uniforme con $k_c = 4$ → $6.02b-7.3$ dB ([[Campionamento_AD_DA.pdf#page=43]]).
 
 ## Concetti introdotti
@@ -71,5 +71,6 @@ Esercizi: [[campionamento-e-aliasing]], [[dimensionamento-quantizzatore]].
 - Ricavare la legge dei 6 dB/bit. Dimensionare un quantizzatore per un SNR dato.
 - Condizioni di Lloyd-Max: derivazione e significato.
 - Perché serve la quantizzazione robusta? Derivare la legge logaritmica. µ-law vs A-law.
+- Perché compressione + quantizzazione uniforme + espansione equivale a un quantizzatore non uniforme? Cosa resta da progettare, e con quale criterio?
 
-_Aggiornato: 2026-09-23 — ingest iniziale; revisione di copertura totale vs PDF_
+_Aggiornato: 2026-09-24 — punto chiave 12 e domanda d'esame sull'idea del companding; 2026-09-23 — ingest iniziale; revisione di copertura totale vs PDF_

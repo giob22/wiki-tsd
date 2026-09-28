@@ -48,7 +48,7 @@ Slide introduttive (in inglese, eccetto le prime tre) del corso *Trasmissione de
 
 ## Domande aperte
 
-- Rumore termico: le slide non danno il modello quantitativo (densità spettrale $kT$, gaussianità). Probabilmente arriverà con i processi aleatori. TODO.
+- Rumore termico: le slide non danno il modello quantitativo (densità spettrale $kT$, gaussianità). Nemmeno le slide sui processi aleatori ([[processi-aleatori]]) lo danno: lo citano solo come esempio. TODO.
 - Perché il principio di separazione è ottimo **solo** punto-punto? Rimandato alla parte di teoria dell'informazione ([[Intro.pdf#page=21]]).
 - In quali casi concreti la codifica congiunta sorgente-canale batte la separazione?
 

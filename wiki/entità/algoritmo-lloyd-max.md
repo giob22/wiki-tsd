@@ -27,10 +27,11 @@ Il problema non ha soluzione in forma chiusa. L'algoritmo alterna le due condizi
 ## Concetti correlati
 
 - [[quantizzazione-non-uniforme]], [[media-e-varianza]] (media condizionale), [[companding]]
+- [[stazionarieta]] — "sorgente stazionaria" (del primo ordine) vuol dire che la pdf dei campioni non cambia nel tempo
 
 ## Fonti
 
 - [[campionamento-conversione-ad-da]]
 - [[Campionamento_AD_DA.pdf#page=34]] – [[Campionamento_AD_DA.pdf#page=36]]
 
-_Aggiornato: 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf_
+_Aggiornato: 2026-09-28 — collegamento alla stazionarietà; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf_
