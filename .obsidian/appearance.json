@@ -1,7 +1,9 @@
 {
-  "theme": "moonstone",
-  "cssTheme": "Solarized",
+  "theme": "obsidian",
+  "cssTheme": "Minimal",
   "enabledCssSnippets": [
     "Catppuccin-Latte–Graph-View"
-  ]
+  ],
+  "baseFontSizeAction": true,
+  "baseFontSize": 14
 }

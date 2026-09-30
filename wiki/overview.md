@@ -41,6 +41,6 @@ Temi principali ancora senza fonte (il tema 1 è coperto da [[rappresentazione-c
 
 ## Fonti ingerite
 
-5 — [[intro-corso]], [[elementi-teoria-probabilita]], [[campionamento-conversione-ad-da]], [[rappresentazione-complessa-banda-base]], [[processi-aleatori]]
+6 — [[intro-corso]], [[elementi-teoria-probabilita]], [[campionamento-conversione-ad-da]], [[rappresentazione-complessa-banda-base]], [[processi-aleatori]], [[laboratorio-conversione-ad]] (laboratorio Matlab, non d'esame: macroblocchi in `laboratorio/`)
 
-_Aggiornato: 2026-09-28 — ingest random_processes.pdf (tema 2); 2026-09-25 — ingest Rappresentazione_Rice.pdf (tema 1); 2026-09-23 — primo ingest (3 fonti)_
+_Aggiornato: 2026-09-30 — ingest del laboratorio Matlab sulla conversione A/D (non d'esame); 2026-09-28 — re-ingest di Rappresentazione_Rice.pdf e random_processes.pdf nella versione con appunti a mano (dimostrazioni della docente integrate come fonte); ingest random_processes.pdf (tema 2); 2026-09-25 — ingest Rappresentazione_Rice.pdf (tema 1); 2026-09-23 — primo ingest (3 fonti)_

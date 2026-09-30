@@ -118,6 +118,7 @@ Obiettivo della slide: fissare **criteri quantitativi** per dimensionare un quan
 
 ## Connessioni
 
+- [[lab-quantizzazione]] — 🧪 laboratorio (non d'esame): quantizzatore a 16 livelli sui campioni di un trapezio; lo zero diventa $\Delta/2$.
 - [[snr-di-quantizzazione]] — misura l'accuratezza nella regione granulare.
 - [[disuguaglianza-di-chebyshev]] — limite su $P_s$.
 - [[quantizzazione-non-uniforme]] — cosa cambia se gli intervalli non sono uguali.
@@ -128,4 +129,4 @@ Obiettivo della slide: fissare **criteri quantitativi** per dimensionare un quan
 - [[campionamento-conversione-ad-da]]
 - [[Campionamento_AD_DA.pdf#page=25]] – [[Campionamento_AD_DA.pdf#page=29]]
 
-_Aggiornato: 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_
+_Aggiornato: 2026-09-30 — collegamento al laboratorio Matlab; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_

@@ -93,6 +93,7 @@ Il convertitore A/D è il primo stadio del codificatore di sorgente per sorgenti
 
 ## Connessioni
 
+- [[laboratorio-conversione-ad]] — 🧪 laboratorio Matlab (non d'esame) che percorre tutta la catena: [[lab-setup-e-spettro]], [[lab-campionamento]], [[lab-interpolazione]], [[lab-quantizzazione]], [[lab-snr]].
 - [[teorema-del-campionamento]], [[aliasing]], [[interpolazione]] — dimensione temporale.
 - [[quantizzazione-uniforme]], [[snr-di-quantizzazione]], [[quantizzazione-non-uniforme]], [[companding]] — dimensione delle ampiezze.
 - [[sistema-comunicazione-digitale]] — la collocazione nella catena di trasmissione.
@@ -102,4 +103,4 @@ Il convertitore A/D è il primo stadio del codificatore di sorgente per sorgenti
 - [[campionamento-conversione-ad-da]]
 - [[Campionamento_AD_DA.pdf#page=2]] – [[Campionamento_AD_DA.pdf#page=6]]
 
-_Aggiornato: 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_
+_Aggiornato: 2026-09-30 — collegamento al laboratorio Matlab; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_

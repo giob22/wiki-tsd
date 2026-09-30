@@ -2,7 +2,7 @@
 tipo: concetto
 importanza_esame: alta
 prerequisiti: ["teorema-del-campionamento"]
-fonti_pdf: ["Rappresentazione_Rice.pdf#page=4", "Rappresentazione_Rice.pdf#page=5", "Rappresentazione_Rice.pdf#page=6", "Rappresentazione_Rice.pdf#page=7", "Rappresentazione_Rice.pdf#page=2"]
+fonti_pdf: ["Rappresentazione_Rice.pdf#page=4", "Rappresentazione_Rice.pdf#page=5", "Rappresentazione_Rice.pdf#page=7", "Rappresentazione_Rice.pdf#page=8", "Rappresentazione_Rice.pdf#page=2"]
 ---
 
 # Segnali in banda base e in banda passante
@@ -16,7 +16,7 @@ $$S_b(f) \approx 0, \qquad |f| > B \tag{1}$$
 - Un canale modellato come sistema **lineare tempo-invariante** (LTI) è in banda base se la sua funzione di trasferimento $H(f)$ soddisfa la (1).
 - Un segnale $s_p(t)$ è **in banda passante** (*passband*) se
 $$S_p(f) \approx 0, \qquad |f \pm f_c| > B/2 \tag{2}$$
-  dove $f_c > B > 0$ si chiama frequenza **portante** (*carrier*).
+  dove $f_c > B > 0$ si chiama frequenza **portante** (*carrier*). Nota a mano sulla slide: si dice banda passante perché «il contenuto informativo è traslato e centrato attorno a $f_c$».
 - Un canale LTI è in banda passante se $H(f)$ soddisfa la (2).
 
 > 🧩 Come leggere le due definizioni:
@@ -30,16 +30,16 @@ $$S_p(f) \approx 0, \qquad |f \pm f_c| > B/2 \tag{2}$$
 |---|---|---|
 | $S_b(f)\approx 0$ per $\|f\|>B$ | segnale (o canale) in banda base | [[Rappresentazione_Rice.pdf#page=4]] (slide 3) |
 | $S_p(f)\approx 0$ per $\|f\pm f_c\|>B/2$, con $f_c>B>0$ | segnale (o canale) in banda passante | [[Rappresentazione_Rice.pdf#page=4]] (slide 3) |
-| $X(f) = X^*(-f)$ | simmetria coniugata (hermitiana) di un segnale reale | [[Rappresentazione_Rice.pdf#page=5]] (slide 4), [[Rappresentazione_Rice.pdf#page=6]] (slide 5) |
-| banda bilatera $= 2\times$ banda monolatera | vale per i segnali reali | [[Rappresentazione_Rice.pdf#page=6]] (slide 5) |
-| $B/f_c \ll 1$ | segnale passa-banda **a banda stretta** | [[Rappresentazione_Rice.pdf#page=6]] (slide 5) |
+| $X(f) = X^*(-f)$ | simmetria coniugata (hermitiana) di un segnale reale | [[Rappresentazione_Rice.pdf#page=5]] (slide 4), [[Rappresentazione_Rice.pdf#page=7]] (slide 5) |
+| banda bilatera $= 2\times$ banda monolatera | vale per i segnali reali | [[Rappresentazione_Rice.pdf#page=7]] (slide 5) |
+| $B/f_c \ll 1$ | segnale passa-banda **a banda stretta** | [[Rappresentazione_Rice.pdf#page=7]] (slide 5) |
 
 Simboli: $B$ = banda monolatera [Hz]; $f_c$ = frequenza portante [Hz]; $S_b(f)$, $S_p(f)$, $X(f)$ = trasformate di Fourier (unità del segnale per secondo, es. V/Hz); $^*$ = complesso coniugato.
 
 ## Derivazioni
 
 ### Derivazione — Simmetria hermitiana di un segnale reale
-**Fonte:** [[Rappresentazione_Rice.pdf#page=5]] (slide 4) e [[Rappresentazione_Rice.pdf#page=6]] (slide 5): proprietà usata senza dimostrazione.
+**Fonte:** [[Rappresentazione_Rice.pdf#page=5]] (slide 4) e [[Rappresentazione_Rice.pdf#page=7]] (slide 5): proprietà usata senza dimostrazione.
 > 🧩 Derivazione mia
 
 $$
@@ -59,15 +59,15 @@ $$
 È quello che mostra la figura della slide 4. La metà a frequenze negative è l'immagine speculare (coniugata) di quella positiva: **non contiene informazione nuova**. È l'osservazione da cui nasce il [[segnale-analitico]].
 
 ### Derivazione — La banda bilatera è il doppio della monolatera
-**Fonte:** [[Rappresentazione_Rice.pdf#page=6]] (slide 5)
+**Fonte:** [[Rappresentazione_Rice.pdf#page=7]] (slide 5)
 > 🧩 Derivazione mia
 
 Se le frequenze positive occupate formano un insieme di ampiezza $B$, per $|X(-f)| = |X(f)|$ le frequenze negative occupate ne sono lo specchio, e hanno ampiezza $B$ anch'esse. In totale: $2B$.
 **Caso limite:** per un segnale **complesso** la simmetria non vale e le due metà sono indipendenti, quindi la regola del "doppio" non si applica (banda dei segnali complessi: [[inviluppo-complesso]]).
 
 ### Derivazione — Perché si chiede $f_c > B$
-**Fonte:** [[Rappresentazione_Rice.pdf#page=4]] (slide 3), condizione data senza commento
-> 🧩 Derivazione mia
+**Fonte:** [[Rappresentazione_Rice.pdf#page=4]] (slide 3): condizione data senza commento. Accanto c'è una nota a mano rimasta incompleta («altrimenti c'è…»).
+> 🧩 Derivazione mia: cosa succederebbe altrimenti.
 
 $$
 f_c > B \ \Rightarrow\ f_c - \frac{B}{2} > B - \frac{B}{2} = \frac{B}{2} > 0
@@ -83,14 +83,17 @@ Il bordo inferiore del lobo positivo sta sopra $B/2 > 0$, e per simmetria il bor
 La slide considera due segnali **reali**, $s_b(t)$ in banda base e $s_p(t)$ in banda passante. Le loro trasformate $S_b(f)$ e $S_p(f)$ possono esistere in senso ordinario o in **senso generalizzato**, per esempio con delta di Dirac. Per la simmetria coniugata $S_b(f) = S_b^*(-f)$ e $S_p(f) = S_p^*(-f)$.
 
 ![[rappresentazione-rice-p5-spettri-banda-base-passa-banda.png]]
-*[[Rappresentazione_Rice.pdf#page=5]] (slide 4). A sinistra, il segnale in banda base: $\text{Re}(S(f))$ è un triangolo di altezza 1 su $(-B, B)$, pari (nota a mano: "simmetria hermitiana"); $\text{Im}(S(f))$ vale $+1$ su $(-B, 0)$ e $-1$ su $(0, B)$, dispari. A destra, il segnale passa-banda: stesse forme spostate attorno a $\pm f_c$, larghezza $B$. La parte reale è pari e quella immaginaria dispari. Nota a mano con $f_c$ cerchiato: "l'obiettivo è sbarazzarsi di $f_c$".*
+*[[Rappresentazione_Rice.pdf#page=5]] (slide 4).*
+- *A sinistra, il segnale in banda base. $\text{Re}(S(f))$ è un triangolo di altezza 1 su $(-B, B)$, pari. $\text{Im}(S(f))$ vale $+1$ su $(-B, 0)$ e $-1$ su $(0, B)$, dispari.*
+- *A destra, il segnale passa-banda: stesse forme spostate attorno a $\pm f_c$, larghezza $B$; parte reale pari, parte immaginaria dispari.*
+- *Note a mano: «le trasformate di Fourier dei segnali reali godono della simmetria hermitiana». Con $f_c$ cerchiato: «l'obiettivo è svincolarsi dalla $f_c$, ovvero dalla frequenza carrier, perché l'informazione di $s(t)$ non dipende da $f_c$: si può descrivere tutto con un segnale in banda base».*
 
-> 💡 Connessione: "l'obiettivo è sbarazzarsi di $f_c$" è il programma della lezione. L'informazione di $s_p(t)$ non dipende da $f_c$ ([[Rappresentazione_Rice.pdf#page=19]], slide 15), e si può descrivere tutto con un segnale in banda base: l'[[inviluppo-complesso]].
+> 💡 Connessione: "svincolarsi da $f_c$" è il programma della lezione. L'informazione di $s_p(t)$ non dipende da $f_c$ ([[Rappresentazione_Rice.pdf#page=22]], slide 15), quindi si può descrivere tutto con un segnale in banda base: l'[[inviluppo-complesso]].
 
 > ⚠️ Nella figura il segnale in banda base è indicato con $S(f)$ invece di $S_b(f)$. Più avanti, nella slide 11, $S(f)$ indica l'inviluppo complesso.
 
 ### Banda (slide 5)
-> 📄 Fonte: [[Rappresentazione_Rice.pdf#page=6]] (slide 5)
+> 📄 Fonte: [[Rappresentazione_Rice.pdf#page=7]] (slide 5)
 
 - La **banda** è l'ampiezza dell'intervallo di frequenze occupato dalla trasformata di Fourier.
 - **Banda monolatera** (*one-sided*): occupazione spettrale sulle frequenze positive.
@@ -101,11 +104,19 @@ La slide considera due segnali **reali**, $s_b(t)$ in banda base e $s_p(t)$ in b
 
 > 🧩 Con gli spettri della slide 4: il segnale in banda base ha banda monolatera $B$ e bilatera $2B$. Il passa-banda ha banda monolatera $B$ (il lobo positivo) e bilatera $2B$ (i due lobi).
 
-### Segnale a banda stretta (appunti p.7)
-> 📄 Fonte: [[Rappresentazione_Rice.pdf#page=7]] (appunti a mano)
+### Definizioni negli appunti e banda stretta (appunti p.8)
+> 📄 Fonte: [[Rappresentazione_Rice.pdf#page=8]] (appunti a mano)
 
-![[rappresentazione-rice-p7-appunti-banda-stretta.png]]
-*Appunti a mano, [[Rappresentazione_Rice.pdf#page=7]]: un segnale a banda stretta ha banda molto minore di $f_c$ ($B \ll f_c$): due lobi stretti attorno a $\pm f_c$.*
+Gli appunti riprendono in italiano le definizioni della slide 5:
+- **larghezza di banda**: dimensione dell'intervallo di frequenze occupato dalla trasformata di Fourier del segnale;
+- si distingue tra banda **monolatera** e **bilatera**; la bilatera considera sia le frequenze positive sia quelle negative;
+- se $s(t)$ è reale, la bilatera è il doppio della monolatera, per la simmetria hermitiana $S(f) = S^*(-f)$;
+- **segnale passa-banda a banda stretta**: la sua banda $B$ è molto minore della frequenza portante, $B/f_c \ll 1$. Nota: **non è un'ipotesi stringente**.
+
+![[rappresentazione-rice-p8-appunti-banda-stretta.png]]
+*Appunti a mano, [[Rappresentazione_Rice.pdf#page=8]]: un segnale a banda stretta ha banda molto minore di $f_c$ ($B \ll f_c$), cioè due lobi stretti attorno a $\pm f_c$. Sotto, le definizioni di larghezza di banda, banda monolatera e bilatera e segnale a banda stretta.*
+
+> 🧩 Perché "non è un'ipotesi stringente" (lettura mia): nei sistemi reali la portante è molto più alta della banda del segnale. È lo stesso ordine di grandezza del grafico I/Q di [[inviluppo-complesso]], dove per rendere visibili le oscillazioni si è dovuta scegliere una $f_c$ artificialmente bassa.
 
 > 🧩 Perché l'ipotesi di banda stretta aiuta, anticipando i risultati della lezione:
 > - $s_p(t)$ appare come una portante a $f_c$ con ampiezza e fase che cambiano lentamente ([[inviluppo-complesso]]);
@@ -114,13 +125,16 @@ La slide considera due segnali **reali**, $s_b(t)$ in banda base e $s_p(t)$ in b
 ### Canale passa-banda (appunti p.2)
 > 📄 Fonte: [[Rappresentazione_Rice.pdf#page=2]] (appunti a mano)
 
-Il disegno di p.2 ([[modulazione-digitale]]) mostra la $H(f)$ di un canale passa-banda: due lobi di larghezza $B$, la "banda utile", centrati in $\pm f_c$. Il trasmettitore deve portare il segnale in quella porzione di spettro, per adattarlo al canale. Il ricevitore lo riporta in banda base, "e questo rende il segnale complesso" ([[inviluppo-complesso]]).
+Il disegno di p.2 ([[modulazione-digitale]]) mostra la $H(f)$ di un canale passa-banda: due lobi di larghezza $B$, la "banda utile", centrati in $\pm f_c$.
+- Il segnale attraversa il canale, che è caratterizzato da una sua risposta in frequenza e da una determinata banda a disposizione.
+- Il trasmettitore deve portare il segnale in quella porzione di spettro, per adattarlo al canale.
+- Il ricevitore lo riporta in banda base, «e questo rende il segnale complesso» ([[inviluppo-complesso]]).
 
 > 🎯 Esame: dare le definizioni (1) e (2), spiegare banda monolatera e bilatera e perché per i segnali reali una è il doppio dell'altra, definire la banda stretta.
 
 ## Perché importa
 
-I canali passa-banda sono molto usati ([[Rappresentazione_Rice.pdf#page=8]], slide 6), quindi bisogna saper trasmettere e ricevere segnali passa-banda. Le definizioni fissano la notazione ($B$, $f_c$) di tutta la lezione. L'ipotesi di banda stretta è usata in tutti i risultati successivi.
+I canali passa-banda sono molto usati ([[Rappresentazione_Rice.pdf#page=9]], slide 6), quindi bisogna saper trasmettere e ricevere segnali passa-banda. Le definizioni fissano la notazione ($B$, $f_c$) di tutta la lezione. L'ipotesi di banda stretta è usata in tutti i risultati successivi.
 
 ## Connessioni
 
@@ -133,6 +147,6 @@ I canali passa-banda sono molto usati ([[Rappresentazione_Rice.pdf#page=8]], sli
 ## Fonti
 
 - [[rappresentazione-complessa-banda-base]]
-- [[Rappresentazione_Rice.pdf#page=4]] – [[Rappresentazione_Rice.pdf#page=7]] (slide 3–5, con appunti a mano a p.7); [[Rappresentazione_Rice.pdf#page=2]] (appunti a mano)
+- [[Rappresentazione_Rice.pdf#page=4]], [[Rappresentazione_Rice.pdf#page=5]], [[Rappresentazione_Rice.pdf#page=7]] (slide 3–5, con annotazioni a mano); [[Rappresentazione_Rice.pdf#page=8]] e [[Rappresentazione_Rice.pdf#page=2]] (appunti a mano)
 
-_Aggiornato: 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_
+_Aggiornato: 2026-09-28 — re-ingest del PDF con nuovi appunti: definizione di banda passante, simmetria hermitiana, "svincolarsi da $f_c$", definizioni negli appunti, banda stretta "non stringente"; pagine rimappate; 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_

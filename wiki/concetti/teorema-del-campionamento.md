@@ -173,15 +173,16 @@ Stabilisce quanti campioni al secondo servono per rappresentare un segnale senza
 
 ## Connessioni
 
+- [[lab-campionamento]] — 🧪 laboratorio (non d'esame): campionamento simulato, repliche dello spettro e un caso in cui l'arrotondamento porta $f_s$ sotto $2W$.
 - [[aliasing]] — cosa succede quando le ipotesi cadono.
 - [[interpolazione]] — la ricostruzione $x_r(t)$ nel dominio del tempo (serie di Shannon).
 - [[conversione-ad-da]] — il campionamento è la prima metà della conversione A/D.
 - [[sistema-comunicazione-digitale]] — il campionamento è il primo passo della conversione A/D svolta dal codificatore di sorgente ([[Intro.pdf#page=15]]).
-- [[inviluppo-complesso]] — un segnale passa-banda va campionato a $f_c \ge 2 f_{max}$ (qui $f_{max}$ è la sua frequenza massima), il suo inviluppo complesso a una frequenza molto più bassa ([[Rappresentazione_Rice.pdf#page=8]]); il confronto è ricavato in quella pagina. Attenzione alla notazione: qui $f_c$ è la frequenza di campionamento, là è la portante.
+- [[inviluppo-complesso]] — un segnale passa-banda va campionato a $f_c \ge 2 f_{max}$ (qui $f_{max}$ è la sua frequenza massima), il suo inviluppo complesso a una frequenza molto più bassa ([[Rappresentazione_Rice.pdf#page=9]]); il confronto è ricavato in quella pagina. Attenzione alla notazione: qui $f_c$ è la frequenza di campionamento, là è la portante.
 
 ## Fonti
 
 - [[campionamento-conversione-ad-da]]
 - [[Campionamento_AD_DA.pdf#page=7]] – [[Campionamento_AD_DA.pdf#page=16]]
 
-_Aggiornato: 2026-09-25 — collegamento con l'inviluppo complesso; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_
+_Aggiornato: 2026-09-30 — collegamento al laboratorio Matlab; 2026-09-25 — collegamento con l'inviluppo complesso; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_

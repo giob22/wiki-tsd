@@ -169,6 +169,7 @@ L'aliasing è una distorsione **irreversibile**: dopo il campionamento la compon
 
 ## Connessioni
 
+- [[lab-campionamento]] — 🧪 laboratorio (non d'esame): aliasing piccolo per un segnale quasi a banda limitata, grande per una sinusoide a 4 Hz campionata a 7.94 Hz.
 - [[teorema-del-campionamento]] — le ipotesi la cui violazione causa aliasing.
 - [[interpolazione]] — l'altra ipotesi ideale: l'interpolazione con sinc.
 - [[campionamento-e-aliasing]] — esercizi.
@@ -178,4 +179,4 @@ L'aliasing è una distorsione **irreversibile**: dopo il campionamento la compon
 - [[campionamento-conversione-ad-da]]
 - [[Campionamento_AD_DA.pdf#page=18]] – [[Campionamento_AD_DA.pdf#page=21]]
 
-_Aggiornato: 2026-09-24 — ragionamento esplicito sul perché si ricostruisce 0.5 kHz (campioni ambigui, scelta del LPF, repliche, stroboscopio), due animazioni e grafico del ripiegamento; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_
+_Aggiornato: 2026-09-30 — collegamento al laboratorio Matlab; 2026-09-24 — ragionamento esplicito sul perché si ricostruisce 0.5 kHz (campioni ambigui, scelta del LPF, repliche, stroboscopio), due animazioni e grafico del ripiegamento; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_

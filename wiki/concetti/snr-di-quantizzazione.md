@@ -99,6 +99,7 @@ Collega qualità (SNR), numero di bit e quindi bit rate ($R_b = b\,f_c$). È il 
 
 ## Connessioni
 
+- [[lab-snr]] — 🧪 laboratorio (non d'esame): SNR misurato in Matlab; pendenza di 6 dB/bit confermata, ma 4.77 dB sotto il modello $\Delta^2/12$ perché l'errore non è uniforme.
 - [[quantizzazione-uniforme]] — definizioni di $\Delta$, $M$, $k_c$.
 - [[variabili-aleatorie-notevoli]] — varianza dell'uniforme, da cui $\Delta^2/12$.
 - [[companding]] — rende l'SNR indipendente dal livello di segnale; stessa pendenza di 6 dB/bit ma costante $\alpha$ diversa.
@@ -109,4 +110,4 @@ Collega qualità (SNR), numero di bit e quindi bit rate ($R_b = b\,f_c$). È il 
 - [[campionamento-conversione-ad-da]]
 - [[Campionamento_AD_DA.pdf#page=30]], [[Campionamento_AD_DA.pdf#page=31]], [[Campionamento_AD_DA.pdf#page=43]]
 
-_Aggiornato: 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_
+_Aggiornato: 2026-09-30 — collegamento al laboratorio Matlab; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_

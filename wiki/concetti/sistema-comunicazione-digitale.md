@@ -125,7 +125,7 @@ TODO: da espandere — la slide non dà formule (densità spettrale, $kT$). Le s
 - [[ripetitore-rigenerativo]] — è il meccanismo concreto del vantaggio del digitale.
 - [[snr-di-quantizzazione]] — la "degradazione definibile" del passo 6 ha, per la quantizzazione, una misura precisa.
 - [[modulazione-digitale]] — il modulatore «traduce simboli in forme d'onda» ([[Intro.pdf#page=16]]); la lezione sulla banda base ne dà un primo esempio, la modulazione lineare binaria ([[Rappresentazione_Rice.pdf#page=3]]).
-- [[inviluppo-complesso]] — modulatore e demodulatore lavorano sull'inviluppo complesso in banda base; il canale fisico, tra upconverter e downconverter, si vede come un unico canale in banda base ([[Rappresentazione_Rice.pdf#page=18]]).
+- [[inviluppo-complesso]] — modulatore e demodulatore lavorano sull'inviluppo complesso in banda base; il canale fisico, tra upconverter e downconverter, si vede come un unico canale in banda base ([[Rappresentazione_Rice.pdf#page=21]]).
 
 ## Fonti
 

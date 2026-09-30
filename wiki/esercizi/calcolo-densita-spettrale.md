@@ -16,15 +16,15 @@ difficoltà: media
 
 ## Formule usate
 
-- $R_{XX}(\tau) = E[X(t)X(t-\tau)]$ — [[autocorrelazione-processi-wss]] ([[random_processes.pdf#page=14]])
-- Wiener-Khinchin $S_{XX}(f) = \mathcal{F}[R_{XX}(\tau)]$ e potenza $P_X = R_{XX}(0) = \int S_{XX}\,df$ — [[densita-spettrale-di-potenza]] ([[random_processes.pdf#page=27]])
+- $R_{XX}(\tau) = E[X(t)X(t-\tau)]$ — [[autocorrelazione-processi-wss]] ([[random_processes.pdf#page=19]])
+- Wiener-Khinchin $S_{XX}(f) = \mathcal{F}[R_{XX}(\tau)]$ e potenza $P_X = R_{XX}(0) = \int S_{XX}\,df$ — [[densita-spettrale-di-potenza]] ([[random_processes.pdf#page=32]])
 - Modulazione lineare $s(t) = \sum_n b[n]\,p(t - nT)$ — [[modulazione-digitale]] ([[Rappresentazione_Rice.pdf#page=3]])
 - Spettro dell'impulso rettangolare $P(f) = T\,\text{sinc}(fT)$ — [[modulazione-digitale]]
 
 ## Casi svolti
 
 ### Caso 1 — PSD di un segnale modulato linearmente
-**Traccia** ([[random_processes.pdf#page=32]]): «Example — Compute power spectral density of a linearly modulated signal.» La slide non dà lo svolgimento.
+**Traccia** ([[random_processes.pdf#page=37]]): «Example — Compute power spectral density of a linearly modulated signal.» La slide non dà lo svolgimento.
 > 🧩 Svolgimento mio. Il modello viene dalla modulazione lineare della lezione precedente ([[Rappresentazione_Rice.pdf#page=3]]); le ipotesi statistiche sono mie, perché la slide non le specifica.
 
 **Modello:**
@@ -80,7 +80,7 @@ $$
 
 > 💡 Connessione: la PSD decresce solo come $1/f^2$ lontano dall'origine, perché l'impulso rettangolare **non è a banda limitata** ([[modulazione-digitale]]). È il motivo per cui la slide 2 della lezione sulla banda base dice che le forme d'onda reali sono spesso vincolate in frequenza.
 
-> 🧩 Perché serve il ritardo $D$: senza $D$, $R_{XX}(t, \tau) = \sigma_b^2\sum_n p(t - nT)\,p(t - \tau - nT)$ dipende da $t$, in modo periodico con periodo $T$. Il processo non sarebbe WSS e non si potrebbe applicare Wiener-Khinchin come enunciato a [[random_processes.pdf#page=27]]. Mediare su $D$ uniforme equivale a mediare $R_{XX}(t, \tau)$ su un periodo in $t$, e dà lo stesso risultato.
+> 🧩 Perché serve il ritardo $D$: senza $D$, $R_{XX}(t, \tau) = \sigma_b^2\sum_n p(t - nT)\,p(t - \tau - nT)$ dipende da $t$, in modo periodico con periodo $T$. Il processo non sarebbe WSS e non si potrebbe applicare Wiener-Khinchin come enunciato a [[random_processes.pdf#page=32]]. Mediare su $D$ uniforme equivale a mediare $R_{XX}(t, \tau)$ su un periodo in $t$, e dà lo stesso risultato.
 
 ## Trappole
 

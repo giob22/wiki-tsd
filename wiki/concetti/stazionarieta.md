@@ -2,50 +2,50 @@
 tipo: concetto
 importanza_esame: alta
 prerequisiti: ["processo-aleatorio", "momenti-di-un-processo"]
-fonti_pdf: ["random_processes.pdf#page=10", "random_processes.pdf#page=11", "random_processes.pdf#page=12", "random_processes.pdf#page=13"]
+fonti_pdf: ["random_processes.pdf#page=4", "random_processes.pdf#page=15", "random_processes.pdf#page=16", "random_processes.pdf#page=17", "random_processes.pdf#page=18"]
 ---
 
 # Stazionarietà dei processi aleatori
 
 ## Definizione
 
-> 📄 Fonte: [[random_processes.pdf#page=10]], [[random_processes.pdf#page=11]]
+> 📄 Fonte: [[random_processes.pdf#page=15]], [[random_processes.pdf#page=16]]
 
-In generale la caratterizzazione statistica di un processo $X(t)$ **cambia nel tempo**. Se le sue proprietà statistiche non dipendono, entro certi limiti, dalla scelta dell'**origine dei tempi**, il processo si dice **stazionario** in qualche senso. Ci sono diverse forme di stazionarietà ([[random_processes.pdf#page=10]]).
+In generale la caratterizzazione statistica di un processo $X(t)$ **cambia nel tempo**. Se le sue proprietà statistiche non dipendono, entro certi limiti, dalla scelta dell'**origine dei tempi**, il processo si dice **stazionario** in qualche senso. Ci sono diverse forme di stazionarietà ([[random_processes.pdf#page=15]]).
 
 Il confronto che le definisce:
 - si considera il processo iniziato a $t = -\infty$ e lo si campiona negli istanti $t_1, \dots, t_k$, con CDF congiunta di ordine $k$ $F_{X(t_1),\dots,X(t_k)}$;
 - si spostano tutti gli istanti della stessa quantità $\tau$ (traslazione nel tempo): $X(t_1 + \tau), \dots, X(t_k + \tau)$, con CDF $F_{X(t_1+\tau),\dots,X(t_k+\tau)}$.
 
-$X(t)$ è **stazionario di ordine $k$** se ([[random_processes.pdf#page=11]])
+$X(t)$ è **stazionario di ordine $k$** se ([[random_processes.pdf#page=16]])
 $$F_{X(t_1+\tau),\dots,X(t_k+\tau)}(x_1,\dots,x_k) = F_{X(t_1),\dots,X(t_k)}(x_1,\dots,x_k) \tag{6}$$
 per ogni traslazione $\tau$ e ogni scelta di $t_1, \dots, t_k$.
 
 | Tipo | Condizione | Pagina |
 |---|---|---|
-| **in senso stretto** (SSS, *strict-sense*) | la (6) vale per **ogni** $k \in \mathbb{N}$: la forma più forte | [[random_processes.pdf#page=11]] |
-| **del primo ordine** | la (6) vale per $k = 1$ | [[random_processes.pdf#page=11]] |
-| **del secondo ordine** | la (6) vale per $k = 2$ | [[random_processes.pdf#page=12]] |
-| **in senso lato** (WSS, *wide-sense*, o *debolmente stazionario*) | media costante e autocorrelazione che dipende solo dalla differenza tra i due istanti | [[random_processes.pdf#page=13]] |
+| **in senso stretto** (SSS, *strict-sense*) | la (6) vale per **ogni** $k \in \mathbb{N}$: la forma più forte | [[random_processes.pdf#page=16]] |
+| **del primo ordine** | la (6) vale per $k = 1$ | [[random_processes.pdf#page=16]] |
+| **del secondo ordine** | la (6) vale per $k = 2$ | [[random_processes.pdf#page=17]] |
+| **in senso lato** (WSS, *wide-sense*, o *debolmente stazionario*) | media costante e autocorrelazione che dipende solo dalla differenza tra i due istanti | [[random_processes.pdf#page=18]] |
 
-Spesso bastano forme più deboli della stazionarietà in senso stretto ([[random_processes.pdf#page=11]]).
+Spesso bastano forme più deboli della stazionarietà in senso stretto ([[random_processes.pdf#page=16]]).
 
 ## Formule
 
 | Formula | Significato | Pagina |
 |---|---|---|
-| $F_{X(t)}(x) = F_{X(t+\tau)}(x) = F_{X(0)}(x)$ | primo ordine: la distribuzione non dipende da $t$ | [[random_processes.pdf#page=11]] |
-| $\mu_X(t) = \int x\,f_{X(0)}(x)\,dx \equiv \mu_X$ | primo ordine: media costante | [[random_processes.pdf#page=11]] |
-| $F_{X(t_1),X(t_2)}(x_1, x_2) = F_{X(t_1-t_2),X(0)}(x_1, x_2)$ | secondo ordine: dipende solo da $t_1 - t_2$ | [[random_processes.pdf#page=12]] |
-| $R_{XX}(t_1, t_2) \equiv R_{XX}(t_1 - t_2)$ | secondo ordine: autocorrelazione in funzione della differenza | [[random_processes.pdf#page=12]] |
-| SSS ⇒ WSS | | [[random_processes.pdf#page=13]] |
+| $F_{X(t)}(x) = F_{X(t+\tau)}(x) = F_{X(0)}(x)$ | primo ordine: la distribuzione non dipende da $t$ | [[random_processes.pdf#page=16]] |
+| $\mu_X(t) = \int x\,f_{X(0)}(x)\,dx \equiv \mu_X$ | primo ordine: media costante | [[random_processes.pdf#page=16]] |
+| $F_{X(t_1),X(t_2)}(x_1, x_2) = F_{X(t_1-t_2),X(0)}(x_1, x_2)$ | secondo ordine: dipende solo da $t_1 - t_2$ | [[random_processes.pdf#page=17]] |
+| $R_{XX}(t_1, t_2) \equiv R_{XX}(t_1 - t_2)$ | secondo ordine: autocorrelazione in funzione della differenza | [[random_processes.pdf#page=17]] |
+| SSS ⇒ WSS | | [[random_processes.pdf#page=18]] |
 
 Simboli: $\tau$ = traslazione temporale [s]; $F$ = CDF congiunte ([[processo-aleatorio]]); $\mu_X$ = media; $R_{XX}$ = autocorrelazione ([[momenti-di-un-processo]]).
 
 ## Derivazioni
 
 ### Derivazione — Primo ordine: distribuzione e media non dipendono da $t$
-**Fonte:** [[random_processes.pdf#page=11]]: «ponendo $\tau = -t$ risulta…».
+**Fonte:** [[random_processes.pdf#page=16]]: «ponendo $\tau = -t$ risulta…».
 > 🧩 Passaggi esplicitati da me
 
 $$
@@ -59,7 +59,7 @@ $$
 Si può confrontare ogni istante con l'istante 0: se tutti hanno la stessa distribuzione di $X(0)$, hanno tutti la stessa distribuzione.
 
 ### Derivazione — Secondo ordine: conta solo la distanza tra gli istanti
-**Fonte:** [[random_processes.pdf#page=12]]: «ponendo $\tau = -t_2$ risulta…».
+**Fonte:** [[random_processes.pdf#page=17]]: «ponendo $\tau = -t_2$ risulta…».
 $$
 \begin{aligned}
 F_{X(t_1),X(t_2)}(x_1, x_2) &= F_{X(t_1+\tau),X(t_2+\tau)}(x_1, x_2) && \text{(6) con } k = 2 \\
@@ -70,7 +70,7 @@ $$
 La distribuzione del secondo ordine dipende solo dalla **differenza** $t_1 - t_2$, non dagli istanti particolari in cui si campiona. Di conseguenza anche l'autocorrelazione.
 
 ### Derivazione — Stazionario di ordine $k$ ⇒ stazionario di ordine $k-1$
-**Fonte:** [[random_processes.pdf#page=12]]: affermato senza dimostrazione.
+**Fonte:** [[random_processes.pdf#page=17]]: affermato senza dimostrazione.
 > 🧩 Derivazione mia, con la coerenza delle distribuzioni di [[processo-aleatorio]].
 
 $$
@@ -80,10 +80,10 @@ F_{X(t_1+\tau),\dots,X(t_{k-1}+\tau)}(x_1,\dots,x_{k-1}) &= F_{X(t_1+\tau),\dots
 &= F_{X(t_1),\dots,X(t_{k-1})}(x_1,\dots,x_{k-1}) && \text{marginale}
 \end{aligned}
 $$
-È la (6) di ordine $k-1$; ripetendo si scende a $k-2$, e così via. Il viceversa in generale **non** vale ([[random_processes.pdf#page=12]]): l'invarianza delle marginali non dice nulla su come i campioni dipendono tra loro.
+È la (6) di ordine $k-1$; ripetendo si scende a $k-2$, e così via. Il viceversa in generale **non** vale ([[random_processes.pdf#page=17]]): l'invarianza delle marginali non dice nulla su come i campioni dipendono tra loro.
 
 ### Derivazione — SSS ⇒ WSS
-**Fonte:** [[random_processes.pdf#page=13]]: affermato senza dimostrazione.
+**Fonte:** [[random_processes.pdf#page=18]]: affermato senza dimostrazione.
 > 🧩 Derivazione mia
 
 - SSS vuol dire che la (6) vale per ogni $k$, in particolare per $k = 1$ e $k = 2$.
@@ -91,7 +91,7 @@ $$
 - Per $k = 2$, l'autocorrelazione dipende solo da $t_1 - t_2$: seconda condizione WSS.
 
 **Ipotesi:** media e autocorrelazione devono esistere, cioè momenti di secondo ordine finiti.
-**Il viceversa** in generale non vale: WSS impone condizioni solo su due momenti, non su tutte le distribuzioni. Fa eccezione il processo gaussiano, per cui WSS ⇒ SSS ([[processo-gaussiano]], [[random_processes.pdf#page=39]]).
+**Il viceversa** in generale non vale: WSS impone condizioni solo su due momenti, non su tutte le distribuzioni. Fa eccezione il processo gaussiano, per cui WSS ⇒ SSS ([[processo-gaussiano]], [[random_processes.pdf#page=44]]).
 
 ## Spiegazione
 
@@ -102,9 +102,10 @@ $$
 - La stazionarietà riguarda la **statistica**, non le realizzazioni: le forme d'onda cambiano nel tempo anche quando il processo è stazionario (grafico delle realizzazioni in [[processo-aleatorio]]).
 - **Esempio non stazionario:** il rettangolo di segno casuale della slide 2 ha media $A(1-2p)$ dentro $(0, T)$ e 0 fuori ([[momenti-di-un-processo]]): la media dipende da $t$.
 - **Esempio stazionario:** il processo gaussiano con $R_{XX}(\tau) = e^{-|\tau|/\tau_c}$ dei grafici ([[autocorrelazione-processi-wss]]) è WSS e, essendo gaussiano, anche SSS.
+- **Esempio WSS dagli appunti:** la sinusoide a fase casuale $A\cos(2\pi f_0 t + \Theta)$, $\Theta \sim \mathcal{U}(0, 2\pi)$ ([[random_processes.pdf#page=4]]), ha media nulla e $R_{XX}(\tau) = \frac{A^2}{2}\cos(2\pi f_0\tau)$: calcolo in [[momenti-di-un-processo]]. Ogni realizzazione è un coseno deterministico, ma la statistica non dipende da $t$.
 
 ### Scala delle stazionarietà
-> 📄 Fonte: [[random_processes.pdf#page=11]] – [[random_processes.pdf#page=13]]
+> 📄 Fonte: [[random_processes.pdf#page=16]] – [[random_processes.pdf#page=18]]
 
 $$\text{SSS} \ \Rightarrow\ \dots \ \Rightarrow\ \text{ordine } 2 \ \Rightarrow\ \text{ordine } 1$$
 $$\text{ordine } 2 \ \Rightarrow\ \text{WSS} \quad (\text{se esistono i momenti})$$
@@ -130,6 +131,7 @@ Senza stazionarietà media e autocorrelazione sono funzioni di uno o due istanti
 ## Fonti
 
 - [[processi-aleatori]]
-- [[random_processes.pdf#page=10]] – [[random_processes.pdf#page=13]]
+- [[random_processes.pdf#page=15]] – [[random_processes.pdf#page=18]]
+- [[random_processes.pdf#page=4]] (appunti a mano: esempio della sinusoide a fase casuale)
 
-_Aggiornato: 2026-09-28 — creazione da ingest random_processes.pdf_
+_Aggiornato: 2026-09-28 — re-ingest: esempio WSS della sinusoide a fase casuale dagli appunti. Prima, nello stesso giorno: creazione da ingest random_processes.pdf_

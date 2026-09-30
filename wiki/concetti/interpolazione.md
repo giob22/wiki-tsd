@@ -131,6 +131,7 @@ L'interpolazione con sinc è una delle **due ipotesi ideali** del teorema di Sha
 
 ## Connessioni
 
+- [[lab-interpolazione]] — 🧪 laboratorio (non d'esame): ZOH, FOH e sinc applicati a un trapezio in Matlab; perché la convoluzione dura la somma delle durate e dove va tagliata.
 - [[teorema-del-campionamento]] — dimostra che l'interpolazione ideale ricostruisce perfettamente.
 - [[aliasing]] — l'altra ipotesi ideale (banda limitata) e le sue violazioni.
 - [[conversione-ad-da]] — l'interpolazione è la D/A.
@@ -140,4 +141,4 @@ L'interpolazione con sinc è una delle **due ipotesi ideali** del teorema di Sha
 - [[campionamento-conversione-ad-da]]
 - [[Campionamento_AD_DA.pdf#page=17]], [[Campionamento_AD_DA.pdf#page=19]] – [[Campionamento_AD_DA.pdf#page=24]]
 
-_Aggiornato: 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_
+_Aggiornato: 2026-09-30 — collegamento al laboratorio Matlab; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_
