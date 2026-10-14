@@ -7,40 +7,38 @@ fonti_pdf: ["random_processes.pdf#page=32", "random_processes.pdf#page=34", "ran
 
 # Densità spettrale di potenza (PSD)
 
-## Definizione
-
-> 📄 Fonte: [[random_processes.pdf#page=32]]
+## Definizione · [[random_processes.pdf#page=32|p. 32]], [[random_processes.pdf#page=34|p. 34]]
 
 La **densità spettrale di potenza** (*power spectral density*, PSD) di un processo $X(t)$ è
 $$S_{XX}(f) \triangleq \lim_{T\to+\infty}\frac{1}{2T}\,E\big[|X_T(f)|^2\big]$$
 dove $X_T(f)$ è la trasformata di Fourier della versione **finestrata** del processo, $X_T(t) = X(t)\,\text{rect}[t/(2T)]$ (il processo tenuto solo per $|t| < T$).
 
-**Relazione di Wiener-Khinchin** ([[random_processes.pdf#page=32]]): per un processo **WSS** la PSD è la trasformata di Fourier dell'autocorrelazione,
+**Relazione di Wiener-Khinchin**: per un processo **WSS** la PSD è la trasformata di Fourier dell'autocorrelazione,
 $$S_{XX}(f) = \int_{-\infty}^{+\infty} R_{XX}(\tau)\,e^{-j2\pi f\tau}\,d\tau$$
 
 **Potenza:**
 $$E[X^2(t)] = R_{XX}(0) = \int_{-\infty}^{+\infty} S_{XX}(f)\,df = P_X \tag{21}$$
-dove $P_X$ è la potenza del processo WSS. $S_{XX}(f)$ si misura in **watt per hertz** (W/Hz) ([[random_processes.pdf#page=34]]).
+dove $P_X$ è la potenza del processo WSS. $S_{XX}(f)$ si misura in **watt per hertz** (W/Hz).
 
-## Formule
+## Formule · [[random_processes.pdf#page=32|p. 32]]–[[random_processes.pdf#page=34|34]], [[random_processes.pdf#page=36|p. 36]]–[[random_processes.pdf#page=38|38]], [[random_processes.pdf#page=40|p. 40]], [[random_processes.pdf#page=46|p. 46]]
 
-| Formula | Significato | Pagina |
-|---|---|---|
-| $S_{XX}(f) = \lim_{T\to\infty}\frac{1}{2T}E[\|X_T(f)\|^2]$ | definizione | [[random_processes.pdf#page=32]] |
-| $S_{XX}(f) = \mathcal{F}[R_{XX}(\tau)]$ | Wiener-Khinchin (processi WSS) | [[random_processes.pdf#page=32]] |
-| $E[X^2] = R_{XX}(0) = \int S_{XX}(f)\,df = P_X$ | potenza, eq. (21) | [[random_processes.pdf#page=32]] |
-| $S_{YY}(f) = S_{XX}(f)\,\|H(f)\|^2$ | PSD dopo un filtro LTI, eq. (22) | [[random_processes.pdf#page=33]] |
-| $\Delta P_X \approx 2\Delta f\,S_{XX}(f)$ | potenza nella banda $2\Delta f$ attorno a $\pm f$ | [[random_processes.pdf#page=34]] |
-| $S_{XX}(0) = \int R_{XX}(\tau)\,d\tau$ | proprietà 1, eq. (23) | [[random_processes.pdf#page=36]] |
-| $E[X^2] = \int S_{XX}(f)\,df = R_{XX}(0)$ | proprietà 2, eq. (24) | [[random_processes.pdf#page=36]] |
-| $S_{XX}(f) \ge 0$ | proprietà 3 | [[random_processes.pdf#page=36]] |
-| $S_{XX}(-f) = S_{XX}(f)$ | proprietà 4 (processo reale) | [[random_processes.pdf#page=37]] |
-| $p_{XX}(f) = S_{XX}(f)\big/\int S_{XX}(f)\,df$ | proprietà 5, PSD normalizzata, eq. (25) | [[random_processes.pdf#page=37]] |
-| $S_{XY}(f) = \lim\frac{1}{2T}E[X_T(f)Y_T^*(f)] = \int R_{XY}(\tau)e^{-j2\pi f\tau}d\tau$ | densità spettrale mutua, eq. (26) | [[random_processes.pdf#page=38]] |
-| $S_{XY}(f) = S_{YX}(-f) = S_{YX}^*(f)$ | simmetria | [[random_processes.pdf#page=38]] |
-| $S_{ZZ} = S_{XX} + S_{XY} + S_{YX} + S_{YY}$ | PSD della somma $Z = X + Y$, eq. (29) | [[random_processes.pdf#page=40]] |
-| $S_{ZZ} = S_{XX} + S_{YY}$ | somma di processi incoerenti, eq. (30) | [[random_processes.pdf#page=40]] |
-| $S_{XX}(\nu) = \lim_{N\to\infty}\frac{1}{2N+1}E[\|X_N(\nu)\|^2]$ | PSD a tempo discreto | [[random_processes.pdf#page=46]] |
+| Formula | Significato |
+|---|---|
+| $S_{XX}(f) = \lim_{T\to\infty}\frac{1}{2T}E[\|X_T(f)\|^2]$ | definizione |
+| $S_{XX}(f) = \mathcal{F}[R_{XX}(\tau)]$ | Wiener-Khinchin (processi WSS) |
+| $E[X^2] = R_{XX}(0) = \int S_{XX}(f)\,df = P_X$ | potenza, eq. (21) |
+| $S_{YY}(f) = S_{XX}(f)\,\|H(f)\|^2$ | PSD dopo un filtro LTI, eq. (22) |
+| $\Delta P_X \approx 2\Delta f\,S_{XX}(f)$ | potenza nella banda $2\Delta f$ attorno a $\pm f$ |
+| $S_{XX}(0) = \int R_{XX}(\tau)\,d\tau$ | proprietà 1, eq. (23) |
+| $E[X^2] = \int S_{XX}(f)\,df = R_{XX}(0)$ | proprietà 2, eq. (24) |
+| $S_{XX}(f) \ge 0$ | proprietà 3 |
+| $S_{XX}(-f) = S_{XX}(f)$ | proprietà 4 (processo reale) |
+| $p_{XX}(f) = S_{XX}(f)\big/\int S_{XX}(f)\,df$ | proprietà 5, PSD normalizzata, eq. (25) |
+| $S_{XY}(f) = \lim\frac{1}{2T}E[X_T(f)Y_T^*(f)] = \int R_{XY}(\tau)e^{-j2\pi f\tau}d\tau$ | densità spettrale mutua, eq. (26) |
+| $S_{XY}(f) = S_{YX}(-f) = S_{YX}^*(f)$ | simmetria |
+| $S_{ZZ} = S_{XX} + S_{XY} + S_{YX} + S_{YY}$ | PSD della somma $Z = X + Y$, eq. (29) |
+| $S_{ZZ} = S_{XX} + S_{YY}$ | somma di processi incoerenti, eq. (30) |
+| $S_{XX}(\nu) = \lim_{N\to\infty}\frac{1}{2N+1}E[\|X_N(\nu)\|^2]$ | PSD a tempo discreto |
 
 Simboli: $f$ = frequenza [Hz]; $T$ = semi-durata della finestra [s]; $S_{XX}$ [W/Hz] (o V²/Hz); $P_X$ [W]; $\Delta f$ = banda del filtro [Hz]; $\nu$ = frequenza normalizzata del tempo discreto (adimensionale); $X_N(\nu)$ = trasformata di Fourier a tempo discreto (DTFT) della versione troncata di $X(n)$.
 
@@ -48,8 +46,8 @@ Simboli: $f$ = frequenza [Hz]; $T$ = semi-durata della finestra [s]; $S_{XX}$ [W
 
 ## Derivazioni
 
-### Derivazione — Relazione di Wiener-Khinchin
-**Fonte:** [[random_processes.pdf#page=32]]: «si può dimostrare che…», senza dimostrazione.
+### Derivazione — Relazione di Wiener-Khinchin · [[random_processes.pdf#page=32|p. 32]]
+**Fonte:** «si può dimostrare che…», senza dimostrazione.
 > 🧩 Dimostrazione mia, partendo dalla definizione. Processo reale e WSS.
 
 $$
@@ -69,8 +67,7 @@ $$
 $$
 **Ipotesi:** processo WSS; $R_{XX}$ assolutamente integrabile (serve per passare al limite dentro l'integrale); scambio tra valore atteso e integrali lecito.
 
-### Derivazione — Eq. (21) e proprietà 1–2: potenza e valore in zero
-**Fonte:** [[random_processes.pdf#page=32]], [[random_processes.pdf#page=36]]
+### Derivazione — Eq. (21) e proprietà 1–2: potenza e valore in zero · [[random_processes.pdf#page=32|p. 32]], [[random_processes.pdf#page=36|p. 36]]
 $$
 \begin{aligned}
 R_{XX}(\tau) &= \int S_{XX}(f)\,e^{j2\pi f\tau}\,df && \text{antitrasformata (Wiener-Khinchin letta al contrario)} \\
@@ -80,12 +77,11 @@ S_{XX}(0) &= \int R_{XX}(\tau)\,e^{0}\,d\tau = \int R_{XX}(\tau)\,d\tau && f = 0
 \end{aligned}
 $$
 
-### Derivazione — Proprietà 3: $S_{XX}(f) \ge 0$
-**Fonte:** [[random_processes.pdf#page=36]]: proprietà data senza dimostrazione.
+### Derivazione — Proprietà 3: $S_{XX}(f) \ge 0$ · [[random_processes.pdf#page=36|p. 36]]
+**Fonte:** proprietà data senza dimostrazione.
 > 🧩 Derivazione mia, dalla definizione: $\frac{1}{2T}E[|X_T(f)|^2]$ è il valore atteso di una quantità non negativa, diviso per $2T > 0$, quindi è $\ge 0$ per ogni $T$; lo resta al limite. In alternativa, con il significato fisico qui sotto: se $S_{XX}$ fosse negativa attorno a qualche $f$, un filtro stretto centrato lì misurerebbe una potenza negativa, il che è assurdo.
 
-### Derivazione — Proprietà 4: PSD pari per un processo reale
-**Fonte:** [[random_processes.pdf#page=37]]
+### Derivazione — Proprietà 4: PSD pari per un processo reale · [[random_processes.pdf#page=37|p. 37]]
 > 🧩 Derivazione mia
 
 $$
@@ -97,13 +93,12 @@ S_{XX}(-f) &= \int R_{XX}(\tau)\,e^{+j2\pi f\tau}\,d\tau && \text{Wiener-Khinchi
 $$
 Con lo stesso conto, $S_{XX}^*(f) = S_{XX}(-f) = S_{XX}(f)$ perché $R_{XX}$ è reale: la PSD di un processo reale è **reale e pari**.
 
-### Derivazione — Proprietà 5: la PSD normalizzata si comporta come una pdf
-**Fonte:** [[random_processes.pdf#page=37]]
+### Derivazione — Proprietà 5: la PSD normalizzata si comporta come una pdf · [[random_processes.pdf#page=37|p. 37]]
 $p_{XX}(f) \ge 0$ per la proprietà 3, e $\int p_{XX}(f)\,df = \int S_{XX}\,df\big/\int S_{XX}\,df = 1$.
 > 🧩 Lettura mia: $p_{XX}(f)$ dice come la potenza è **distribuita** in frequenza, come una pdf dice come la probabilità è distribuita sui valori.
 
-### Derivazione — Significato fisico: $\Delta P_X \approx 2\Delta f\,S_{XX}(f)$
-**Fonte:** [[random_processes.pdf#page=34]], [[random_processes.pdf#page=35]]: risultato dato «dalla (22)».
+### Derivazione — Significato fisico: $\Delta P_X \approx 2\Delta f\,S_{XX}(f)$ · [[random_processes.pdf#page=34|p. 34]], [[random_processes.pdf#page=35|35]]
+**Fonte:** risultato dato «dalla (22)».
 > 🧩 Passaggi miei. Filtro ideale a banda stretta: $|H(f)| = 1$ in due finestre larghe $\Delta f$ centrate in $\pm f_c$, 0 altrove (figura della slide 30).
 
 $$
@@ -119,10 +114,10 @@ La slide scrive il risultato come $\Delta P_X \approx (2\Delta f)\,S_{XX}(f)$ «
 **Il fattore 2:** la banda "fisica" larga $\Delta f$ attorno a $f_c$ ha una gemella attorno a $-f_c$, e la potenza reale le conta entrambe, per una larghezza totale $2\Delta f$.
 
 ![[random-processes-p35-filtro-banda-stretta.png]]
-*[[random_processes.pdf#page=35]]: modulo della risposta del filtro ideale a banda stretta: vale 1.0 in due finestre di larghezza $\Delta f$ centrate in $-f_c$ e $f_c$, 0 altrove.*
+*modulo della risposta del filtro ideale a banda stretta: vale 1.0 in due finestre di larghezza $\Delta f$ centrate in $-f_c$ e $f_c$, 0 altrove.*
 
-### Derivazione — Densità spettrali mutue: $S_{XY}(f) = S_{YX}(-f) = S_{YX}^*(f)$
-**Fonte:** [[random_processes.pdf#page=38]]: «ricordando che $R_{XY}(\tau) = R_{YX}(-\tau)$».
+### Derivazione — Densità spettrali mutue: $S_{XY}(f) = S_{YX}(-f) = S_{YX}^*(f)$ · [[random_processes.pdf#page=38|p. 38]]
+**Fonte:** «ricordando che $R_{XY}(\tau) = R_{YX}(-\tau)$».
 > 🧩 Passaggi miei
 
 $$
@@ -134,8 +129,7 @@ S_{XY}(f) &= \int R_{XY}(\tau)\,e^{-j2\pi f\tau}\,d\tau = \int R_{YX}(-\tau)\,e^
 $$
 $S_{XY}$ **non è necessariamente reale**, perché $R_{XY}$ non è pari.
 
-### Derivazione — PSD di una somma, eq. (27)–(30)
-**Fonte:** [[random_processes.pdf#page=39]], [[random_processes.pdf#page=40]]
+### Derivazione — PSD di una somma, eq. (27)–(30) · [[random_processes.pdf#page=39|p. 39]], [[random_processes.pdf#page=40|40]]
 $$
 \begin{aligned}
 R_{ZZ}(t_1, t_2) &= E\{[X(t_1) + Y(t_1)][X(t_2) + Y(t_2)]\} && Z = X + Y,\ \text{processi a media nulla} \\
@@ -165,21 +159,18 @@ $$
 
 **Lettura:** $\tau_c$ grande (processo lento) dà una PSD alta e stretta; $\tau_c$ piccolo (processo veloce) una PSD bassa e larga. È il grafico "lento contro veloce" di [[autocorrelazione-processi-wss]].
 
-### PSD a tempo discreto
-**Fonte:** [[random_processes.pdf#page=46]]
+### PSD a tempo discreto · [[random_processes.pdf#page=46|p. 46]]
 $$
 S_{XY}(\nu) \triangleq \lim_{N\to+\infty}\frac{1}{2N+1}E\big[X_N(\nu)\,Y_N^*(\nu)\big] \qquad S_{XX}(\nu) \triangleq \lim_{N\to+\infty}\frac{1}{2N+1}E\big[|X_N(\nu)|^2\big]
 $$
 $X_N(\nu)$ e $Y_N(\nu)$ sono le trasformate di Fourier a tempo discreto delle versioni **troncate** di $X(n)$ e $Y(n)$; la seconda si ottiene dalla prima con $X(n) \equiv Y(n)$. Per Wiener-Khinchin, la PSD di un processo WSS a tempo discreto è la trasformata a tempo discreto della sua autocorrelazione $R_{XX}(m)$.
 > 🧩 In formula, con la convenzione $X(\nu) = \sum_n x(n)\,e^{-j2\pi\nu n}$ che la slide non scrive: $S_{XX}(\nu) = \sum_{m=-\infty}^{+\infty} R_{XX}(m)\,e^{-j2\pi\nu m}$. Il $2N + 1$ al denominatore è il numero di campioni tra $-N$ e $N$, l'analogo della durata $2T$.
 
-## Spiegazione
-
-> 📄 Fonte: [[random_processes.pdf#page=32]], [[random_processes.pdf#page=34]], [[random_processes.pdf#page=38]]
+## Spiegazione · [[random_processes.pdf#page=32|p. 32]], [[random_processes.pdf#page=34|p. 34]], [[random_processes.pdf#page=38|p. 38]]
 
 - La PSD dice **come la potenza del processo si distribuisce in frequenza**. La sua area è la potenza totale, (21).
 - Il **significato fisico** viene dal filtro a banda stretta: un filtro ideale centrato in $f_c$, largo $\Delta f$, lascia passare una potenza $\approx 2\Delta f\,S_{XX}(f_c)$. Misurare la potenza all'uscita di filtri sempre più stretti è un modo di "misurare" la PSD.
-- La **densità spettrale mutua** misura i legami **in frequenza** tra due processi ([[random_processes.pdf#page=38]]).
+- La **densità spettrale mutua** misura i legami **in frequenza** tra due processi.
 
 > 🧩 Perché serve Wiener-Khinchin: la definizione con la finestra e il limite è concettuale ma scomoda da calcolare. Il teorema la riduce a una trasformata di Fourier dell'autocorrelazione, che spesso si calcola in poche righe (esempio sopra).
 
@@ -197,9 +188,8 @@ $X_N(\nu)$ e $Y_N(\nu)$ sono le trasformate di Fourier a tempo discreto delle ve
 - [[segnali-banda-base-e-passa-banda]] — la stessa idea di banda, ora per segnali aleatori (e la simmetria pari della PSD corrisponde a quella hermitiana degli spettri reali).
 - [[calcolo-densita-spettrale]] — esercizio della slide 32: PSD di un segnale modulato linearmente.
 
-## Fonti
+## Fonti · [[random_processes.pdf#page=32|p. 32]], [[random_processes.pdf#page=34|p. 34]], [[random_processes.pdf#page=40|p. 40]], [[random_processes.pdf#page=46|p. 46]]
 
 - [[processi-aleatori]]
-- [[random_processes.pdf#page=32]], [[random_processes.pdf#page=34]] – [[random_processes.pdf#page=40]], [[random_processes.pdf#page=46]]
 
 _Aggiornato: 2026-09-28 — creazione da ingest random_processes.pdf_

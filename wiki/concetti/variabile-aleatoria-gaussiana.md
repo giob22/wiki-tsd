@@ -7,24 +7,20 @@ fonti_pdf: ["Probabilità.pdf#page=23", "Probabilità.pdf#page=24", "Probabilit�
 
 # Variabile aleatoria Gaussiana e funzioni erf, erfc, Q
 
-## Definizione
-
-> 📄 Fonte: [[Probabilità.pdf#page=23]]
+## Definizione · [[Probabilità.pdf#page=23|p. 23]], [[Probabilità.pdf#page=28|p. 28]], [[Probabilità.pdf#page=29|29]]
 
 $X \sim \mathcal{N}(\mu,\sigma)$ (normale) è una v.a. continua con pdf a campana
 $$f(x) = \frac{1}{\sigma\sqrt{2\pi}}\,e^{-\frac{(x-\mu)^2}{2\sigma^2}}, \qquad x\in\mathbb{R}$$
-- $\mu\in\mathbb{R}$: "baricentro" della pdf, cioè la media $E(X)$ ([[Probabilità.pdf#page=28]]);
-- $\sigma>0$: "larghezza" della pdf, cioè la deviazione standard, con $\sigma^2 = \text{Var}(X)$ ([[Probabilità.pdf#page=29]]).
+- $\mu\in\mathbb{R}$: "baricentro" della pdf, cioè la media $E(X)$;
+- $\sigma>0$: "larghezza" della pdf, cioè la deviazione standard, con $\sigma^2 = \text{Var}(X)$.
 
-Descrive fenomeni che sono la somma di un gran numero di contributi indipendenti: **teorema centrale del limite** (CLT) — [[Probabilità.pdf#page=23]].
+Descrive fenomeni che sono la somma di un gran numero di contributi indipendenti: **teorema centrale del limite** (CLT).
 
 > ⚠️ Notazione: le slide scrivono $\mathcal{N}(\mu,\sigma)$ con la **deviazione standard** come secondo parametro. Molti testi usano $\mathcal{N}(\mu,\sigma^2)$. Nel wiki seguo la notazione delle slide.
 
 ![[probabilita-p23-gaussiana.png]]
 
-## Formule
-
-> 📄 Fonte: [[Probabilità.pdf#page=24]], [[Probabilità.pdf#page=25]]
+## Formule · [[Probabilità.pdf#page=24|p. 24]], [[Probabilità.pdf#page=25|25]]
 
 **Funzioni integrali** (argomento adimensionale):
 $$
@@ -35,10 +31,10 @@ $$
 Q(x) \triangleq \frac{1}{\sqrt{2\pi}}\int_x^{+\infty}e^{-t^2/2}dt \equiv \frac12\,\text{erfc}\!\left(\frac{x}{\sqrt2}\right)
 $$
 
-> 🧮 Formula chiave — CDF gaussiana ([[Probabilità.pdf#page=24]]):
+> 🧮 Formula chiave — CDF gaussiana:
 > $$F(x) = \frac12\left[1+\text{erf}\left(\frac{x-\mu}{\sqrt2\,\sigma}\right)\right] = 1 - \frac12\,\text{erfc}\left(\frac{x-\mu}{\sqrt2\,\sigma}\right)$$
 
-**Probabilità notevoli** ([[Probabilità.pdf#page=25]]), con $x \ge 0$ nelle ultime due:
+**Probabilità notevoli**, con $x \ge 0$ nelle ultime due:
 
 | Evento | Espressione |
 |---|---|
@@ -51,8 +47,7 @@ $$
 
 ## Derivazioni
 
-### Derivazione — Normalizzazione della pdf
-**Fonte:** [[Probabilità.pdf#page=23]] (suggerisce l'integrale notevole $\int_{-\infty}^{+\infty}e^{-x^2}dx = \sqrt\pi$)
+### Derivazione — Normalizzazione della pdf · [[Probabilità.pdf#page=23|p. 23]]
 $$
 \begin{aligned}
 \int_{-\infty}^{+\infty} \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}dx
@@ -62,8 +57,7 @@ $$
 \end{aligned}
 $$
 
-### Derivazione — CDF in termini di erf
-**Fonte:** [[Probabilità.pdf#page=24]] (risultato dato)
+### Derivazione — CDF in termini di erf · [[Probabilità.pdf#page=24|p. 24]]
 $$
 \begin{aligned}
 F(x) &= \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^x e^{-(t-\mu)^2/(2\sigma^2)}dt && \text{def. CDF} \\
@@ -75,8 +69,7 @@ F(x) &= \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^x e^{-(t-\mu)^2/(2\sigma^2)}dt
 $$
 La formula vale anche per $z<0$: in quel caso $\int_0^z = -\int_z^0$ e $\text{erf}(z)<0$.
 
-### Derivazione — Le quattro probabilità notevoli
-**Fonte:** [[Probabilità.pdf#page=25]] («si dimostra facilmente»)
+### Derivazione — Le quattro probabilità notevoli · [[Probabilità.pdf#page=25|p. 25]]
 > 🧩 Derivazione mia. Uso due proprietà: $\text{erf}$ è **dispari** ($\text{erf}(-z) = -\text{erf}(z)$, perché l'integrando è pari), e quindi $1+\text{erf}(z) = 1-\text{erf}(-z) = \text{erfc}(-z)$.
 
 $$
@@ -92,8 +85,7 @@ P(|X|>x) &= 1 - P(|X|<x) = \tfrac12\left[(1-\text{erf}\tfrac{x-\mu}{\sqrt2\sigma
 $$
 **Sanity check:** con $\mu=0$, $P(|X|>x) = \text{erfc}(x/(\sqrt2\sigma)) = 2Q(x/\sigma)$, due code uguali per simmetria.
 
-### Derivazione — $Q(x) = \frac12\text{erfc}(x/\sqrt2)$
-**Fonte:** [[Probabilità.pdf#page=25]] (identità data)
+### Derivazione — $Q(x) = \frac12\text{erfc}(x/\sqrt2)$ · [[Probabilità.pdf#page=25|p. 25]]
 $$
 \begin{aligned}
 Q(x) &= \frac{1}{\sqrt{2\pi}}\int_x^{\infty}e^{-t^2/2}dt && \text{def.} \\
@@ -103,8 +95,7 @@ Q(x) &= \frac{1}{\sqrt{2\pi}}\int_x^{\infty}e^{-t^2/2}dt && \text{def.} \\
 $$
 Quindi $P(X>x) = \frac12\text{erfc}\frac{x-\mu}{\sqrt2\sigma} = Q\left(\frac{x-\mu}{\sigma}\right)$: $Q$ è la coda della gaussiana **standard** $\mathcal{N}(0,1)$.
 
-### Derivazione — $E(X)=\mu$ e $\text{Var}(X)=\sigma^2$
-**Fonte:** [[Probabilità.pdf#page=28]], [[Probabilità.pdf#page=29]] («si prova che»)
+### Derivazione — $E(X)=\mu$ e $\text{Var}(X)=\sigma^2$ · [[Probabilità.pdf#page=28|p. 28]], [[Probabilità.pdf#page=29|29]]
 > 🧩 Derivazione mia
 $$
 \begin{aligned}
@@ -116,10 +107,10 @@ E(X) &= \int x f(x)dx = \mu\underbrace{\int f(x)dx}_{=1} + \underbrace{\int (x-\
 \end{aligned}
 $$
 
-## Spiegazione
+## Spiegazione · [[Probabilità.pdf#page=24|p. 24]], [[Probabilità.pdf#page=26|p. 26]], [[Probabilità.pdf#page=27|27]]
 
-- La CDF **non ha forma chiusa** ([[Probabilità.pdf#page=24]]): per questo si introducono funzioni tabulate/numeriche.
-- In **Matlab** ([[Probabilità.pdf#page=26]]): `erf`, `erfc`, `qfunc`. Codice per la CDF di $\mathcal{N}(0,1)$:
+- La CDF **non ha forma chiusa**: per questo si introducono funzioni tabulate/numeriche.
+- In **Matlab**: `erf`, `erfc`, `qfunc`. Codice per la CDF di $\mathcal{N}(0,1)$:
   ```matlab
   x = -3:0.1:3;
   y = (1/2)*(1+erf(x/sqrt(2)));
@@ -130,7 +121,7 @@ $$
   ylabel('CDF')
   ```
   Qui $\mu=0$, $\sigma=1$, quindi $z = x/\sqrt2$.
-- Una **trasformazione affine** di una gaussiana è ancora gaussiana ([[Probabilità.pdf#page=27]]) → [[funzione-di-variabile-aleatoria]].
+- Una **trasformazione affine** di una gaussiana è ancora gaussiana → [[funzione-di-variabile-aleatoria]].
 
 > 🎯 Esame: saper passare da erf/erfc/Q in entrambi i sensi e scrivere $P(X>x)$, $P(|X|>x)$ per una gaussiana non standard. Nel corso la probabilità d'errore dei sistemi digitali si scriverà con $Q(\cdot)$.
 
@@ -138,9 +129,9 @@ $$
 
 > 💡 Connessione: con il *four-sigma loading* ([[quantizzazione-uniforme]]), se il segnale fosse gaussiano la probabilità di sovraccarico sarebbe $P(|X|>4\sigma) = 2Q(4) \approx 6.3\cdot10^{-5}$ (🧩 mio). È molto meno del limite di Chebyshev (6.25%), che vale per qualunque pdf ed è quindi pessimistico.
 
-## Perché importa
+## Perché importa · [[Intro.pdf#page=18|p. 18]]
 
-Il rumore termico è somma di moltissimi contributi indipendenti (moto degli elettroni, [[Intro.pdf#page=18]]), quindi per il CLT è gaussiano. La funzione $Q$ sarà lo strumento standard per le probabilità d'errore.
+Il rumore termico è somma di moltissimi contributi indipendenti (moto degli elettroni), quindi per il CLT è gaussiano. La funzione $Q$ sarà lo strumento standard per le probabilità d'errore.
 
 ## Connessioni
 
@@ -150,9 +141,8 @@ Il rumore termico è somma di moltissimi contributi indipendenti (moto degli ele
 - [[disuguaglianza-di-chebyshev]] — limite generico contro calcolo esatto con la Q.
 - [[processo-gaussiano]] — la versione a $n$ variabili (gaussiana multivariata); per $n = 1$ si ritrova questa pdf.
 
-## Fonti
+## Fonti · [[Probabilità.pdf#page=23|p. 23]], [[Probabilità.pdf#page=26|p. 26]]
 
 - [[elementi-teoria-probabilita]]
-- [[Probabilità.pdf#page=23]] – [[Probabilità.pdf#page=26]]
 
 _Aggiornato: 2026-09-28 — collegamento al processo gaussiano; 2026-09-23 — creazione da ingest Probabilità.pdf_

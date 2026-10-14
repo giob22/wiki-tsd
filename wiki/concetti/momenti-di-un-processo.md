@@ -7,37 +7,35 @@ fonti_pdf: ["random_processes.pdf#page=4", "random_processes.pdf#page=5", "rando
 
 # Momenti di un processo aleatorio: media, correlazioni, covarianze
 
-## Definizione
-
-> 📄 Fonte: [[random_processes.pdf#page=12]] – [[random_processes.pdf#page=14]]
+## Definizione · [[random_processes.pdf#page=12|p. 12]]–[[random_processes.pdf#page=14|14]], [[random_processes.pdf#page=22|p. 22]], [[random_processes.pdf#page=23|23]]
 
 La **caratterizzazione statistica parziale** di un processo reale $X(t)$ usa i momenti del primo e del secondo ordine, invece di tutte le distribuzioni ([[processo-aleatorio]]):
-- **media**: il valore atteso del campione all'istante $t$ ([[random_processes.pdf#page=12]]);
-- **funzione di autocorrelazione** (*acf*): il valore atteso del prodotto di due campioni, agli istanti $t_1$ e $t_2$ ([[random_processes.pdf#page=13]]);
-- **funzione di autocovarianza**: lo stesso, dopo aver tolto le medie ([[random_processes.pdf#page=14]]).
+- **media**: il valore atteso del campione all'istante $t$;
+- **funzione di autocorrelazione** (*acf*): il valore atteso del prodotto di due campioni, agli istanti $t_1$ e $t_2$;
+- **funzione di autocovarianza**: lo stesso, dopo aver tolto le medie.
 
-Con due processi $X(t)$ e $Y(t)$ si definiscono allo stesso modo la **mutua correlazione** e la **mutua covarianza** ([[random_processes.pdf#page=22]], [[random_processes.pdf#page=23]]).
+Con due processi $X(t)$ e $Y(t)$ si definiscono allo stesso modo la **mutua correlazione** e la **mutua covarianza**.
 
-## Formule
+## Formule · [[random_processes.pdf#page=12|p. 12]]–[[random_processes.pdf#page=14|14]], [[random_processes.pdf#page=22|p. 22]], [[random_processes.pdf#page=23|23]], [[random_processes.pdf#page=25|p. 25]], [[random_processes.pdf#page=45|p. 45]], [[random_processes.pdf#page=46|46]]
 
-| Formula | Significato | Pagina |
-|---|---|---|
-| $\mu_X(t) = E[X(t)] = \int_{-\infty}^{+\infty} x\,f_{X(t)}(x)\,dx$ | media, eq. (3): usa la pdf del **primo** ordine | [[random_processes.pdf#page=12]] |
-| $R_{XX}(t_1, t_2) = E[X(t_1)X(t_2)] = \iint x_1 x_2\,f_{X(t_1),X(t_2)}(x_1, x_2)\,dx_1dx_2$ | autocorrelazione, eq. (4): usa la pdf del **secondo** ordine | [[random_processes.pdf#page=13]] |
-| $C_{XX}(t_1, t_2) = E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\} = R_{XX}(t_1, t_2) - \mu_X(t_1)\mu_X(t_2)$ | autocovarianza, eq. (5) | [[random_processes.pdf#page=14]] |
-| $R_{XY}(t, \tau) = E[X(t)\,Y(t - \tau)]$, $\ R_{YX}(t, \tau) = E[Y(t)\,X(t - \tau)]$ | mutue correlazioni, eq. (9) | [[random_processes.pdf#page=22]] |
-| $R_{XY}(\tau) = R_{YX}(-\tau)$ | simmetria (processi congiuntamente WSS) | [[random_processes.pdf#page=22]] |
-| $C_{XY}(t, \tau) = E\{[X(t) - \mu_X(t)][Y(t-\tau) - \mu_Y(t-\tau)]\}$ | mutua covarianza, eq. (10); la (11) è $C_{YX}$ | [[random_processes.pdf#page=23]] |
-| $\mu_Z(t) = \mu_X(t) + j\mu_Y(t)$ | media di un processo complesso, eq. (12) | [[random_processes.pdf#page=25]] |
-| $R_{ZZ}(t_1, t_2) = E[Z(t_1)Z^*(t_2)]$ | autocorrelazione di un processo complesso, eq. (13) | [[random_processes.pdf#page=25]] |
-| $\mu_X(n)$, $R_{XY}(n, k) = E[X(n)Y(k)]$, $C_{XY}(n,k) = R_{XY}(n,k) - \mu_X(n)\mu_Y(k)$ | versioni a tempo discreto, eq. (35)–(37) | [[random_processes.pdf#page=45]], [[random_processes.pdf#page=46]] |
+| Formula | Significato |
+|---|---|
+| $\mu_X(t) = E[X(t)] = \int_{-\infty}^{+\infty} x\,f_{X(t)}(x)\,dx$ | media, eq. (3): usa la pdf del **primo** ordine |
+| $R_{XX}(t_1, t_2) = E[X(t_1)X(t_2)] = \iint x_1 x_2\,f_{X(t_1),X(t_2)}(x_1, x_2)\,dx_1dx_2$ | autocorrelazione, eq. (4): usa la pdf del **secondo** ordine |
+| $C_{XX}(t_1, t_2) = E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\} = R_{XX}(t_1, t_2) - \mu_X(t_1)\mu_X(t_2)$ | autocovarianza, eq. (5) |
+| $R_{XY}(t, \tau) = E[X(t)\,Y(t - \tau)]$, $\ R_{YX}(t, \tau) = E[Y(t)\,X(t - \tau)]$ | mutue correlazioni, eq. (9) |
+| $R_{XY}(\tau) = R_{YX}(-\tau)$ | simmetria (processi congiuntamente WSS) |
+| $C_{XY}(t, \tau) = E\{[X(t) - \mu_X(t)][Y(t-\tau) - \mu_Y(t-\tau)]\}$ | mutua covarianza, eq. (10); la (11) è $C_{YX}$ |
+| $\mu_Z(t) = \mu_X(t) + j\mu_Y(t)$ | media di un processo complesso, eq. (12) |
+| $R_{ZZ}(t_1, t_2) = E[Z(t_1)Z^*(t_2)]$ | autocorrelazione di un processo complesso, eq. (13) |
+| $\mu_X(n)$, $R_{XY}(n, k) = E[X(n)Y(k)]$, $C_{XY}(n,k) = R_{XY}(n,k) - \mu_X(n)\mu_Y(k)$ | versioni a tempo discreto, eq. (35)–(37) |
 
 Simboli: $E[\cdot]$ = valore atteso; $f_{X(t)}$ = pdf del primo ordine, $f_{X(t_1),X(t_2)}$ = pdf del secondo ordine; $\tau$ = ritardo (*lag*) [s]; $Z^*$ = coniugato. Unità: $\mu$ come il segnale (es. V); $R$ e $C$ come il segnale al quadrato (es. V², cioè W su 1 Ω).
 
 ## Derivazioni
 
-### Derivazione — Eq. (5): autocovarianza da media e autocorrelazione
-**Fonte:** [[random_processes.pdf#page=14]]: se si conoscono media e autocorrelazione, si ricava l'autocovarianza.
+### Derivazione — Eq. (5): autocovarianza da media e autocorrelazione · [[random_processes.pdf#page=14|p. 14]]
+**Fonte:** se si conoscono media e autocorrelazione, si ricava l'autocovarianza.
 > 🧩 Passaggi miei. Scrivo $X_1 = X(t_1)$, $X_2 = X(t_2)$, $\mu_1 = \mu_X(t_1)$, $\mu_2 = \mu_X(t_2)$.
 
 $$
@@ -50,8 +48,8 @@ C_{XX}(t_1, t_2) &= E[(X_1 - \mu_1)(X_2 - \mu_2)] && \text{definizione} \\
 $$
 È la stessa relazione $\text{Cov}(X,Y) = E[XY] - E[X]E[Y]$ di [[correlazione-e-covarianza]], applicata a due campioni dello stesso processo. Allo stesso modo si ottiene la (37) a tempo discreto.
 
-### Derivazione — Simmetria delle mutue correlazioni: $R_{XY}(\tau) = R_{YX}(-\tau)$
-**Fonte:** [[random_processes.pdf#page=22]]: proprietà data senza dimostrazione.
+### Derivazione — Simmetria delle mutue correlazioni: $R_{XY}(\tau) = R_{YX}(-\tau)$ · [[random_processes.pdf#page=22|p. 22]]
+**Fonte:** proprietà data senza dimostrazione.
 > 🧩 Derivazione mia
 
 $$
@@ -64,8 +62,7 @@ $$
 Per processi **congiuntamente WSS** nessuna delle due dipende da $t$, quindi $R_{XY}(\tau) = R_{YX}(-\tau)$.
 **Perché $R_{XY}$ non è pari:** scambiare $\tau$ con $-\tau$ equivale a scambiare i ruoli di $X$ e $Y$, e in generale le due funzioni sono diverse. Per lo stesso motivo non c'è garanzia di un massimo in $\tau = 0$: il massimo sta dove i due processi "si somigliano di più", che può essere un ritardo diverso da zero.
 
-### Derivazione — Mutua covarianza: casi particolari
-**Fonte:** [[random_processes.pdf#page=23]]
+### Derivazione — Mutua covarianza: casi particolari · [[random_processes.pdf#page=23|p. 23]]
 > 🧩 Passaggi miei, con lo stesso sviluppo della (5):
 
 $$
@@ -74,8 +71,8 @@ $$
 - **media nulla** ($\mu_X = \mu_Y = 0$ per ogni $t$): $C_{XY}(t, \tau) = R_{XY}(t, \tau)$, e allo stesso modo $C_{YX} = R_{YX}$;
 - **congiuntamente WSS**: le medie sono costanti e $R_{XY}$ dipende solo da $\tau$, quindi $C_{XY}(t, \tau) = R_{XY}(\tau) - \mu_X\mu_Y = C_{XY}(\tau)$.
 
-### Derivazione — Indipendenti ⇒ incorrelati; con media nulla, incoerenti ⇔ incorrelati
-**Fonte:** [[random_processes.pdf#page=24]]: «si può dimostrare».
+### Derivazione — Indipendenti ⇒ incorrelati; con media nulla, incoerenti ⇔ incorrelati · [[random_processes.pdf#page=24|p. 24]]
+**Fonte:** «si può dimostrare».
 > 🧩 Derivazione mia (stesso argomento di [[correlazione-e-covarianza]] per due v.a.)
 
 $$
@@ -87,8 +84,7 @@ $$
 Con $\mu_X = \mu_Y = 0$ vale $C_{XY} = R_{XY}$: $R_{XY} \equiv 0$ (incoerenti) se e solo se $C_{XY} \equiv 0$ (incorrelati).
 Il viceversa, incorrelati ⇒ indipendenti, in generale **non** vale: vale per i processi gaussiani ([[processo-gaussiano]]).
 
-### Derivazione — Momenti dell'esempio della slide 2
-**Fonte:** [[random_processes.pdf#page=2]] (processo $\pm A\,\text{rect}$ con probabilità $q$ e $p$, vedi [[processo-aleatorio]]).
+### Derivazione — Momenti dell'esempio della slide 2 · [[random_processes.pdf#page=2|p. 2]]
 > 🧩 Calcolo mio: la slide definisce il processo ma non ne calcola i momenti.
 
 $$
@@ -106,9 +102,9 @@ Fuori da $(0, T)^2$ autocorrelazione e covarianza sono nulle.
 
 **Lettura:** la media dipende da $t$ (vale $A(1 - 2p)$ dentro il rettangolo e 0 fuori), quindi il processo **non è stazionario** ([[stazionarieta]]). In generale $\mu_X(t)$ è funzione di $t$ e $R_{XX}$, $C_{XX}$ lo sono di $t_1$ e $t_2$ separatamente, come dicono le slide 7–9.
 
-### Derivazione — Momenti della sinusoide a fase casuale degli appunti
-**Fonte:** appunti a mano di [[random_processes.pdf#page=4]] e [[random_processes.pdf#page=5]]: $X(t) = A\cos(2\pi f_0 t + \Theta)$, con $A$, $f_0$ deterministiche e $\Theta \sim \mathcal{U}(0, 2\pi)$ (vedi [[processo-aleatorio]]).
-> 🧩 Calcolo mio: gli appunti definiscono il processo ma non ne calcolano i momenti. Applico le definizioni (3) e (4) ([[random_processes.pdf#page=12]], [[random_processes.pdf#page=13]]). L'unica v.a. è $\Theta$, quindi i valori attesi sono integrali su $\vartheta$ pesati con $f_\Theta(\vartheta) = \frac{1}{2\pi}$ in $[0, 2\pi]$.
+### Derivazione — Momenti della sinusoide a fase casuale degli appunti · [[random_processes.pdf#page=4|p. 4]], [[random_processes.pdf#page=5|5]], [[random_processes.pdf#page=12|p. 12]], [[random_processes.pdf#page=13|13]]
+**Fonte:** appunti a mano di p. 4 e p. 5: $X(t) = A\cos(2\pi f_0 t + \Theta)$, con $A$, $f_0$ deterministiche e $\Theta \sim \mathcal{U}(0, 2\pi)$ (vedi [[processo-aleatorio]]).
+> 🧩 Calcolo mio: gli appunti definiscono il processo ma non ne calcolano i momenti. Applico le definizioni (3) e (4). L'unica v.a. è $\Theta$, quindi i valori attesi sono integrali su $\vartheta$ pesati con $f_\Theta(\vartheta) = \frac{1}{2\pi}$ in $[0, 2\pi]$.
 
 **Media:**
 $$
@@ -146,8 +142,7 @@ che dipende da $t$: il processo non sarebbe più WSS.
 
 ## Spiegazione
 
-### Media, autocorrelazione, autocovarianza (slide 7–9)
-> 📄 Fonte: [[random_processes.pdf#page=12]], [[random_processes.pdf#page=13]], [[random_processes.pdf#page=14]]
+### Media, autocorrelazione, autocovarianza (slide 7–9) · [[random_processes.pdf#page=12|p. 12]]–[[random_processes.pdf#page=14|14]]
 
 - La **media** di $X(t)$ è il valore atteso della v.a. ottenuta campionando il processo in $t$. Usa solo la pdf del **primo ordine** $f_{X(t)}$ e in generale è una funzione di $t$.
 - L'**autocorrelazione** è il valore atteso del prodotto di due v.a., $X(t_1)$ e $X(t_2)$. Usa la pdf del **secondo ordine** e in generale dipende da $t_1$ e $t_2$ separatamente.
@@ -155,16 +150,14 @@ che dipende da $t$: il processo non sarebbe più WSS.
 
 > 💡 Connessione: per $t_1 = t_2 = t$ si ritrovano grandezze note di [[media-e-varianza]]. $R_{XX}(t, t) = E[X^2(t)]$ è il valore quadratico medio, e $C_{XX}(t, t) = \text{Var}[X(t)]$ la varianza del campione in $t$.
 
-### Mutue correlazioni e covarianze (slide 17–18)
-> 📄 Fonte: [[random_processes.pdf#page=22]], [[random_processes.pdf#page=23]]
+### Mutue correlazioni e covarianze (slide 17–18) · [[random_processes.pdf#page=22|p. 22]], [[random_processes.pdf#page=23|23]]
 
 - Con due processi reali $X(t)$ e $Y(t)$, di autocorrelazioni $R_{XX}(t, \tau)$ e $R_{YY}(t, \tau)$, si definiscono le **mutue correlazioni** con ritardo, eq. (9). Dipendono dall'**ordine** dei due processi.
 - $X(t)$ e $Y(t)$ sono **congiuntamente WSS** se ciascuno è WSS ([[stazionarieta]]) e in più $R_{XY}(t, \tau) \equiv R_{XY}(\tau)$.
 - In generale la mutua correlazione **non è pari** in $\tau$, a differenza dell'autocorrelazione, e **non ha il massimo nell'origine**. Rispetta però $R_{XY}(\tau) = R_{YX}(-\tau)$.
 - Le **mutue covarianze** (10)–(11) dipendono anch'esse dall'ordine; con media nulla coincidono con le mutue correlazioni; per processi congiuntamente WSS dipendono solo da $\tau$.
 
-### Indipendenti, incoerenti, incorrelati (slide 19)
-> 📄 Fonte: [[random_processes.pdf#page=24]]
+### Indipendenti, incoerenti, incorrelati (slide 19) · [[random_processes.pdf#page=24|p. 24]]
 
 | Proprietà | Definizione |
 |---|---|
@@ -177,8 +170,7 @@ che dipende da $t$: il processo non sarebbe più WSS.
 
 > 🧩 L'ordine di forza: *indipendenza* riguarda tutte le distribuzioni congiunte, *incorrelazione* solo i momenti del secondo ordine. È la stessa gerarchia tra v.a. di [[correlazione-e-covarianza]]. "Incoerenti" corrisponde a "ortogonali" per due v.a. ($E[XY] = 0$).
 
-### Processi complessi (slide 20)
-> 📄 Fonte: [[random_processes.pdf#page=25]]
+### Processi complessi (slide 20) · [[random_processes.pdf#page=25|p. 25]]
 
 - $Z(t) = X(t) + jY(t)$. La caratterizzazione completa di $Z$ richiede quella **congiunta** di parte reale e immaginaria.
 - Caratterizzazione parziale: media (12) e autocorrelazione (13), con il **coniugato** sul secondo fattore. Si può scrivere come funzione di $(t_1, t_2)$ o di $(t, \tau)$: $R_{ZZ}(t, \tau) = E[Z(t)Z^*(t - \tau)]$.
@@ -186,8 +178,7 @@ che dipende da $t$: il processo non sarebbe più WSS.
 
 > 🧩 Perché il coniugato (osservazione mia): con $t_1 = t_2 = t$ si ottiene $E[Z(t)Z^*(t)] = E[|Z(t)|^2] \ge 0$, un numero reale che è la potenza istantanea media. Senza coniugato si otterrebbe $E[Z^2(t)]$, che in generale è complesso e non misura la potenza. È lo stesso motivo del coniugato nel prodotto scalare $\langle u, v\rangle = \int u v^*$ di [[inviluppo-complesso]].
 
-### Tempo discreto (slide 40–41)
-> 📄 Fonte: [[random_processes.pdf#page=45]], [[random_processes.pdf#page=46]]
+### Tempo discreto (slide 40–41) · [[random_processes.pdf#page=45|p. 45]], [[random_processes.pdf#page=46|46]]
 
 $$
 \mu_X(n) \triangleq E[X(n)] = \int x\,f_{X(n)}(x)\,dx \tag{35}
@@ -200,7 +191,7 @@ C_{XY}(n, k) \triangleq E\{[X(n) - \mu_X(n)][Y(k) - \mu_Y(k)]\} = R_{XY}(n, k) -
 $$
 Con $X(n) \equiv Y(n)$ nella (36) e nella (37) si ottengono autocorrelazione e autocovarianza a tempo discreto.
 
-> ⚠️ Refuso della slide ([[random_processes.pdf#page=45]]): nella (36) la pdf è scritta $f_{X(n),Y(k)}(x, x)$; deve essere $(x, y)$.
+> ⚠️ Refuso della slide: nella (36) la pdf è scritta $f_{X(n),Y(k)}(x, x)$; deve essere $(x, y)$.
 
 > 🎯 Esame: definire media, autocorrelazione e autocovarianza e ricavare la (5); mutue correlazioni e loro simmetria; differenza tra processi indipendenti, incoerenti e incorrelati; perché nell'autocorrelazione di un processo complesso c'è il coniugato.
 
@@ -216,10 +207,8 @@ Media e autocorrelazione sono le grandezze con cui si lavora in pratica. Si prop
 - [[autocorrelazione-processi-wss]] — proprietà dell'autocorrelazione nel caso WSS.
 - [[inviluppo-complesso]] — processi complessi in banda base, coniugato nel prodotto scalare.
 
-## Fonti
+## Fonti · [[random_processes.pdf#page=4|p. 4]], [[random_processes.pdf#page=5|5]], [[random_processes.pdf#page=12|p. 12]], [[random_processes.pdf#page=14|p. 14]], [[random_processes.pdf#page=22|p. 22]], [[random_processes.pdf#page=25|p. 25]], [[random_processes.pdf#page=45|p. 45]], [[random_processes.pdf#page=46|46]]
 
 - [[processi-aleatori]]
-- [[random_processes.pdf#page=4]], [[random_processes.pdf#page=5]] (appunti a mano: sinusoide a fase casuale)
-- [[random_processes.pdf#page=12]] – [[random_processes.pdf#page=14]], [[random_processes.pdf#page=22]] – [[random_processes.pdf#page=25]], [[random_processes.pdf#page=45]], [[random_processes.pdf#page=46]]
 
 _Aggiornato: 2026-09-28 — re-ingest del PDF con appunti: momenti della sinusoide a fase casuale (p.4–5), processo WSS a confronto con il rettangolo. Prima, nello stesso giorno: creazione da ingest random_processes.pdf_

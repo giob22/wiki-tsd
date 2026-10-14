@@ -14,9 +14,7 @@ concetti: ["conversione-ad-da", "teorema-del-campionamento"]
 
 Un computer non può memorizzare un segnale a tempo continuo: conosce solo numeri, uno dopo l'altro. Per "vedere" il campionamento bisogna quindi fingere di avere un segnale continuo. Il trucco dello script: usare una griglia di tempi **molto più fitta** di quella di campionamento. Rispetto al campionamento vero ($T_s \approx 0.5$ s) la griglia con passo 6 ms si comporta come il continuo.
 
-## Cosa fa il codice
-
-> 📄 Fonte: [[AD_conversion.m]], righe 5–13
+## Cosa fa il codice · [[AD_conversion.m]] righe 5–13
 
 ```matlab
 accuracy = 1e4;          % numero di punti della griglia
@@ -76,7 +74,7 @@ $$
 
 > 🧩 Dettaglio: `linspace(-0.5,0.5,N)/dt` mette $N$ punti con passo $\frac{1}{(N-1)dt}$ invece di $\frac{1}{N\,dt}$. L'errore è di una parte su $10^4$: invisibile.
 
-### Lo spettro esatto del trapezio
+### Lo spettro esatto del trapezio · [[Figure_1.png]]
 > 🧩 Derivazione mia: serve a controllare che la FFT dia il risultato giusto.
 
 Il trapezio è la convoluzione di due rettangoli: $s(t) = \Pi(t/3) * \Pi(t)$.
@@ -101,16 +99,16 @@ Integrando $|S(f)|^2$ numericamente si ottiene lo stesso valore (Parseval). Di q
 - *A destra: lo stesso spettro in dB. I lobi scendono ma non arrivano mai a zero: un segnale limitato nel tempo non è limitato in banda ([[aliasing]]).*
 
 ![[lab-0928-figure1-segnale-spettro-campioni.png]]
-*Figura del laboratorio ([[Figure_1.png]]), esempio 1. In alto il trapezio su $[-3, 3]$ s. Al centro lo spettro su tutto l'asse $\pm 83$ Hz: tutto concentrato attorno a 0, picco 3. In basso i campioni su tutta la finestra $[-30, 30]$ s: 121 aste, quasi tutte nulle, con i valori 0.5 e 1 attorno all'origine.*
+*Figura del laboratorio, esempio 1. In alto il trapezio su $[-3, 3]$ s. Al centro lo spettro su tutto l'asse $\pm 83$ Hz: tutto concentrato attorno a 0, picco 3. In basso i campioni su tutta la finestra $[-30, 30]$ s: 121 aste, quasi tutte nulle, con i valori 0.5 e 1 attorno all'origine.*
 
 ## Dubbi chiariti
 
 - **"Ma il segnale è continuo o no?"** No: è un vettore di $10^4$ numeri. Si comporta come continuo perché $dt = 6$ ms è 83 volte più piccolo di $T_s$. Tra un campione e l'altro ci sono 82 punti "continui" che il campionamento butterà via.
 - **"Perché la finestra è così lunga (60 s) se il trapezio dura 4 s?"** Per avere molta risoluzione in frequenza ($1/60$ Hz) e spazio per le code della sinc ([[lab-interpolazione]]). Ha però un effetto collaterale sull'SNR: [[lab-snr]].
 
-## Collegamento alla teoria
+## Collegamento alla teoria · [[Campionamento_AD_DA.pdf#page=8|p. 8]]
 
-- La domanda di [[Campionamento_AD_DA.pdf#page=8]] ([[teorema-del-campionamento]]), cioè come scegliere $f_c$ per un dato segnale, parte proprio dallo spettro: qui lo si calcola per poter scegliere $f_s = 2W$.
+- La domanda di p. 8 ([[teorema-del-campionamento]]), cioè come scegliere $f_c$ per un dato segnale, parte proprio dallo spettro: qui lo si calcola per poter scegliere $f_s = 2W$.
 - Nelle slide la frequenza di campionamento si chiama $f_c$ e il periodo $T_c$; nel codice `fs` e `Ts`.
 
 _Aggiornato: 2026-09-30 — creazione da ingest del laboratorio (AD_conversion.m)_

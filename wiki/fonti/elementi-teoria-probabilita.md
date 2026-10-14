@@ -14,21 +14,21 @@ argomenti: [spazio di probabilità, assiomi di Kolmogorov, probabilità condizio
 
 Ripasso della teoria della probabilità, come base per i processi aleatori e le prestazioni dei sistemi digitali. Si parte dalle definizioni (esperimento, spazio campione, eventi) e dagli **assiomi di Kolmogorov**, da cui seguono le proprietà elementari. Poi vengono **probabilità condizionale**, legge della probabilità composta, regola della catena, **indipendenza** (anche per più eventi), **probabilità totale** e **Bayes** con la lettura cause/effetto. Nella seconda parte: **variabile aleatoria**, CDF/pdf/DF con le proprietà; v.a. notevoli (Bernoulli, Binomiale, Uniforme, **Gaussiana**) con le funzioni erf, erfc e $Q$ e i comandi Matlab; funzione di v.a.; **media**, momenti, **varianza**. Infine le **coppie di v.a.** (congiunte, marginali, condizionali, indipendenza) e la loro descrizione sintetica (correlazione, covarianza, coefficiente di correlazione, disuguaglianza di Schwarz). Molti risultati sono enunciati senza dimostrazione: nel wiki sono espansi e marcati 🧩.
 
-## Punti chiave
+## Punti chiave · [[Probabilità.pdf#page=5|p. 5]]–[[Probabilità.pdf#page=7|7]], [[Probabilità.pdf#page=9|p. 9]]–[[Probabilità.pdf#page=14|14]], [[Probabilità.pdf#page=16|p. 16]]–[[Probabilità.pdf#page=20|20]], [[Probabilità.pdf#page=23|p. 23]]–[[Probabilità.pdf#page=25|25]], [[Probabilità.pdf#page=27|p. 27]], [[Probabilità.pdf#page=28|28]], [[Probabilità.pdf#page=30|p. 30]], [[Probabilità.pdf#page=31|31]], [[Probabilità.pdf#page=35|p. 35]], [[Probabilità.pdf#page=37|p. 37]], [[Probabilità.pdf#page=38|38]]
 
-1. Spazio di probabilità $(\Omega,\mathcal{S},P)$ e assiomi I–III ([[Probabilità.pdf#page=5]]); proprietà 1–7 ([[Probabilità.pdf#page=6]]).
-2. $P(A|B) = P(AB)/P(B)$; attrazione e repulsione tra eventi ([[Probabilità.pdf#page=7]]).
-3. Probabilità composta e regola della catena, con $n!$ scritture ([[Probabilità.pdf#page=9]], [[Probabilità.pdf#page=10]]).
-4. Indipendenza: $P(AB) = P(A)P(B)$; per $n$ eventi serve la fattorizzazione su **ogni** sottoinsieme; indipendenti ≠ mutuamente esclusivi ([[Probabilità.pdf#page=11]], [[Probabilità.pdf#page=12]]).
-5. Probabilità totale e Bayes: probabilità a priori delle cause → a posteriori ([[Probabilità.pdf#page=13]], [[Probabilità.pdf#page=14]]).
-6. CDF: 6 proprietà; $P(X=x) = F(x)-F(x^-)$ ([[Probabilità.pdf#page=16]]). V.a. discrete, continue, miste ([[Probabilità.pdf#page=17]]).
-7. pdf come derivata (generalizzata) della CDF; DF solo per v.a. discrete ([[Probabilità.pdf#page=18]], [[Probabilità.pdf#page=19]]).
-8. Bernoulli, Binomiale, Uniforme, Gaussiana ([[Probabilità.pdf#page=20]] – [[Probabilità.pdf#page=23]]).
-9. CDF gaussiana tramite erf/erfc; $Q(x) = \frac12\text{erfc}(x/\sqrt2)$ ([[Probabilità.pdf#page=24]], [[Probabilità.pdf#page=25]]).
-10. $f_Y(y) = \sum_if_X(x_i)/|g'(x_i)|$; la trasformazione affine di una gaussiana è gaussiana ([[Probabilità.pdf#page=27]]).
-11. Teorema fondamentale della media; $\text{Var} = E(X^2)-E^2(X)$; $\text{Var}(aX+b) = a^2\text{Var}(X)$ ([[Probabilità.pdf#page=28]] – [[Probabilità.pdf#page=30]]).
-12. Coppie: marginali dalla congiunta, pdf condizionali, indipendenza come fattorizzazione ([[Probabilità.pdf#page=31]] – [[Probabilità.pdf#page=35]]).
-13. $\text{Cov} = E(XY)-E(X)E(Y)$; $\text{Var}(X+Y)$; Schwarz; $|\rho|\le1$ ([[Probabilità.pdf#page=37]], [[Probabilità.pdf#page=38]]).
+1. Spazio di probabilità $(\Omega,\mathcal{S},P)$ e assiomi I–III; proprietà 1–7.
+2. $P(A|B) = P(AB)/P(B)$; attrazione e repulsione tra eventi.
+3. Probabilità composta e regola della catena, con $n!$ scritture.
+4. Indipendenza: $P(AB) = P(A)P(B)$; per $n$ eventi serve la fattorizzazione su **ogni** sottoinsieme; indipendenti ≠ mutuamente esclusivi.
+5. Probabilità totale e Bayes: probabilità a priori delle cause → a posteriori.
+6. CDF: 6 proprietà; $P(X=x) = F(x)-F(x^-)$. V.a. discrete, continue, miste.
+7. pdf come derivata (generalizzata) della CDF; DF solo per v.a. discrete.
+8. Bernoulli, Binomiale, Uniforme, Gaussiana.
+9. CDF gaussiana tramite erf/erfc; $Q(x) = \frac12\text{erfc}(x/\sqrt2)$.
+10. $f_Y(y) = \sum_if_X(x_i)/|g'(x_i)|$; la trasformazione affine di una gaussiana è gaussiana.
+11. Teorema fondamentale della media; $\text{Var} = E(X^2)-E^2(X)$; $\text{Var}(aX+b) = a^2\text{Var}(X)$.
+12. Coppie: marginali dalla congiunta, pdf condizionali, indipendenza come fattorizzazione.
+13. $\text{Cov} = E(XY)-E(X)E(Y)$; $\text{Var}(X+Y)$; Schwarz; $|\rho|\le1$.
 
 ## Concetti introdotti
 
@@ -45,17 +45,17 @@ Ripasso della teoria della probabilità, come base per i processi aleatori e le 
 
 Esercizi: [[calcolo-probabilita-eventi]], [[cdf-pdf-variabili-notevoli]].
 
-## Refusi rilevati
+## Refusi rilevati · [[Probabilità.pdf#page=13|p. 13]], [[Probabilità.pdf#page=14|14]], [[Probabilità.pdf#page=27|p. 27]]
 
-> ⚠️ [[Probabilità.pdf#page=13]], [[Probabilità.pdf#page=14]]: "$A_j\cap A_j = \emptyset,\ i\neq j$" → corretto $A_i\cap A_j$.
-> ⚠️ [[Probabilità.pdf#page=27]]: "$F_Y(y) = P(\omega: g(X(\omega))\le x)$" → corretto $\le y$.
+> ⚠️ p. 13: "$A_j\cap A_j = \emptyset,\ i\neq j$" → corretto $A_i\cap A_j$.
+> ⚠️ p. 27: "$F_Y(y) = P(\omega: g(X(\omega))\le x)$" → corretto $\le y$.
 
-## Domande aperte
+## Domande aperte · [[Probabilità.pdf#page=9|p. 9]], [[Probabilità.pdf#page=11|p. 11]], [[Probabilità.pdf#page=17|p. 17]], [[Probabilità.pdf#page=23|p. 23]]
 
-- Esempio 2.3 ([[Probabilità.pdf#page=9]]) ed Esempio 2.6 ([[Probabilità.pdf#page=11]]): la slide non specifica l'evento da calcolare. Nel wiki ho svolto il caso più tipico, da verificare con gli appunti ❓.
-- «Discussione del valore assunto da $P(X=x)$ nei tre casi» ([[Probabilità.pdf#page=17]]): svolta a lezione; ricostruita nel wiki dalla prop. 6 della CDF.
+- Esempio 2.3 ed Esempio 2.6: la slide non specifica l'evento da calcolare. Nel wiki ho svolto il caso più tipico, da verificare con gli appunti ❓.
+- «Discussione del valore assunto da $P(X=x)$ nei tre casi»: svolta a lezione; ricostruita nel wiki dalla prop. 6 della CDF.
 - La notazione $\mathcal{N}(\mu,\sigma)$ usa la deviazione standard: resterà così nelle slide successive?
-- Il CLT è citato ([[Probabilità.pdf#page=23]]) ma non enunciato.
+- Il CLT è citato ma non enunciato.
 
 ## Domande da esame
 

@@ -5,9 +5,7 @@ categoria: algoritmo
 
 # Legge A (A-law)
 
-## Cos'è
-
-> 📄 Fonte: [[Campionamento_AD_DA.pdf#page=42]]
+## Cos'è · [[Campionamento_AD_DA.pdf#page=42|p. 42]]
 
 Legge di compressione per il [[companding]], definita a tratti:
 $$
@@ -22,9 +20,9 @@ $$
 
 ![[campionamento-p42-a-law.png]]
 
-## Come si usa nel corso
+## Come si usa nel corso · [[Campionamento_AD_DA.pdf#page=43|p. 43]]
 
-Il tratto lineare vicino a zero risolve il problema $\ln0 = -\infty$ della legge logaritmica ideale. Prestazioni ([[Campionamento_AD_DA.pdf#page=43]]):
+Il tratto lineare vicino a zero risolve il problema $\ln0 = -\infty$ della legge logaritmica ideale. Prestazioni:
 $$\text{SNR}_{dB}\approx6.02\,b+4.77-20\log_{10}(1+\ln A)\overset{A=87.6}{=}6.02\,b-9.99$$
 Derivazione di $\alpha$ e verifiche (continuità in $X_{max}/A$, caso $A=1$) in [[companding]].
 
@@ -34,9 +32,8 @@ Derivazione di $\alpha$ e verifiche (continuità in $X_{max}/A$, caso $A=1$) in 
 
 - [[companding]], [[legge-mu]], [[g711]], [[snr-di-quantizzazione]]
 
-## Fonti
+## Fonti · [[Campionamento_AD_DA.pdf#page=42|p. 42]], [[Campionamento_AD_DA.pdf#page=43|43]]
 
 - [[campionamento-conversione-ad-da]]
-- [[Campionamento_AD_DA.pdf#page=42]], [[Campionamento_AD_DA.pdf#page=43]]
 
 _Aggiornato: 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf_

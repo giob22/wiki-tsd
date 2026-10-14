@@ -3,6 +3,7 @@
 ## Overview
 - [[overview]] — panoramica del corso, programma, copertura
 - [[lezioni]] — elenco lezioni con gli argomenti in ordine di PDF
+- [[corso-completo]] — tutto il corso in un unico file, lezione per lezione (generato da `output/genera_compendio.py`)
 
 ## Concetti
 

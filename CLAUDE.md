@@ -20,6 +20,8 @@ wiki-tsd/
 │   ├── index.md           ← catalogo di tutto il wiki
 │   ├── log.md             ← log cronologico append-only
 │   ├── overview.md        ← panoramica del corso
+│   ├── lezioni.md         ← elenco delle lezioni con gli argomenti
+│   ├── corso-completo.md  ← tutto il corso in un file (generato da output/genera_compendio.py)
 │   ├── concetti/          ← pagine concetto (teoremi, modelli, schemi di modulazione...)
 │   ├── entità/            ← pagine entità (standard, codici, dispositivi, strumenti...)
 │   ├── fonti/             ← un sommario per ogni fonte raw ingestita
@@ -57,11 +59,11 @@ LM Ingegneria Informatica, UNINA, docente D. Darsena; testo Madhow, *Fundamental
 5. Aggiorna le pagine in `wiki/concetti/` rilevanti (o creane di nuove)
 6. Aggiorna le pagine in `wiki/entità/` rilevanti (o creane di nuove)
 7. Se la fonte contiene esercizi, aggiorna/crea le pagine in `wiki/esercizi/`
-8. **Ancora ogni affermazione alla fonte** con il link a pagina/slide (vedi *Tracciabilità*)
+8. **Ancora ogni affermazione alla fonte**: le pagine PDF usate vanno nel titolo della sezione che le usa (vedi *Tracciabilità*)
 9. Aggiorna `wiki/overview.md`
 10. Aggiorna `wiki/index.md`
 11. **Revisione di copertura totale (obbligatoria, sempre)**: rileggi il PDF **pagina per pagina** (testo *e* figure) e verifica che **ogni** elemento — definizioni, bullet, esempi, valori numerici, didascalie, contenuto delle figure — sia riportato nel wiki. Le uniche aggiunte ammesse sono **spiegazioni che aiutano ad acquisire il concetto** (incluse le derivazioni dei risultati delle slide): niente fatti esterni non necessari, esercizi inventati o anticipazioni di argomenti futuri. Riporta all'utente cosa mancava e cosa è stato aggiunto/rimosso
-12. Aggiorna `wiki/lezioni.md` con la lezione e la lista argomenti in ordine di PDF
+12. Aggiorna `wiki/lezioni.md` con la lezione e la lista argomenti in ordine di PDF, poi rigenera il compendio `wiki/corso-completo.md` con `python output/genera_compendio.py` (file generato: non si modifica a mano)
 13. Appendi a `wiki/log.md`: `## [YYYY-MM-DD] ingest | [titolo fonte] | pagine coperte: [range]`
 
 > Una singola fonte può toccare 5–15 pagine. È normale e desiderato.
@@ -153,12 +155,12 @@ fonti_pdf: []        # es. ["slide-04-modulazioni.pdf#page=17"]
 
 Sezioni obbligatorie:
 - **Definizione** — precisa, non colloquiale
-- **Formule** — se il concetto ne ha: formula, significato di ogni simbolo, unità di misura, ipotesi di validità, pagina PDF di prima comparsa
+- **Formule** — se il concetto ne ha: formula, significato di ogni simbolo, unità di misura, ipotesi di validità; le pagine PDF di comparsa vanno nel titolo della sezione
 - **Derivazioni** — passaggi espansi per ogni risultato non banale (vedi *Espansione dei calcoli*)
 - **Spiegazione** — approfondita con esempi concreti
 - **Perché importa** — contesto d'uso nel corso
 - **Connessioni** — link a concetti correlati con spiegazione della relazione
-- **Fonti** — link alle pagine fonte `wiki/fonti/` **e** ai PDF con pagina: `[[slide-04.pdf#page=17]]`
+- **Fonti** — link alle pagine fonte `wiki/fonti/`; le pagine PDF dell'intera pagina vanno nel titolo `## Fonti · [[slide-04.pdf#page=17|p. 17]], ...`
 
 ---
 
@@ -210,8 +212,8 @@ Per ogni risultato numerico o simbolico presente in una fonte:
 Formato tipo:
 
 ```markdown
-### Derivazione — [nome risultato]
-**Fonte:** [[slide-04-modulazioni.pdf#page=17]] (risultato dato senza passaggi)
+### Derivazione — [nome risultato] · [[slide-04-modulazioni.pdf#page=17|p. 17]]
+**Fonte:** risultato dato senza passaggi
 **Si parte da:** [[formula-x]] — $y = f(x)$
 
 $$
@@ -250,11 +252,19 @@ I PDF stanno in `raw/`, dentro il vault Obsidian, quindi il link a pagina funzio
 ```
 
 Regole:
-- Il numero di pagina è quello **del PDF** (contatore del viewer), non quello stampato sulla slide. Se differiscono, annota entrambi: `[[slide-04.pdf#page=17]] (slide 15)`
-- Ogni **sezione** di una pagina concetto/entità porta il suo riferimento, non basta un riferimento unico in fondo alla pagina
-- Ogni **formula** porta la pagina dove compare per la prima volta
-- Ogni **valore numerico** preso dalle slide porta la pagina da cui viene
-- Le immagini estratte in `raw/assets/` mantengono nel nome il file e la pagina di origine: `slide-04-p17-costellazione-qam.png`, e la pagina che le usa cita comunque la fonte PDF
+- **I riferimenti ai PDF stanno solo nei titoli** di sezione e sottosezione (`##`, `###`, ...), mai nel corpo del testo. In coda al titolo, dopo ` · `, vanno **tutte** le pagine usate in quella sezione, con alias corto; le pagine consecutive si compattano:
+  ```markdown
+  ### Derivazione — Eq. (22) · [[Rappresentazione_Rice.pdf#page=23|p. 23]], [[Rappresentazione_Rice.pdf#page=24|24]]
+  ## Formule · [[Campionamento_AD_DA.pdf#page=36|p. 36]]–[[Campionamento_AD_DA.pdf#page=43|43]]
+  ```
+  Se una sezione usa più PDF, ogni gruppo è preceduto dal nome corto del file: `· Rice [[...|p. 9]] · Campionamento [[...|p. 12]]`
+- Nel corpo **niente link ai PDF**: niente righe `> 📄 Fonte: [[...]]`, niente colonne "Pagina" nelle tabelle, niente pagina nelle didascalie o accanto a formule e valori numerici. Quando la pagina fa parte del senso della frase ("gli appunti di p. 24 mostrano…") si scrive come **testo semplice** `p. N`, senza link
+- Fanno eccezione `lezioni.md` (indice: ogni punto porta le sue pagine) e `log.md` (storico)
+- Il numero di pagina è quello **del PDF** (contatore del viewer), non quello stampato sulla slide; il numero di slide, se serve, va nel testo ("slide 15")
+- Ogni **sezione** che usa una fonte ha i suoi riferimenti nel proprio titolo: non basta un riferimento unico in fondo alla pagina
+- Non linkare titoli che portano riferimenti (`[[pagina#Titolo]]`): il testo del titolo contiene i link e l'ancora non funziona. Si linka la pagina e si nomina la sezione
+- Le immagini estratte in `raw/assets/` mantengono nel nome il file e la pagina di origine: `slide-04-p17-costellazione-qam.png`, e la sezione che le usa cita la pagina PDF nel titolo
+- Script di supporto: `output/riferimenti_nei_titoli.py` sposta nei titoli i riferimenti rimasti nel corpo (prova senza argomenti, applica con `--scrivi`)
 
 ### Contenuto non tracciabile
 
@@ -262,7 +272,7 @@ Materiale che **non** viene da un PDF del corso (ragionamento tuo, libro esterno
 
 | Marcatore | Significato |
 |-----------|-------------|
-| `> 📄 Fonte: [[file.pdf#page=N]]` | Tracciato su lezione |
+| riferimento nel titolo (`### Titolo · [[file.pdf#page=N\|p. N]]`) | Tracciato su lezione |
 | `> 🧩 Derivazione mia:` | Passaggi espansi da me, risultato presente nella fonte |
 | `> 📚 Fonte esterna:` | Libro/paper/web — citare titolo e punto preciso |
 | `> ❓ Salto non ricostruito:` | Passaggio della fonte non ricostruibile |

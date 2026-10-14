@@ -7,24 +7,23 @@ fonti_pdf: ["Campionamento_AD_DA.pdf#page=29"]
 
 # Disuguaglianza di Chebyshev
 
-## Definizione
+## Definizione · [[Campionamento_AD_DA.pdf#page=29|p. 29]]
 
-> 📄 Fonte: [[Campionamento_AD_DA.pdf#page=29]] (citata per nome e applicata, **non enunciata** in generale)
 > 📚 Fonte esterna: enunciato standard di qualunque testo di probabilità (es. Papoulis, *Probability, Random Variables and Stochastic Processes*, cap. 5).
 
 Per ogni v.a. $X$ con media $\mu$ e deviazione standard $\sigma$ finite, e per ogni $k>0$:
 $$P(|X-\mu|\ge k\sigma) \le \frac{1}{k^2}$$
 Il limite vale **per qualunque pdf**: non richiede ipotesi sulla distribuzione oltre all'esistenza della varianza.
 
-## Formule
+## Formule · [[Campionamento_AD_DA.pdf#page=29|p. 29]]
 
-Applicazione del corso ([[Campionamento_AD_DA.pdf#page=29]]): $x(n)$ è assimilato a una v.a. a media nulla con $\sigma = x_{rms}$; $X_{max}$ è la soglia di sovraccarico; $k_c = X_{max}/x_{rms}$ è il fattore di carico:
+Applicazione del corso: $x(n)$ è assimilato a una v.a. a media nulla con $\sigma = x_{rms}$; $X_{max}$ è la soglia di sovraccarico; $k_c = X_{max}/x_{rms}$ è il fattore di carico:
 $$P_s = P(|x(n)|>X_{max}) \le \frac{1}{k_c^2}$$
 
 ## Derivazioni
 
-### Derivazione — Disuguaglianza di Chebyshev
-> 🧩 Derivazione mia (dimostrazione standard tramite il teorema fondamentale della media, [[Probabilità.pdf#page=28]])
+### Derivazione — Disuguaglianza di Chebyshev · [[Probabilità.pdf#page=28|p. 28]]
+> 🧩 Derivazione mia (dimostrazione standard tramite il teorema fondamentale della media)
 $$
 \begin{aligned}
 \sigma^2 &= \int_{-\infty}^{+\infty}(x-\mu)^2f(x)\,dx && \text{def. varianza} \\
@@ -35,8 +34,7 @@ $$
 \end{aligned}
 $$
 
-### Derivazione — Probabilità di sovraccarico
-**Fonte:** [[Campionamento_AD_DA.pdf#page=29]] (risultato dato)
+### Derivazione — Probabilità di sovraccarico · [[Campionamento_AD_DA.pdf#page=29|p. 29]]
 $$
 \begin{aligned}
 \mu &= 0,\ \sigma = x_{rms} && \text{ipotesi della slide} \\
@@ -44,12 +42,12 @@ k\sigma = X_{max} &\Rightarrow k = X_{max}/x_{rms} = k_c && \text{def. fattore d
 P(|x(n)|>X_{max}) &\le P(|x(n)|\ge X_{max}) \le \frac{1}{k_c^2} && \{>\} \subseteq \{\ge\};\ \text{Chebyshev}
 \end{aligned}
 $$
-**Numeri:** $k_c=4$ (*four-sigma loading*) → $P_s\le 1/16 = 0.0625 = 6.25\%$ ([[Campionamento_AD_DA.pdf#page=29]]).
+**Numeri:** $k_c=4$ (*four-sigma loading*) → $P_s\le 1/16 = 0.0625 = 6.25\%$.
 **Sanity check:** per un segnale gaussiano la probabilità vera sarebbe $2Q(4)\approx6.3\cdot10^{-5}$ ([[variabile-aleatoria-gaussiana]]), molto sotto il limite. Chebyshev è quindi un maggiorante **conservativo**.
 **Ipotesi:** media nulla; varianza finita; il segnale campionato è trattato come una v.a. (quindi statistiche costanti nel tempo).
 
-### Derivazione — Probabilità esatta di sovraccarico per Laplace
-> 🧩 Derivazione mia (serve al confronto nel grafico; pdf di Laplace da [[Campionamento_AD_DA.pdf#page=32]])
+### Derivazione — Probabilità esatta di sovraccarico per Laplace · [[Campionamento_AD_DA.pdf#page=32|p. 32]]
+> 🧩 Derivazione mia (serve al confronto nel grafico; pdf di Laplace da p. 32)
 $$
 \begin{aligned}
 P(|X|>a) &= 2\int_a^\infty\tfrac\lambda2e^{-\lambda x}dx = e^{-\lambda a} && \text{pdf pari} \\
@@ -78,9 +76,8 @@ La disuguaglianza usa **solo** i primi due momenti, per questo è debole ma univ
 - [[quantizzazione-uniforme]] — fattore di carico e probabilità di sovraccarico.
 - [[variabile-aleatoria-gaussiana]] — confronto limite/valore esatto.
 
-## Fonti
+## Fonti · [[Campionamento_AD_DA.pdf#page=29|p. 29]]
 
 - [[campionamento-conversione-ad-da]]
-- [[Campionamento_AD_DA.pdf#page=29]]
 
 _Aggiornato: 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf_

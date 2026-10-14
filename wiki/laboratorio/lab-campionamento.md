@@ -10,9 +10,7 @@ concetti: ["teorema-del-campionamento", "aliasing"]
 
 > ⚠️ Non materia d'esame: serve a vedere il [[teorema-del-campionamento]] all'opera. Fonte: [[laboratorio-conversione-ad]]. Prima leggere [[lab-setup-e-spettro]].
 
-## Cosa fa il codice
-
-> 📄 Fonte: [[AD_conversion.m]], righe 87–101
+## Cosa fa il codice · [[AD_conversion.m]] righe 87–101
 
 ```matlab
 fs = 2*W;                                   % frequenza di Nyquist
@@ -33,8 +31,8 @@ Passo per passo:
 
 ## Cosa succede davvero
 
-### Il vettore `s_samp` è $x_\delta(t)$
-Nelle slide il campionamento ideale è $x_\delta(t) = \sum_n x_a(nT_c)\,\delta(t - nT_c)$ ([[Campionamento_AD_DA.pdf#page=11]], [[teorema-del-campionamento]]): un treno di impulsi pesati dai campioni, nullo tra un impulso e l'altro. `s_samp` è la sua versione simulata:
+### Il vettore `s_samp` è $x_\delta(t)$ · [[Campionamento_AD_DA.pdf#page=11|p. 11]]
+Nelle slide il campionamento ideale è $x_\delta(t) = \sum_n x_a(nT_c)\,\delta(t - nT_c)$ ([[teorema-del-campionamento]]): un treno di impulsi pesati dai campioni, nullo tra un impulso e l'altro. `s_samp` è la sua versione simulata:
 - è nullo tra un campione e l'altro;
 - negli istanti $nT_s$ vale il campione.
 
@@ -58,8 +56,8 @@ Nella finestra $[-30, 30)$ cadono i campioni $n = -60, \dots, 60$: **121** campi
 
 I due campioni da 0.008 sono appena dentro il trapezio: $-1.992 + 2 = 0.008$.
 
-### Cosa succede allo spettro
-Campionare nel tempo **replica** lo spettro ogni $f_s$ ([[Campionamento_AD_DA.pdf#page=12]]):
+### Cosa succede allo spettro · [[Campionamento_AD_DA.pdf#page=12|p. 12]], [[Campionamento_AD_DA.pdf#page=21|p. 21]]
+Campionare nel tempo **replica** lo spettro ogni $f_s$:
 $$X_\delta(f) = \frac{1}{T_s}\sum_k S\Big(f - \frac{k}{T_s}\Big)$$
 Le repliche sono distanti $f_{samp} = 2.008$ Hz, e la centrale occupa in teoria tutto l'asse, perché il trapezio non è a banda limitata. Le code delle repliche vicine entrano quindi nella banda $|f| < f_s/2$: è l'**aliasing** ([[aliasing]]). Qui è piccolo, perché oltre 1 Hz c'è solo lo 0.05% dell'energia ([[lab-setup-e-spettro]]).
 
@@ -68,9 +66,9 @@ Le repliche sono distanti $f_{samp} = 2.008$ Hz, e la centrale occupa in teoria 
 - *In alto: il trapezio (grigio) e i campioni `s_samp` (aste blu) ogni $T_s = 0.498$ s.*
 - *In basso: il modulo della trasformata dei campioni, moltiplicata per $T_s$ (blu), e le singole repliche $S(f)$, $S(f \mp f_s)$ (tratteggiate). La trasformata dei campioni è la somma delle repliche. Nella fascia azzurra $|f| < f_s/2 = 1.004$ Hz la replica centrale è quasi pulita: le code delle vicine valgono pochi centesimi.*
 
-> 🧩 Il commento della riga 88 dice che con $W = 1$ «è come se avessimo applicato un filtro anti-aliasing». Va letto così: **nessun filtro** viene applicato, ma il segnale ha già quasi tutta l'energia sotto 1 Hz. Il risultato somiglia a quello che darebbe un filtro antialiasing ([[Campionamento_AD_DA.pdf#page=21]]). L'aliasing c'è, ma è trascurabile.
+> 🧩 Il commento della riga 88 dice che con $W = 1$ «è come se avessimo applicato un filtro anti-aliasing». Va letto così: **nessun filtro** viene applicato, ma il segnale ha già quasi tutta l'energia sotto 1 Hz. Il risultato somiglia a quello che darebbe un filtro antialiasing. L'aliasing c'è, ma è trascurabile.
 
-### Esempio 2: quando l'arrotondamento rompe il teorema
+### Esempio 2: quando l'arrotondamento rompe il teorema · [[Campionamento_AD_DA.pdf#page=13|p. 13]]
 > 🧩 Esperimento mio con la replica dello script, `flag = 2` (nessuna figura del laboratorio per questo caso).
 
 $$
@@ -87,7 +85,7 @@ $$
 ![[grafico-lab-esempio2.png]]
 *🧩 Grafico mio. In alto l'esempio 2 con i parametri del codice ($f_s = 7.94$ Hz): i campioni (arancio) sono giusti, ma la curva ricostruita (blu) non è il segnale (grigio), perché i campioni sono compatibili anche con un'altra sinusoide più lenta. In basso con $f_s = 16.67$ Hz: la ricostruzione coincide.*
 
-> 🧩 Anche senza arrotondamento, $f_s = 2W$ esatto è il **caso limite** (b) di [[Campionamento_AD_DA.pdf#page=13]]: le repliche si toccano in $f_s/2$. Una sinusoide proprio a $f_s/2$ viene campionata sempre nella stessa fase, a meno del segno, e la sua ampiezza non si ricostruisce. Esempio: $\sin(2\pi\,4\,nT_s + \frac{\pi}{5})$ con $T_s = 1/8$ vale $(-1)^n\sin\frac{\pi}{5}$, quindi l'ampiezza apparente è $5\sin 36° = 2.94$ invece di 5. Per questo in pratica si sovracampiona ([[teorema-del-campionamento]]).
+> 🧩 Anche senza arrotondamento, $f_s = 2W$ esatto è il **caso limite** (b) di p. 13: le repliche si toccano in $f_s/2$. Una sinusoide proprio a $f_s/2$ viene campionata sempre nella stessa fase, a meno del segno, e la sua ampiezza non si ricostruisce. Esempio: $\sin(2\pi\,4\,nT_s + \frac{\pi}{5})$ con $T_s = 1/8$ vale $(-1)^n\sin\frac{\pi}{5}$, quindi l'ampiezza apparente è $5\sin 36° = 2.94$ invece di 5. Per questo in pratica si sovracampiona ([[teorema-del-campionamento]]).
 
 ## Dubbi chiariti
 
@@ -95,8 +93,8 @@ $$
 - **"Il segnale campionato è ancora un vettore di $10^4$ punti?"** Sì. È il modo di simulare $x_\delta(t)$ restando sulla griglia "continua": serve per poterlo convolvere con il filtro di ricostruzione, che vive sulla stessa griglia.
 - **"Perché $f_s = 2W$ non basta?"** Nell'esempio 1 perché il segnale non è a banda limitata (aliasing piccolo). Nell'esempio 2 perché l'arrotondamento porta $f_s$ sotto $2W$ (aliasing grosso). E comunque $2W$ esatto è il caso limite.
 
-## Collegamento alla teoria
+## Collegamento alla teoria · [[Campionamento_AD_DA.pdf#page=11|p. 11]], [[Campionamento_AD_DA.pdf#page=13|p. 13]], [[Campionamento_AD_DA.pdf#page=21|p. 21]]
 
-[[teorema-del-campionamento]] (campionamento ideale e repliche, [[Campionamento_AD_DA.pdf#page=11]] – [[Campionamento_AD_DA.pdf#page=13]]), [[aliasing]] (ripiegamento, filtro antialiasing, [[Campionamento_AD_DA.pdf#page=21]]).
+[[teorema-del-campionamento]] (campionamento ideale e repliche), [[aliasing]] (ripiegamento, filtro antialiasing).
 
 _Aggiornato: 2026-09-30 — creazione da ingest del laboratorio (AD_conversion.m)_

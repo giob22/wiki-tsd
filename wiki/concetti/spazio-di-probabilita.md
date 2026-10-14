@@ -7,34 +7,32 @@ fonti_pdf: ["Probabilità.pdf#page=2", "Probabilità.pdf#page=5", "Probabilità.
 
 # Spazio di probabilità e assiomi di Kolmogorov
 
-## Definizione
+## Definizione · [[Probabilità.pdf#page=2|p. 2]], [[Probabilità.pdf#page=3|3]], [[Probabilità.pdf#page=5|p. 5]]
 
-> 📄 Fonte: [[Probabilità.pdf#page=2]], [[Probabilità.pdf#page=3]], [[Probabilità.pdf#page=5]]
+- **Esperimento aleatorio**: procedura con un insieme ben definito di risultati, il cui esito non si prevede a priori (moneta, dado, carta, lotto, roulette). Un risultato si indica con $\omega$.
+- **Spazio campione** $\Omega$: insieme di tutti i possibili risultati.
+- **Evento**: qualunque sottoinsieme $A \subseteq \Omega$.
+- **Prova**: una singola ripetizione dell'esperimento, che restituisce un risultato $\omega \in \Omega$.
+- **Spazio degli eventi** $\mathcal{S}$: collezione che contiene tutti gli eventi di interesse (spesso tutti i sottoinsiemi di $\Omega$, compresi $\Omega$ e $\emptyset$).
+- **Probabilità**: legge $P: A \in \mathcal{S} \to P(A) \in [0,1]$ che misura il "grado di incertezza" del verificarsi di $A$.
+- **Spazio di probabilità**: la tripla $(\Omega, \mathcal{S}, P)$.
 
-- **Esperimento aleatorio**: procedura con un insieme ben definito di risultati, il cui esito non si prevede a priori (moneta, dado, carta, lotto, roulette). Un risultato si indica con $\omega$ — [[Probabilità.pdf#page=2]].
-- **Spazio campione** $\Omega$: insieme di tutti i possibili risultati — [[Probabilità.pdf#page=2]].
-- **Evento**: qualunque sottoinsieme $A \subseteq \Omega$ — [[Probabilità.pdf#page=2]].
-- **Prova**: una singola ripetizione dell'esperimento, che restituisce un risultato $\omega \in \Omega$ — [[Probabilità.pdf#page=3]].
-- **Spazio degli eventi** $\mathcal{S}$: collezione che contiene tutti gli eventi di interesse (spesso tutti i sottoinsiemi di $\Omega$, compresi $\Omega$ e $\emptyset$) — [[Probabilità.pdf#page=5]].
-- **Probabilità**: legge $P: A \in \mathcal{S} \to P(A) \in [0,1]$ che misura il "grado di incertezza" del verificarsi di $A$ — [[Probabilità.pdf#page=5]].
-- **Spazio di probabilità**: la tripla $(\Omega, \mathcal{S}, P)$ — [[Probabilità.pdf#page=5]].
-
-Esempi di spazio campione ([[Probabilità.pdf#page=2]]):
+Esempi di spazio campione:
 - lancio di una moneta: $\Omega = \{T, C\}$;
 - lancio di un dado: $\Omega = \{1,2,3,4,5,6\}$;
 - arrivo di un cliente allo sportello tra le 9:00 e le 12:00: $\Omega = [0, 10800]$ s.
 
 > 🧩 Derivazione mia: 3 h × 3600 s/h = 10800 s, quindi l'intervallo è corretto.
 
-## Formule
+## Formule · [[Probabilità.pdf#page=5|p. 5]], [[Probabilità.pdf#page=6|6]]
 
-> 🧮 Formula chiave — **Assiomi di Kolmogorov** ([[Probabilità.pdf#page=5]]):
+> 🧮 Formula chiave — **Assiomi di Kolmogorov**:
 > I. $P(A) \ge 0$ (non negatività)
 > II. $P(\Omega) = 1$ (normalizzazione)
 > III. se $\{A_n\}_{n=1}^{\infty}$ sono mutuamente esclusivi ($A_i \cap A_j = \emptyset,\ \forall i \neq j$):
 > $$P\left(\bigcup_{n=1}^{\infty} A_n\right) = \sum_{n=1}^{\infty} P(A_n) \quad \text{(numerabile additività)}$$
 
-**Proprietà elementari** ([[Probabilità.pdf#page=6]]), con $A, B \in \mathcal{S}$ e $\bar A$ = complementare di $A$:
+**Proprietà elementari**, con $A, B \in \mathcal{S}$ e $\bar A$ = complementare di $A$:
 
 | # | Proprietà | Nome |
 |---|---|---|
@@ -46,9 +44,9 @@ Esempi di spazio campione ([[Probabilità.pdf#page=2]]):
 | 6 | $B \subseteq A \Rightarrow P(B) \le P(A)$ | monotonia |
 | 7 | $P(B) \le 1$ | |
 
-## Derivazioni
+## Derivazioni · [[Probabilità.pdf#page=6|p. 6]]
 
-> 🧩 Derivazione mia: la slide dice che le proprietà «si possono dimostrare» dagli assiomi ([[Probabilità.pdf#page=6]]) ma non mostra i passaggi.
+> 🧩 Derivazione mia: la slide dice che le proprietà «si possono dimostrare» dagli assiomi ma non mostra i passaggi.
 
 ### Derivazione — Proprietà 1: $P(\emptyset)=0$
 **Si parte da:** assioma III con $A_1 = \Omega$, $A_n = \emptyset$ per $n \ge 2$ (a due a due disgiunti, perché $\Omega \cap \emptyset = \emptyset$).
@@ -103,16 +101,15 @@ P(A) &= P(B) + P(A \bar B) && \text{prop. 2} \\
 \end{aligned}
 $$
 
-### Derivazione — Proprietà 7
+### Derivazione — Proprietà 7 · [[Probabilità.pdf#page=5|p. 5]]
 $B \subseteq \Omega$, quindi per la prop. 6 $P(B) \le P(\Omega) = 1$.
 
-**Sanity check:** tutte le proprietà danno valori in $[0,1]$, coerenti con la definizione di $P$ ([[Probabilità.pdf#page=5]]).
+**Sanity check:** tutte le proprietà danno valori in $[0,1]$, coerenti con la definizione di $P$.
 **Ipotesi:** solo gli assiomi I–III; nessuna ipotesi su $\Omega$ (discreto o continuo).
 
 ## Spiegazione
 
-### Terminologia sugli eventi
-> 📄 Fonte: [[Probabilità.pdf#page=3]]
+### Terminologia sugli eventi · [[Probabilità.pdf#page=3|p. 3]], [[Probabilità.pdf#page=4|4]]
 
 | Linguaggio | Insiemi |
 |---|---|
@@ -125,14 +122,14 @@ $B \subseteq \Omega$, quindi per la prop. 6 $P(B) \le P(\Omega) = 1$.
 | evento elementare | $A = \{\omega\}$ |
 | mutuamente esclusivi | $A \cap B = \emptyset$ |
 
-**Esempio 1.4** ([[Probabilità.pdf#page=4]]): dado, risultato $\omega = 4$. Svolto in [[calcolo-probabilita-eventi]].
+**Esempio 1.4**: dado, risultato $\omega = 4$. Svolto in [[calcolo-probabilita-eventi]].
 
 ### Interpretazione
 La probabilità è una *funzione d'insieme*: prende eventi, non numeri. Gli assiomi sono il minimo indispensabile. Tutto il resto (proprietà 1–7, [[probabilita-condizionale]], [[probabilita-totale-e-bayes]]) ne discende.
 
-## Perché importa
+## Perché importa · [[Intro.pdf#page=9|p. 9]]
 
-È la base formale per descrivere la natura statistica della comunicazione ([[Intro.pdf#page=9]]). La probabilità d'errore di un sistema digitale sarà la probabilità di un evento del tipo {simbolo deciso ≠ simbolo trasmesso}.
+È la base formale per descrivere la natura statistica della comunicazione. La probabilità d'errore di un sistema digitale sarà la probabilità di un evento del tipo {simbolo deciso ≠ simbolo trasmesso}.
 
 ## Connessioni
 
@@ -140,9 +137,8 @@ La probabilità è una *funzione d'insieme*: prende eventi, non numeri. Gli assi
 - [[variabile-aleatoria]] — associa numeri ai risultati $\omega$ per lavorare con funzioni reali.
 - [[quantizzazione-uniforme]] — la probabilità di sovraccarico $P_s$ è una probabilità di evento, maggiorata con Chebyshev.
 
-## Fonti
+## Fonti · [[Probabilità.pdf#page=2|p. 2]], [[Probabilità.pdf#page=6|p. 6]]
 
 - [[elementi-teoria-probabilita]]
-- [[Probabilità.pdf#page=2]] – [[Probabilità.pdf#page=6]]
 
 _Aggiornato: 2026-09-23 — creazione da ingest Probabilità.pdf_

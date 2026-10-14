@@ -7,9 +7,7 @@ fonti_pdf: ["random_processes.pdf#page=26", "random_processes.pdf#page=27", "ran
 
 # Processi aleatori attraverso sistemi LTI
 
-## Definizione
-
-> 📄 Fonte: [[random_processes.pdf#page=26]]
+## Definizione · [[random_processes.pdf#page=26|p. 26]]
 
 Un processo $X(t)$ entra in un **filtro LTI deterministico** con risposta impulsiva $h(t)$; l'uscita $Y(t)$ è un altro processo aleatorio, dato dall'integrale di convoluzione:
 $$Y(t) = \int_{-\infty}^{+\infty} h(\tau_1)\,X(t - \tau_1)\,d\tau_1$$
@@ -20,21 +18,21 @@ Risultati principali (ingresso WSS):
 $$\mu_Y = \mu_X\,H(0) \qquad R_{YY}(\tau) = R_{XX}(\tau) * h(\tau) * h(-\tau) \qquad S_{YY}(f) = S_{XX}(f)\,|H(f)|^2$$
 
 ![[random-processes-p26-filtro-lti.png]]
-*[[random_processes.pdf#page=26]]: $X(t)$ → filtro con risposta impulsiva $h(t)$ → $Y(t)$.*
+*$X(t)$ → filtro con risposta impulsiva $h(t)$ → $Y(t)$.*
 
-## Formule
+## Formule · [[random_processes.pdf#page=27|p. 27]]–[[random_processes.pdf#page=31|31]], [[random_processes.pdf#page=33|p. 33]]
 
-| Formula | Significato | Pagina |
-|---|---|---|
-| $\mu_Y(t) = E\big[\int h(\tau_1)X(t - \tau_1)\,d\tau_1\big]$ | media dell'uscita, eq. (14) | [[random_processes.pdf#page=27]] |
-| $\mu_Y(t) = \int h(\tau_1)\,\mu_X(t - \tau_1)\,d\tau_1 = \mu_X(t) * h(t)$ | eq. (15) | [[random_processes.pdf#page=27]] |
-| $\mu_Y = \mu_X\int h(\tau_1)\,d\tau_1 = \mu_X H(0)$ | ingresso WSS, eq. (16) | [[random_processes.pdf#page=28]] |
-| $R_{Y_1Y_2}(t_1, t_2) = \iint h_1(\tau_1)h_2(\tau_2)\,R_{X_1X_2}(t_1 - \tau_1, t_2 - \tau_2)\,d\tau_1 d\tau_2$ | mutua correlazione delle uscite, eq. (17)–(18) | [[random_processes.pdf#page=29]] |
-| $R_{Y_1Y_2}(\tau) = \iint h_1(\tau_1)h_2(\tau_2)\,R_{X_1X_2}(\tau - \tau_1 + \tau_2)\,d\tau_1 d\tau_2$ | ingressi congiuntamente WSS, eq. (19) | [[random_processes.pdf#page=30]] |
-| $R_{Y_1Y_2}(\tau) = R_{X_1X_2}(\tau) * h_1(\tau) * h_2(-\tau) = R_{X_1X_2}(\tau) * r_{h_1h_2}(\tau)$ | eq. (20) | [[random_processes.pdf#page=30]] |
-| $R_{YY}(\tau) = R_{XX}(\tau) * h(\tau) * h(-\tau) = R_{XX}(\tau) * r_{hh}(\tau)$ | autocorrelazione dell'uscita | [[random_processes.pdf#page=31]] |
-| $R_{YX}(\tau) = R_{XX}(\tau) * h(\tau)$, $\ R_{XY}(\tau) = R_{XX}(\tau) * h(-\tau)$ | mutue correlazioni ingresso-uscita | [[random_processes.pdf#page=31]] |
-| $S_{YY}(f) = S_{XX}(f)\,\|H(f)\|^2$ | PSD dell'uscita, eq. (22) | [[random_processes.pdf#page=33]] |
+| Formula | Significato |
+|---|---|
+| $\mu_Y(t) = E\big[\int h(\tau_1)X(t - \tau_1)\,d\tau_1\big]$ | media dell'uscita, eq. (14) |
+| $\mu_Y(t) = \int h(\tau_1)\,\mu_X(t - \tau_1)\,d\tau_1 = \mu_X(t) * h(t)$ | eq. (15) |
+| $\mu_Y = \mu_X\int h(\tau_1)\,d\tau_1 = \mu_X H(0)$ | ingresso WSS, eq. (16) |
+| $R_{Y_1Y_2}(t_1, t_2) = \iint h_1(\tau_1)h_2(\tau_2)\,R_{X_1X_2}(t_1 - \tau_1, t_2 - \tau_2)\,d\tau_1 d\tau_2$ | mutua correlazione delle uscite, eq. (17)–(18) |
+| $R_{Y_1Y_2}(\tau) = \iint h_1(\tau_1)h_2(\tau_2)\,R_{X_1X_2}(\tau - \tau_1 + \tau_2)\,d\tau_1 d\tau_2$ | ingressi congiuntamente WSS, eq. (19) |
+| $R_{Y_1Y_2}(\tau) = R_{X_1X_2}(\tau) * h_1(\tau) * h_2(-\tau) = R_{X_1X_2}(\tau) * r_{h_1h_2}(\tau)$ | eq. (20) |
+| $R_{YY}(\tau) = R_{XX}(\tau) * h(\tau) * h(-\tau) = R_{XX}(\tau) * r_{hh}(\tau)$ | autocorrelazione dell'uscita |
+| $R_{YX}(\tau) = R_{XX}(\tau) * h(\tau)$, $\ R_{XY}(\tau) = R_{XX}(\tau) * h(-\tau)$ | mutue correlazioni ingresso-uscita |
+| $S_{YY}(f) = S_{XX}(f)\,\|H(f)\|^2$ | PSD dell'uscita, eq. (22) |
 
 Simboli:
 - $h(t)$ = risposta impulsiva [1/s]; $H(f) = \int h(t)e^{-j2\pi ft}dt$ = risposta in frequenza (adimensionale); $H(0)$ = risposta a frequenza zero;
@@ -45,8 +43,7 @@ Simboli:
 
 ## Derivazioni
 
-### Derivazione — Media dell'uscita, eq. (15) e (16)
-**Fonte:** [[random_processes.pdf#page=27]], [[random_processes.pdf#page=28]]
+### Derivazione — Media dell'uscita, eq. (15) e (16) · [[random_processes.pdf#page=27|p. 27]], [[random_processes.pdf#page=28|28]]
 $$
 \begin{aligned}
 \mu_Y(t) &= E\Big[\int h(\tau_1)\,X(t - \tau_1)\,d\tau_1\Big] && \text{definizione, eq. (14)} \\
@@ -58,12 +55,11 @@ $$
 $$
 **Lettura:** la media è la componente "continua" (a frequenza zero) del processo, e il filtro la moltiplica per il suo guadagno a frequenza zero.
 
-### Derivazione — Mutua correlazione delle uscite, eq. (17)–(18)
-**Fonte:** [[random_processes.pdf#page=29]]
+### Derivazione — Mutua correlazione delle uscite, eq. (17)–(18) · [[random_processes.pdf#page=29|p. 29]]
 
 Due sistemi LTI: $X_1 \to h_1 \to Y_1$ e $X_2 \to h_2 \to Y_2$.
 ![[random-processes-p29-due-sistemi-lti.png]]
-*[[random_processes.pdf#page=29]]: $x_1(\cdot) \to h_1(\cdot) \to y_1(\cdot)$ e $x_2(\cdot) \to h_2(\cdot) \to y_2(\cdot)$.*
+*$x_1(\cdot) \to h_1(\cdot) \to y_1(\cdot)$ e $x_2(\cdot) \to h_2(\cdot) \to y_2(\cdot)$.*
 
 $$
 \begin{aligned}
@@ -73,8 +69,8 @@ R_{Y_1Y_2}(t_1, t_2) &= E\Big[\int h_1(\tau_1)X_1(t_1 - \tau_1)\,d\tau_1\int h_2
 \end{aligned}
 $$
 
-### Derivazione — Ingressi congiuntamente WSS, eq. (19)–(20)
-**Fonte:** [[random_processes.pdf#page=30]]: il passaggio dalla (19) alla (20) è dato senza calcoli.
+### Derivazione — Ingressi congiuntamente WSS, eq. (19)–(20) · [[random_processes.pdf#page=30|p. 30]]
+**Fonte:** il passaggio dalla (19) alla (20) è dato senza calcoli.
 $$
 \begin{aligned}
 (t_1 - \tau_1) - (t_2 - \tau_2) &= \tau - \tau_1 + \tau_2 && \tau = t_1 - t_2;\ \text{per ingressi congiuntamente WSS conta solo la differenza} \\
@@ -93,10 +89,9 @@ R_{Y_1Y_2}(\tau) &= \int h_1(\tau_1)\,\big[R_{X_1X_2} * \tilde h_2\big](\tau - \
 $$
 Il risultato dipende **solo dal ritardo** $\tau$.
 
-**LTI conserva l'incoerenza** ([[random_processes.pdf#page=30]]): se gli ingressi sono incoerenti, $R_{X_1X_2} \equiv 0$, allora $R_{Y_1Y_2} = 0 * r_{h_1h_2} \equiv 0$ e anche le uscite sono incoerenti.
+**LTI conserva l'incoerenza**: se gli ingressi sono incoerenti, $R_{X_1X_2} \equiv 0$, allora $R_{Y_1Y_2} = 0 * r_{h_1h_2} \equiv 0$ e anche le uscite sono incoerenti.
 
-### Derivazione — Autocorrelazione dell'uscita e mutue correlazioni ingresso-uscita
-**Fonte:** [[random_processes.pdf#page=31]]
+### Derivazione — Autocorrelazione dell'uscita e mutue correlazioni ingresso-uscita · [[random_processes.pdf#page=31|p. 31]]
 $$
 \begin{aligned}
 R_{YY}(t_1, t_2) &= \iint h(\tau_1)\,h(\tau_2)\,R_{XX}(t_1 - \tau_1, t_2 - \tau_2)\,d\tau_1 d\tau_2 && \text{(18) con } h_1 = h_2 = h,\ X_1 = X_2 = X \\
@@ -112,15 +107,15 @@ R_{XY}(\tau) &= R_{XX}(\tau) * \delta(\tau) * h(-\tau) = R_{XX}(\tau) * h(-\tau)
 $$
 **Sanity check** (🧩): la simmetria $R_{XY}(\tau) = R_{YX}(-\tau)$ di [[momenti-di-un-processo]] vale. Infatti $R_{YX}(-\tau) = [R_{XX} * h](-\tau) = [R_{XX}(-\cdot) * h(-\cdot)](\tau) = R_{XX}(\tau) * h(-\tau)$, perché $R_{XX}$ è pari ✓.
 
-### Derivazione — Ingresso WSS ⇒ uscita WSS
-**Fonte:** [[random_processes.pdf#page=31]]: «se l'ingresso di un sistema LTI stabile è WSS, anche l'uscita è WSS».
+### Derivazione — Ingresso WSS ⇒ uscita WSS · [[random_processes.pdf#page=31|p. 31]]
+**Fonte:** «se l'ingresso di un sistema LTI stabile è WSS, anche l'uscita è WSS».
 > 🧩 Derivazione mia: le due condizioni della WSS ([[stazionarieta]]).
 
 - **Media costante:** $\mu_Y = \mu_X H(0)$, eq. (16), non dipende da $t$.
 - **Autocorrelazione funzione del solo ritardo:** $R_{YY}(\tau) = R_{XX}(\tau) * r_{hh}(\tau)$ dipende solo da $\tau$.
 
-### Derivazione — PSD dell'uscita, eq. (22)
-**Fonte:** [[random_processes.pdf#page=33]]: dalla relazione di Wiener-Khinchin e da $R_{YY} = R_{XX} * h(\tau) * h(-\tau)$.
+### Derivazione — PSD dell'uscita, eq. (22) · [[random_processes.pdf#page=33|p. 33]]
+**Fonte:** dalla relazione di Wiener-Khinchin e da $R_{YY} = R_{XX} * h(\tau) * h(-\tau)$.
 $$
 \begin{aligned}
 S_{YY}(f) &= \mathcal{F}\big[R_{XX}(\tau) * h(\tau) * h(-\tau)\big] && \text{Wiener-Khinchin: } S_{YY} = \mathcal{F}[R_{YY}] \\
@@ -128,7 +123,7 @@ S_{YY}(f) &= \mathcal{F}\big[R_{XX}(\tau) * h(\tau) * h(-\tau)\big] && \text{Wie
 &= S_{XX}(f)\,H(f)\,H^*(f) = S_{XX}(f)\,|H(f)|^2 && h \text{ reale: } H(-f) = H^*(f) \text{ (simmetria hermitiana)}
 \end{aligned}
 $$
-**In parole** ([[random_processes.pdf#page=33]]): la PSD dell'uscita è la PSD dell'ingresso moltiplicata per il **modulo quadro** della risposta in frequenza. La fase del filtro non conta.
+**In parole**: la PSD dell'uscita è la PSD dell'ingresso moltiplicata per il **modulo quadro** della risposta in frequenza. La fase del filtro non conta.
 **Potenza in uscita** (🧩): $P_Y = R_{YY}(0) = \int S_{XX}(f)\,|H(f)|^2\,df$, per la (21) di [[densita-spettrale-di-potenza]].
 **Sanity check** (🧩): se $\mu_X \neq 0$, $R_{XX}$ contiene la costante $\mu_X^2$ e quindi $S_{XX}$ la riga $\mu_X^2\,\delta(f)$. Nella (22) la riga diventa $\mu_X^2|H(0)|^2\delta(f)$, cioè una media in uscita $|\mu_Y| = |\mu_X H(0)|$, in accordo con la (16) ✓.
 
@@ -154,9 +149,8 @@ Ogni blocco lineare di un sistema di comunicazione (filtri di trasmissione e ric
 - [[processo-gaussiano]] — un processo gaussiano attraverso un filtro stabile resta gaussiano.
 - [[equivalente-banda-base-dei-filtri]] — gli stessi filtri LTI, descritti in banda base.
 
-## Fonti
+## Fonti · [[random_processes.pdf#page=26|p. 26]], [[random_processes.pdf#page=31|p. 31]], [[random_processes.pdf#page=33|p. 33]]
 
 - [[processi-aleatori]]
-- [[random_processes.pdf#page=26]] – [[random_processes.pdf#page=31]], [[random_processes.pdf#page=33]]
 
 _Aggiornato: 2026-09-28 — creazione da ingest random_processes.pdf_

@@ -7,9 +7,7 @@ fonti_pdf: ["Probabilità.pdf#page=13", "Probabilità.pdf#page=14"]
 
 # Teorema della probabilità totale e teorema di Bayes
 
-## Definizione
-
-> 📄 Fonte: [[Probabilità.pdf#page=13]], [[Probabilità.pdf#page=14]]
+## Definizione · [[Probabilità.pdf#page=13|p. 13]], [[Probabilità.pdf#page=14|14]]
 
 **Ipotesi comuni:** $A_1, \dots, A_n$ eventi mutuamente esclusivi ($A_i \cap A_j = \emptyset$ per $i\neq j$) e $B \subseteq \bigcup_{i=1}^n A_i$.
 
@@ -18,20 +16,19 @@ fonti_pdf: ["Probabilità.pdf#page=13", "Probabilità.pdf#page=14"]
 
 > ⚠️ Contraddizione (refuso nelle slide): le pagine 13 e 14 scrivono "$A_j \cap A_j = \emptyset,\ i\neq j$". La condizione corretta è $A_i \cap A_j = \emptyset$ per $i \neq j$.
 
-## Formule
+## Formule · [[Probabilità.pdf#page=13|p. 13]], [[Probabilità.pdf#page=14|14]]
 
-> 🧮 Formula chiave — Probabilità totale ([[Probabilità.pdf#page=13]]):
+> 🧮 Formula chiave — Probabilità totale:
 > $$P(B) = \sum_{i=1}^{n} P(B|A_i)\,P(A_i)$$
 
-> 🧮 Formula chiave — Bayes ([[Probabilità.pdf#page=14]]):
+> 🧮 Formula chiave — Bayes:
 > $$P(A_i|B) = \frac{P(B|A_i)\,P(A_i)}{\sum_{j=1}^{n} P(B|A_j)\,P(A_j)} = \frac{P(B|A_i)\,P(A_i)}{P(B)}$$
 
 Simboli: $P(A_i)$ = probabilità a priori della causa $i$; $P(B|A_i)$ = probabilità dell'effetto data la causa (verosimiglianza); $P(A_i|B)$ = probabilità a posteriori. Sono tutte adimensionali.
 
 ## Derivazioni
 
-### Derivazione — Teorema della probabilità totale
-**Fonte:** [[Probabilità.pdf#page=13]] (enunciato senza dimostrazione)
+### Derivazione — Teorema della probabilità totale · [[Probabilità.pdf#page=13|p. 13]]
 > 🧩 Derivazione mia
 $$
 \begin{aligned}
@@ -53,9 +50,7 @@ $$
 **Sanity check:** $\sum_i P(A_i|B) = 1$, perché il numeratore sommato su $i$ dà proprio il denominatore.
 **Ipotesi:** $P(B) \neq 0$; cause mutuamente esclusive; ogni effetto ha almeno una causa.
 
-## Spiegazione
-
-> 📄 Fonte: [[Probabilità.pdf#page=13]]
+## Spiegazione · [[Probabilità.pdf#page=13|p. 13]]
 
 ![[probabilita-p13-probabilita-totale.png]]
 
@@ -67,21 +62,20 @@ Verificare $B \subseteq \bigcup_i A_i$ può essere complicato. Conviene sceglier
 
 > 🎯 Esame: saper enunciare le ipotesi, dire perché servono (senza esclusività si conterebbero due volte le intersezioni) e dare la lettura cause/effetto.
 
-## Perché importa
+## Perché importa · [[Intro.pdf#page=19|p. 19]]
 
-Bayes è la base della **decisione** in ricezione, che la fonte cita come compito del demodulatore ([[Intro.pdf#page=19]]). Le cause sono i simboli trasmessi e l'effetto è il segnale ricevuto; scegliere la causa con la massima probabilità a posteriori è l'idea del ricevitore MAP.
+Bayes è la base della **decisione** in ricezione, che la fonte cita come compito del demodulatore. Le cause sono i simboli trasmessi e l'effetto è il segnale ricevuto; scegliere la causa con la massima probabilità a posteriori è l'idea del ricevitore MAP.
 
 > 📚 Fonte esterna: il collegamento con il criterio MAP è standard (es. Madhow, *Fundamentals of Digital Communication*, cap. sulla demodulazione ottima), ma non compare ancora nelle slide ingerite. TODO: verificare quando arriverà la fonte sulla modulazione digitale.
 
-## Connessioni
+## Connessioni · [[Probabilità.pdf#page=34|p. 34]]
 
 - [[probabilita-condizionale]] — entrambi i teoremi sono conseguenze dirette della probabilità composta.
-- [[coppie-di-variabili-aleatorie]] — versione per densità: $f_X(x|y) = f_Y(y|x) f_X(x)/f_Y(y)$, che segue dalle definizioni di [[Probabilità.pdf#page=34]].
+- [[coppie-di-variabili-aleatorie]] — versione per densità: $f_X(x|y) = f_Y(y|x) f_X(x)/f_Y(y)$, che segue dalle definizioni di p. 34.
 - [[media-e-varianza]] — il centroide di Lloyd-Max $E[x|x\in R_i]$ è una media condizionale ([[quantizzazione-non-uniforme]]).
 
-## Fonti
+## Fonti · [[Probabilità.pdf#page=13|p. 13]], [[Probabilità.pdf#page=14|14]]
 
 - [[elementi-teoria-probabilita]]
-- [[Probabilità.pdf#page=13]], [[Probabilità.pdf#page=14]]
 
 _Aggiornato: 2026-09-23 — creazione da ingest Probabilità.pdf_

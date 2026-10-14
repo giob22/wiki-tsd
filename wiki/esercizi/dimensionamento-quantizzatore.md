@@ -6,7 +6,7 @@ difficoltà: media
 
 # Dimensionamento di un quantizzatore e bit rate
 
-## Metodo
+## Metodo · [[Campionamento_AD_DA.pdf#page=31|p. 31]]
 
 1. **Fissare $k_c$** in base alla probabilità di sovraccarico ammessa: $P_s\le1/k_c^2$, cioè $k_c\ge1/\sqrt{P_s}$ ([[disuguaglianza-di-chebyshev]]). Default: $k_c = 4$ (four-sigma loading).
 2. **Calcolare $[k_c]_{dB} = 20\log_{10}k_c$** (rapporto di ampiezze, quindi $20\log$).
@@ -15,25 +15,25 @@ difficoltà: media
    e arrotondare **per eccesso** all'intero.
 4. **Verificare**: ricalcolare l'SNR con il $b$ scelto, e anche con $b-1$ per controllare che non basti.
 5. **Bit rate**: $R_b = b\cdot f_c$ per canale; per $n_{ch}$ canali, $R_{tot} = n_{ch}\,b\,f_c$.
-6. **Memoria**: bit $= R_{tot}\cdot T$; poi byte (÷8), kB (÷1000), MB (÷1000) secondo ISO/IEC ([[Campionamento_AD_DA.pdf#page=31]]).
+6. **Memoria**: bit $= R_{tot}\cdot T$; poi byte (÷8), kB (÷1000), MB (÷1000) secondo ISO/IEC.
 7. Con companding: $\text{SNR}_{dB}\approx6.02b+\alpha$, con $\alpha = -9.99$ (A-law) o $-10.11$ (µ-law) ([[companding]]).
 
-## Formule usate
+## Formule usate · [[Campionamento_AD_DA.pdf#page=26|p. 26]], [[Campionamento_AD_DA.pdf#page=27|27]], [[Campionamento_AD_DA.pdf#page=29|p. 29]], [[Campionamento_AD_DA.pdf#page=30|30]], [[Campionamento_AD_DA.pdf#page=43|p. 43]]
 
-- $\Delta = 2X_{max}/M$, $M = 2^b$ — [[quantizzazione-uniforme]] ([[Campionamento_AD_DA.pdf#page=26]], [[Campionamento_AD_DA.pdf#page=27]])
-- $P_s\le1/k_c^2$ — [[disuguaglianza-di-chebyshev]] ([[Campionamento_AD_DA.pdf#page=29]])
-- $\text{SNR}_{dB} = 6.02b-[k_c]_{dB}+4.77$ — [[snr-di-quantizzazione]] ([[Campionamento_AD_DA.pdf#page=30]])
-- $\text{SNR}_{dB}\approx6.02b+\alpha$ — [[companding]] ([[Campionamento_AD_DA.pdf#page=43]])
+- $\Delta = 2X_{max}/M$, $M = 2^b$ — [[quantizzazione-uniforme]]
+- $P_s\le1/k_c^2$ — [[disuguaglianza-di-chebyshev]]
+- $\text{SNR}_{dB} = 6.02b-[k_c]_{dB}+4.77$ — [[snr-di-quantizzazione]]
+- $\text{SNR}_{dB}\approx6.02b+\alpha$ — [[companding]]
 
 ## Casi svolti
 
-### Caso 1 — Four-sigma loading
-**Traccia** ([[Campionamento_AD_DA.pdf#page=29]]): $k_c = 4$. Probabilità di sovraccarico massima?
+### Caso 1 — Four-sigma loading · [[Campionamento_AD_DA.pdf#page=29|p. 29]]
+**Traccia**: $k_c = 4$. Probabilità di sovraccarico massima?
 $$P_s\le\frac{1}{k_c^2} = \frac{1}{16} = 0.0625 = 6.25\%$$
 **Sanity check:** per un segnale gaussiano il valore vero è $2Q(4)\approx6.3\cdot10^{-5}$ ([[variabile-aleatoria-gaussiana]]); Chebyshev è molto conservativo.
 
-### Caso 2 — Esempio 7.6: quantizzatore audio a 85 dB
-**Traccia** ([[Campionamento_AD_DA.pdf#page=31]]): si vuole $\text{SNR}_{dB} = 85$ dB con $k_c = 4$. Quanti bit? Bit rate per audio stereo a $f_c = 44.1$ kHz? Memoria per 1 minuto?
+### Caso 2 — Esempio 7.6: quantizzatore audio a 85 dB · Campionamento [[Campionamento_AD_DA.pdf#page=31|p. 31]] · Intro [[Intro.pdf#page=15|p. 15]]
+**Traccia**: si vuole $\text{SNR}_{dB} = 85$ dB con $k_c = 4$. Quanti bit? Bit rate per audio stereo a $f_c = 44.1$ kHz? Memoria per 1 minuto?
 
 **Dati:** $\text{SNR}_{dB} = 85$ dB, $k_c = 4$, $f_c = 44.1$ kHz, 2 canali, $T = 60$ s.
 
@@ -64,10 +64,10 @@ N_{bit} &= n_{ch}\times T\times f_c\times b = 2\times60\times44\,100\times16 && 
 \end{aligned}
 $$
 **Risultato:** $b = 16$ bit; 705.6 kbit/s per canale; ≈ 10.6 MB/minuto (tutti ✓ con la slide).
-**Sanity check** (🧩 mio): bit rate stereo totale $= 2\times705.6 = 1411.2$ kbit/s, e $1411.2\,\text{kbit/s}\times60\,\text{s} = 84\,672$ kbit ✓. È circa 10× i 128 kbit/s di un MP3 ([[Intro.pdf#page=15]]), in accordo con la stima «around ten times higher» per l'audio professionale.
+**Sanity check** (🧩 mio): bit rate stereo totale $= 2\times705.6 = 1411.2$ kbit/s, e $1411.2\,\text{kbit/s}\times60\,\text{s} = 84\,672$ kbit ✓. È circa 10× i 128 kbit/s di un MP3, in accordo con la stima «around ten times higher» per l'audio professionale.
 
-### Caso 3 — Costanti $\alpha$ del companding
-**Traccia** ([[Campionamento_AD_DA.pdf#page=43]]): verificare $\alpha = -9.99$ dB (A-law, $A=87.6$), $-10.11$ dB (µ-law, $\mu=255$), $-7.3$ dB (uniforme, $k_c=4$).
+### Caso 3 — Costanti $\alpha$ del companding · [[Campionamento_AD_DA.pdf#page=43|p. 43]]
+**Traccia**: verificare $\alpha = -9.99$ dB (A-law, $A=87.6$), $-10.11$ dB (µ-law, $\mu=255$), $-7.3$ dB (uniforme, $k_c=4$).
 $$
 \begin{aligned}
 \text{A-law: } \alpha &= 4.77-20\log_{10}(1+\ln87.6) = 4.77-20\log_{10}(1+4.473) && \ln87.6 = 4.4728 \\
@@ -79,13 +79,13 @@ $$
 $$
 **Risultato:** tutti ✓.
 
-## Trappole
+## Trappole · [[Campionamento_AD_DA.pdf#page=31|p. 31]]
 
 - **$[k_c]_{dB}$ usa $20\log_{10}$**, non $10\log_{10}$: $k_c$ è un rapporto di ampiezze.
 - **Arrotondare $b$ per eccesso**: 15.33 → 16, non 15.
 - La legge dei 6 dB/bit ignora il **sovraccarico**: se $k_c$ è piccolo, l'SNR reale è peggiore.
 - **Stereo** = 2 canali; «per canale» vs «totale».
-- **Unità di memoria**: le slide usano i fattori ISO/IEC decimali (1 kB = 1000 byte), non 1024 ([[Campionamento_AD_DA.pdf#page=31]]).
+- **Unità di memoria**: le slide usano i fattori ISO/IEC decimali (1 kB = 1000 byte), non 1024.
 - Le costanti $\alpha$ del companding valgono con il segnale che impegna **tutta la dinamica**.
 
 _Aggiornato: 2026-09-23 — revisione di copertura: rimosso caso inventato (voce PCM 8 bit)_

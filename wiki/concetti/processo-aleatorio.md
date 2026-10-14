@@ -7,31 +7,29 @@ fonti_pdf: ["random_processes.pdf#page=2", "random_processes.pdf#page=3", "rando
 
 # Processo aleatorio (processo stocastico)
 
-## Definizione
+## Definizione · [[random_processes.pdf#page=2|p. 2]]–[[random_processes.pdf#page=7|7]]
 
-> 📄 Fonte: [[random_processes.pdf#page=2]], [[random_processes.pdf#page=6]], [[random_processes.pdf#page=7]]; appunti a mano [[random_processes.pdf#page=3]] – [[random_processes.pdf#page=5]]
-
-Un **processo stocastico**, detto anche processo aleatorio o **segnale aleatorio** (*random signal*), è l'estensione naturale del concetto di [[variabile-aleatoria]] quando si ha a che fare con **segnali**. Si scrive $X(t, \omega)$, dove $t$ è il tempo e $\omega$ l'esito di un esperimento aleatorio ([[random_processes.pdf#page=2]]).
+Un **processo stocastico**, detto anche processo aleatorio o **segnale aleatorio** (*random signal*), è l'estensione naturale del concetto di [[variabile-aleatoria]] quando si ha a che fare con **segnali**. Si scrive $X(t, \omega)$, dove $t$ è il tempo e $\omega$ l'esito di un esperimento aleatorio.
 
 **Perché serve.** In molte situazioni l'ipotesi che un segnale sia deterministico non regge, e conviene modellarlo come **funzione aleatoria**. Due esempi della slide:
 - il **rumore termico** nei circuiti elettronici;
 - i segnali generati da una **sorgente d'informazione**.
 
-**Dal segnale deterministico al processo** (appunti a mano, [[random_processes.pdf#page=3]]). Gli appunti partono dai segnali visti finora:
+**Dal segnale deterministico al processo**. Gli appunti partono dai segnali visti finora:
 - un segnale $s(t)$ descritto nel dominio del tempo, con una **descrizione analitica** (una formula) o con un **grafico**, è un **segnale deterministico**: il suo valore in ogni istante è noto;
 - «prendiamo questi segnali e li estendiamo su fenomeni non predicibili a priori» (il verbo è di lettura incerta);
 - una **variabile aleatoria** associa a ogni esito $\omega \in \Omega$ un numero: $X: \omega \to X(\omega) \in \mathbb{R}$;
 - per un processo invece «dobbiamo non associare un campione ma una funzione nel tempo»: a ogni esito $\omega_i$ corrisponde una forma d'onda $S(\omega_i, t)$. «Ad ogni campione associo una funzione nel tempo».
 
-> 🧩 Negli appunti "campione" vuol dire **esito** $\omega$, cioè un punto dello spazio campione $\Omega$, non un campione nel tempo. La frase va letta così: a ogni esito non associo un numero ma un'intera funzione del tempo. È la stessa osservazione della slide di [[random_processes.pdf#page=7]], più sotto.
+> 🧩 Negli appunti "campione" vuol dire **esito** $\omega$, cioè un punto dello spazio campione $\Omega$, non un campione nel tempo. La frase va letta così: a ogni esito non associo un numero ma un'intera funzione del tempo. È la stessa osservazione della slide di p. 7, più sotto.
 
 ![[random-processes-p3-appunti-da-va-a-processo.png]]
-*Appunti a mano, [[random_processes.pdf#page=3]].*
+*Appunti a mano.*
 - *In alto: $s(t)$ descritto nel dominio del tempo (descrizione analitica, grafico). Sono segnali deterministici.*
 - *A sinistra: lo spazio $\Omega$ con un esito $\omega$ mandato in un punto della retta reale $\mathbb{R}$. È la variabile aleatoria $X: \omega \to X(\omega) \in \mathbb{R}$.*
 - *A destra: un altro $\Omega$ con tre esiti $\omega_1, \omega_2, \omega_3$, ciascuno mandato in una forma d'onda diversa: $S(\omega_1, t)$, $S(\omega_2, t)$, $S(\omega_3, t)$.*
 
-**Due modi di vederlo** ([[random_processes.pdf#page=6]]):
+**Due modi di vederlo**:
 1. **Collezione di forme d'onda.** A ogni esito $\omega = \omega_i$ dello spazio di probabilità $(\Omega, S, P)$ corrisponde un segnale deterministico $X(t, \omega_i) \equiv x_i(t)$, detto **realizzazione** (*sample function*). È un'idea simile a quella di variabile aleatoria.
    - Fissando un istante $t_0$, la funzione $X(t_0, \omega)$ è una **variabile aleatoria**.
    - Fissando sia $t_0$ sia $\omega_i$, $X(t_0, \omega_i)$ è un **numero**.
@@ -41,40 +39,40 @@ Un **processo stocastico**, detto anche processo aleatorio o **segnale aleatorio
 
 Per semplicità si omette $\omega$ e si scrive $X(t)$, oppure $x(t)$ quando non c'è ambiguità.
 
-**Fissare $\omega$ o fissare $t$** (appunti a mano, [[random_processes.pdf#page=4]]): «$X(t, \omega)$ si particolarizza a seconda che fissi $\omega$ o $t$».
+**Fissare $\omega$ o fissare $t$**: «$X(t, \omega)$ si particolarizza a seconda che fissi $\omega$ o $t$».
 - $X(t, \bar\omega) = x(t)$: fissato l'esito, resta un **segnale nel tempo**, cioè una realizzazione;
 - $X(\bar t, \omega) = X(\omega)$: fissato l'istante, si ottiene una **variabile aleatoria**;
 - $X(\bar\omega, \bar t)$: fissati entrambi, è **un numero**.
 
 Accanto gli appunti annotano i «due punti di vista». Il primo è la «collezione di variabili aleatorie indicizzate rispetto al tempo»; il secondo è rimasto in bianco (🧩 dalla slide di p.6 è la collezione di forme d'onda, punto 1 sopra).
 
-Negli appunti di [[random_processes.pdf#page=5]] la distinzione sul tempo è scritta così: $X(t, \omega)$ con $t \in \mathbb{R}$ è un processo **a tempo continuo**; $X(n, \omega)$ con $n \in \mathbb{Z}$ è un processo **a tempo discreto**.
+Negli appunti di p. 5 la distinzione sul tempo è scritta così: $X(t, \omega)$ con $t \in \mathbb{R}$ è un processo **a tempo continuo**; $X(n, \omega)$ con $n \in \mathbb{Z}$ è un processo **a tempo discreto**.
 
-> 📄 Osservazione della slide ([[random_processes.pdf#page=7]]): in una **variabile aleatoria** l'esito dell'esperimento viene associato a un **numero**; in un **processo aleatorio** viene associato a una **forma d'onda**, funzione del tempo.
+> 📄 Osservazione della slide: in una **variabile aleatoria** l'esito dell'esperimento viene associato a un **numero**; in un **processo aleatorio** viene associato a una **forma d'onda**, funzione del tempo.
 
-## Formule
+## Formule · [[random_processes.pdf#page=4|p. 4]]–[[random_processes.pdf#page=6|6]], [[random_processes.pdf#page=8|p. 8]]–[[random_processes.pdf#page=10|10]], [[random_processes.pdf#page=45|p. 45]]
 
-| Formula | Significato | Pagina |
-|---|---|---|
-| $X(t, \omega)$, con $X(t, \omega_i) \equiv x_i(t)$ | processo e sue realizzazioni | [[random_processes.pdf#page=6]] |
-| $F_{X(t_1),\dots,X(t_k)}(x_1,\dots,x_k) \triangleq P[X(t_1) \le x_1, \dots, X(t_k) \le x_k]$ | CDF congiunta di ordine $k$, eq. (1) | [[random_processes.pdf#page=9]] |
-| $f_{X(t_1),\dots,X(t_k)}(x_1,\dots,x_k) \triangleq \dfrac{\partial^k}{\partial x_1 \cdots \partial x_k}F_{X(t_1),\dots,X(t_k)}(x_1,\dots,x_k)$ | pdf congiunta di ordine $k$, eq. (2) | [[random_processes.pdf#page=9]] |
-| $X(n; \omega)$, $n \in \mathbb{Z}$ | processo a tempo discreto | [[random_processes.pdf#page=45]]; appunti [[random_processes.pdf#page=5]] |
-| $X(t) = A\cos(2\pi f_0 t + \Theta)$, $\Theta \sim \mathcal{U}(0, 2\pi)$ | sinusoide a fase casuale (esempio) | appunti [[random_processes.pdf#page=4]], [[random_processes.pdf#page=5]] |
-| $F_{X(t_1)}(x) \triangleq P(\{X(t_1) \le x\})$ | CDF del primo ordine ($k = 1$ nella (1)) | appunti [[random_processes.pdf#page=8]] |
-| $F_{X(t_1)X(t_2)}(x_1, x_2) = P(\{X(t_1) \le x_1, X(t_2) \le x_2\})$ | CDF del secondo ordine ($k = 2$) | appunti [[random_processes.pdf#page=8]] |
-| $\int_{-\infty}^{+\infty} f_{X(t_1)X(t_2)}(x_1, x_2)\,dx_2 = f_{X(t_1)}(x_1)$ | pdf del primo ordine dalla pdf del secondo | nota a mano [[random_processes.pdf#page=9]] |
-| $p_{X(n)}(x) = p^x q^{1-x}$ | DF del primo ordine del processo di Bernoulli | appunti [[random_processes.pdf#page=10]] |
-| $p_{X(n_1)X(n_2)}(x_1, x_2) = p^{w(\mathbf{x})}q^{2 - w(\mathbf{x})}$ | DF del secondo ordine, lanci indipendenti | appunti [[random_processes.pdf#page=10]] |
+| Formula | Significato |
+|---|---|
+| $X(t, \omega)$, con $X(t, \omega_i) \equiv x_i(t)$ | processo e sue realizzazioni |
+| $F_{X(t_1),\dots,X(t_k)}(x_1,\dots,x_k) \triangleq P[X(t_1) \le x_1, \dots, X(t_k) \le x_k]$ | CDF congiunta di ordine $k$, eq. (1) |
+| $f_{X(t_1),\dots,X(t_k)}(x_1,\dots,x_k) \triangleq \dfrac{\partial^k}{\partial x_1 \cdots \partial x_k}F_{X(t_1),\dots,X(t_k)}(x_1,\dots,x_k)$ | pdf congiunta di ordine $k$, eq. (2) |
+| $X(n; \omega)$, $n \in \mathbb{Z}$ | processo a tempo discreto |
+| $X(t) = A\cos(2\pi f_0 t + \Theta)$, $\Theta \sim \mathcal{U}(0, 2\pi)$ | sinusoide a fase casuale (esempio) |
+| $F_{X(t_1)}(x) \triangleq P(\{X(t_1) \le x\})$ | CDF del primo ordine ($k = 1$ nella (1)) |
+| $F_{X(t_1)X(t_2)}(x_1, x_2) = P(\{X(t_1) \le x_1, X(t_2) \le x_2\})$ | CDF del secondo ordine ($k = 2$) |
+| $\int_{-\infty}^{+\infty} f_{X(t_1)X(t_2)}(x_1, x_2)\,dx_2 = f_{X(t_1)}(x_1)$ | pdf del primo ordine dalla pdf del secondo |
+| $p_{X(n)}(x) = p^x q^{1-x}$ | DF del primo ordine del processo di Bernoulli |
+| $p_{X(n_1)X(n_2)}(x_1, x_2) = p^{w(\mathbf{x})}q^{2 - w(\mathbf{x})}$ | DF del secondo ordine, lanci indipendenti |
 
 Simboli: $t$ = tempo [s]; $\omega$ = esito, elemento dello spazio campione $\Omega$; $(x_1,\dots,x_k) \in \mathbb{R}^k$ = valori (nell'unità del segnale, es. V); $F$ adimensionale (è una probabilità); $f$ in [1/V$^k$]. Esempio della sinusoide: $A$ = ampiezza [V], $f_0$ = frequenza [Hz], $\Theta$ = fase [rad]. Processo di Bernoulli: $x \in \{0, 1\}$, $p = P(X(n) = 1)$, $q = 1 - p$, $w(\mathbf{x})$ = numero di 1 nel vettore $\mathbf{x} = (x_1, x_2)$; DF adimensionali.
 
-> ⚠️ Refusi della slide ([[random_processes.pdf#page=9]]): la derivata nella (2) è scritta $\partial^n$, ma le variabili sono $k$, quindi $\partial^k$; la correzione è scritta anche a mano sul PDF. Più sotto la slide rimanda alla «CDF congiunta (36)» invece che alla (1).
+> ⚠️ Refusi della slide: la derivata nella (2) è scritta $\partial^n$, ma le variabili sono $k$, quindi $\partial^k$; la correzione è scritta anche a mano sul PDF. Più sotto la slide rimanda alla «CDF congiunta (36)» invece che alla (1).
 
 ## Derivazioni
 
-### Derivazione — Coerenza delle distribuzioni: quelle di ordine basso sono marginali
-**Fonte:** [[random_processes.pdf#page=11]]: le CDF e pdf di ordine più basso si devono ottenere come marginali di quelle di ordine più alto. La riga della pdf è scritta anche a mano sulla slide 5 ([[random_processes.pdf#page=9]]): «integrando rispetto a una variabile ottengo la pdf di primo ordine».
+### Derivazione — Coerenza delle distribuzioni: quelle di ordine basso sono marginali · [[random_processes.pdf#page=9|p. 9]], [[random_processes.pdf#page=11|p. 11]]
+**Fonte:** le CDF e pdf di ordine più basso si devono ottenere come marginali di quelle di ordine più alto. La riga della pdf è scritta anche a mano sulla slide 5: «integrando rispetto a una variabile ottengo la pdf di primo ordine».
 > 🧩 Derivazione mia per $k = 2$ (per $k$ qualunque è identica), con le regole delle marginali di [[coppie-di-variabili-aleatorie]].
 
 $$
@@ -87,8 +85,7 @@ $$
 
 "Coerenti" vuol dire che le famiglie di CDF (o pdf) non si possono scegliere a caso ordine per ordine: quelle di ordine più alto determinano quelle di ordine più basso.
 
-### Derivazione — DF del processo di Bernoulli, primo e secondo ordine
-**Fonte:** [[random_processes.pdf#page=10]] (appunti a mano: risultati scritti senza passaggi)
+### Derivazione — DF del processo di Bernoulli, primo e secondo ordine · [[random_processes.pdf#page=10|p. 10]], [[random_processes.pdf#page=11|11]]
 > 🧩 Passaggi miei. $X(n) \in \{0, 1\}$ è l'esito del lancio $n$-esimo, $P(X(n) = 1) = p$, $q = 1 - p$.
 
 **Primo ordine.** La formula $p^x q^{1-x}$ scrive i due casi in una riga sola:
@@ -123,12 +120,11 @@ $$
 
 **Ipotesi:** lanci indipendenti; istanti distinti (con $n_1 = n_2$ le due v.a. sarebbero la stessa). Senza indipendenza la congiunta non si fattorizza e non basta conoscere $p$.
 
-> 🧩 Con $k$ lanci indipendenti lo stesso argomento dà $p^{w(\mathbf{x})}\,q^{k - w(\mathbf{x})}$ per ogni $k$. Il processo di Bernoulli è quindi **completamente caratterizzato**, nel senso della slide 6 ([[random_processes.pdf#page=11]]), da un solo numero: $p$.
+> 🧩 Con $k$ lanci indipendenti lo stesso argomento dà $p^{w(\mathbf{x})}\,q^{k - w(\mathbf{x})}$ per ogni $k$. Il processo di Bernoulli è quindi **completamente caratterizzato**, nel senso della slide 6, da un solo numero: $p$.
 
 ## Spiegazione
 
-### Esempio della slide: un rettangolo di segno casuale
-> 📄 Fonte: [[random_processes.pdf#page=2]]
+### Esempio della slide: un rettangolo di segno casuale · [[random_processes.pdf#page=2|p. 2]]
 
 $\Omega = \{0, 1\}$ con $P(\{\omega = 1\}) \triangleq p$ e $P(\{\omega = 0\}) \triangleq q = 1 - p$. Il segnale aleatorio è
 $$
@@ -136,7 +132,7 @@ X(t, \omega) = \begin{cases} A\,\text{rect}\Big(\dfrac{t - 0.5T}{T}\Big), & \ome
 $$
 
 ![[random-processes-p2-esempio-rect.png]]
-*[[random_processes.pdf#page=2]]: le due realizzazioni. $x(t, \omega = 0)$ vale $A$ per $0 < t < T$; $x(t, \omega = 1)$ vale $-A$ nello stesso intervallo. Fuori da $(0, T)$ entrambe valgono 0.*
+*le due realizzazioni. $x(t, \omega = 0)$ vale $A$ per $0 < t < T$; $x(t, \omega = 1)$ vale $-A$ nello stesso intervallo. Fuori da $(0, T)$ entrambe valgono 0.*
 
 > 🧩 Le due facce sull'esempio (lettura mia):
 > - **come forme d'onda**: ci sono due sole realizzazioni possibili, i due rettangoli della figura;
@@ -145,8 +141,7 @@ $$
 >
 > Media, autocorrelazione e covarianza di questo processo sono calcolate in [[momenti-di-un-processo]]: la media dipende da $t$.
 
-### Esempio degli appunti: sinusoide a fase casuale
-> 📄 Fonte: [[random_processes.pdf#page=4]], [[random_processes.pdf#page=5]] (appunti a mano)
+### Esempio degli appunti: sinusoide a fase casuale · [[random_processes.pdf#page=4|p. 4]], [[random_processes.pdf#page=5|5]]
 
 $$X(t) = A\cos(2\pi f_0 t + \Theta), \qquad \Theta \sim \mathcal{U}(0, 2\pi)$$
 - $A$ [V] e $f_0$ [Hz] sono **deterministiche**;
@@ -154,7 +149,7 @@ $$X(t) = A\cos(2\pi f_0 t + \Theta), \qquad \Theta \sim \mathcal{U}(0, 2\pi)$$
 - nota di p.5: è un «segnale aleatorio ad ampiezza continua».
 
 ![[random-processes-p4-appunti-sinusoide-fase-casuale.png]]
-*Appunti a mano, [[random_processes.pdf#page=4]]: il processo, la pdf uniforme di $\Theta$ (altezza $1/(2\pi)$ tra 0 e $2\pi$), le tre particolarizzazioni di $X(t, \omega)$ viste sopra e, a destra, i «due punti di vista».*
+*Appunti a mano: il processo, la pdf uniforme di $\Theta$ (altezza $1/(2\pi)$ tra 0 e $2\pi$), le tre particolarizzazioni di $X(t, \omega)$ viste sopra e, a destra, i «due punti di vista».*
 
 > 🧩 Le tre particolarizzazioni sull'esempio (lettura mia):
 > - **fisso l'esito**, cioè un valore $\bar\vartheta$ della fase: $x(t) = A\cos(2\pi f_0 t + \bar\vartheta)$ è un normale coseno deterministico. Le realizzazioni sono tutti i coseni di ampiezza $A$ e frequenza $f_0$, ciascuno spostato di una fase diversa;
@@ -165,17 +160,15 @@ $$X(t) = A\cos(2\pi f_0 t + \Theta), \qquad \Theta \sim \mathcal{U}(0, 2\pi)$$
 >
 > Media e autocorrelazione di questo processo sono calcolate in [[momenti-di-un-processo]]. A differenza del rettangolo, il processo è WSS ([[stazionarieta]]).
 
-### Il quadro generale: esiti, realizzazioni, variabili aleatorie
-> 📄 Fonte: [[random_processes.pdf#page=7]]
+### Il quadro generale: esiti, realizzazioni, variabili aleatorie · [[random_processes.pdf#page=6|p. 6]], [[random_processes.pdf#page=7|7]]
 
 ![[random-processes-p7-realizzazioni.png]]
-*[[random_processes.pdf#page=7]]. Lo spazio campione $S$ contiene gli esiti $s_1, s_2, \dots, s_n$. Ogni esito, cioè ogni prova dell'esperimento, produce una forma d'onda $x_1(t), x_2(t), \dots, x_n(t)$ sull'intervallo $(-T, +T)$. Una linea verticale all'istante $t_k$ taglia tutte le forme d'onda nei valori $x_1(t_k), x_2(t_k), \dots, x_n(t_k)$: al variare dell'esito, sono i valori della variabile aleatoria $X(t_k)$.*
+*Lo spazio campione $S$ contiene gli esiti $s_1, s_2, \dots, s_n$. Ogni esito, cioè ogni prova dell'esperimento, produce una forma d'onda $x_1(t), x_2(t), \dots, x_n(t)$ sull'intervallo $(-T, +T)$. Una linea verticale all'istante $t_k$ taglia tutte le forme d'onda nei valori $x_1(t_k), x_2(t_k), \dots, x_n(t_k)$: al variare dell'esito, sono i valori della variabile aleatoria $X(t_k)$.*
 
 ![[grafico-rp-realizzazioni.png]]
-*🧩 Grafico mio (definizioni di [[random_processes.pdf#page=6]]; script in `output/grafici/`). Processo gaussiano a media nulla con autocorrelazione $e^{-|\tau|/\tau_c}$, $\tau_c = 0.5$. A sinistra cinque realizzazioni: fissato $t_0 = 6$, ognuna dà un numero (punto arancio). A destra i valori $X(t_0)$ di 5000 realizzazioni: il loro istogramma riproduce la pdf gaussiana $\mathcal{N}(0, 1)$. È la variabile aleatoria che si ottiene fissando il tempo.*
+*🧩 Grafico mio (definizioni di p. 6; script in `output/grafici/`). Processo gaussiano a media nulla con autocorrelazione $e^{-|\tau|/\tau_c}$, $\tau_c = 0.5$. A sinistra cinque realizzazioni: fissato $t_0 = 6$, ognuna dà un numero (punto arancio). A destra i valori $X(t_0)$ di 5000 realizzazioni: il loro istogramma riproduce la pdf gaussiana $\mathcal{N}(0, 1)$. È la variabile aleatoria che si ottiene fissando il tempo.*
 
-### Caratterizzazione statistica completa
-> 📄 Fonte: [[random_processes.pdf#page=8]] (appunti a mano), [[random_processes.pdf#page=9]] (slide 5, con note), [[random_processes.pdf#page=11]] (slide 6)
+### Caratterizzazione statistica completa · [[random_processes.pdf#page=8|p. 8]], [[random_processes.pdf#page=9|9]], [[random_processes.pdf#page=11|p. 11]]
 
 - La descrizione statistica di un processo si basa sulla CDF (o, in modo equivalente, sulla pdf) di **vettori di campioni** del segnale aleatorio.
 - $X(t_1), \dots, X(t_k)$ sono le variabili aleatorie ottenute campionando $X(t)$ negli istanti $t_1, \dots, t_k$. La loro CDF congiunta è la (1) e la pdf congiunta la (2).
@@ -187,7 +180,7 @@ $$X(t) = A\cos(2\pi f_0 t + \Theta), \qquad \Theta \sim \mathcal{U}(0, 2\pi)$$
 
 > 🧩 Perché "difficile": servono infinite funzioni (tutte le pdf di ogni ordine $k$, per ogni scelta di istanti), mentre media e autocorrelazione sono solo due funzioni, di una e di due variabili.
 
-**Primo e secondo ordine negli appunti** ([[random_processes.pdf#page=8]], pagina di appunti prima della slide 5). Gli appunti costruiscono la (1) partendo da $k = 1$ e $k = 2$, per un processo «a tempo continuo e ampiezza continua»:
+**Primo e secondo ordine negli appunti**. Gli appunti costruiscono la (1) partendo da $k = 1$ e $k = 2$, per un processo «a tempo continuo e ampiezza continua»:
 - fissato $t = t_1$, $X(t_1)$ è una variabile aleatoria, con CDF $F_{X(t_1)}(x) \triangleq P(\{X(t_1) \le x\})$ per ogni $x \in \mathcal{X}$. Se la si conosce per ogni $t_1$ («se lo sappiamo»), si ha la **CDF del primo ordine**;
 - campionando in due istanti, $X(t_1)$ e $X(t_2)$ sono una coppia di variabili aleatorie e se ne può definire la CDF congiunta, $F_{X(t_1)X(t_2)}(x_1, x_2) = P(\{X(t_1) \le x_1, X(t_2) \le x_2\})$ per ogni $(x_1, x_2) \in \mathcal{X}\times\mathcal{X}$. Se si «giunge a conoscerla» per ogni coppia $t_1, t_2$, si conosce la **CDF del secondo ordine**.
 
@@ -196,19 +189,18 @@ $$X(t) = A\cos(2\pi f_0 t + \Theta), \qquad \Theta \sim \mathcal{U}(0, 2\pi)$$
 > ⚠️ Negli appunti c'è scritto $\forall t_1 \in \mathbb{Z}$, ma il processo è a tempo continuo: va letto $t_1 \in \mathbb{R}$.
 
 ![[random-processes-p8-appunti-cdf-primo-secondo-ordine.png]]
-*Appunti a mano, [[random_processes.pdf#page=8]]: CDF del primo ordine, con la nota in verde «se lo sappiamo → ottengo la CDF del primo ordine» sotto $\forall t_1$, e CDF congiunta del secondo ordine.*
+*Appunti a mano: CDF del primo ordine, con la nota in verde «se lo sappiamo → ottengo la CDF del primo ordine» sotto $\forall t_1$, e CDF congiunta del secondo ordine.*
 
-**Dalla pdf del secondo ordine a quella del primo** (nota a mano sulla slide 5, [[random_processes.pdf#page=9]]): «integrando rispetto a una variabile»
+**Dalla pdf del secondo ordine a quella del primo** (nota a mano sulla slide 5): «integrando rispetto a una variabile»
 $$\int_{-\infty}^{+\infty} f_{X(t_1)X(t_2)}(x_1, x_2)\,dx_2 = f_{X(t_1)}(x_1)$$
 «ottengo la pdf di primo ordine». È la riga della pdf nella derivazione della coerenza, sopra. Sotto c'è una seconda nota, che leggo «non si dice marginalizzazione».
 
-> ❓ Nota non chiara: l'operazione scritta negli appunti è proprio quella che la slide di [[random_processes.pdf#page=11]] descrive con le «marginali», e che in [[coppie-di-variabili-aleatorie]] si chiama marginalizzazione. Forse la nota va letta in un altro modo (per esempio «ciò si dice marginalizzazione»). Da verificare sugli appunti.
+> ❓ Nota non chiara: l'operazione scritta negli appunti è proprio quella che la slide di p. 11 descrive con le «marginali», e che in [[coppie-di-variabili-aleatorie]] si chiama marginalizzazione. Forse la nota va letta in un altro modo (per esempio «ciò si dice marginalizzazione»). Da verificare sugli appunti.
 
 ![[random-processes-p9-marginalizzazione.png]]
-*[[random_processes.pdf#page=9]] (slide 5) con le note a mano: la correzione $\partial^n \to \partial^k$ nella (2) e, sotto, l'integrale che dalla pdf congiunta di $X(t_1), X(t_2)$ dà la pdf di $X(t_1)$.*
+*con le note a mano: la correzione $\partial^n \to \partial^k$ nella (2) e, sotto, l'integrale che dalla pdf congiunta di $X(t_1), X(t_2)$ dà la pdf di $X(t_1)$.*
 
-### Ampiezza discreta: la DF del processo di Bernoulli (appunti p.10)
-> 📄 Fonte: [[random_processes.pdf#page=10]] (appunti a mano), [[random_processes.pdf#page=11]] (slide 6: «esempio: processo aleatorio di Bernoulli»)
+### Ampiezza discreta: la DF del processo di Bernoulli (appunti p.10) · [[random_processes.pdf#page=10|p. 10]], [[random_processes.pdf#page=11|11]]
 
 La slide 6 dice che con ampiezza discreta conviene usare la DF e cita come esempio il processo di Bernoulli. Gli appunti di p.10 lo scrivono: «per processi aleatori discreti a tempo discreto utilizzo la DF».
 - **DF del primo ordine:** $p_{X(n)}(x) \triangleq P(X(n) = x) = p^x\,q^{1-x}$, con $x \in \{0, 1\}$.
@@ -219,20 +211,18 @@ Passaggi e tabella dei quattro casi nella derivazione sopra.
 > 🧩 Cosa modella: una sequenza di lanci di una moneta, uno per istante $n$. $X(n) = 1$ se il lancio $n$-esimo dà "successo" (probabilità $p$), 0 altrimenti. Fissato $n$, $X(n)$ è una v.a. di [[variabili-aleatorie-notevoli|Bernoulli]]: il processo è una successione di v.a. di Bernoulli indipendenti. Ha **ampiezza discreta** (solo 0 e 1) e **tempo discreto**, per questo si usa la DF invece di CDF e pdf.
 
 ![[random-processes-p10-appunti-processo-bernoulli.png]]
-*Appunti a mano, [[random_processes.pdf#page=10]]: le due DF, con le note in verde «numero di 1 contenuti nel vettore» su $w(\mathbf{x})$ e «supponendo che i lanci siano statisticamente indipendenti» sotto l'uguaglianza. Nella prima riga l'istante è scritto una volta $n$ e una volta $n_1$: è lo stesso.*
+*Appunti a mano: le due DF, con le note in verde «numero di 1 contenuti nel vettore» su $w(\mathbf{x})$ e «supponendo che i lanci siano statisticamente indipendenti» sotto l'uguaglianza. Nella prima riga l'istante è scritto una volta $n$ e una volta $n_1$: è lo stesso.*
 
-### Processi a tempo discreto
-> 📄 Fonte: [[random_processes.pdf#page=45]]
+### Processi a tempo discreto · [[random_processes.pdf#page=5|p. 5]], [[random_processes.pdf#page=45|p. 45]]
 
-- Finora $X(t; \omega)$ con $t \in \mathbb{R}$: processi **a tempo continuo**. Se il tempo appartiene a $\mathbb{Z}$, il processo è **a tempo discreto** e si scrive $X(n; \omega)$. Gli appunti di [[random_processes.pdf#page=5]] lo anticipano: $X(n, \omega)$ con $n \in \mathbb{Z}$. Un esempio è il processo di Bernoulli degli appunti di p.10.
+- Finora $X(t; \omega)$ con $t \in \mathbb{R}$: processi **a tempo continuo**. Se il tempo appartiene a $\mathbb{Z}$, il processo è **a tempo discreto** e si scrive $X(n; \omega)$. Gli appunti di p. 5 lo anticipano: $X(n, \omega)$ con $n \in \mathbb{Z}$. Un esempio è il processo di Bernoulli degli appunti di p.10.
 - È una successione di variabili aleatorie $\{X(n)\}_{n \in \mathbb{Z}}$, omettendo $\omega$. Con $n \in \{0, 1, \dots, N-1\}$ si riduce a un **vettore aleatorio**.
 - CDF, pdf e DF si definiscono come a tempo continuo, sostituendo formalmente $t$ con $n$.
 - Media, correlazioni e covarianze: [[momenti-di-un-processo]]. Densità spettrale: [[densita-spettrale-di-potenza]].
 
 > 💡 Connessione (🧩 mia): campionando un processo a tempo continuo negli istanti $nT_c$ si ottiene un processo a tempo discreto, $X(n) = X(nT_c)$. È la versione aleatoria del campionamento di [[teorema-del-campionamento]].
 
-### Processi complessi
-> 📄 Fonte: [[random_processes.pdf#page=25]]
+### Processi complessi · [[random_processes.pdf#page=25|p. 25]]
 
 Un processo complesso $Z(t) = X(t) + jY(t)$ si caratterizza completamente con la caratterizzazione **congiunta** delle parti reale e immaginaria. Media e autocorrelazione sono in [[momenti-di-un-processo]].
 
@@ -252,9 +242,8 @@ Un processo complesso $Z(t) = X(t) + jY(t)$ si caratterizza completamente con la
 - [[teorema-del-campionamento]] — dal processo a tempo continuo a quello a tempo discreto.
 - [[variabili-aleatorie-notevoli]] — fissato $n$, il processo di Bernoulli è una v.a. di Bernoulli; la fase della sinusoide è uniforme.
 
-## Fonti
+## Fonti · [[random_processes.pdf#page=2|p. 2]], [[random_processes.pdf#page=11|p. 11]], [[random_processes.pdf#page=25|p. 25]], [[random_processes.pdf#page=45|p. 45]]
 
 - [[processi-aleatori]]
-- [[random_processes.pdf#page=2]] – [[random_processes.pdf#page=11]] (con appunti a mano alle p. 3, 4, 5, 8, 10 e note sulla p. 9), [[random_processes.pdf#page=25]], [[random_processes.pdf#page=45]]
 
 _Aggiornato: 2026-09-28 — re-ingest del PDF con appunti: dal segnale deterministico al processo (p.3), particolarizzazioni e sinusoide a fase casuale (p.4–5), CDF del primo e secondo ordine (p.8), marginale della pdf e correzione $\partial^k$ (p.9), DF del processo di Bernoulli con derivazione (p.10). Prima, nello stesso giorno: creazione da ingest random_processes.pdf_

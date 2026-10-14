@@ -324,7 +324,65 @@ def fig_esempio2():
     save(fig, "grafico-lab-esempio2.png")
 
 
+# ---------------------------------------------------------------- larghezza del filtro
+T = 1.0                                                     # periodo di campionamento dell'esempio
+n_ex = np.arange(-1, 8)                                     # istanti nT
+tt_ex = np.linspace(-0.6, 6.6, 3000)
+x_ex = lambda t: 0.55 + 0.35 * np.sin(2 * np.pi * 0.14 * t + 0.4)   # segnale lento d'esempio
+
+
+def rect_w(t, w):                                           # rettangolo causale largo w, alto 1
+    return ((t >= 0) & (t < w)).astype(float)
+
+
+def tri_w(t, w):                                            # triangolo di base w, alto 1
+    return np.clip(1 - np.abs(t) / (w / 2), 0, None)
+
+
+def fig_larghezza():
+    casi = [("rettangolo", rect_w, [0.5 * T, T, 1.5 * T], ["troppo stretto: T/2", "giusto: T", "troppo largo: 1.5T"]),
+            ("triangolo", tri_w, [T, 2 * T, 3 * T], ["troppo stretto: base T", "giusto: base 2T", "troppo largo: base 3T"])]
+    fig, ax = plt.subplots(2, 3, figsize=(13, 6.4), sharex=True, sharey=True)
+    for r, (nome, h, ws, etich) in enumerate(casi):
+        for c, (w, lab) in enumerate(zip(ws, etich)):
+            a = ax[r, c]
+            copie = [x_ex(n * T) * h(tt_ex - n * T, w) for n in n_ex]
+            for y in copie:
+                a.plot(tt_ex, y, color=CAT[2], lw=0.9, alpha=0.8)
+            a.plot(tt_ex, x_ex(tt_ex), color=INK_2, lw=1, ls=":")
+            a.plot(tt_ex, np.sum(copie, axis=0), color=CAT[0] if c == 1 else RED, lw=2.2)
+            a.plot(n_ex * T, x_ex(n_ex * T), "o", color=CAT[1], ms=5, zorder=5)
+            a.set(title=f"{nome} {lab}", xlim=(-0.6, 6.6), ylim=(-0.05, 1.9))
+            if r == 1:
+                a.set_xlabel("t / T")
+    ax[0, 0].plot([], [], color=CAT[2], lw=0.9, label="copie di h, una per campione")
+    ax[0, 0].plot([], [], color=RED, lw=2.2, label="somma (ricostruito)")
+    ax[0, 0].plot([], [], color=INK_2, lw=1, ls=":", label="segnale originale")
+    ax[0, 0].legend(loc="upper left", fontsize=7)
+    fig.tight_layout()
+    save(fig, "grafico-lab-larghezza-filtro.png")
+
+
+def fig_somma_pesi():
+    """Se tutti i campioni valgono 1, il ricostruito è sum_n h(t - nT): deve dare 1 ovunque."""
+    casi = [("rettangolo", rect_w, [0.5 * T, T, 1.5 * T]), ("triangolo", tri_w, [T, 2 * T, 3 * T])]
+    fig, ax = plt.subplots(1, 2, figsize=(12, 3.4), sharey=True)
+    for a, (nome, h, ws) in zip(ax, casi):
+        for w, col in zip(ws, (RED, CAT[0], CAT[1])):
+            somma = np.sum([h(tt_ex - n * T, w) for n in range(-3, 11)], axis=0)
+            a.plot(tt_ex, somma, color=col, lw=2, label=f"larghezza {w/T:g}T" if nome == "rettangolo" else f"base {w/T:g}T")
+        a.axhline(1, color=INK_2, lw=0.8, ls=":")
+        a.plot(np.arange(0, 7) * T, np.ones(7), "o", color=INK, ms=4)
+        a.set(title=f"{nome}: campioni tutti uguali a 1 → la somma deve valere 1", xlabel="t / T",
+              xlim=(-0.2, 6.2), ylim=(-0.1, 2.2))
+        a.legend(loc="upper right", fontsize=8)
+    fig.tight_layout()
+    save(fig, "grafico-lab-somma-pesi.png")
+
+
 if __name__ == "__main__":
+    fig_larghezza()
+    fig_somma_pesi()
     fig_setup()
     fig_campionamento()
     fig_durata_convoluzione()

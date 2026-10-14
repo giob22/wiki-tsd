@@ -10,9 +10,7 @@ concetti: ["snr-di-quantizzazione", "quantizzazione-uniforme", "interpolazione"]
 
 > ⚠️ Non materia d'esame: serve a capire la legge dei 6 dB/bit di [[snr-di-quantizzazione]] e i suoi limiti. Fonte: [[laboratorio-conversione-ad]]. Prima leggere [[lab-quantizzazione]].
 
-## Cosa fa il codice
-
-> 📄 Fonte: [[AD_conversion.m]], righe 189–192
+## Cosa fa il codice · [[Campionamento_AD_DA.pdf#page=30|p. 30]] · [[AD_conversion.m]] righe 189–192
 
 ```matlab
 P_s   = mean(s.^2);                  % potenza del segnale originale
@@ -20,7 +18,7 @@ E_q   = mean((s-sq_r_trunc).^2);     % potenza dell'errore
 SNR_q = 10*log10(P_s/E_q)            % in dB (senza ';': viene stampato)
 ```
 
-È la definizione delle slide, $\text{SNR} = \langle x^2\rangle / \langle e^2\rangle$ ([[Campionamento_AD_DA.pdf#page=30]]), con le medie temporali calcolate sulla griglia. C'è però una differenza importante: l'errore è `s - sq_r_trunc`, cioè **segnale originale meno segnale ricostruito dopo quantizzazione e interpolazione**. Non è l'errore di quantizzazione $e(n) = x_q(n) - x(n)$ sui soli campioni.
+È la definizione delle slide, $\text{SNR} = \langle x^2\rangle / \langle e^2\rangle$, con le medie temporali calcolate sulla griglia. C'è però una differenza importante: l'errore è `s - sq_r_trunc`, cioè **segnale originale meno segnale ricostruito dopo quantizzazione e interpolazione**. Non è l'errore di quantizzazione $e(n) = x_q(n) - x(n)$ sui soli campioni.
 
 ## Cosa succede davvero
 
@@ -77,8 +75,8 @@ La **pendenza** di 6 dB/bit invece resta: ogni bit in più dimezza $\Delta$, qua
 - **"Allora il codice sbaglia?"** No: misura l'SNR **dell'intera catena** A/D + D/A su quella finestra. È una misura diversa, più "da ingegnere", di quella della slide, che isola la sola quantizzazione.
 - **"Aumentare i bit migliora sempre?"** Solo finché domina la quantizzazione. Oltre, conta l'interpolatore (e prima ancora il campionamento: vedi l'esempio 2 in [[lab-campionamento]], dove l'aliasing tiene l'SNR a 2 dB).
 
-## Collegamento alla teoria
+## Collegamento alla teoria · [[Campionamento_AD_DA.pdf#page=29|p. 29]], [[Campionamento_AD_DA.pdf#page=30|30]]
 
-[[snr-di-quantizzazione]]: definizione, modello $\Delta^2/12$ e legge dei 6 dB/bit ([[Campionamento_AD_DA.pdf#page=30]]). Il fattore di carico $k_c$ di [[quantizzazione-uniforme]] ([[Campionamento_AD_DA.pdf#page=29]]) qui è grande, perché la potenza media è piccola rispetto alla dinamica: anche questo abbassa l'SNR.
+[[snr-di-quantizzazione]]: definizione, modello $\Delta^2/12$ e legge dei 6 dB/bit. Il fattore di carico $k_c$ di [[quantizzazione-uniforme]] qui è grande, perché la potenza media è piccola rispetto alla dinamica: anche questo abbassa l'SNR.
 
 _Aggiornato: 2026-09-30 — creazione da ingest del laboratorio (AD_conversion.m)_

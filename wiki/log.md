@@ -87,3 +87,20 @@ Filtra ultimi 10: `grep "^## " wiki/log.md | tail -10`
 - replica Python dello script e grafici 🧩 in `output/grafici/genera_grafici_laboratorio_ad.py`: 7 PNG + GIF dell'interpolazione; 3 figure del laboratorio copiate in raw/assets (lab-0928-*)
 - collegamenti aggiunti nei concetti teorici: [[interpolazione]], [[teorema-del-campionamento]], [[aliasing]], [[quantizzazione-uniforme]], [[snr-di-quantizzazione]], [[conversione-ad-da]]; aggiornati [[index]], [[overview]], [[lezioni]]
 - revisione di copertura: tutte le righe dello script (compreso il blocco audio commentato e le righe 199-202) e tutti i pannelli delle 3 figure hanno una controparte nel wiki
+
+## [2026-09-30] query | larghezza del filtro interpolatore (rettangolo e triangolo)
+- risposta salvata in [[lab-interpolazione]], punto 5: rettangolo largo T, triangolo con base 2T; due condizioni (h(kT) = 0 per k ≠ 0 e somma delle copie = 1), collegamento con gli zeri di H_r(f) e con il bug di C = 1
+- grafici 🧩 `grafico-lab-larghezza-filtro.png` (6 larghezze sullo stesso segnale) e `grafico-lab-somma-pesi.png` (somma delle copie con campioni tutti a 1), da `genera_grafici_laboratorio_ad.py`
+
+## [2026-10-11] riorganizzazione | riferimenti solo nei titoli + compendio unico
+- richiesta dell'utente: tutte le lezioni in un unico file; riferimenti ai PDF solo nei titoli di sezione e sottosezione, su tutto il wiki
+- 1175 riferimenti ai PDF spostati dal corpo ai titoli (script `output/riferimenti_nei_titoli.py`): righe "📄 Fonte" di sola citazione rimosse, colonne "Pagina" delle tabelle rimosse, citazioni in didascalie e parentesi rimosse, citazioni che fanno parte di una frase ridotte a testo semplice "p. N"; restano invariati lezioni.md (indice) e log.md (storico)
+- laboratorio: riferimenti alle righe di AD_conversion.m e alle figure spostati nei titoli
+- 16 link a titoli ([[pagina#Titolo]]) trasformati in link alla pagina, perché i titoli ora contengono link e l'ancora non funzionerebbe
+- nuovo [[corso-completo]] (406 KB, 49 argomenti in 6 lezioni), generato da `output/genera_compendio.py` nell'ordine di [[lezioni]]; in lezioni.md aggiunti [[disuguaglianza-di-chebyshev]] (Lezione 3) e la riga "Entità collegate"
+- CLAUDE.md aggiornato: nuova regola di tracciabilità (riferimenti solo nei titoli), compendio da rigenerare a ogni ingest
+- controllo: 0 link rotti, 0 ancore rotte, 0 link ai PDF nel corpo (esclusi lezioni.md e log.md)
+
+## [2026-10-12] query | coseno campionato esattamente a f_c = 2 f_0
+- risposta salvata in [[teorema-del-campionamento]] (nuova derivazione "Caso limite"): campioni (-1)^n cos(φ), ricostruzione ideale cos(φ) cos(2π f0 t), perdita della fase; spiegazione con le righe in ±f0 che si sommano in f_c/2; il "≥" del teorema vale per spettri continui, per una riga sul bordo serve ">"
+- animazione 🧩 `grafico-nyquist-limite-coseno.gif` (script `output/grafici/genera_grafici_nyquist_limite.py`); identità della serie di Shannon verificata numericamente; compendio rigenerato

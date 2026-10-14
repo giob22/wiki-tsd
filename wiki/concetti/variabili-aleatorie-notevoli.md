@@ -7,26 +7,24 @@ fonti_pdf: ["Probabilità.pdf#page=20", "Probabilità.pdf#page=21", "Probabilit�
 
 # Variabili aleatorie notevoli: Bernoulli, Binomiale, Uniforme (e Laplace)
 
-## Definizione
-
-> 📄 Fonte: [[Probabilità.pdf#page=20]] – [[Probabilità.pdf#page=23]], [[Campionamento_AD_DA.pdf#page=32]]
+## Definizione · Probabilità [[Probabilità.pdf#page=20|p. 20]]–[[Probabilità.pdf#page=23|23]] · Campionamento [[Campionamento_AD_DA.pdf#page=32|p. 32]]
 
 | V.a. | Tipo | Parametri | Valori | Uso tipico |
 |---|---|---|---|---|
-| **Bernoulli** $X\sim\text{Bern}(p)$ | discreta | $p\in[0,1]$, $q=1-p$ | $\{0,1\}$ | successo/insuccesso; simile all'indicatrice di un evento ([[Probabilità.pdf#page=20]]) |
-| **Binomiale** $X\sim\mathcal{B}(n,p)$ | discreta | $n\in\mathbb{N}$, $p$ | $\{0,1,\dots,n\}$ | numero di successi in $n$ prove ripetute ([[Probabilità.pdf#page=21]]) |
-| **Uniforme** $X\sim\mathcal{U}(a,b)$ | continua | $a<b$ | $(a,b)$ | nessuna preferenza fra i valori di un intervallo limitato ([[Probabilità.pdf#page=22]]) |
+| **Bernoulli** $X\sim\text{Bern}(p)$ | discreta | $p\in[0,1]$, $q=1-p$ | $\{0,1\}$ | successo/insuccesso; simile all'indicatrice di un evento |
+| **Binomiale** $X\sim\mathcal{B}(n,p)$ | discreta | $n\in\mathbb{N}$, $p$ | $\{0,1,\dots,n\}$ | numero di successi in $n$ prove ripetute |
+| **Uniforme** $X\sim\mathcal{U}(a,b)$ | continua | $a<b$ | $(a,b)$ | nessuna preferenza fra i valori di un intervallo limitato |
 | **Gaussiana** $X\sim\mathcal{N}(\mu,\sigma)$ | continua | $\mu$, $\sigma>0$ | $\mathbb{R}$ | somma di molti contributi indipendenti → pagina dedicata [[variabile-aleatoria-gaussiana]] |
-| **Laplace** | continua | $\lambda>0$ | $\mathbb{R}$ | ampiezze del segnale vocale ([[Campionamento_AD_DA.pdf#page=32]]) |
+| **Laplace** | continua | $\lambda>0$ | $\mathbb{R}$ | ampiezze del segnale vocale |
 
-## Formule
+## Formule · Probabilità [[Probabilità.pdf#page=20|p. 20]]–[[Probabilità.pdf#page=22|22]] · Campionamento [[Campionamento_AD_DA.pdf#page=32|p. 32]]
 
-| V.a. | DF / pdf | CDF | Pagina |
-|---|---|---|---|
-| Bernoulli | $p(0)=q,\ p(1)=p$ | derivata sotto | [[Probabilità.pdf#page=20]] |
-| Binomiale | $p(k) = \binom{n}{k}p^k q^{n-k}$ | derivata sotto | [[Probabilità.pdf#page=21]] |
-| Uniforme | $f(x)=\frac{1}{b-a}$ per $x\in(a,b)$, 0 altrove | $F(x) = 0,\ \frac{x-a}{b-a},\ 1$ per $x<a$, $a\le x<b$, $x\ge b$ | [[Probabilità.pdf#page=22]] |
-| Laplace | $f_X(x) = \frac{\lambda}{2}e^{-\lambda\|x\|}$ | — | [[Campionamento_AD_DA.pdf#page=32]] |
+| V.a. | DF / pdf | CDF |
+|---|---|---|
+| Bernoulli | $p(0)=q,\ p(1)=p$ | derivata sotto |
+| Binomiale | $p(k) = \binom{n}{k}p^k q^{n-k}$ | derivata sotto |
+| Uniforme | $f(x)=\frac{1}{b-a}$ per $x\in(a,b)$, 0 altrove | $F(x) = 0,\ \frac{x-a}{b-a},\ 1$ per $x<a$, $a\le x<b$, $x\ge b$ |
+| Laplace | $f_X(x) = \frac{\lambda}{2}e^{-\lambda\|x\|}$ | — |
 
 Unità: $f$ in $[X]^{-1}$; per la Laplace $\lambda$ ha unità $[X]^{-1}$ (es. 1/V).
 
@@ -39,9 +37,9 @@ Unità: $f$ in $[X]^{-1}$; per la Laplace $\lambda$ ha unità $[X]^{-1}$ (es. 1/
 | $\mathcal{U}(a,b)$ | $\frac{a+b}{2}$ | $\frac{(b-a)^2}{12}$ |
 | Laplace($\lambda$) | $0$ | $\frac{2}{\lambda^2}$ |
 
-## Derivazioni
+## Derivazioni · [[Probabilità.pdf#page=20|p. 20]], [[Probabilità.pdf#page=21|21]]
 
-Le CDF e pdf di Bernoulli e Binomiale sono esercizi lasciati al lettore nelle slide («Calcolare CDF e pdf», [[Probabilità.pdf#page=20]], [[Probabilità.pdf#page=21]]). Svolgimento completo in [[cdf-pdf-variabili-notevoli]]; qui i risultati:
+Le CDF e pdf di Bernoulli e Binomiale sono esercizi lasciati al lettore nelle slide («Calcolare CDF e pdf»). Svolgimento completo in [[cdf-pdf-variabili-notevoli]]; qui i risultati:
 
 $$
 \begin{aligned}
@@ -50,8 +48,7 @@ $$
 \end{aligned}
 $$
 
-### Derivazione — Normalizzazione della Binomiale
-**Fonte:** [[Probabilità.pdf#page=21]] (suggerisce di usare la potenza del binomio)
+### Derivazione — Normalizzazione della Binomiale · [[Probabilità.pdf#page=21|p. 21]]
 $$
 \begin{aligned}
 \sum_{k=0}^n p(k) &= \sum_{k=0}^n \tbinom{n}{k}p^kq^{n-k} && \text{DF binomiale} \\
@@ -60,15 +57,14 @@ $$
 \end{aligned}
 $$
 
-### Derivazione — Da dove viene la DF binomiale
+### Derivazione — Da dove viene la DF binomiale · [[Probabilità.pdf#page=21|p. 21]]
 > 🧩 Derivazione mia (la slide dà la formula senza giustificarla)
 
 Faccio $n$ prove di Bernoulli **indipendenti**, ognuna con successo di probabilità $p$. Una sequenza *specifica* con $k$ successi e $n-k$ insuccessi ha probabilità $p^kq^{n-k}$, per l'indipendenza ([[probabilita-condizionale]]). Le sequenze con esattamente $k$ successi sono $\binom{n}{k}$ e sono eventi disgiunti; sommando si ottiene $p(k) = \binom nk p^kq^{n-k}$.
 
-**Caso particolare** $n=1$: $p(0) = \binom10 q = q$ e $p(1) = \binom11 p = p$, cioè la Bernoulli ([[Probabilità.pdf#page=21]]).
+**Caso particolare** $n=1$: $p(0) = \binom10 q = q$ e $p(1) = \binom11 p = p$, cioè la Bernoulli.
 
-### Derivazione — CDF dell'Uniforme
-**Fonte:** [[Probabilità.pdf#page=22]] («si ottiene per integrazione»)
+### Derivazione — CDF dell'Uniforme · [[Probabilità.pdf#page=22|p. 22]]
 $$
 \begin{aligned}
 x<a:&\quad F(x) = \int_{-\infty}^x 0\,dy = 0 \\
@@ -78,7 +74,7 @@ x\ge b:&\quad F(x) = \int_a^b \frac{1}{b-a}\,dy = 1
 $$
 **Sanity check:** $F$ è continua in $a$ (vale 0) e in $b$ (vale 1), come deve per una v.a. continua.
 
-### Derivazione — Media e varianza dell'Uniforme
+### Derivazione — Media e varianza dell'Uniforme · [[Campionamento_AD_DA.pdf#page=30|p. 30]]
 > 🧩 Derivazione mia
 $$
 \begin{aligned}
@@ -89,7 +85,7 @@ E(X^2) &= \int_a^b \frac{x^2}{b-a}\,dx = \frac{b^3-a^3}{3(b-a)} = \frac{a^2+ab+b
 &= \frac{a^2 - 2ab + b^2}{12} = \frac{(b-a)^2}{12}
 \end{aligned}
 $$
-**Caso d'uso:** $a=-\Delta/2$, $b=\Delta/2$ → $\text{Var} = \Delta^2/12$, cioè la potenza del rumore di quantizzazione ([[Campionamento_AD_DA.pdf#page=30]]).
+**Caso d'uso:** $a=-\Delta/2$, $b=\Delta/2$ → $\text{Var} = \Delta^2/12$, cioè la potenza del rumore di quantizzazione.
 
 ### Derivazione — Media e varianza di Bernoulli e Binomiale
 > 🧩 Derivazione mia
@@ -102,7 +98,7 @@ E(X) &= \textstyle\sum_i E(X_i) = np && \text{linearità} \\
 \end{aligned}
 $$
 
-### Derivazione — Normalizzazione e varianza della Laplace
+### Derivazione — Normalizzazione e varianza della Laplace · [[Campionamento_AD_DA.pdf#page=32|p. 32]]
 > 🧩 Derivazione mia
 $$
 \begin{aligned}
@@ -114,15 +110,15 @@ $$
 Quindi $x_{rms} = \sqrt2/\lambda$: più $\lambda$ è grande, più la pdf è concentrata intorno allo zero.
 
 ![[grafico-laplace-pdf-lambda.png]]
-*🧩 Grafico mio (formula di [[Campionamento_AD_DA.pdf#page=32]]): cuspide in 0 alta $\lambda/2$, code esponenziali; larghezza $\propto 1/\lambda$. Confronto con gaussiana e uniforme a pari potenza in [[quantizzazione-non-uniforme]].*
+*🧩 Grafico mio (formula di p. 32): cuspide in 0 alta $\lambda/2$, code esponenziali; larghezza $\propto 1/\lambda$. Confronto con gaussiana e uniforme a pari potenza in [[quantizzazione-non-uniforme]].*
 
-## Spiegazione
+## Spiegazione · Probabilità [[Probabilità.pdf#page=20|p. 20]], [[Probabilità.pdf#page=22|p. 22]] · Campionamento [[Campionamento_AD_DA.pdf#page=32|p. 32]]
 
 ![[probabilita-p22-uniforme.png]]
 
-- **Esempio uniforme** ([[Probabilità.pdf#page=22]]): un bus arriva a caso tra le 10:00 e le 10:15, quindi $X\sim\mathcal{U}(0,900)$ s (15 min × 60 s/min = 900 s). Per esempio $P(X\le 300\,\text{s}) = 300/900 = 1/3$ (🧩 mio).
-- La Bernoulli è simile alla v.a. **indicatrice** di un evento $A$: vale 1 se $\omega\in A$, 0 altrimenti, con $p = P(A)$ ([[Probabilità.pdf#page=20]]).
-- **Laplace e voce** ([[Campionamento_AD_DA.pdf#page=32]]): i valori vicini allo zero sono i più probabili, e per questo la quantizzazione uniforme non è ottima per la voce → [[quantizzazione-non-uniforme]].
+- **Esempio uniforme**: un bus arriva a caso tra le 10:00 e le 10:15, quindi $X\sim\mathcal{U}(0,900)$ s (15 min × 60 s/min = 900 s). Per esempio $P(X\le 300\,\text{s}) = 300/900 = 1/3$ (🧩 mio).
+- La Bernoulli è simile alla v.a. **indicatrice** di un evento $A$: vale 1 se $\omega\in A$, 0 altrimenti, con $p = P(A)$.
+- **Laplace e voce**: i valori vicini allo zero sono i più probabili, e per questo la quantizzazione uniforme non è ottima per la voce → [[quantizzazione-non-uniforme]].
 
 ## Perché importa
 
@@ -138,9 +134,8 @@ Quindi $x_{rms} = \sqrt2/\lambda$: più $\lambda$ è grande, più la pdf è conc
 - [[media-e-varianza]] — i momenti in tabella.
 - [[disuguaglianza-di-chebyshev]] — usata sul fattore di carico, vale per qualunque pdf.
 
-## Fonti
+## Fonti · Probabilità [[Probabilità.pdf#page=20|p. 20]], [[Probabilità.pdf#page=23|p. 23]] · Campionamento [[Campionamento_AD_DA.pdf#page=32|p. 32]]
 
 - [[elementi-teoria-probabilita]], [[campionamento-conversione-ad-da]]
-- [[Probabilità.pdf#page=20]] – [[Probabilità.pdf#page=23]], [[Campionamento_AD_DA.pdf#page=32]]
 
 _Aggiornato: 2026-09-23 — creazione da ingest Probabilità.pdf e Campionamento_AD_DA.pdf_

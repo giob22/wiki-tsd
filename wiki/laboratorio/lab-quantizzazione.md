@@ -10,9 +10,7 @@ concetti: ["quantizzazione-uniforme", "conversione-ad-da"]
 
 > ⚠️ Non materia d'esame: serve a vedere la [[quantizzazione-uniforme]] su numeri veri. Fonte: [[laboratorio-conversione-ad]]. Prima leggere [[lab-campionamento]] e [[lab-interpolazione]].
 
-## Cosa fa il codice
-
-> 📄 Fonte: [[AD_conversion.m]], righe 146–175
+## Cosa fa il codice · [[AD_conversion.m]] righe 146–175
 
 ```matlab
 bits  = 4;
@@ -36,7 +34,7 @@ sq_r_trunc = ...conv(s_q,h)...         % stessa interpolazione di prima
 
 ## Cosa succede davvero
 
-### I numeri dell'esempio 1
+### I numeri dell'esempio 1 · [[Campionamento_AD_DA.pdf#page=26|p. 26]], [[Campionamento_AD_DA.pdf#page=28|p. 28]]
 > 🧩 Derivazione mia
 
 $$
@@ -57,14 +55,14 @@ Cosa succede ai campioni:
 | 0.506 (in $\pm 1.494$) | 0.53125 (distanza 0.025, contro 0.038 da 0.46875) | +0.025 |
 | 1 (5 campioni) | 0.96875 | $-0.03125 = -\Delta/2$ |
 
-È il quantizzatore uniforme delle slide ([[Campionamento_AD_DA.pdf#page=26]]): celle larghe $\Delta$, livello nel punto medio, $|e| \le \Delta/2$ nella regione granulare ([[Campionamento_AD_DA.pdf#page=28]]). Qui la dinamica non è simmetrica ($[0, 1]$ invece di $[-X_{max}, X_{max}]$), ma la relazione è la stessa: $M\Delta = $ ampiezza della dinamica, con $M = N_q$ ([[quantizzazione-uniforme]]).
+È il quantizzatore uniforme delle slide: celle larghe $\Delta$, livello nel punto medio, $|e| \le \Delta/2$ nella regione granulare. Qui la dinamica non è simmetrica ($[0, 1]$ invece di $[-X_{max}, X_{max}]$), ma la relazione è la stessa: $M\Delta = $ ampiezza della dinamica, con $M = N_q$ ([[quantizzazione-uniforme]]).
 
-### Lo zero non esiste
+### Lo zero non esiste · [[Campionamento_AD_DA.pdf#page=30|p. 30]]
 Con i livelli al centro delle celle e l'estremo della dinamica in 0, **nessun livello vale 0**: il più basso è $\Delta/2$. Tutti i campioni nulli, cioè 112 su 121, diventano 0.03125. Dopo l'interpolazione il segnale ricostruito ha un "pavimento" a 0.031 su tutta la finestra fuori dal trapezio: è la riga sollevata che si vede in basso nelle due figure del laboratorio.
 
 Allo stesso modo il massimo 1 diventa 0.96875: il plateau ricostruito si abbassa di $\Delta/2$.
 
-> 🧩 Perché conta: l'errore di questi campioni non è "casuale tra $-\Delta/2$ e $\Delta/2$" come nel modello delle slide ([[Campionamento_AD_DA.pdf#page=30]]), ma vale **sempre esattamente** $+\Delta/2$. Il modello $\Delta^2/12$ sottostima quindi il rumore: le conseguenze sull'SNR sono in [[lab-snr]].
+> 🧩 Perché conta: l'errore di questi campioni non è "casuale tra $-\Delta/2$ e $\Delta/2$" come nel modello delle slide, ma vale **sempre esattamente** $+\Delta/2$. Il modello $\Delta^2/12$ sottostima quindi il rumore: le conseguenze sull'SNR sono in [[lab-snr]].
 
 ![[grafico-lab-quantizzazione.png]]
 *🧩 Grafico mio (replica dello script, 4 bit).*
@@ -84,8 +82,8 @@ Nelle figure [[Figure_2_interpolazione_lineaare.png]] e [[Figure_2_interpolazion
 
 > 🧩 Dettaglio del codice: `s_min` e `s_max` sono calcolati su tutto `s_samp`, compresi gli zeri messi tra un campione e l'altro. Per il trapezio non cambia nulla, perché il minimo dei campioni è già 0. Con campioni tutti positivi, però, il minimo diventerebbe 0 anche se nessun campione vale 0, e la dinamica risulterebbe più larga del necessario. Andrebbe usato `s_samp(is)`.
 
-## Collegamento alla teoria
+## Collegamento alla teoria · [[Campionamento_AD_DA.pdf#page=25|p. 25]], [[Campionamento_AD_DA.pdf#page=27|p. 27]], [[Campionamento_AD_DA.pdf#page=28|28]]
 
-[[quantizzazione-uniforme]] (celle, livelli al centro, errore $|e| \le \Delta/2$: [[Campionamento_AD_DA.pdf#page=25]] – [[Campionamento_AD_DA.pdf#page=28]]); il codice binario dei livelli, 4 bit per 16 livelli ([[Campionamento_AD_DA.pdf#page=27]]), qui non viene scritto: lo script conserva direttamente i valori dei livelli.
+[[quantizzazione-uniforme]] (celle, livelli al centro, errore $|e| \le \Delta/2$: p. 25 – p. 28); il codice binario dei livelli, 4 bit per 16 livelli, qui non viene scritto: lo script conserva direttamente i valori dei livelli.
 
 _Aggiornato: 2026-09-30 — creazione da ingest del laboratorio (AD_conversion.m)_

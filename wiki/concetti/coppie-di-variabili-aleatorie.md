@@ -7,9 +7,7 @@ fonti_pdf: ["Probabilità.pdf#page=31", "Probabilità.pdf#page=32", "Probabilit�
 
 # Coppie di variabili aleatorie
 
-## Definizione
-
-> 📄 Fonte: [[Probabilità.pdf#page=31]]
+## Definizione · [[Probabilità.pdf#page=31|p. 31]]
 
 Una **coppia di v.a.** è formata da due funzioni definite sullo stesso $\Omega$:
 $$(X,Y): \omega\in\Omega \to (X(\omega), Y(\omega)) \in \mathbb{R}\times\mathbb{R}$$
@@ -17,18 +15,18 @@ Le CDF marginali $F_X$ e $F_Y$ descrivono le singole v.a. ma **non** la loro rel
 
 ![[probabilita-p31-coppia-va.png]]
 
-## Formule
+## Formule · [[Probabilità.pdf#page=31|p. 31]]–[[Probabilità.pdf#page=35|35]]
 
-| Grandezza | Definizione | Pagina |
-|---|---|---|
-| CDF congiunta | $F_{XY}(x,y) \triangleq P(X\le x, Y\le y)$ | [[Probabilità.pdf#page=31]] |
-| pdf congiunta | $f_{XY}(x,y) \triangleq \dfrac{\partial^2 F_{XY}(x,y)}{\partial x\,\partial y}$ | [[Probabilità.pdf#page=31]] |
-| pdf condizionale | $f_X(x\|y) \triangleq \dfrac{f_{XY}(x,y)}{f_Y(y)}$, $\quad f_Y(y\|x) \triangleq \dfrac{f_{XY}(x,y)}{f_X(x)}$ | [[Probabilità.pdf#page=34]] |
-| indipendenza | $f_{XY}(x,y) = f_X(x)\,f_Y(y)$ | [[Probabilità.pdf#page=35]] |
+| Grandezza | Definizione |
+|---|---|
+| CDF congiunta | $F_{XY}(x,y) \triangleq P(X\le x, Y\le y)$ |
+| pdf congiunta | $f_{XY}(x,y) \triangleq \dfrac{\partial^2 F_{XY}(x,y)}{\partial x\,\partial y}$ |
+| pdf condizionale | $f_X(x\|y) \triangleq \dfrac{f_{XY}(x,y)}{f_Y(y)}$, $\quad f_Y(y\|x) \triangleq \dfrac{f_{XY}(x,y)}{f_X(x)}$ |
+| indipendenza | $f_{XY}(x,y) = f_X(x)\,f_Y(y)$ |
 
 Unità: $f_{XY}$ ha dimensione $[X]^{-1}[Y]^{-1}$.
 
-**Proprietà di base** ([[Probabilità.pdf#page=32]]):
+**Proprietà di base**:
 1. $F_X(x) = F_{XY}(x,+\infty)$ — CDF marginale di $X$
 2. $F_Y(y) = F_{XY}(+\infty,y)$
 3. $f_X(x) = \int_{-\infty}^{+\infty} f_{XY}(x,y)\,dy$ — pdf marginale
@@ -37,7 +35,7 @@ Unità: $f_{XY}$ ha dimensione $[X]^{-1}[Y]^{-1}$.
 6. $P((X,Y)\in A) = \iint_A f_{XY}(x,y)\,dx\,dy$
 7. $F_{XY}(x,y) = \int_{-\infty}^x\int_{-\infty}^y f_{XY}(u,v)\,du\,dv$
 
-**Proprietà della CDF congiunta** ([[Probabilità.pdf#page=33]]):
+**Proprietà della CDF congiunta**:
 1. $F(-\infty,y) = F(x,-\infty) = 0$, $F(+\infty,+\infty) = 1$
 2. $P(x_1<X\le x_2, Y\le y) = F(x_2,y) - F(x_1,y)$ (analoga in $y$)
 3. $P(x_1<X\le x_2,\ y_1<Y\le y_2) = F(x_2,y_2) - F(x_1,y_2) - F(x_2,y_1) + F(x_1,y_1)$
@@ -66,39 +64,36 @@ P(x_1<X\le x_2,\ y_1<Y\le y_2) &= P(x_1<X\le x_2, Y\le y_2) - P(x_1<X\le x_2, Y\
 \end{aligned}
 $$
 
-### Derivazione — Normalizzazione delle pdf condizionali
-**Fonte:** [[Probabilità.pdf#page=34]]
+### Derivazione — Normalizzazione delle pdf condizionali · [[Probabilità.pdf#page=34|p. 34]]
 $$
 \int_{-\infty}^{+\infty} f_X(x|y)\,dx = \frac{1}{f_Y(y)}\int f_{XY}(x,y)\,dx = \frac{f_Y(y)}{f_Y(y)} = 1 \qquad \text{(prop. 4 delle marginali)}
 $$
 
-### Derivazione — Indipendenza ⇒ condizionale = marginale
-**Fonte:** [[Probabilità.pdf#page=35]]
+### Derivazione — Indipendenza ⇒ condizionale = marginale · [[Probabilità.pdf#page=35|p. 35]]
 $$f_X(x|y) = \frac{f_{XY}(x,y)}{f_Y(y)} = \frac{f_X(x)f_Y(y)}{f_Y(y)} = f_X(x)$$
 Analogamente $f_Y(y|x) = f_Y(y)$.
 
-## Spiegazione
+## Spiegazione · [[Probabilità.pdf#page=34|p. 34]], [[Probabilità.pdf#page=35|35]]
 
-- **Pdf condizionale** ([[Probabilità.pdf#page=34]]): dice come cambia la distribuzione di $Y$ quando si fissa $\{X=x\}$. Esempio della slide: il peso $Y$ di una persona di cui si conosce l'altezza $X$. È l'analogo per densità di $P(A|B)$ ([[probabilita-condizionale]]).
-- **Indipendenza** ([[Probabilità.pdf#page=35]]): la fattorizzazione si può scrivere in modo equivalente con la CDF congiunta ($F_{XY} = F_XF_Y$) o con la DF congiunta per v.a. discrete.
+- **Pdf condizionale**: dice come cambia la distribuzione di $Y$ quando si fissa $\{X=x\}$. Esempio della slide: il peso $Y$ di una persona di cui si conosce l'altezza $X$. È l'analogo per densità di $P(A|B)$ ([[probabilita-condizionale]]).
+- **Indipendenza**: la fattorizzazione si può scrivere in modo equivalente con la CDF congiunta ($F_{XY} = F_XF_Y$) o con la DF congiunta per v.a. discrete.
 - Dalla congiunta si ricavano sempre le marginali. Il viceversa vale **solo** se c'è indipendenza.
 
 > 🎯 Esame: marginali dalla congiunta, definizione di pdf condizionale, differenza tra indipendenza e incorrelazione (vedi [[correlazione-e-covarianza]]).
 
-## Perché importa
+## Perché importa · [[Intro.pdf#page=3|p. 3]]
 
-Segnale e rumore, oppure due campioni successivi dello stesso segnale, sono coppie di v.a. La loro relazione statistica (indipendenza, correlazione) è la base dei **processi aleatori**, argomento del corso ([[Intro.pdf#page=3]]).
+Segnale e rumore, oppure due campioni successivi dello stesso segnale, sono coppie di v.a. La loro relazione statistica (indipendenza, correlazione) è la base dei **processi aleatori**, argomento del corso.
 
-## Connessioni
+## Connessioni · [[Probabilità.pdf#page=34|p. 34]]
 
 - [[correlazione-e-covarianza]] — descrizione sintetica (momenti misti) della coppia.
-- [[probabilita-totale-e-bayes]] — Bayes per densità: $f_X(x|y) = f_Y(y|x)f_X(x)/f_Y(y)$ (🧩 mio, combinando le due definizioni di [[Probabilità.pdf#page=34]]).
+- [[probabilita-totale-e-bayes]] — Bayes per densità: $f_X(x|y) = f_Y(y|x)f_X(x)/f_Y(y)$ (🧩 mio, combinando le due definizioni di p. 34).
 - [[media-e-varianza]] — il teorema fondamentale della media si estende alle coppie.
 - [[processo-aleatorio]] — due campioni di un processo sono una coppia di v.a.; le marginali danno la coerenza delle distribuzioni di ordine $k$.
 
-## Fonti
+## Fonti · [[Probabilità.pdf#page=31|p. 31]], [[Probabilità.pdf#page=35|p. 35]]
 
 - [[elementi-teoria-probabilita]]
-- [[Probabilità.pdf#page=31]] – [[Probabilità.pdf#page=35]]
 
 _Aggiornato: 2026-09-28 — collegamento al processo aleatorio; 2026-09-23 — creazione da ingest Probabilità.pdf_

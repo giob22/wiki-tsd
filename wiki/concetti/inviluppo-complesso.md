@@ -7,21 +7,19 @@ fonti_pdf: ["Rappresentazione_Rice.pdf#page=6", "Rappresentazione_Rice.pdf#page=
 
 # Inviluppo complesso e componenti in fase e quadratura
 
-## Definizione
+## Definizione · [[Rappresentazione_Rice.pdf#page=9|p. 9]], [[Rappresentazione_Rice.pdf#page=15|p. 15]], [[Rappresentazione_Rice.pdf#page=16|16]]
 
-> 📄 Fonte: [[Rappresentazione_Rice.pdf#page=9]] (slide 6), [[Rappresentazione_Rice.pdf#page=15]] (slide 11), [[Rappresentazione_Rice.pdf#page=16]] (slide 12)
+Tutta l'informazione di un segnale passa-banda **reale** $s_p(t)$ è contenuta in un segnale **complesso in banda base**. Questo segnale si chiama **rappresentazione complessa in banda base**, o **inviluppo complesso** (*complex envelope*), di $s_p(t)$.
 
-Tutta l'informazione di un segnale passa-banda **reale** $s_p(t)$ è contenuta in un segnale **complesso in banda base**. Questo segnale si chiama **rappresentazione complessa in banda base**, o **inviluppo complesso** (*complex envelope*), di $s_p(t)$ ([[Rappresentazione_Rice.pdf#page=9]], slide 6).
-
-In frequenza è il [[segnale-analitico]] traslato di $-f_c$ ([[Rappresentazione_Rice.pdf#page=15]], slide 11):
+In frequenza è il [[segnale-analitico]] traslato di $-f_c$:
 $$S(f) \triangleq S_p^+(f + f_c) = \sqrt2\,S_p(f + f_c)\,u(f + f_c) \tag{13}$$
 
-Nel tempo ([[Rappresentazione_Rice.pdf#page=16]], slide 12):
+Nel tempo:
 $$s(t) = s_p^+(t)\,e^{-j2\pi f_c t} = s_c(t) + j\,s_s(t) \tag{15}$$
 - $s_c(t)$ = componente **in fase** (*in-phase*, **I**), la parte reale;
 - $s_s(t)$ = componente **in quadratura** (*quadrature*, **Q**), la parte immaginaria.
 
-Sono entrambi segnali **reali** in banda base. Note a mano sulla slide 12 ([[Rappresentazione_Rice.pdf#page=16]]):
+Sono entrambi segnali **reali** in banda base. Note a mano sulla slide 12:
 - la (15) «corrisponde a una traslazione del segnale analitico», per la proprietà di Fourier della traslazione in frequenza;
 - $s_c(t)$ è la componente in fase (I), $s_s(t)$ la componente in quadratura (Q), e insieme danno i «termini di seno e coseno»;
 - «quadratura indica che il prodotto ortogonale [scalare] con $s_c$ è 0», proprietà dimostrata più sotto, eq. (18).
@@ -33,19 +31,19 @@ $$s_p(t) = \sqrt2\,\text{Re}\{s(t)\,e^{j2\pi f_c t}\} = \sqrt2\,s_c(t)\cos(2\pi 
 
 > 🧩 Precisazione mia: l'inviluppo complesso è definito **rispetto a una frequenza di riferimento** $f_c$. Se si cambia il riferimento in $f_c + \Delta f$, la (15) dà $s_p^+(t)\,e^{-j2\pi(f_c + \Delta f)t} = s(t)\,e^{-j2\pi \Delta f\, t}$: lo stesso inviluppo traslato in frequenza di $-\Delta f$. Per questo la slide 16 parla di un «riferimento di frequenza comune» ([[equivalente-banda-base-dei-filtri]]).
 
-## Formule
+## Formule · [[Rappresentazione_Rice.pdf#page=15|p. 15]]–[[Rappresentazione_Rice.pdf#page=17|17]]
 
-| Formula | Significato | Pagina |
-|---|---|---|
-| $S(f) = S_p^+(f + f_c) = \sqrt2\,S_p(f + f_c)\,u(f + f_c)$ | inviluppo complesso in frequenza, eq. (13) | [[Rappresentazione_Rice.pdf#page=15]] (slide 11) |
-| $S_p(f) = \dfrac{S(f - f_c) + S^*(-f - f_c)}{\sqrt2}$ | ritorno al passa-banda in frequenza, eq. (14) | [[Rappresentazione_Rice.pdf#page=15]] (slide 11) |
-| $s(t) = s_p^+(t)\,e^{-j2\pi f_c t} = s_c(t) + j s_s(t)$ | inviluppo nel tempo, eq. (15) | [[Rappresentazione_Rice.pdf#page=16]] (slide 12) |
-| $s_p(t) = \sqrt2\,\text{Re}\{s(t)\,e^{j2\pi f_c t}\}$ | eq. (16) | [[Rappresentazione_Rice.pdf#page=16]] (slide 12) |
-| $s_p(t) = \sqrt2\,s_c\cos(2\pi f_c t) - \sqrt2\,s_s\sin(2\pi f_c t)$ | forma I/Q, eq. (17) | [[Rappresentazione_Rice.pdf#page=16]] (slide 12) |
-| $s_p(t) = \sqrt2\,a(t)\cos\big(2\pi f_c t + \theta(t)\big)$, con $a = \|s\|$ e $\theta = \arg s$ | forma ampiezza-fase | 🧩 dalla (16) |
-| $\langle x_c, x_s\rangle = \int x_c(t)\,x_s(t)\,dt = 0$ | ortogonalità delle portanti I e Q, eq. (18) | [[Rappresentazione_Rice.pdf#page=17]] (slide 13) |
-| $\langle u_p, v_p\rangle = \langle u_c, v_c\rangle + \langle u_s, v_s\rangle = \text{Re}\{\langle u, v\rangle\}$ | prodotto scalare, eq. (19) | [[Rappresentazione_Rice.pdf#page=17]] (slide 13) |
-| $\|s_p\|^2 = \|s\|^2$ | conservazione dell'energia, eq. (20) | [[Rappresentazione_Rice.pdf#page=17]] (slide 13) |
+| Formula | Significato |
+|---|---|
+| $S(f) = S_p^+(f + f_c) = \sqrt2\,S_p(f + f_c)\,u(f + f_c)$ | inviluppo complesso in frequenza, eq. (13) |
+| $S_p(f) = \dfrac{S(f - f_c) + S^*(-f - f_c)}{\sqrt2}$ | ritorno al passa-banda in frequenza, eq. (14) |
+| $s(t) = s_p^+(t)\,e^{-j2\pi f_c t} = s_c(t) + j s_s(t)$ | inviluppo nel tempo, eq. (15) |
+| $s_p(t) = \sqrt2\,\text{Re}\{s(t)\,e^{j2\pi f_c t}\}$ | eq. (16) |
+| $s_p(t) = \sqrt2\,s_c\cos(2\pi f_c t) - \sqrt2\,s_s\sin(2\pi f_c t)$ | forma I/Q, eq. (17) |
+| $s_p(t) = \sqrt2\,a(t)\cos\big(2\pi f_c t + \theta(t)\big)$, con $a = \|s\|$ e $\theta = \arg s$ | forma ampiezza-fase |
+| $\langle x_c, x_s\rangle = \int x_c(t)\,x_s(t)\,dt = 0$ | ortogonalità delle portanti I e Q, eq. (18) |
+| $\langle u_p, v_p\rangle = \langle u_c, v_c\rangle + \langle u_s, v_s\rangle = \text{Re}\{\langle u, v\rangle\}$ | prodotto scalare, eq. (19) |
+| $\|s_p\|^2 = \|s\|^2$ | conservazione dell'energia, eq. (20) |
 
 Simboli:
 - $f_c$ = frequenza portante [Hz]; $u(\cdot)$ = gradino unitario; $^*$ = coniugato;
@@ -57,8 +55,7 @@ Simboli:
 
 ## Derivazioni
 
-### Derivazione — Eq. (15): l'inviluppo nel tempo
-**Fonte:** [[Rappresentazione_Rice.pdf#page=16]] (slide 12)
+### Derivazione — Eq. (15): l'inviluppo nel tempo · [[Rappresentazione_Rice.pdf#page=16|p. 16]]
 $$
 \begin{aligned}
 s(t) &= \mathcal{F}^{-1}[S(f)] = \mathcal{F}^{-1}\big[S_p^+(f + f_c)\big] && \text{definizione (13)} \\
@@ -67,8 +64,8 @@ s(t) &= \mathcal{F}^{-1}[S(f)] = \mathcal{F}^{-1}\big[S_p^+(f + f_c)\big] && \te
 $$
 Moltiplicare per $e^{-j2\pi f_c t}$ sposta tutto lo spettro di $-f_c$: il lobo che il segnale analitico ha attorno a $+f_c$ finisce attorno a 0.
 
-### Derivazione — Eq. (16) e (17): dall'inviluppo al segnale passa-banda
-**Fonte:** [[Rappresentazione_Rice.pdf#page=16]] (slide 12): «si ottiene facilmente».
+### Derivazione — Eq. (16) e (17): dall'inviluppo al segnale passa-banda · [[Rappresentazione_Rice.pdf#page=16|p. 16]]
+**Fonte:** «si ottiene facilmente».
 $$
 \begin{aligned}
 s_p(t) &= \sqrt2\,\text{Re}\{s_p^+(t)\} && \text{eq. (10) di [[segnale-analitico]]} \\
@@ -78,12 +75,12 @@ s_p(t) &= \sqrt2\,\text{Re}\{s_p^+(t)\} && \text{eq. (10) di [[segnale-analitico
 &= \sqrt2\,s_c(t)\cos(2\pi f_c t) - \sqrt2\,s_s(t)\sin(2\pi f_c t) && \text{parte reale} \quad \text{(17)}
 \end{aligned}
 $$
-Il secondo passaggio è annotato a mano sulla slide ([[Rappresentazione_Rice.pdf#page=16]]): «abbiamo definito prima l'inviluppo come $s(t) = s_p^+(t)e^{-j2\pi f_c t}$, quindi $s_p^+(t) = s(t)e^{j2\pi f_c t} = [s_c(t) + js_s(t)]\,e^{j2\pi f_c t}$». Sotto la (17): «in termini di seno e coseno».
+Il secondo passaggio è annotato a mano sulla slide: «abbiamo definito prima l'inviluppo come $s(t) = s_p^+(t)e^{-j2\pi f_c t}$, quindi $s_p^+(t) = s(t)e^{j2\pi f_c t} = [s_c(t) + js_s(t)]\,e^{j2\pi f_c t}$». Sotto la (17): «in termini di seno e coseno».
 **Da qui i nomi:** $s_c$ moltiplica il **coseno** della portante, $s_s$ il **seno**. Seno e coseno sono sfasati di 90°, "in quadratura".
 **Ipotesi:** nessuna oltre alla definizione. La slide sottolinea che la (17) vale per **qualunque** segnale passa-banda.
 
-### Derivazione — Eq. (14): dall'inviluppo al passa-banda in frequenza
-**Fonte:** [[Rappresentazione_Rice.pdf#page=15]] (slide 11): «la dimostrazione si ricava facilmente dalla (16)».
+### Derivazione — Eq. (14): dall'inviluppo al passa-banda in frequenza · [[Rappresentazione_Rice.pdf#page=15|p. 15]]
+**Fonte:** «la dimostrazione si ricava facilmente dalla (16)».
 > 🧩 Derivazione mia
 
 $$
@@ -94,11 +91,11 @@ S_p(f) &= \frac{1}{\sqrt2}\Big[S(f - f_c) + S^*\big(-(f + f_c)\big)\Big] && x\,e
 &= \frac{S(f - f_c) + S^*(-f - f_c)}{\sqrt2}
 \end{aligned}
 $$
-**Lettura:** il primo termine ricostruisce il lobo attorno a $+f_c$, il secondo quello attorno a $-f_c$ come specchio coniugato. Il segnale che si ottiene è reale, perché il suo spettro è hermitiano per costruzione. Note a mano sulla (14) ([[Rappresentazione_Rice.pdf#page=15]]): è la «relazione inversa», e il termine $S^*(-f - f_c)$ rimette la «parte tagliata da $u(f)$», cioè il lobo negativo scartato costruendo il segnale analitico.
+**Lettura:** il primo termine ricostruisce il lobo attorno a $+f_c$, il secondo quello attorno a $-f_c$ come specchio coniugato. Il segnale che si ottiene è reale, perché il suo spettro è hermitiano per costruzione. Note a mano sulla (14): è la «relazione inversa», e il termine $S^*(-f - f_c)$ rimette la «parte tagliata da $u(f)$», cioè il lobo negativo scartato costruendo il segnale analitico.
 **Sanity check:** per $f$ vicino a $+f_c$ il secondo termine è nullo e, dalla (13), $S(f - f_c) = \sqrt2\,S_p(f)$. Quindi $S_p(f) = \sqrt2\,S_p(f)/\sqrt2$ ✓.
 
-### Derivazione — Forma ampiezza-fase
-**Fonte:** [[Rappresentazione_Rice.pdf#page=22]] (slide 15): l'inviluppo descrive «le variazioni lente di ampiezza e fase».
+### Derivazione — Forma ampiezza-fase · [[Rappresentazione_Rice.pdf#page=22|p. 22]]
+**Fonte:** l'inviluppo descrive «le variazioni lente di ampiezza e fase».
 > 🧩 Derivazione mia: rende esplicita la frase della slide.
 
 $$
@@ -110,12 +107,12 @@ s_p(t) &= \sqrt2\,\text{Re}\{a(t)\,e^{j\theta(t)}\,e^{j2\pi f_c t}\} && \text{eq
 $$
 $s_p(t)$ è quindi una portante a $f_c$ con **ampiezza** $\sqrt2\,a(t)$ e **fase** $\theta(t)$. Se $s(t)$ ha banda molto minore di $f_c$ (banda stretta), ampiezza e fase cambiano lentamente rispetto alla portante.
 
-### Derivazione — Eq. (18): ortogonalità delle componenti I e Q
-**Fonte:** [[Rappresentazione_Rice.pdf#page=17]] (slide 13), che rimanda al libro di testo. Accanto, una nota a mano dice che la dimostrazione è «sotto»: è negli appunti di [[Rappresentazione_Rice.pdf#page=18]], con l'uguaglianza di Parseval.
+### Derivazione — Eq. (18): ortogonalità delle componenti I e Q · [[Rappresentazione_Rice.pdf#page=16|p. 16]]–[[Rappresentazione_Rice.pdf#page=18|18]]
+**Fonte:** p. 17 (slide 13), che rimanda al libro di testo. Accanto, una nota a mano dice che la dimostrazione è «sotto»: è negli appunti di p. 18, con l'uguaglianza di Parseval.
 > 📄 La struttura della dimostrazione è quella degli appunti di p.18: Parseval, spettri di $x_c$ e $x_s$, termini incrociati nulli per la banda stretta, cambio di variabile. 🧩 Esplicito io i fattori e l'ipotesi minima. $S_c$ e $S_s$ sono le trasformate di $s_c$ e $s_s$, e $W$ la loro banda.
 
 ![[rappresentazione-rice-p18-appunti-ortogonalita-parseval.png]]
-*Appunti a mano, [[Rappresentazione_Rice.pdf#page=18]].*
+*Appunti a mano.*
 - *In alto: la dimostrazione di $\langle x_c, x_s\rangle = 0$ con Parseval. Si sviluppa il prodotto; i due termini incrociati sono barrati, con la nota in rosso sulla banda stretta; dopo il cambio di variabile i due integrali restanti si cancellano.*
 - *In basso: la verifica della (19), con i termini misti che si annullano per l'ortogonalità e i termini in $\cos(4\pi f_c t)$ che valgono circa 0.*
 
@@ -143,12 +140,12 @@ $$
 $$
 È la trasformata del prodotto $s_c s_s$ calcolata in $\pm 2f_c$. Il prodotto ha banda al più $2W < 2f_c$, quindi l'integrale è nullo.
 
-> ⚠️ Segni negli appunti ([[Rappresentazione_Rice.pdf#page=18]]): gli appunti scrivono $X_s = -\frac{\sqrt2}{2j}S_s(f) * [\delta(f - f_c) - \delta(f + f_c)]$, con un meno davanti che non ci va, perché $\sqrt2\sin\alpha = \frac{\sqrt2}{2j}(e^{j\alpha} - e^{-j\alpha})$. Anche l'ordine dei due integrali finali è invertito rispetto allo sviluppo. Il risultato, $\frac{1}{2j}\big[\int S_c S_s^* - \int S_c S_s^*\big] = 0$, non cambia: è la differenza di due integrali uguali.
+> ⚠️ Segni negli appunti: gli appunti scrivono $X_s = -\frac{\sqrt2}{2j}S_s(f) * [\delta(f - f_c) - \delta(f + f_c)]$, con un meno davanti che non ci va, perché $\sqrt2\sin\alpha = \frac{\sqrt2}{2j}(e^{j\alpha} - e^{-j\alpha})$. Anche l'ordine dei due integrali finali è invertito rispetto allo sviluppo. Il risultato, $\frac{1}{2j}\big[\int S_c S_s^* - \int S_c S_s^*\big] = 0$, non cambia: è la differenza di due integrali uguali.
 
-Nota a mano sulla slide 12 ([[Rappresentazione_Rice.pdf#page=16]]): «quadratura indica che il prodotto ortogonale [scalare] con $s_c$ è 0». È proprio questa proprietà.
+Nota a mano sulla slide 12: «quadratura indica che il prodotto ortogonale [scalare] con $s_c$ è 0». È proprio questa proprietà.
 
-### Derivazione — Eq. (19): prodotto scalare tra segnali passa-banda
-**Fonte:** [[Rappresentazione_Rice.pdf#page=17]] (slide 13): risultato dato senza dimostrazione. Verificato negli appunti di [[Rappresentazione_Rice.pdf#page=18]] e [[Rappresentazione_Rice.pdf#page=19]]. Note a mano sulla slide: $\langle u_p, v_p\rangle$ è il «prodotto ortogonale, scalare», e $\text{Re}\{\langle u, v\rangle\}$ è «la parte reale del prodotto degli inviluppi».
+### Derivazione — Eq. (19): prodotto scalare tra segnali passa-banda · [[Rappresentazione_Rice.pdf#page=17|p. 17]]–[[Rappresentazione_Rice.pdf#page=19|19]]
+**Fonte:** risultato dato senza dimostrazione. Verificato negli appunti di p. 18 e p. 19. Note a mano sulla slide: $\langle u_p, v_p\rangle$ è il «prodotto ortogonale, scalare», e $\text{Re}\{\langle u, v\rangle\}$ è «la parte reale del prodotto degli inviluppi».
 > 📄 Gli appunti procedono così: sviluppano $\langle u_p, v_p\rangle$ con la (17); i termini misti si annullano perché le componenti in fase e in quadratura sono ortogonali; restano $2\int u_cv_c\cos^2$ e $2\int u_sv_s\sin^2$, che si scrivono con $\cos^2 = \frac{1 + \cos(4\pi f_ct)}{2}$ e $\sin^2 = \frac{1 - \cos(4\pi f_ct)}{2}$. I due integrali con $\cos(4\pi f_c t)$ valgono circa 0, perché «le aree positive vengono bilanciate da quelle negative, poiché $B/f_c \ll 1$». Resta $\text{Re}\{\int[u_c + ju_s][v_c - jv_s]\,dt\} = \text{Re}\{\langle u, v\rangle\}$.
 > 🧩 Qui sotto lo stesso conto per esteso. $u_p$, $v_p$ sono reali passa-banda, con inviluppi $u = u_c + ju_s$ e $v = v_c + jv_s$; $\alpha = 2\pi f_c t$.
 
@@ -174,8 +171,8 @@ $$
 $$
 **Ipotesi:** banda di $u_c, u_s, v_c, v_s$ minore di $f_c$ (segnali passa-banda secondo la (2)).
 
-### Derivazione — Eq. (20): l'energia si conserva
-**Fonte:** [[Rappresentazione_Rice.pdf#page=17]] (slide 13); gli stessi passaggi sono negli appunti di [[Rappresentazione_Rice.pdf#page=19]]. Note a mano sulla slide: «energia di $s_p$», «l'energia è reale».
+### Derivazione — Eq. (20): l'energia si conserva · [[Rappresentazione_Rice.pdf#page=17|p. 17]], [[Rappresentazione_Rice.pdf#page=19|p. 19]], [[Rappresentazione_Rice.pdf#page=21|p. 21]]
+**Fonte:** p. 17 (slide 13); gli stessi passaggi sono negli appunti di p. 19. Note a mano sulla slide: «energia di $s_p$», «l'energia è reale».
 $$
 \begin{aligned}
 \|s_p\|^2 &= \langle s_p, s_p\rangle = \int s_p^2(t)\,dt && \text{definizione di energia} \\
@@ -185,17 +182,17 @@ $$
 $$
 In componenti: $\|s_p\|^2 = \|s_c\|^2 + \|s_s\|^2$, cioè l'energia di I più quella di Q.
 
-> ⚠️ Nelle note a mano sulla slide 13 ([[Rappresentazione_Rice.pdf#page=17]]):
+> ⚠️ Nelle note a mano sulla slide 13:
 > - il secondo passaggio è indicato come «proprietà (10)», ma usa la (19);
 > - in alto c'è scritto $s_p(t) = x_c(t) + x_s(t) = \sqrt2 s_c\cos(2\pi f_c t) + \sqrt2 s_s\sin(2\pi f_c t)$, ma dalla (17) è $s_p = x_c - x_s$, con il meno davanti al termine in seno. Per l'ortogonalità il segno non conta, per l'uguaglianza con $s_p$ sì.
 
 ![[rappresentazione-rice-p19-appunti-prodotto-scalare-energia.png]]
-*Appunti a mano, [[Rappresentazione_Rice.pdf#page=19]]: conclusione della verifica della (19), $\text{Re}\{\int[u_c + ju_s][v_c - jv_s]\,dt\} = \text{Re}\{\langle u, v\rangle\}$, con $u$ inviluppo complesso di $u_p$ e $v^*$ il coniugato di $v$. Sotto, la (20): $\langle s_p, s_p\rangle = \int s_p^2\,dt = \|s_p\|^2 = \text{Re}\{\langle s, s\rangle\} = \text{Re}\{\int|s|^2dt\} = \|s\|^2$, dove l'integrale è reale e quindi si può togliere Re.*
-**Perché torna esatto:** è l'effetto del $\sqrt2$ nella (3), vedi [[segnale-analitico#Derivazione — Perché proprio √2]]. Nota a mano di [[Rappresentazione_Rice.pdf#page=21]]: alla domanda se tutti i passaggi conservano l'energia, la risposta è «sì, per le accortezze fatte ($\sqrt2$)».
+*Appunti a mano: conclusione della verifica della (19), $\text{Re}\{\int[u_c + ju_s][v_c - jv_s]\,dt\} = \text{Re}\{\langle u, v\rangle\}$, con $u$ inviluppo complesso di $u_p$ e $v^*$ il coniugato di $v$. Sotto, la (20): $\langle s_p, s_p\rangle = \int s_p^2\,dt = \|s_p\|^2 = \text{Re}\{\langle s, s\rangle\} = \text{Re}\{\int|s|^2dt\} = \|s\|^2$, dove l'integrale è reale e quindi si può togliere Re.*
+**Perché torna esatto:** è l'effetto del $\sqrt2$ nella (3), vedi [[segnale-analitico]] (sezione «Derivazione — Perché proprio √2»). Nota a mano di p. 21: alla domanda se tutti i passaggi conservano l'energia, la risposta è «sì, per le accortezze fatte ($\sqrt2$)».
 
-### Derivazione — Frequenza di campionamento: passa-banda contro inviluppo
-**Fonte:** [[Rappresentazione_Rice.pdf#page=9]] (slide 6): l'inviluppo «si può campionare a una frequenza molto più bassa» di $s_p(t)$.
-> 🧩 Derivazione mia, con il teorema del campionamento ([[teorema-del-campionamento]], [[Campionamento_AD_DA.pdf#page=14]]).
+### Derivazione — Frequenza di campionamento: passa-banda contro inviluppo · Rice [[Rappresentazione_Rice.pdf#page=9|p. 9]] · Campionamento [[Campionamento_AD_DA.pdf#page=12|p. 12]], [[Campionamento_AD_DA.pdf#page=14|p. 14]]
+**Fonte:** l'inviluppo «si può campionare a una frequenza molto più bassa» di $s_p(t)$.
+> 🧩 Derivazione mia, con il teorema del campionamento ([[teorema-del-campionamento]]).
 > ⚠️ Notazione: nella lezione sul campionamento $f_c$ era la frequenza di campionamento; qui $f_c$ è la portante, quindi la frequenza di campionamento si chiama $f_s$.
 
 $$
@@ -206,28 +203,27 @@ f_{s,\,\text{inv}} &\ge B && s(t) \text{ occupa } (-B/2,\ B/2):\ \text{repliche 
 \end{aligned}
 $$
 Ogni campione dell'inviluppo è complesso, cioè due numeri reali. Anche contando $2B$ numeri reali al secondo, il rapporto resta dell'ordine di $f_c/B$.
-**Ipotesi:** $f_c$ al centro del lobo; campionamento ideale. Per $s(t)$ la condizione nasce dallo stesso argomento delle repliche di [[Campionamento_AD_DA.pdf#page=12]], applicato a uno spettro non simmetrico.
+**Ipotesi:** $f_c$ al centro del lobo; campionamento ideale. Per $s(t)$ la condizione nasce dallo stesso argomento delle repliche di p. 12, applicato a uno spettro non simmetrico.
 
 ## Spiegazione
 
-### Perché serve la rappresentazione in banda base (slide 6–7)
-> 📄 Fonte: [[Rappresentazione_Rice.pdf#page=9]] (slide 6), [[Rappresentazione_Rice.pdf#page=10]] (slide 7)
+### Perché serve la rappresentazione in banda base (slide 6–7) · [[Rappresentazione_Rice.pdf#page=6|p. 6]], [[Rappresentazione_Rice.pdf#page=9|p. 9]], [[Rappresentazione_Rice.pdf#page=10|10]]
 
 - I canali passa-banda sono molto usati, quindi bisogna saper trasmettere e ricevere segnali passa-banda.
 - Tutta l'informazione di un segnale passa-banda reale sta in un segnale complesso in banda base: l'inviluppo complesso.
 - L'inviluppo si può rappresentare a tempo discreto, cioè campionato, a una frequenza **molto più bassa** di $s_p(t)$ (vedi la derivazione sopra). I transceiver moderni eseguono quindi in digitale, direttamente sull'inviluppo, algoritmi complicati, riducendo al minimo l'elaborazione analogica.
 
-Le note a mano sulla slide 6 ([[Rappresentazione_Rice.pdf#page=9]]) riscrivono questi punti in italiano e chiamano il campionamento a frequenza bassa **il vantaggio**: l'inviluppo si campiona a una frequenza «nettamente inferiore» a quella che servirebbe per il segnale passa-banda. Di conseguenza i ricetrasmettitori moderni possono implementare in digitale algoritmi molto complessi (DSP), riducendo al minimo la parte analogica.
+Le note a mano sulla slide 6 riscrivono questi punti in italiano e chiamano il campionamento a frequenza bassa **il vantaggio**: l'inviluppo si campiona a una frequenza «nettamente inferiore» a quella che servirebbe per il segnale passa-banda. Di conseguenza i ricetrasmettitori moderni possono implementare in digitale algoritmi molto complessi (DSP), riducendo al minimo la parte analogica.
 
-**Perché conviene portare il segnale in banda base**, dagli appunti di [[Rappresentazione_Rice.pdf#page=6]]. Oltre al fatto che l'informazione non dipende da $f_c$, la banda base permette di:
+**Perché conviene portare il segnale in banda base**, dagli appunti di p. 6. Oltre al fatto che l'informazione non dipende da $f_c$, la banda base permette di:
 - **ridurre i costi hardware per il campionamento**;
 - guadagnare **modularità e indipendenza**: si possono riutilizzare componenti che operano in banda base, senza costruirli ad hoc per la specifica banda del segnale;
 - (in rosso) altrimenti non si potrebbero generalizzare gli algoritmi, e calcolarli in digitale costerebbe troppo.
 
 ![[rappresentazione-rice-p6-appunti-vantaggi-banda-base.png]]
-*Appunti a mano, [[Rappresentazione_Rice.pdf#page=6]]: i vantaggi di portare il segnale in banda base (costi di campionamento, modularità e indipendenza).*
+*Appunti a mano: i vantaggi di portare il segnale in banda base (costi di campionamento, modularità e indipendenza).*
 
-Lo schema modulare del transceiver ([[Rappresentazione_Rice.pdf#page=10]], slide 7):
+Lo schema modulare del transceiver:
 1. un **DSP** codifica l'informazione nella forma d'onda complessa in banda base: codifica, modulazione, filtraggio;
 2. l'inviluppo viene **convertito in su** (*upconverted*) nel segnale passa-banda da mandare sul canale fisico;
 3. al ricevitore il segnale passa-banda ricevuto viene **convertito in giù** (*downconverted*) in banda base;
@@ -241,52 +237,49 @@ Note a mano sulla slide 7:
 - sviluppare gli algoritmi in banda base vuol dire che «ci si è svincolati dalla frequenza carrier ($f_c$)».
 
 ![[rappresentazione-rice-p10-schema-modulare-transceiver.png]]
-*[[Rappresentazione_Rice.pdf#page=10]] (slide 7) con le note a mano: le parentesi graffe raggruppano i quattro passi in modulatore e demodulatore.*
+*con le note a mano: le parentesi graffe raggruppano i quattro passi in modulatore e demodulatore.*
 
-### Dallo spettro passa-banda all'inviluppo: le figure
-> 📄 Fonte: [[Rappresentazione_Rice.pdf#page=15]] (slide 11)
+### Dallo spettro passa-banda all'inviluppo: le figure · [[Rappresentazione_Rice.pdf#page=2|p. 2]], [[Rappresentazione_Rice.pdf#page=11|p. 11]], [[Rappresentazione_Rice.pdf#page=15|p. 15]]
 
 ![[rappresentazione-rice-p15-inviluppo-complesso-spettri.png]]
-*[[Rappresentazione_Rice.pdf#page=15]] (slide 11). In alto, lo spettro del segnale passa-banda. $\text{Re}(S_p(f))$ ha due triangoli di altezza $A$ attorno a $\pm f_c$, speculari. $\text{Im}(S_p(f))$ ha due rettangoli di altezza $B$: positivo attorno a $f_c$, negativo attorno a $-f_c$. In basso, l'inviluppo: resta solo il lobo positivo, spostato attorno a 0 e moltiplicato per $\sqrt2$. $\text{Re}(S(f))$ è un triangolo di altezza $\sqrt2 A$, $\text{Im}(S(f))$ un rettangolo di altezza $\sqrt2 B$.*
+*In alto, lo spettro del segnale passa-banda. $\text{Re}(S_p(f))$ ha due triangoli di altezza $A$ attorno a $\pm f_c$, speculari. $\text{Im}(S_p(f))$ ha due rettangoli di altezza $B$: positivo attorno a $f_c$, negativo attorno a $-f_c$. In basso, l'inviluppo: resta solo il lobo positivo, spostato attorno a 0 e moltiplicato per $\sqrt2$. $\text{Re}(S(f))$ è un triangolo di altezza $\sqrt2 A$, $\text{Im}(S(f))$ un rettangolo di altezza $\sqrt2 B$.*
 
 > ⚠️ In questa figura, e nella slide 17, $A$ e $B$ sono **altezze** dello spettro, non la banda. Nel resto della lezione $B$ è la banda.
 
 > 🧩 Controllo mio delle altezze con la (13): $S(f) = \sqrt2\,S_p(f + f_c)$ attorno a $f = 0$. Le altezze del lobo positivo vengono moltiplicate per $\sqrt2$: $A \to \sqrt2 A$ e $B \to \sqrt2 B$ ✓. Il lobo negativo sparisce per il fattore $u(f + f_c)$.
 
 ![[grafico-rice-catena-spettri.png]]
-*🧩 Grafico mio (eq. (3) e (13), [[Rappresentazione_Rice.pdf#page=11]] e [[Rappresentazione_Rice.pdf#page=15]]; script in `output/grafici/`). La catena in tre passi, con un lobo asimmetrico come quello della slide 11.*
+*🧩 Grafico mio (eq. (3) e (13), p. 11 e p. 15; script in `output/grafici/`). La catena in tre passi, con un lobo asimmetrico come quello della slide 11.*
 - *(a) Lo spettro reale del segnale passa-banda: i lobi a $\pm f_c$ sono speculari, quindi portano la stessa informazione.*
 - *(b) Il segnale analitico: si butta il lobo negativo e si moltiplica per $\sqrt2$.*
 - *(c) L'inviluppo complesso: lo stesso lobo spostato in 0.*
 
-*Il lobo in (c) non è simmetrico attorno a 0. Non vale $S(f) = S^*(-f)$, e per questo $s(t)$ è complesso: è la nota a mano di [[Rappresentazione_Rice.pdf#page=2]], «il ricevitore porta in banda base, e questo rende il segnale complesso».*
+*Il lobo in (c) non è simmetrico attorno a 0. Non vale $S(f) = S^*(-f)$, e per questo $s(t)$ è complesso: è la nota a mano di p. 2, «il ricevitore porta in banda base, e questo rende il segnale complesso».*
 
-### Componenti I/Q nel tempo
-> 📄 Fonte: [[Rappresentazione_Rice.pdf#page=16]] (slide 12), [[Rappresentazione_Rice.pdf#page=22]] (slide 15)
+### Componenti I/Q nel tempo · [[Rappresentazione_Rice.pdf#page=16|p. 16]], [[Rappresentazione_Rice.pdf#page=22|p. 22]]
 
 ![[rappresentazione-rice-p16-componenti-iq.png]]
-*[[Rappresentazione_Rice.pdf#page=16]] (slide 12) con le note a mano:*
+*con le note a mano:*
 - *la (15) corrisponde a una traslazione del segnale analitico, per la proprietà di Fourier;*
 - *$s_c$ è la componente in fase (I), $s_s$ quella in quadratura (Q); quadratura vuol dire prodotto scalare nullo con $s_c$;*
 - *i passaggi $s_p^+ = s\,e^{j2\pi f_c t} = [s_c + js_s]\,e^{j2\pi f_c t}$ che portano alla (16)–(17), "in termini di seno e coseno".*
 
 ![[grafico-rice-iq-tempo.png]]
-*🧩 Grafico mio (eq. (17), [[Rappresentazione_Rice.pdf#page=16]]). Esempio con $s_c(t) = \cos(2\pi\cdot 1\,\text{kHz}\cdot t) + 0.5\cos(2\pi\cdot 2\,\text{kHz}\cdot t)$ e $s_s(t) = 0.8\sin(2\pi\cdot 1.5\,\text{kHz}\cdot t)$. In alto I, Q e il modulo $|s(t)|$, che variano lentamente. In basso $s_p(t)$ con $f_c = 10$ kHz: una portante veloce dentro l'inviluppo $\pm\sqrt2\,|s(t)|$, come prevede la forma ampiezza-fase. $f_c$ è scelta piccola per rendere visibili le oscillazioni; nei sistemi reali $f_c/B$ è molto più grande.*
+*🧩 Grafico mio (eq. (17)). Esempio con $s_c(t) = \cos(2\pi\cdot 1\,\text{kHz}\cdot t) + 0.5\cos(2\pi\cdot 2\,\text{kHz}\cdot t)$ e $s_s(t) = 0.8\sin(2\pi\cdot 1.5\,\text{kHz}\cdot t)$. In alto I, Q e il modulo $|s(t)|$, che variano lentamente. In basso $s_p(t)$ con $f_c = 10$ kHz: una portante veloce dentro l'inviluppo $\pm\sqrt2\,|s(t)|$, come prevede la forma ampiezza-fase. $f_c$ è scelta piccola per rendere visibili le oscillazioni; nei sistemi reali $f_c/B$ è molto più grande.*
 
-**Cosa rappresenta l'inviluppo** ([[Rappresentazione_Rice.pdf#page=22]], slide 15):
+**Cosa rappresenta l'inviluppo**:
 - ricavare l'inviluppo complesso significa estrarre le variazioni **lente** di ampiezza e fase introdotte dalla modulazione in banda base, eliminando la variazione di fase **rapida e prevedibile** dovuta a $f_c$. Nota a mano: «l'inviluppo complesso ci permette di separare le variazioni lente introdotte dalla modulazione in banda base»;
 - la fase dovuta a $f_c$ è prevedibile, quindi **non porta informazione**;
 - l'informazione di un segnale passa-banda è **tutta** nel suo inviluppo complesso.
 
-### Energia (slide 13)
-> 📄 Fonte: [[Rappresentazione_Rice.pdf#page=17]] (slide 13), appunti a mano di [[Rappresentazione_Rice.pdf#page=18]], [[Rappresentazione_Rice.pdf#page=19]] e [[Rappresentazione_Rice.pdf#page=21]]
+### Energia (slide 13) · [[Rappresentazione_Rice.pdf#page=17|p. 17]]–[[Rappresentazione_Rice.pdf#page=19|19]], [[Rappresentazione_Rice.pdf#page=21|p. 21]]
+> 📄 Fonte: p. 17 (slide 13), appunti a mano di p. 18, p. 19 e p. 21
 
 - Le forme d'onda passa-banda di I e di Q, $x_c = \sqrt2 s_c\cos(2\pi f_c t)$ e $x_s = \sqrt2 s_s\sin(2\pi f_c t)$, sono **ortogonali**, eq. (18). La slide rimanda al libro per la dimostrazione, che è negli appunti di p.18 (derivazione della (18) qui sopra).
 - Per due segnali passa-banda reali il prodotto scalare è la parte reale del prodotto scalare degli inviluppi, eq. (19). Verifica negli appunti di p.18–19.
 - Con $u = v = s$: l'energia dell'inviluppo complesso è **uguale** a quella del segnale passa-banda, eq. (20), anch'essa negli appunti di p.19.
 
-### Banda di un segnale complesso (slide 19)
-> 📄 Fonte: [[Rappresentazione_Rice.pdf#page=27]] (slide 19)
+### Banda di un segnale complesso (slide 19) · [[Rappresentazione_Rice.pdf#page=27|p. 27]]
 
 - L'occupazione spettrale di un segnale **fisico reale** è la più piccola banda di frequenze **positive** che contiene la maggior parte del segnale. Per un segnale reale vale $S(f) = S^*(-f)$, quindi le frequenze negative non aggiungono nulla.
 - Nei segnali **complessi** in banda base l'informazione sta sia nelle frequenze positive sia in quelle **negative**.
@@ -296,9 +289,9 @@ Note a mano sulla slide 7:
 
 > 🎯 Esame: definire l'inviluppo complesso, (13) e (15), e le componenti I/Q; ricavare la (17) e la (14); dimostrare l'ortogonalità (18) e la conservazione dell'energia (20); spiegare perché l'informazione sta tutta nell'inviluppo e perché conviene lavorare in banda base.
 
-## Perché importa
+## Perché importa · [[Intro.pdf#page=3|p. 3]]
 
-È il concetto centrale del primo tema del corso ([[Intro.pdf#page=3]]). Permette di:
+È il concetto centrale del primo tema del corso. Permette di:
 - descrivere qualunque segnale passa-banda con un segnale in banda base, senza portarsi dietro $f_c$;
 - campionarlo ed elaborarlo in digitale a frequenza bassa;
 - progettare modulazione, sincronizzazione e demodulazione indipendentemente dalla banda fisica.
@@ -312,10 +305,9 @@ Note a mano sulla slide 7:
 - [[teorema-del-campionamento]] — l'inviluppo si campiona a frequenza $\ge B$ invece di $\ge 2f_c + B$.
 - [[modulazione-digitale]] — il modulatore produce l'inviluppo complesso.
 
-## Fonti
+## Fonti · [[Rappresentazione_Rice.pdf#page=6|p. 6]], [[Rappresentazione_Rice.pdf#page=9|p. 9]], [[Rappresentazione_Rice.pdf#page=10|10]], [[Rappresentazione_Rice.pdf#page=15|p. 15]], [[Rappresentazione_Rice.pdf#page=17|p. 17]]–[[Rappresentazione_Rice.pdf#page=19|19]], [[Rappresentazione_Rice.pdf#page=21|p. 21]], [[Rappresentazione_Rice.pdf#page=22|22]], [[Rappresentazione_Rice.pdf#page=27|p. 27]]
 
 - [[rappresentazione-complessa-banda-base]]
-- [[Rappresentazione_Rice.pdf#page=9]] (slide 6), [[Rappresentazione_Rice.pdf#page=10]] (slide 7), [[Rappresentazione_Rice.pdf#page=15]] – [[Rappresentazione_Rice.pdf#page=17]] (slide 11–13), [[Rappresentazione_Rice.pdf#page=22]] (slide 15), [[Rappresentazione_Rice.pdf#page=27]] (slide 19), tutte con annotazioni a mano
-- Appunti a mano: [[Rappresentazione_Rice.pdf#page=6]] (vantaggi della banda base), [[Rappresentazione_Rice.pdf#page=18]] e [[Rappresentazione_Rice.pdf#page=19]] (dimostrazioni di (18), (19), (20)), [[Rappresentazione_Rice.pdf#page=21]] (catena e energia)
+- Appunti a mano: p. 6 (vantaggi della banda base), p. 18 e p. 19 (dimostrazioni di (18), (19), (20)), p. 21 (catena e energia)
 
 _Aggiornato: 2026-09-28 — re-ingest del PDF con nuovi appunti: vantaggi della banda base (p.6), macroblocchi modulatore/demodulatore, note sulle slide 11–15; dimostrazioni di (18), (19), (20) ora da fonte (appunti p.18–19), con le mie precisazioni marcate 🧩 e i refusi degli appunti segnalati; pagine rimappate; 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_

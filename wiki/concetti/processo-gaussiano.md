@@ -7,9 +7,7 @@ fonti_pdf: ["random_processes.pdf#page=41", "random_processes.pdf#page=42", "ran
 
 # Processo gaussiano
 
-## Definizione
-
-> 📄 Fonte: [[random_processes.pdf#page=41]], [[random_processes.pdf#page=42]]
+## Definizione · [[random_processes.pdf#page=41|p. 41]], [[random_processes.pdf#page=42|42]]
 
 Il **processo gaussiano** è il processo aleatorio più usato nello studio dei sistemi di comunicazione: ha molte applicazioni pratiche ed è matematicamente trattabile.
 
@@ -17,29 +15,29 @@ $X(t)$ è gaussiano se, campionandolo in $t_1, \dots, t_n$, le variabili aleator
 - le **medie** $\mu_{X(t_i)} = E[X(t_i)]$, per $i \in \{1, \dots, n\}$ — eq. (31);
 - le **covarianze** $C_{XX}(t_k, t_i) = E\{[X(t_k) - \mu_{X(t_k)}][X(t_i) - \mu_{X(t_i)}]\}$, per $k, i \in \{1, \dots, n\}$ — eq. (32).
 
-In forma matriciale, con il vettore aleatorio $\mathbf{X} = [X(t_1), \dots, X(t_n)]^T$ e un suo valore $\mathbf{x} = [x_1, \dots, x_n]^T$ ($^T$ = trasposto), la pdf **gaussiana multivariata** è ([[random_processes.pdf#page=42]])
+In forma matriciale, con il vettore aleatorio $\mathbf{X} = [X(t_1), \dots, X(t_n)]^T$ e un suo valore $\mathbf{x} = [x_1, \dots, x_n]^T$ ($^T$ = trasposto), la pdf **gaussiana multivariata** è
 $$f_{\mathbf{X}}(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^n\det(\boldsymbol{\Sigma})}}\;e^{-\frac12(\mathbf{x} - \boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(\mathbf{x} - \boldsymbol{\mu})} \tag{33}$$
 - $\boldsymbol{\mu} = [\mu_{X(t_1)}, \dots, \mu_{X(t_n)}]^T$ è il **vettore delle medie**;
 - $\boldsymbol{\Sigma}$ è la **matrice di covarianza**, con elemento $(k, i)$ pari a $\{\boldsymbol{\Sigma}\}_{k,i} = C_{XX}(t_k, t_i)$;
 - $\boldsymbol{\Sigma}^{-1}$ è la sua inversa.
 
-## Formule
+## Formule · [[random_processes.pdf#page=41|p. 41]], [[random_processes.pdf#page=42|42]], [[random_processes.pdf#page=44|p. 44]]
 
-| Formula | Significato | Pagina |
-|---|---|---|
-| $\mu_{X(t_i)} = E[X(t_i)]$ | medie dei campioni, eq. (31) | [[random_processes.pdf#page=41]] |
-| $C_{XX}(t_k, t_i)$ | covarianze dei campioni, eq. (32) | [[random_processes.pdf#page=41]] |
-| $f_{\mathbf{X}}(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^n\det\boldsymbol{\Sigma}}}e^{-\frac12(\mathbf{x}-\boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})}$ | gaussiana multivariata, eq. (33) | [[random_processes.pdf#page=42]] |
-| $\boldsymbol{\Sigma} = \boldsymbol{\Sigma}^T$, $\ \mathbf{u}^T\boldsymbol{\Sigma}\mathbf{u} \ge 0\ \forall\,\mathbf{u} \in \mathbb{R}^n$ | covarianza simmetrica e semidefinita positiva | [[random_processes.pdf#page=42]] |
-| $\mathbf{u}^T\boldsymbol{\Sigma}\mathbf{u} > 0\ \forall\,\mathbf{u} \neq \mathbf{0}$ | caso non degenere: definita positiva, invertibile | [[random_processes.pdf#page=42]] |
-| $\boldsymbol{\Sigma} = \text{diag}(\sigma_1^2, \dots, \sigma_n^2) \Rightarrow f_{\mathbf{X}}(\mathbf{x}) = \prod_i f_{X(t_i)}(x_i)$ | incorrelati ⇒ indipendenti, eq. (34) | [[random_processes.pdf#page=44]] |
+| Formula | Significato |
+|---|---|
+| $\mu_{X(t_i)} = E[X(t_i)]$ | medie dei campioni, eq. (31) |
+| $C_{XX}(t_k, t_i)$ | covarianze dei campioni, eq. (32) |
+| $f_{\mathbf{X}}(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^n\det\boldsymbol{\Sigma}}}e^{-\frac12(\mathbf{x}-\boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})}$ | gaussiana multivariata, eq. (33) |
+| $\boldsymbol{\Sigma} = \boldsymbol{\Sigma}^T$, $\ \mathbf{u}^T\boldsymbol{\Sigma}\mathbf{u} \ge 0\ \forall\,\mathbf{u} \in \mathbb{R}^n$ | covarianza simmetrica e semidefinita positiva |
+| $\mathbf{u}^T\boldsymbol{\Sigma}\mathbf{u} > 0\ \forall\,\mathbf{u} \neq \mathbf{0}$ | caso non degenere: definita positiva, invertibile |
+| $\boldsymbol{\Sigma} = \text{diag}(\sigma_1^2, \dots, \sigma_n^2) \Rightarrow f_{\mathbf{X}}(\mathbf{x}) = \prod_i f_{X(t_i)}(x_i)$ | incorrelati ⇒ indipendenti, eq. (34) |
 
 Simboli: $n$ = numero di campioni; $\det$ = determinante; $\sigma_i^2$ = varianza di $X(t_i)$; $\mathbf{u}$ = vettore reale qualunque; $f_{\mathbf{X}}$ in [1/V$^n$].
 
 ## Derivazioni
 
-### Derivazione — Con $n = 1$ si ritrova la gaussiana scalare
-**Fonte:** [[random_processes.pdf#page=42]] per la (33); gaussiana scalare in [[variabile-aleatoria-gaussiana]] ([[Probabilità.pdf#page=23]]).
+### Derivazione — Con $n = 1$ si ritrova la gaussiana scalare · Processi [[random_processes.pdf#page=42|p. 42]] · Probabilità [[Probabilità.pdf#page=23|p. 23]]
+**Fonte:** p. 42 per la (33); gaussiana scalare in [[variabile-aleatoria-gaussiana]].
 > 🧩 Verifica mia
 
 $$
@@ -62,8 +60,8 @@ f(x_1, x_2) &= \frac{1}{2\pi\sqrt{1 - \rho^2}}\,e^{-\frac{x_1^2 - 2\rho x_1x_2 +
 $$
 Le curve di livello sono ellissi; con $\rho = 0$ sono cerchi.
 
-### Derivazione — $\boldsymbol{\Sigma}$ è simmetrica e semidefinita positiva
-**Fonte:** [[random_processes.pdf#page=42]]: proprietà date senza dimostrazione.
+### Derivazione — $\boldsymbol{\Sigma}$ è simmetrica e semidefinita positiva · [[random_processes.pdf#page=42|p. 42]]
+**Fonte:** proprietà date senza dimostrazione.
 > 🧩 Derivazione mia. Scrivo $\tilde X_k = X(t_k) - \mu_{X(t_k)}$.
 
 $$
@@ -75,8 +73,7 @@ $$
 $$
 **Lettura:** $\mathbf{u}^T\boldsymbol{\Sigma}\mathbf{u}$ è la **varianza** della combinazione lineare $\sum_k u_k X(t_k)$, e una varianza non può essere negativa. Vale 0 solo se quella combinazione è (quasi certamente) costante. Il caso **non degenere**, $\boldsymbol{\Sigma}$ definita positiva e quindi invertibile, è quello in cui nessuna combinazione non banale dei campioni è costante. Serve perché la (33) contiene $\boldsymbol{\Sigma}^{-1}$ e $\det\boldsymbol{\Sigma}$ al denominatore.
 
-### Derivazione — Incorrelati ⇒ indipendenti, eq. (34)
-**Fonte:** [[random_processes.pdf#page=44]]
+### Derivazione — Incorrelati ⇒ indipendenti, eq. (34) · [[random_processes.pdf#page=44|p. 44]]
 $$
 \begin{aligned}
 \boldsymbol{\Sigma} &= \text{diag}(\sigma_1^2, \dots, \sigma_n^2) && C_{XX}(t_k, t_i) = 0 \text{ per } k \neq i \\
@@ -87,8 +84,8 @@ f_{\mathbf{X}}(\mathbf{x}) &= \prod_i \frac{1}{\sqrt{2\pi\sigma_i^2}}\,e^{-\frac
 $$
 La pdf congiunta è il **prodotto** delle marginali, cioè i campioni sono **indipendenti** ([[coppie-di-variabili-aleatorie]]). Per variabili qualunque, invece, incorrelazione non implica indipendenza ([[correlazione-e-covarianza]]).
 
-### Derivazione — WSS ⇒ SSS per un processo gaussiano
-**Fonte:** [[random_processes.pdf#page=44]]: proprietà data senza dimostrazione.
+### Derivazione — WSS ⇒ SSS per un processo gaussiano · [[random_processes.pdf#page=44|p. 44]]
+**Fonte:** proprietà data senza dimostrazione.
 > 🧩 Derivazione mia
 
 - La pdf di ordine $n$ (33) dipende **solo** da $\boldsymbol{\mu}$ e $\boldsymbol{\Sigma}$.
@@ -97,8 +94,8 @@ La pdf congiunta è il **prodotto** delle marginali, cioè i campioni sono **ind
 
 Per un processo qualunque questo ragionamento non funziona: le distribuzioni di ordine superiore non sono determinate da media e covarianza.
 
-### Derivazione — Un filtro lineare stabile conserva la gaussianità
-**Fonte:** [[random_processes.pdf#page=44]]: proprietà data senza dimostrazione.
+### Derivazione — Un filtro lineare stabile conserva la gaussianità · [[random_processes.pdf#page=44|p. 44]]
+**Fonte:** proprietà data senza dimostrazione.
 > 🧩 Idea della dimostrazione, non una dimostrazione completa. $Y(t) = \int h(\tau)X(t - \tau)\,d\tau \approx \sum_k h(\tau_k)X(t - \tau_k)\,\Delta\tau$: ogni campione dell'uscita è il limite di una **combinazione lineare** di campioni dell'ingresso.
 > 📚 Fonte esterna (proprietà standard della gaussiana multivariata, per esempio nel testo di Madhow): combinazioni lineari di variabili congiuntamente gaussiane sono ancora congiuntamente gaussiane.
 >
@@ -106,15 +103,13 @@ Per un processo qualunque questo ragionamento non funziona: le distribuzioni di 
 
 ## Spiegazione
 
-### Perché è così importante (slide 38)
-> 📄 Fonte: [[random_processes.pdf#page=43]]
+### Perché è così importante (slide 38) · [[random_processes.pdf#page=43|p. 43]]
 
 - I processi prodotti da fenomeni fisici sono spesso tali che un **modello gaussiano** è adeguato, e gli esperimenti lo confermano.
 - Il **teorema del limite centrale** dà la giustificazione matematica: la somma di molti contributi indipendenti tende a una gaussiana ([[variabile-aleatoria-gaussiana]]).
 - Il processo gaussiano è molto frequente nei fenomeni fisici e facile da trattare matematicamente: per questo è centrale nello studio dei sistemi di comunicazione.
 
-### Proprietà (slide 39)
-> 📄 Fonte: [[random_processes.pdf#page=44]]
+### Proprietà (slide 39) · [[random_processes.pdf#page=42|p. 42]], [[random_processes.pdf#page=44|p. 44]]
 
 1. Un processo gaussiano applicato a un **filtro lineare stabile** dà in uscita un processo ancora **gaussiano**.
 2. Un processo gaussiano **WSS** (debolmente stazionario) è anche **stazionario in senso stretto**.
@@ -123,7 +118,7 @@ Per un processo qualunque questo ragionamento non funziona: le distribuzioni di 
 > 🧩 In sintesi: per un processo gaussiano, **media e covarianza sono tutto**. La caratterizzazione parziale ([[momenti-di-un-processo]]) coincide con quella completa ([[processo-aleatorio]]), ed è per questo che le proprietà 2 e 3 valgono.
 
 ![[grafico-rp-gaussiana-bivariata.png]]
-*🧩 Grafico mio (eq. (33) con $n = 2$ e (34), [[random_processes.pdf#page=42]], [[random_processes.pdf#page=44]]). Curve di livello della pdf congiunta di due campioni $X(t_1)$, $X(t_2)$ a media nulla e varianza 1, con 400 coppie estratte.*
+*🧩 Grafico mio (eq. (33) con $n = 2$ e (34)). Curve di livello della pdf congiunta di due campioni $X(t_1)$, $X(t_2)$ a media nulla e varianza 1, con 400 coppie estratte.*
 - *A sinistra $\rho = 0$: cerchi, e la pdf è il prodotto delle marginali. Incorrelati quindi indipendenti.*
 - *A destra $\rho = 0.8$: ellissi inclinate lungo la bisettrice, cioè i due campioni tendono ad avere lo stesso segno.*
 
@@ -148,9 +143,8 @@ Per questo le prestazioni dei sistemi, come la probabilità d'errore con la funz
 - [[correlazione-e-covarianza]] e [[coppie-di-variabili-aleatorie]] — incorrelazione, indipendenza, pdf congiunta come prodotto.
 - [[processi-e-sistemi-lti]] — medie e correlazioni dell'uscita gaussiana.
 
-## Fonti
+## Fonti · [[random_processes.pdf#page=41|p. 41]], [[random_processes.pdf#page=44|p. 44]]
 
 - [[processi-aleatori]]
-- [[random_processes.pdf#page=41]] – [[random_processes.pdf#page=44]]
 
 _Aggiornato: 2026-09-28 — creazione da ingest random_processes.pdf_

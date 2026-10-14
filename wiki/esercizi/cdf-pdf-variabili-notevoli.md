@@ -22,17 +22,17 @@ difficoltà: media
 2. $f_Y(y) = \sum_if_X(x_i)/|g'(x_i)|$;
 3. controllo con media e varianza ($E(aX+b) = aE(X)+b$, $\text{Var}(aX+b) = a^2\text{Var}(X)$).
 
-## Formule usate
+## Formule usate · [[Probabilità.pdf#page=16|p. 16]], [[Probabilità.pdf#page=18|p. 18]]–[[Probabilità.pdf#page=20|20]], [[Probabilità.pdf#page=22|p. 22]], [[Probabilità.pdf#page=24|p. 24]], [[Probabilità.pdf#page=27|p. 27]]
 
-- Definizioni di CDF, pdf, DF → [[variabile-aleatoria]] ([[Probabilità.pdf#page=16]], [[Probabilità.pdf#page=18]], [[Probabilità.pdf#page=19]])
-- DF Bernoulli e Binomiale, pdf Uniforme → [[variabili-aleatorie-notevoli]] ([[Probabilità.pdf#page=20]] – [[Probabilità.pdf#page=22]])
-- $f_Y = \sum f_X(x_i)/|g'(x_i)|$ → [[funzione-di-variabile-aleatoria]] ([[Probabilità.pdf#page=27]])
-- CDF gaussiana con erf → [[variabile-aleatoria-gaussiana]] ([[Probabilità.pdf#page=24]])
+- Definizioni di CDF, pdf, DF → [[variabile-aleatoria]]
+- DF Bernoulli e Binomiale, pdf Uniforme → [[variabili-aleatorie-notevoli]]
+- $f_Y = \sum f_X(x_i)/|g'(x_i)|$ → [[funzione-di-variabile-aleatoria]]
+- CDF gaussiana con erf → [[variabile-aleatoria-gaussiana]]
 
 ## Casi svolti
 
-### Caso 1 — CDF e pdf della Bernoulli
-**Traccia** ([[Probabilità.pdf#page=20]]): $X\sim\text{Bern}(p)$, «Calcolare CDF e pdf».
+### Caso 1 — CDF e pdf della Bernoulli · [[Probabilità.pdf#page=20|p. 20]]
+**Traccia**: $X\sim\text{Bern}(p)$, «Calcolare CDF e pdf».
 > 🧩 Derivazione mia (esercizio lasciato al lettore)
 $$
 \begin{aligned}
@@ -43,8 +43,8 @@ f(x) = \frac{dF}{dx} &= q\,\delta(x) + p\,\delta(x-1) && \frac{d}{dx}u(x-x_0) = 
 $$
 **Sanity check:** salto $q$ in 0 e $p$ in 1, che sommano a 1 ✓; $F$ continua da destra ✓ (con $u(0) = 1$).
 
-### Caso 2 — CDF e pdf della Binomiale
-**Traccia** ([[Probabilità.pdf#page=21]]): $X\sim\mathcal{B}(n,p)$, «Calcolare CDF e pdf»; verificare la normalizzazione.
+### Caso 2 — CDF e pdf della Binomiale · [[Probabilità.pdf#page=21|p. 21]]
+**Traccia**: $X\sim\mathcal{B}(n,p)$, «Calcolare CDF e pdf»; verificare la normalizzazione.
 > 🧩 Derivazione mia
 $$
 \begin{aligned}
@@ -56,26 +56,26 @@ f(x) &= \sum_{k=0}^n\tbinom nkp^kq^{n-k}\,\delta(x-k) \\
 $$
 **Esempio numerico** (🧩 mio): $n = 3$, $p = 0.5$: $p(k) = \binom3k/8 = 1/8, 3/8, 3/8, 1/8$ per $k = 0,1,2,3$. CDF: $1/8$, $1/2$, $7/8$, $1$ ✓.
 
-### Caso 3 — CDF dell'Uniforme ed esempio del bus
-**Traccia** ([[Probabilità.pdf#page=22]]): $X\sim\mathcal{U}(a,b)$, ricavare la CDF per integrazione; bus tra le 10:00 e le 10:15.
+### Caso 3 — CDF dell'Uniforme ed esempio del bus · [[Probabilità.pdf#page=22|p. 22]]
+**Traccia**: $X\sim\mathcal{U}(a,b)$, ricavare la CDF per integrazione; bus tra le 10:00 e le 10:15.
 **Svolgimento:** derivazione completa in [[variabili-aleatorie-notevoli]]:
 $$F(x) = 0\ (x<a),\quad\frac{x-a}{b-a}\ (a\le x<b),\quad1\ (x\ge b)$$
 **Numeri:** 15 min × 60 s/min = 900 s, quindi $X\sim\mathcal{U}(0,900\,\text{s})$ ✓. Probabilità di attendere al più 5 min (🧩): $F(300\,\text{s}) = 300/900 = 0.333$.
 
-### Caso 4 — $Y = aX+b$ con $X$ gaussiana standard
-**Traccia** ([[Probabilità.pdf#page=27]]): $X\sim\mathcal{N}(0,1)$, calcolare la pdf di $Y = aX+b$.
+### Caso 4 — $Y = aX+b$ con $X$ gaussiana standard · [[Probabilità.pdf#page=27|p. 27]]
+**Traccia**: $X\sim\mathcal{N}(0,1)$, calcolare la pdf di $Y = aX+b$.
 **Svolgimento:** vedi [[funzione-di-variabile-aleatoria]] (derivazione passo-passo).
 **Risultato:** $f_Y(y) = \frac{1}{\sqrt{2\pi a^2}}e^{-(y-b)^2/(2a^2)}$, cioè $Y\sim\mathcal{N}(b,|a|)$.
 
-### Caso 5 — CDF gaussiana standard in Matlab
-**Traccia** ([[Probabilità.pdf#page=26]]): rappresentare la CDF di $\mathcal{N}(0,1)$.
+### Caso 5 — CDF gaussiana standard in Matlab · [[Probabilità.pdf#page=26|p. 26]]
+**Traccia**: rappresentare la CDF di $\mathcal{N}(0,1)$.
 **Svolgimento:** con $\mu=0$, $\sigma=1$ la formula $F(x) = \frac12[1+\text{erf}(\frac{x-\mu}{\sqrt2\sigma})]$ diventa `y = (1/2)*(1+erf(x/sqrt(2)))`.
 **Sanity check** (🧩 mio): $F(0) = \frac12(1+0) = 0.5$, per simmetria ✓; $F(3)\approx1-Q(3)\approx0.99865$.
 
-## Trappole
+## Trappole · [[Probabilità.pdf#page=18|p. 18]]
 
 - **Estremi di integrazione** nella CDF di pdf definite a tratti: per $x\ge b$ l'integrale si ferma a $b$, non a $x$.
-- **Impulsi** negli estremi: $P(x_1<X\le x_2) = \int_{x_1}^{x_2}f$ vale solo se si gestiscono gli eventuali impulsi in $x_1$ e $x_2$ ([[Probabilità.pdf#page=18]]).
+- **Impulsi** negli estremi: $P(x_1<X\le x_2) = \int_{x_1}^{x_2}f$ vale solo se si gestiscono gli eventuali impulsi in $x_1$ e $x_2$.
 - Nella formula di $f_Y$ il modulo $|g'|$ è necessario: senza, per $a<0$ la pdf verrebbe negativa.
 - La notazione $\mathcal{N}(\mu,\sigma)$ delle slide usa $\sigma$, **non** $\sigma^2$.
 - Per le v.a. discrete la pdf esiste solo in senso generalizzato (con le $\delta$).
