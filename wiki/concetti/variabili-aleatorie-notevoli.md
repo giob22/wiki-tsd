@@ -24,7 +24,7 @@ fonti_pdf: ["Probabilità.pdf#page=20", "Probabilità.pdf#page=21", "Probabilit�
 | Bernoulli | $p(0)=q,\ p(1)=p$ | derivata sotto |
 | Binomiale | $p(k) = \binom{n}{k}p^k q^{n-k}$ | derivata sotto |
 | Uniforme | $f(x)=\frac{1}{b-a}$ per $x\in(a,b)$, 0 altrove | $F(x) = 0,\ \frac{x-a}{b-a},\ 1$ per $x<a$, $a\le x<b$, $x\ge b$ |
-| Laplace | $f_X(x) = \frac{\lambda}{2}e^{-\lambda\|x\|}$ | — |
+| Laplace | $f_X(x) = \frac{\lambda}{2}e^{-\lambda\lvert x\rvert}$ | — |
 
 Unità: $f$ in $[X]^{-1}$; per la Laplace $\lambda$ ha unità $[X]^{-1}$ (es. 1/V).
 
@@ -138,4 +138,4 @@ Quindi $x_{rms} = \sqrt2/\lambda$: più $\lambda$ è grande, più la pdf è conc
 
 - [[elementi-teoria-probabilita]], [[campionamento-conversione-ad-da]]
 
-_Aggiornato: 2026-09-23 — creazione da ingest Probabilità.pdf e Campionamento_AD_DA.pdf_
+_Aggiornato: 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-23 — creazione da ingest Probabilità.pdf e Campionamento_AD_DA.pdf_

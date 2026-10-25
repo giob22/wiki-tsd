@@ -35,10 +35,10 @@ Se è **simmetrico**:
 | $2X_{max} = M\Delta \iff \Delta = \frac{2X_{max}}{M}$ | dinamica |
 | $b \ge \log_2 M$, di solito $M = 2^b$ | bit per campione |
 | $e(n) = x_q(n) - x(n) \iff x_q(n) = x(n)+e(n)$ | errore (rumore) di quantizzazione |
-| $R_g = [-X_{max}, X_{max}]$: $\|e(n)\|\le\Delta/2$ | regione granulare |
+| $R_g = [-X_{max}, X_{max}]$: $\lvert e(n)\rvert\le\Delta/2$ | regione granulare |
 | $R_s = ]-\infty,-X_{max}[\ \cup\ ]X_{max},+\infty[$: $e(n)$ non limitato | regione di sovraccarico |
 | $k_c \triangleq \dfrac{X_{max}}{x_{rms}}$, $x_{rms} = \sqrt{P_x}$ | **fattore di carico** (adimensionale) |
-| $P_s = P(\|x(n)\|>X_{max}) \le \dfrac{1}{k_c^2}$ | probabilità di sovraccarico |
+| $P_s = P(\lvert x(n)\rvert>X_{max}) \le \dfrac{1}{k_c^2}$ | probabilità di sovraccarico |
 
 > 🧮 Formula chiave: $\Delta = 2X_{max}/M$, $k_c = X_{max}/x_{rms}$, $P_s\le1/k_c^2$.
 
@@ -121,4 +121,4 @@ Obiettivo della slide: fissare **criteri quantitativi** per dimensionare un quan
 
 - [[campionamento-conversione-ad-da]]
 
-_Aggiornato: 2026-09-30 — collegamento al laboratorio Matlab; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_
+_Aggiornato: 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-30 — collegamento al laboratorio Matlab; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_

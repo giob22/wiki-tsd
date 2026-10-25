@@ -77,7 +77,7 @@ $$
 ### Lo spettro esatto del trapezio · [[Figure_1.png]]
 > 🧩 Derivazione mia: serve a controllare che la FFT dia il risultato giusto.
 
-Il trapezio è la convoluzione di due rettangoli: $s(t) = \Pi(t/3) * \Pi(t)$.
+Il trapezio è la convoluzione di due rettangoli: $s(t) = \Pi(t/3) \ast \Pi(t)$.
 - Un rettangolo largo 3 e uno largo 1 danno un risultato largo $3 + 1 = 4$ (da $-2$ a 2): è la regola "le durate si sommano", la stessa di [[lab-interpolazione]].
 - Il risultato sale linearmente mentre i due si sovrappongono sempre di più, per un tratto lungo 1.
 - Resta costante e pari a 1 (sovrapposizione piena: larghezza 1 × altezza 1) per $3 - 1 = 2$ s.
@@ -111,4 +111,4 @@ Integrando $|S(f)|^2$ numericamente si ottiene lo stesso valore (Parseval). Di q
 - La domanda di p. 8 ([[teorema-del-campionamento]]), cioè come scegliere $f_c$ per un dato segnale, parte proprio dallo spettro: qui lo si calcola per poter scegliere $f_s = 2W$.
 - Nelle slide la frequenza di campionamento si chiama $f_c$ e il periodo $T_c$; nel codice `fs` e `Ts`.
 
-_Aggiornato: 2026-09-30 — creazione da ingest del laboratorio (AD_conversion.m)_
+_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-30 — creazione da ingest del laboratorio (AD_conversion.m)_

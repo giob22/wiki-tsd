@@ -104,3 +104,56 @@ Filtra ultimi 10: `grep "^## " wiki/log.md | tail -10`
 ## [2026-10-12] query | coseno campionato esattamente a f_c = 2 f_0
 - risposta salvata in [[teorema-del-campionamento]] (nuova derivazione "Caso limite"): campioni (-1)^n cos(φ), ricostruzione ideale cos(φ) cos(2π f0 t), perdita della fase; spiegazione con le righe in ±f0 che si sommano in f_c/2; il "≥" del teorema vale per spettri continui, per una riga sul bordo serve ">"
 - animazione 🧩 `grafico-nyquist-limite-coseno.gif` (script `output/grafici/genera_grafici_nyquist_limite.py`); identità della serie di Shannon verificata numericamente; compendio rigenerato
+
+## [2026-10-14] query | animazione del companding
+- animazione 🧩 `grafico-companding-animazione.gif` (script `output/grafici/genera_animazione_companding.py`): legge µ con µ da ~0 a 255; soglie uniformi su y riportate su x, caratteristica complessiva, SNR vs livello con b = 8 bit (Laplace)
+- inserita in [[companding]], nuova sezione "Il companding in movimento"; nota sul picco dell'uniforme (~35 dB invece di 40.9) dovuto al sovraccarico con pdf di Laplace; compendio rigenerato
+
+## [2026-10-14] correzione | modulo nelle formule dentro le tabelle
+- segnalazione dell'utente: nella µ-law di [[companding]] mancava il modulo |x|; nelle tabelle il | era scritto \| e non si leggeva bene
+- 25 righe di tabella in 12 pagine: modulo scritto con \lvert x\rvert, condizionamento con \mid, norma dell'energia con \lVert s\rVert ([[inviluppo-complesso]]); compendio rigenerato
+
+## [2026-10-16] query | grafico della condizione f_c > B per i segnali passa-banda
+- nuovo grafico 🧩 `grafico-rice-condizione-passabanda.png` (script `output/grafici/genera_grafico_condizione_passabanda.py`): f_c = 2B, B, B/2, B/4 con il bordo f_c − B/2 del lobo positivo
+- inserito in [[segnali-banda-base-e-passa-banda]] nella derivazione "Perché si chiede f_c > B", con l'osservazione che basterebbe f_c > B/2; compendio [[corso-completo]] rigenerato
+
+## [2026-10-16] correzione | formule inline spezzate
+- segnalazione dell'utente su [[inviluppo-complesso]] (tabella delle formule): le definizioni di x_c e x_s sono corrette (slide 13, p. 17), ma la forma ampiezza-fase si leggeva «a = |s|$e$θ»
+- causa: la correzione del modulo del 2026-10-14 aveva lasciato uno spazio dopo \rvert, e "\rvert $" non chiude la formula in Obsidian; tolti 21 spazi in 10 pagine, più uno spazio prima di $ in [[lab-quantizzazione]]; controllo automatico: 0 formule inline con spazi ai bordi; compendio rigenerato
+
+## [2026-10-16] riorganizzazione | compendio nell'ordine delle slide
+- segnalazione dell'utente: nella Lezione 4 di [[corso-completo]] l'inviluppo complesso veniva prima del segnale analitico e della trasformata di Hilbert (le pagine erano copiate intere nell'ordine di lezioni.md, cioè per prima comparsa nel PDF)
+- `output/genera_compendio.py` riscritto: ogni pagina viene spezzata in sezioni, ogni sezione va alla pagina PDF citata nel titolo (mediana), mai prima della "Definizione" del suo argomento; 11 eccezioni nel dizionario COLLOCA; pagine fonte ed entità restano intere; "Perché importa" e "Connessioni" in fondo alla lezione; aggiunti per ogni lezione i refusi delle slide e le domande da esame della pagina fonte
+- controllo su tutte le lezioni: ordine rivisto lezione per lezione (alternanze corrette, es. interpolazione/aliasing in Campionamento, momenti/stazionarietà/acf in Processi); 0 sezioni perse, 3739/3764 righe presenti (le 25 mancanti sono i rimandi "Fonti", esclusi di proposito); pagine PDF non coperte: solo le copertine; 0 link o ancore rotti, 0 formule spezzate
+- CLAUDE.md aggiornato (punto 12 dell'ingest)
+
+## [2026-10-16] riorganizzazione | corso completo diviso in capitoli
+- richiesta dell'utente: il file unico era troppo pesante da navigare; [[corso-completo]] diventa l'indice, e ogni lezione è un capitolo in un file a sé in `wiki/corso/` (6 file, da 14 a 121 KB), con navigazione ← Lezione precedente · Indice · Lezione successiva → in cima e in fondo
+- `output/genera_compendio.py` aggiornato (titoli alzati di un livello nei capitoli, capitoli vecchi cancellati a ogni rigenerazione); `output/riferimenti_nei_titoli.py` ora salta la cartella `corso/`
+- nuovo `output/controlla_compendio.py`: controllo di integrità da lanciare dopo ogni rigenerazione
+- controllo: 6 capitoli tutti nell'indice; 0 link, ancore o formule rotte; 0 sezioni mancanti; 3725/3725 righe di contenuto presenti; pagine PDF non coperte: solo le copertine
+- aggiornati CLAUDE.md (struttura e punto 12 dell'ingest) e [[index]]
+
+## [2026-10-20] immagini | upconversion e downconversion (Lezione 4)
+- richiesta dell'utente: aggiungere immagini dove si parla di upconversion e downconversion
+- 3 grafici 🧩 nuovi da `output/grafici/genera_grafici_upconversion.py`: `grafico-rice-upconversion-tempo.png` (rami I e Q, somma e inviluppo, eq. (17)), `grafico-rice-downconversion-tempo.png` (parte lenta più termini a 2f_c, uscita del passa-basso, eq. (21); verificata la coincidenza con s_c e s_s), `grafico-rice-up-down-frequenza.png` (eq. (14), copie a ±2f_c, passa-basso; ramo Q ricavato)
+- due immagini dei PDF già estratte inserite in [[upconversion-e-downconversion]]: appunti di p. 2 (passaggio complesso ↔ reale) e slide 7 con le note (macroblocchi); larghezza fissata a 650 px
+- nel grafico in frequenza corretta un'etichetta: la copia in banda base è la somma di due lobi (picco ~0.67), non 1/2
+- capitoli rigenerati e controllati: 0 problemi, 3748/3748 righe di contenuto presenti
+
+## [2026-10-20] immagini | requisito sul filtro passa-basso
+- nuovo grafico 🧩 `grafico-rice-requisito-passabasso.png` (stesso script `genera_grafici_upconversion.py`): spettro dopo il moltiplicatore con banda utile |f| < W, copie a ±2f_c e riquadro del passa-basso; tre casi (taglio 5 kHz giusto, 1 kHz < W troppo basso, 19 kHz > 2f_c − W troppo alto) con le parti perse o lasciate passare
+- inserito in [[upconversion-e-downconversion]], nella derivazione "Requisito sul filtro passa-basso"; capitoli rigenerati, controllo di integrità senza problemi
+
+## [2026-10-20] correzione | asterischi dentro le formule
+- segnalazione dell'utente su [[equivalente-banda-base-dei-filtri]]: la formula $y(t) = \frac{1}{\sqrt2}\,x(t) * h(t)$ in una didascalia in corsivo si leggeva spezzata, perché il `*` della convoluzione chiudeva il corsivo
+- sostituito `*` con `\ast` in tutte le formule in linea (86 formule, 72 righe, 15 pagine; convoluzioni e coniugati come $S^\ast$); controllo: 0 formule in linea con `*` rimaste; capitoli rigenerati e controllati
+- nuova regola in CLAUDE.md (sezione "Matematica e notazione")
+
+## [2026-10-25] riorganizzazione | corso completo in un unico file schematico
+- richiesta: eliminare le ridondanze del corso completo, un solo file con tutte le lezioni, solo contenuto delle slide
+- `wiki/corso-completo.md` riscritto a mano: indice + lezioni 1–6 nell'ordine delle slide (circa 119 KB contro 458 KB dei capitoli generati); contiene solo slide, appunti a mano della docente e figure dei PDF (più tre figure di supporto richieste in lezione 4 e le figure del laboratorio in lezione 6); derivazioni 🧩, esercizi e grafici extra restano nelle pagine concetto/esercizio/laboratorio, richiamati da «Approfondimenti nel wiki»
+- eliminati `wiki/corso/` (capitoli generati), `output/genera_compendio.py`, `output/controlla_compendio.py`; nuovo `output/controlla_corso.py` (link, ancore, immagini, formule, riferimenti PDF solo nei titoli, copertura pagine) e `output/crea_pdf.py` (PDF delle lezioni con Chrome + KaTeX)
+- lezione 5 aggiornata con le slide 33, 40, 41 della nuova versione `raw/random_processes_v2.pdf` (la docente ha ricaricato il PDF)
+- PDF di studio delle lezioni 5 e 6 in `output/pdf/`
+- CLAUDE.md aggiornato (struttura e passo 12 dell'ingest)

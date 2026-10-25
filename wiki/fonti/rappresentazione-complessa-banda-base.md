@@ -22,7 +22,7 @@ Seguono:
 - le componenti **in fase e in quadratura**, con $s_p = \sqrt2\,s_c\cos - \sqrt2\,s_s\sin$;
 - la **conservazione dell'energia**, garantita dal $\sqrt2$;
 - gli schemi di **upconversion e downconversion**;
-- l'**equivalente in banda base di un filtro passa-banda**, $y = s * h/\sqrt2$, realizzato con quattro filtri reali;
+- l'**equivalente in banda base di un filtro passa-banda**, $y = s \ast h/\sqrt2$, realizzato con quattro filtri reali;
 - la definizione di banda per i segnali complessi.
 
 ### Corrispondenza pagine PDF ↔ slide
@@ -50,13 +50,13 @@ Il numero di pagina del PDF non coincide con quello stampato sulla slide, perch�
 
 1. La modulazione rappresenta l'informazione digitale con forme d'onda analogiche; nell'esempio, simboli ±1 per impulsi rettangolari traslati (modulazione lineare). Le forme d'onda reali sono spesso vincolate in frequenza (appunti p. 2).
 2. Definizioni: banda base $S_b(f) \approx 0$ per $|f| > B$; banda passante $S_p(f) \approx 0$ per $|f \pm f_c| > B/2$, con $f_c > B > 0$. Le stesse valgono per i canali LTI.
-3. Per i segnali reali $X(f) = X^*(-f)$, e la banda bilatera è il doppio della monolatera. "Banda" indica la monolatera. Banda stretta: $B/f_c \ll 1$.
+3. Per i segnali reali $X(f) = X^\ast (-f)$, e la banda bilatera è il doppio della monolatera. "Banda" indica la monolatera. Banda stretta: $B/f_c \ll 1$.
 4. Tutta l'informazione di un segnale passa-banda reale sta nel suo inviluppo complesso, campionabile a frequenza molto più bassa. Il DSP lavora in banda base e l'elaborazione analogica si riduce al minimo: fuori dal DSP restano upconversion e downconversion.
-5. Segnale analitico: $S_p^+(f) = \sqrt2\,S_p(f)\,u(f)$. Nel tempo $s_p^+ = \frac{1}{\sqrt2}s_p + \frac{j}{\sqrt2}\widehat{s}_p$, dove $\widehat{s}_p = s_p * \frac{1}{\pi t}$ è la trasformata di Hilbert. Si torna indietro con $s_p = \sqrt2\,\text{Re}\{s_p^+\}$, e vale $\widehat{S}_p = -j\,\text{sgn}(f)\,S_p$.
-6. Inviluppo complesso: $S(f) = S_p^+(f + f_c)$, cioè $s(t) = s_p^+(t)\,e^{-j2\pi f_c t} = s_c + js_s$. Ritorno: $s_p = \sqrt2\,\text{Re}\{s\,e^{j2\pi f_c t}\} = \sqrt2 s_c\cos(2\pi f_c t) - \sqrt2 s_s\sin(2\pi f_c t)$; in frequenza $S_p(f) = [S(f - f_c) + S^*(-f - f_c)]/\sqrt2$.
+5. Segnale analitico: $S_p^+(f) = \sqrt2\,S_p(f)\,u(f)$. Nel tempo $s_p^+ = \frac{1}{\sqrt2}s_p + \frac{j}{\sqrt2}\widehat{s}_p$, dove $\widehat{s}_p = s_p \ast \frac{1}{\pi t}$ è la trasformata di Hilbert. Si torna indietro con $s_p = \sqrt2\,\text{Re}\{s_p^+\}$, e vale $\widehat{S}_p = -j\,\text{sgn}(f)\,S_p$.
+6. Inviluppo complesso: $S(f) = S_p^+(f + f_c)$, cioè $s(t) = s_p^+(t)\,e^{-j2\pi f_c t} = s_c + js_s$. Ritorno: $s_p = \sqrt2\,\text{Re}\{s\,e^{j2\pi f_c t}\} = \sqrt2 s_c\cos(2\pi f_c t) - \sqrt2 s_s\sin(2\pi f_c t)$; in frequenza $S_p(f) = [S(f - f_c) + S^\ast (-f - f_c)]/\sqrt2$.
 7. Le portanti modulate di I e Q sono ortogonali; $\langle u_p, v_p\rangle = \text{Re}\{\langle u, v\rangle\}$, quindi $\|s_p\|^2 = \|s\|^2$ (dimostrazione con Parseval negli appunti p. 18).
 8. Downconversion: $\sqrt2\,s_p\cos(2\pi f_c t) = s_c + s_c\cos(4\pi f_c t) - s_s\sin(4\pi f_c t)$, poi passa-basso; per Q si usa $-\sqrt2\sin$. La fase dovuta a $f_c$ è prevedibile e non porta informazione.
-9. Filtro passa-banda in banda base: $Y(f) = \frac{1}{\sqrt2}S(f)H(f)$ e $y = \frac{1}{\sqrt2}s * h$, con quattro convoluzioni reali per I e Q.
+9. Filtro passa-banda in banda base: $Y(f) = \frac{1}{\sqrt2}S(f)H(f)$ e $y = \frac{1}{\sqrt2}s \ast h$, con quattro convoluzioni reali per I e Q.
 10. La banda di un segnale complesso si misura attorno all'origine, contando frequenze positive e negative.
 
 ## Concetti introdotti
@@ -124,4 +124,4 @@ Le pagine 1, 7, 23, 25 e 27 non hanno note scritte: al più sottolineature ed ev
 - Ricavare l'equivalente in banda base di un filtro passa-banda e la sua realizzazione con filtri reali.
 - Perché conviene elaborare i segnali in banda base?
 
-_Aggiornato: 2026-09-28 — re-ingest della versione con appunti a mano (27 pagine): tabella di corrispondenza, tabella degli appunti rifatta, domande aperte aggiornate, revisione di copertura totale; 2026-09-25 — ingest iniziale e revisione di copertura totale vs PDF_
+_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-28 — re-ingest della versione con appunti a mano (27 pagine): tabella di corrispondenza, tabella degli appunti rifatta, domande aperte aggiornate, revisione di copertura totale; 2026-09-25 — ingest iniziale e revisione di copertura totale vs PDF_

@@ -25,9 +25,9 @@ $$Q(x) = q_i \quad \text{se } x\in R_i$$
 
 | Formula | Significato |
 |---|---|
-| $f_X(x) = \frac\lambda2 e^{-\lambda\|x\|}$ | pdf di Laplace (ampiezze della voce) |
+| $f_X(x) = \frac\lambda2 e^{-\lambda\lvert x\rvert}$ | pdf di Laplace (ampiezze della voce) |
 | $\text{MSE} = E[e^2(n)] = \sum_{i=1}^M\int_{R_i}(q_i-x)^2f_X(x)\,dx$ | errore quadratico medio |
-| $q_i = E[x(n)\,\|\,x(n)\in R_i] = \dfrac{\int_{x_{i-1}}^{x_i} x\,f_X(x)\,dx}{\int_{x_{i-1}}^{x_i} f_X(x)\,dx}$ | **condizione del centroide**: baricentro della pdf ristretta a $R_i=(x_{i-1},x_i)$ |
+| $q_i = E[x(n)\,\mid \,x(n)\in R_i] = \dfrac{\int_{x_{i-1}}^{x_i} x\,f_X(x)\,dx}{\int_{x_{i-1}}^{x_i} f_X(x)\,dx}$ | **condizione del centroide**: baricentro della pdf ristretta a $R_i=(x_{i-1},x_i)$ |
 | $x_i = \dfrac{q_i+q_{i+1}}{2}$ | **condizione del punto medio** (minima distanza) |
 
 > 🧩 Derivazione mia — perché quella frazione è una media: il numeratore $\int_{x_{i-1}}^{x_i}x\,f_X(x)\,dx$ pesa ogni valore $x$ per la sua densità di probabilità, come nella somma discreta $\sum_k x_k\,p(x_k)$ di [[media-e-varianza]], ma limitata all'intervallo $R_i$ invece che a tutto l'asse reale. Il denominatore $\int_{x_{i-1}}^{x_i}f_X(x)\,dx = P(x\in R_i)$ è l'area di $f_X$ dentro $R_i$: dividere per questa area **rinormalizza** i pesi, perché $f_X$ ristretta a $R_i$ non è di per sé una pdf valida (non integra a 1 su $R_i$). Il rapporto è quindi la media pesata dei valori di $x$ **condizionata** al fatto che $x$ sia caduto in $R_i$ ([[probabilita-condizionale]]) — cioè il baricentro (centro di massa) della sola fetta di pdf che sta in $R_i$, non di tutta $f_X$.
@@ -122,4 +122,4 @@ Mostra che il quantizzatore va progettato **sulla statistica** della sorgente: c
 
 - [[campionamento-conversione-ad-da]]
 
-_Aggiornato: 2026-09-28 — collegamento alla definizione di stazionarietà; 2026-09-24 — resa esplicita l'idea del companding (il progetto si sposta su $F$); 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; aggiunta figura caratteristica p.28; revisione di copertura totale vs PDF (testo + figure)_
+_Aggiornato: 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-28 — collegamento alla definizione di stazionarietà; 2026-09-24 — resa esplicita l'idea del companding (il progetto si sposta su $F$); 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; aggiunta figura caratteristica p.28; revisione di copertura totale vs PDF (testo + figure)_

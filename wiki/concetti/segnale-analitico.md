@@ -36,19 +36,19 @@ Nota a mano sulla (8): «questa equazione ci dice che il segnale analitico è un
 | Formula | Significato |
 |---|---|
 | $S_p^+(f) = \sqrt2\,S_p(f)\,u(f)$ | segnale analitico, eq. (3) |
-| $s_p^+(t) = \mathcal{F}^{-1}[S_p^+(f)] = \sqrt2\,s_p(t) * \mathcal{F}^{-1}[u(f)]$ | eq. (4) |
+| $s_p^+(t) = \mathcal{F}^{-1}[S_p^+(f)] = \sqrt2\,s_p(t) \ast \mathcal{F}^{-1}[u(f)]$ | eq. (4) |
 | $\mathcal{F}[u(t)] = \frac12\delta(f) + \frac{1}{j2\pi f} \triangleq \text{U}(f)$ | eq. (5) |
 | $\mathcal{F}[\text{U}(t)] = u(-f)$ | dualità, eq. (6) |
 | $\mathcal{F}^{-1}[u(f)] = \text{U}(-t) = \frac12\delta(t) + \frac{j}{2\pi t}$ | eq. (7) |
 | $s_p^+(t) = \frac{1}{\sqrt2}s_p(t) + \frac{j}{\sqrt2}\widehat{s}_p(t)$ | eq. (8) |
-| $\widehat{s}_p(t) = s_p(t) * \frac{1}{\pi t}$ | trasformata di Hilbert, eq. (9) |
+| $\widehat{s}_p(t) = s_p(t) \ast \frac{1}{\pi t}$ | trasformata di Hilbert, eq. (9) |
 | $s_p(t) = \sqrt2\,\text{Re}\{s_p^+(t)\}$ | ritorno al segnale reale, eq. (10) |
 | $S_p^+(f) = \frac{1}{\sqrt2}S_p(f) + \frac{j}{\sqrt2}\mathcal{F}[\widehat{s}_p(t)]$ | eq. (11) |
 | $\widehat{S}_p(f) = S_p(f)\,\mathcal{F}\!\left[\frac{1}{\pi t}\right]$ | eq. (12) |
 | $\mathcal{F}[\text{sgn}(t)] = \frac{1}{j\pi f}$, $\ \mathcal{F}\!\left[\frac{1}{\pi t}\right] = j\,\text{sgn}(-f)$ | trasformate ausiliarie |
 | $\widehat{S}_p(f) = -j\,S_p(f)\,\text{sgn}(f)$ | Hilbert in frequenza |
 
-Simboli: $u(\cdot)$ = gradino unitario; $\text{U}(f)$ = sua trasformata; $\delta$ = delta di Dirac; $\text{sgn}$ = funzione segno; $*$ = convoluzione; $\mathcal{F}$, $\mathcal{F}^{-1}$ = trasformata e antitrasformata di Fourier; $\widehat{s}_p$ = trasformata di Hilbert, con la stessa unità di $s_p$ (es. V). Anche $s_p^+$ ha l'unità di $s_p$, perché $\sqrt2$ è adimensionale.
+Simboli: $u(\cdot)$ = gradino unitario; $\text{U}(f)$ = sua trasformata; $\delta$ = delta di Dirac; $\text{sgn}$ = funzione segno; $\ast$ = convoluzione; $\mathcal{F}$, $\mathcal{F}^{-1}$ = trasformata e antitrasformata di Fourier; $\widehat{s}_p$ = trasformata di Hilbert, con la stessa unità di $s_p$ (es. V). Anche $s_p^+$ ha l'unità di $s_p$, perché $\sqrt2$ è adimensionale.
 
 > 🧮 Formula chiave: $S_p^+(f) = \sqrt2\,S_p(f)\,u(f)$ e $s_p(t) = \sqrt2\,\text{Re}\{s_p^+(t)\}$.
 
@@ -62,7 +62,7 @@ s_p^+(t) &= \mathcal{F}^{-1}\big[S_p^+(f)\big] && \text{definizione di } s_p^+(t
 &= \sqrt2\,s_p(t) * \mathcal{F}^{-1}[u(f)] && \text{prodotto in frequenza} \leftrightarrow \text{convoluzione nel tempo}
 \end{aligned}
 $$
-Lo stesso passaggio è annotato a mano sopra la (4): $\sqrt2\,\mathcal{F}^{-1}[S_p(f)] * \mathcal{F}^{-1}[u(f)]$. Resta da calcolare l'antitrasformata del gradino **in frequenza**, che la nota a mano sulla (7) chiama appunto «antitrasformata del gradino».
+Lo stesso passaggio è annotato a mano sopra la (4): $\sqrt2\,\mathcal{F}^{-1}[S_p(f)] \ast \mathcal{F}^{-1}[u(f)]$. Resta da calcolare l'antitrasformata del gradino **in frequenza**, che la nota a mano sulla (7) chiama appunto «antitrasformata del gradino».
 
 ### Derivazione — Eq. (7): antitrasformata di $u(f)$ · [[Rappresentazione_Rice.pdf#page=12|p. 12]]
 **Fonte:** «dalla (5) e dalla (6), applicando la riflessione».
@@ -128,7 +128,7 @@ $$
 &= -j\,\text{sgn}(f)\,S_p(f) && \text{derivazione precedente}
 \end{aligned}
 $$
-Note a mano sulla slide 10: sopra $\widehat{S}_p$ «$s_p(t) * \frac{1}{\pi t}$», sul segno di uguale «proprietà di Fourier» (convoluzione → prodotto), sotto il risultato «la trasformata di Hilbert in frequenza».
+Note a mano sulla slide 10: sopra $\widehat{S}_p$ «$s_p(t) \ast \frac{1}{\pi t}$», sul segno di uguale «proprietà di Fourier» (convoluzione → prodotto), sotto il risultato «la trasformata di Hilbert in frequenza».
 
 > ⚠️ Refuso della slide, corretto a mano nel PDF: nella (12) e nell'ultima formula compare $S(f)$ invece di $S_p(f)$. Qui $S(f)$ sarebbe l'inviluppo complesso, un'altra cosa.
 
@@ -209,4 +209,4 @@ Il segnale analitico (8) è quindi il segnale di partenza più $j$ volte la sua 
 
 - [[rappresentazione-complessa-banda-base]]
 
-_Aggiornato: 2026-09-28 — re-ingest del PDF con nuovi appunti: scopo del segnale analitico, $\sqrt2$ per conservare l'energia, parte reale e immaginaria della (8), trasformata di sgn (appunti p.14, con segno sbagliato su $1/(\pi t)$), sfasamento di ∓90° ora da fonte; pagine rimappate; 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_
+_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-28 — re-ingest del PDF con nuovi appunti: scopo del segnale analitico, $\sqrt2$ per conservare l'energia, parte reale e immaginaria della (8), trasformata di sgn (appunti p.14, con segno sbagliato su $1/(\pi t)$), sfasamento di ∓90° ora da fonte; pagine rimappate; 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_

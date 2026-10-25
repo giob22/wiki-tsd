@@ -32,8 +32,8 @@ Terminologia usata in p. 38:
 2. $E[(X+Y)^2] = E(X^2)+E(Y^2)+2E(XY)$; se $X,Y$ sono ortogonali, $E[(X+Y)^2] = E(X^2)+E(Y^2)$
 3. $\text{Var}(X+Y) = \text{Var}(X)+\text{Var}(Y)+2\,\text{Cov}(X,Y)$; se sono incorrelate, le varianze si sommano.
    In generale: $\text{Var}\left(\sum_i c_iX_i\right) = \sum_i c_i^2\text{Var}(X_i) + \sum_i\sum_{j\neq i}c_ic_j\text{Cov}(X_i,X_j)$
-4. $|E(XY)| \le \sqrt{E(X^2)}\sqrt{E(Y^2)}$ — Schwarz; uguaglianza se e solo se $Y = a^*X$ in media quadratica
-5. $|\text{Cov}(X,Y)| \le \sigma_X\sigma_Y$ — Schwarz; uguaglianza se e solo se $Y = a^*X+b^*$ in media quadratica
+4. $|E(XY)| \le \sqrt{E(X^2)}\sqrt{E(Y^2)}$ — Schwarz; uguaglianza se e solo se $Y = a^\ast X$ in media quadratica
+5. $|\text{Cov}(X,Y)| \le \sigma_X\sigma_Y$ — Schwarz; uguaglianza se e solo se $Y = a^\ast X+b^\ast$ in media quadratica
 6. $|\rho_{XY}|\le 1$
 
 > 🧮 Formula chiave: proprietà 1 e 3.
@@ -70,7 +70,7 @@ $$
 \Rightarrow |E(XY)| &\le \sqrt{E(X^2)E(Y^2)}
 \end{aligned}
 $$
-L'uguaglianza vale se e solo se $\Delta = 0$, cioè esiste $a^*$ con $E[(Y-a^*X)^2] = 0$: $Y = a^*X$ in media quadratica.
+L'uguaglianza vale se e solo se $\Delta = 0$, cioè esiste $a^\ast$ con $E[(Y-a^\ast X)^2] = 0$: $Y = a^\ast X$ in media quadratica.
 **Prop. 5:** applico la 4 alle v.a. centrate $X-\mu_X$ e $Y-\mu_Y$. **Prop. 6:** divido la 5 per $\sigma_X\sigma_Y$.
 
 ### Derivazione — Indipendenti ⇒ incorrelate · [[Probabilità.pdf#page=35|p. 35]], [[Probabilità.pdf#page=36|36]]
@@ -106,4 +106,4 @@ L'ipotesi "errore di quantizzazione incorrelato col segnale" (modello additivo $
 
 - [[elementi-teoria-probabilita]]
 
-_Aggiornato: 2026-09-28 — collegamenti ai processi aleatori; 2026-09-23 — creazione da ingest Probabilità.pdf_
+_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-28 — collegamenti ai processi aleatori; 2026-09-23 — creazione da ingest Probabilità.pdf_

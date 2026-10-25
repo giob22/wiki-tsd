@@ -21,7 +21,7 @@ Le CDF marginali $F_X$ e $F_Y$ descrivono le singole v.a. ma **non** la loro rel
 |---|---|
 | CDF congiunta | $F_{XY}(x,y) \triangleq P(X\le x, Y\le y)$ |
 | pdf congiunta | $f_{XY}(x,y) \triangleq \dfrac{\partial^2 F_{XY}(x,y)}{\partial x\,\partial y}$ |
-| pdf condizionale | $f_X(x\|y) \triangleq \dfrac{f_{XY}(x,y)}{f_Y(y)}$, $\quad f_Y(y\|x) \triangleq \dfrac{f_{XY}(x,y)}{f_X(x)}$ |
+| pdf condizionale | $f_X(x\mid y) \triangleq \dfrac{f_{XY}(x,y)}{f_Y(y)}$, $\quad f_Y(y\mid x) \triangleq \dfrac{f_{XY}(x,y)}{f_X(x)}$ |
 | indipendenza | $f_{XY}(x,y) = f_X(x)\,f_Y(y)$ |
 
 Unità: $f_{XY}$ ha dimensione $[X]^{-1}[Y]^{-1}$.
@@ -96,4 +96,4 @@ Segnale e rumore, oppure due campioni successivi dello stesso segnale, sono copp
 
 - [[elementi-teoria-probabilita]]
 
-_Aggiornato: 2026-09-28 — collegamento al processo aleatorio; 2026-09-23 — creazione da ingest Probabilità.pdf_
+_Aggiornato: 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-28 — collegamento al processo aleatorio; 2026-09-23 — creazione da ingest Probabilità.pdf_

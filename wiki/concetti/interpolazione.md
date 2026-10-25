@@ -12,7 +12,7 @@ fonti_pdf: ["Campionamento_AD_DA.pdf#page=17", "Campionamento_AD_DA.pdf#page=22"
 L'**interpolazione** ricostruisce un segnale a tempo continuo $x_r(t)$ dai campioni $x(n)$: è l'unica operazione della conversione D/A. Si modella come il passaggio di $x_\delta(t) = \sum_n x(n)\delta(t-nT_c)$ in un **filtro di ricostruzione** $h_r(t)$:
 $$x_r(t) = \sum_{n} x(n)\,h_r(t-nT_c)$$
 
-> 🧩 Derivazione mia (forma generale): $x_r = x_\delta * h_r$ e $\delta(t-nT_c)*h_r(t) = h_r(t-nT_c)$. Le tre interpolazioni seguenti sono casi particolari di questa formula.
+> 🧩 Derivazione mia (forma generale): $x_r = x_\delta \ast h_r$ e $\delta(t-nT_c)\ast h_r(t) = h_r(t-nT_c)$. Le tre interpolazioni seguenti sono casi particolari di questa formula.
 
 ## Formule · [[Campionamento_AD_DA.pdf#page=17|p. 17]], [[Campionamento_AD_DA.pdf#page=23|p. 23]], [[Campionamento_AD_DA.pdf#page=24|24]]
 
@@ -130,4 +130,4 @@ L'interpolazione con sinc è una delle **due ipotesi ideali** del teorema di Sha
 
 - [[campionamento-conversione-ad-da]]
 
-_Aggiornato: 2026-09-30 — collegamento al laboratorio Matlab; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_
+_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-30 — collegamento al laboratorio Matlab; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_

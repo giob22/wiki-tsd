@@ -24,11 +24,11 @@ Il processo aleatorio è introdotto come estensione della variabile aleatoria ai
 4. Stazionarietà di ordine $k$ (6), SSS, del primo ordine (media costante), del secondo ordine ($R$ dipende da $t_1 - t_2$), WSS; SSS ⇒ WSS.
 5. Lag-acf $R_{XX}(\tau) = E[X(t)X(t-\tau)]$: $R(0) = E[X^2]$, è pari, $|R(\tau)| \le R(0)$. Normalizzata $\rho_{XX}$; tempo di decorrelazione.
 6. Mutue correlazioni e covarianze, con $R_{XY}(\tau) = R_{YX}(-\tau)$; processi indipendenti ⇒ incorrelati; con media nulla, incoerenti ⇔ incorrelati.
-7. Processi complessi: $\mu_Z = \mu_X + j\mu_Y$ e $R_{ZZ} = E[Z(t_1)Z^*(t_2)]$.
-8. Filtro LTI: $\mu_Y = \mu_X * h$, che per ingresso WSS diventa $\mu_X H(0)$; $R_{Y_1Y_2} = R_{X_1X_2} * h_1(\tau) * h_2(-\tau)$; ingresso WSS ⇒ uscita WSS; l'incoerenza si conserva.
+7. Processi complessi: $\mu_Z = \mu_X + j\mu_Y$ e $R_{ZZ} = E[Z(t_1)Z^\ast (t_2)]$.
+8. Filtro LTI: $\mu_Y = \mu_X \ast h$, che per ingresso WSS diventa $\mu_X H(0)$; $R_{Y_1Y_2} = R_{X_1X_2} \ast h_1(\tau) \ast h_2(-\tau)$; ingresso WSS ⇒ uscita WSS; l'incoerenza si conserva.
 9. PSD $S_{XX}(f) = \lim\frac{1}{2T}E|X_T(f)|^2 = \mathcal{F}[R_{XX}]$ (Wiener-Khinchin); $P_X = \int S_{XX}\,df$; $S_{YY} = S_{XX}|H|^2$.
 10. Significato fisico: $\Delta P_X \approx 2\Delta f\,S_{XX}(f)$, [W/Hz]. Proprietà 1–5.
-11. Densità spettrali mutue: $S_{XY} = S_{YX}(-f) = S_{YX}^*(f)$. La PSD di una somma di processi incoerenti è la somma delle PSD.
+11. Densità spettrali mutue: $S_{XY} = S_{YX}(-f) = S_{YX}^\ast (f)$. La PSD di una somma di processi incoerenti è la somma delle PSD.
 12. Processo gaussiano: pdf multivariata (33); resta gaussiano attraverso filtri stabili; WSS ⇒ SSS; incorrelati ⇒ indipendenti.
 13. Tempo discreto: $X(n)$, momenti (35)–(37), PSD con DTFT e Wiener-Khinchin discreto.
 
@@ -79,7 +79,7 @@ Le slide da p.11 in poi non hanno note scritte.
 - La conservazione della gaussianità attraverso un filtro è data senza dimostrazione: nel wiki c'è l'idea, con il rimando a una proprietà standard della gaussiana multivariata (📚).
 - Esempio della slide 32 (PSD di un segnale modulato linearmente): svolto nel wiki con ipotesi mie (simboli a media nulla e incorrelati, ritardo casuale uniforme). Da confrontare con lo svolgimento fatto a lezione.
 - Il rumore termico è citato come esempio di segnale aleatorio, ma il suo modello quantitativo (PSD, gaussianità) non è in queste slide: resta TODO in [[sistema-comunicazione-digitale]].
-- $r_{h_1h_2}(\tau)$ è usata a p.30 senza definizione: nel wiki è $h_1(\tau) * h_2(-\tau)$, la mutua correlazione deterministica delle risposte impulsive.
+- $r_{h_1h_2}(\tau)$ è usata a p.30 senza definizione: nel wiki è $h_1(\tau) \ast h_2(-\tau)$, la mutua correlazione deterministica delle risposte impulsive.
 
 ## Domande da esame
 
@@ -95,4 +95,4 @@ Le slide da p.11 in poi non hanno note scritte.
 - Processo gaussiano: pdf multivariata e proprietà.
 - PSD di un segnale modulato linearmente.
 
-_Aggiornato: 2026-09-28 — re-ingest della versione con appunti a mano (46 pagine): sezione "Appunti a mano", punti chiave 1–2, domande aperte, revisione di copertura. Prima, nello stesso giorno: ingest iniziale e revisione di copertura totale vs PDF_
+_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-28 — re-ingest della versione con appunti a mano (46 pagine): sezione "Appunti a mano", punti chiave 1–2, domande aperte, revisione di copertura. Prima, nello stesso giorno: ingest iniziale e revisione di copertura totale vs PDF_

@@ -210,7 +210,7 @@ def main():
     tmp.mkdir(exist_ok=True)
     prima = dopo = senza_titolo = 0
     for p in sorted(WIKI.rglob("*.md")):
-        if p.name in ESCLUSI:
+        if p.name in ESCLUSI or p.parent.name == "corso":   # capitoli generati dal compendio
             continue
         s = p.read_text(encoding="utf-8")
         n = trasforma(s)

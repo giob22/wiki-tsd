@@ -21,13 +21,13 @@ wiki-tsd/
 │   ├── log.md             ← log cronologico append-only
 │   ├── overview.md        ← panoramica del corso
 │   ├── lezioni.md         ← elenco delle lezioni con gli argomenti
-│   ├── corso-completo.md  ← tutto il corso in un file (generato da output/genera_compendio.py)
+│   ├── corso-completo.md  ← UN SOLO file schematico con tutte le lezioni (testo di studio, scritto a mano)
 │   ├── concetti/          ← pagine concetto (teoremi, modelli, schemi di modulazione...)
 │   ├── entità/            ← pagine entità (standard, codici, dispositivi, strumenti...)
 │   ├── fonti/             ← un sommario per ogni fonte raw ingestita
 │   ├── esercizi/          ← esercizi svolti e metodi di risoluzione ricorrenti
 │   └── esame/             ← materiale preparazione esame
-└── output/                ← export: tabelle comparative, slide Marp, grafici
+└── output/                ← export: grafici, script, pdf/ (PDF delle lezioni da crea_pdf.py)
 ```
 
 ---
@@ -63,7 +63,7 @@ LM Ingegneria Informatica, UNINA, docente D. Darsena; testo Madhow, *Fundamental
 9. Aggiorna `wiki/overview.md`
 10. Aggiorna `wiki/index.md`
 11. **Revisione di copertura totale (obbligatoria, sempre)**: rileggi il PDF **pagina per pagina** (testo *e* figure) e verifica che **ogni** elemento — definizioni, bullet, esempi, valori numerici, didascalie, contenuto delle figure — sia riportato nel wiki. Le uniche aggiunte ammesse sono **spiegazioni che aiutano ad acquisire il concetto** (incluse le derivazioni dei risultati delle slide): niente fatti esterni non necessari, esercizi inventati o anticipazioni di argomenti futuri. Riporta all'utente cosa mancava e cosa è stato aggiunto/rimosso
-12. Aggiorna `wiki/lezioni.md` con la lezione e la lista argomenti in ordine di PDF, poi rigenera il compendio `wiki/corso-completo.md` con `python output/genera_compendio.py` (file generato: non si modifica a mano)
+12. Aggiungi la lezione a `wiki/lezioni.md` (lista argomenti in ordine di PDF) e **a `wiki/corso-completo.md`** come nuova sezione `## Lezione N — titolo`, scritta a mano. `corso-completo.md` è il testo su cui l'utente studia: un unico file, **schematico e senza ridondanze**, che contiene **solo ciò che sta nei PDF della lezione** (slide e appunti a mano della docente) nell'ordine delle slide: definizioni, formule, esempi, figure, dimostrazioni svolte dalla docente. Non vanno copiati lì le derivazioni mie (🧩), i grafici/animazioni aggiuntivi, gli esercizi svolti, le fonti esterne (📚): restano nelle pagine concetto/esercizio/laboratorio e la sezione chiude con una riga «Approfondimenti nel wiki» con i link. Un passaggio che la slide salta si ricostruisce in una riga solo se serve a seguire il discorso. Ogni formula/definizione compare una volta sola; i richiami tra lezioni si fanno con una frase, non ripetendo. I riferimenti ai PDF stanno solo nei titoli. Poi lancia `python output/controlla_corso.py` (link, ancore, immagini, formule, riferimenti PDF, pagine non citate) e correggi ogni problema. I PDF di studio di una o più lezioni si producono con `python output/crea_pdf.py N [M ...]` (`tutte`, `--tutto`) e finiscono in `output/pdf/`
 13. Appendi a `wiki/log.md`: `## [YYYY-MM-DD] ingest | [titolo fonte] | pagine coperte: [range]`
 
 > Una singola fonte può toccare 5–15 pagine. È normale e desiderato.
@@ -284,6 +284,7 @@ Una pagina senza nemmeno un riferimento a `raw/` è sospetta: LINT la segnala.
 ## Matematica e notazione
 
 - Formule in LaTeX Obsidian: `$...$` inline, `$$...$$` display
+- **Dentro una formula in linea non scrivere mai `*`**: usa `\ast` per la convoluzione (`x \ast h`) e per il coniugato (`S^\ast`). Un `*` dentro `$...$` si scambia con il marcatore del corsivo e spezza la formula, soprattutto nelle didascalie in corsivo. Vale anche per `|`: nelle tabelle usa `\lvert x\rvert` e `\mid`, e non lasciare spazi subito dopo il `$` di apertura o prima del `$` di chiusura
 - Ogni simbolo va definito almeno una volta nella pagina
 - Le unità di misura si scrivono sempre (dB, Hz, bit/s, W, V...)
 - Grandezze in dB: specificare sempre il riferimento (dBm, dBW, dBi)

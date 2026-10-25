@@ -24,21 +24,21 @@ dove $P_X$ è la potenza del processo WSS. $S_{XX}(f)$ si misura in **watt per h
 
 | Formula | Significato |
 |---|---|
-| $S_{XX}(f) = \lim_{T\to\infty}\frac{1}{2T}E[\|X_T(f)\|^2]$ | definizione |
+| $S_{XX}(f) = \lim_{T\to\infty}\frac{1}{2T}E[\lvert X_T(f)\rvert^2]$ | definizione |
 | $S_{XX}(f) = \mathcal{F}[R_{XX}(\tau)]$ | Wiener-Khinchin (processi WSS) |
 | $E[X^2] = R_{XX}(0) = \int S_{XX}(f)\,df = P_X$ | potenza, eq. (21) |
-| $S_{YY}(f) = S_{XX}(f)\,\|H(f)\|^2$ | PSD dopo un filtro LTI, eq. (22) |
+| $S_{YY}(f) = S_{XX}(f)\,\lvert H(f)\rvert^2$ | PSD dopo un filtro LTI, eq. (22) |
 | $\Delta P_X \approx 2\Delta f\,S_{XX}(f)$ | potenza nella banda $2\Delta f$ attorno a $\pm f$ |
 | $S_{XX}(0) = \int R_{XX}(\tau)\,d\tau$ | proprietà 1, eq. (23) |
 | $E[X^2] = \int S_{XX}(f)\,df = R_{XX}(0)$ | proprietà 2, eq. (24) |
 | $S_{XX}(f) \ge 0$ | proprietà 3 |
 | $S_{XX}(-f) = S_{XX}(f)$ | proprietà 4 (processo reale) |
 | $p_{XX}(f) = S_{XX}(f)\big/\int S_{XX}(f)\,df$ | proprietà 5, PSD normalizzata, eq. (25) |
-| $S_{XY}(f) = \lim\frac{1}{2T}E[X_T(f)Y_T^*(f)] = \int R_{XY}(\tau)e^{-j2\pi f\tau}d\tau$ | densità spettrale mutua, eq. (26) |
-| $S_{XY}(f) = S_{YX}(-f) = S_{YX}^*(f)$ | simmetria |
+| $S_{XY}(f) = \lim\frac{1}{2T}E[X_T(f)Y_T^\ast (f)] = \int R_{XY}(\tau)e^{-j2\pi f\tau}d\tau$ | densità spettrale mutua, eq. (26) |
+| $S_{XY}(f) = S_{YX}(-f) = S_{YX}^\ast (f)$ | simmetria |
 | $S_{ZZ} = S_{XX} + S_{XY} + S_{YX} + S_{YY}$ | PSD della somma $Z = X + Y$, eq. (29) |
 | $S_{ZZ} = S_{XX} + S_{YY}$ | somma di processi incoerenti, eq. (30) |
-| $S_{XX}(\nu) = \lim_{N\to\infty}\frac{1}{2N+1}E[\|X_N(\nu)\|^2]$ | PSD a tempo discreto |
+| $S_{XX}(\nu) = \lim_{N\to\infty}\frac{1}{2N+1}E[\lvert X_N(\nu)\rvert^2]$ | PSD a tempo discreto |
 
 Simboli: $f$ = frequenza [Hz]; $T$ = semi-durata della finestra [s]; $S_{XX}$ [W/Hz] (o V²/Hz); $P_X$ [W]; $\Delta f$ = banda del filtro [Hz]; $\nu$ = frequenza normalizzata del tempo discreto (adimensionale); $X_N(\nu)$ = trasformata di Fourier a tempo discreto (DTFT) della versione troncata di $X(n)$.
 
@@ -91,7 +91,7 @@ S_{XX}(-f) &= \int R_{XX}(\tau)\,e^{+j2\pi f\tau}\,d\tau && \text{Wiener-Khinchi
 &= \int R_{XX}(u)\,e^{-j2\pi fu}\,du = S_{XX}(f) && R_{XX} \text{ è pari (proprietà 2 dell'autocorrelazione)}
 \end{aligned}
 $$
-Con lo stesso conto, $S_{XX}^*(f) = S_{XX}(-f) = S_{XX}(f)$ perché $R_{XX}$ è reale: la PSD di un processo reale è **reale e pari**.
+Con lo stesso conto, $S_{XX}^\ast (f) = S_{XX}(-f) = S_{XX}(f)$ perché $R_{XX}$ è reale: la PSD di un processo reale è **reale e pari**.
 
 ### Derivazione — Proprietà 5: la PSD normalizzata si comporta come una pdf · [[random_processes.pdf#page=37|p. 37]]
 $p_{XX}(f) \ge 0$ per la proprietà 3, e $\int p_{XX}(f)\,df = \int S_{XX}\,df\big/\int S_{XX}\,df = 1$.
@@ -116,7 +116,7 @@ La slide scrive il risultato come $\Delta P_X \approx (2\Delta f)\,S_{XX}(f)$ «
 ![[random-processes-p35-filtro-banda-stretta.png]]
 *modulo della risposta del filtro ideale a banda stretta: vale 1.0 in due finestre di larghezza $\Delta f$ centrate in $-f_c$ e $f_c$, 0 altrove.*
 
-### Derivazione — Densità spettrali mutue: $S_{XY}(f) = S_{YX}(-f) = S_{YX}^*(f)$ · [[random_processes.pdf#page=38|p. 38]]
+### Derivazione — Densità spettrali mutue: $S_{XY}(f) = S_{YX}(-f) = S_{YX}^\ast (f)$ · [[random_processes.pdf#page=38|p. 38]]
 **Fonte:** «ricordando che $R_{XY}(\tau) = R_{YX}(-\tau)$».
 > 🧩 Passaggi miei
 
@@ -140,7 +140,7 @@ S_{ZZ}(f) &= S_{XX}(f) + S_{YY}(f) && \text{incoerenti: } R_{XY} = R_{YX} \equiv
 \end{aligned}
 $$
 **In parole:** la PSD della somma di processi WSS **incoerenti**, o in modo equivalente a media nulla e incorrelati, è la somma delle PSD. Le potenze si sommano solo se i processi non "interferiscono" tra loro.
-> 🧩 Sanity check: nella (29) i due termini misti sommano a $S_{XY} + S_{XY}^* = 2\,\text{Re}\{S_{XY}\}$, reale, per la simmetria appena ricavata. Anche $S_{ZZ}$ è quindi reale ✓.
+> 🧩 Sanity check: nella (29) i due termini misti sommano a $S_{XY} + S_{XY}^\ast = 2\,\text{Re}\{S_{XY}\}$, reale, per la simmetria appena ricavata. Anche $S_{ZZ}$ è quindi reale ✓.
 
 ### Esempio — Wiener-Khinchin sull'autocorrelazione esponenziale
 > 🧩 Esempio mio: il processo dei grafici, $R_{XX}(\tau) = e^{-|\tau|/\tau_c}$ con potenza 1.
@@ -192,4 +192,4 @@ $X_N(\nu)$ e $Y_N(\nu)$ sono le trasformate di Fourier a tempo discreto delle ve
 
 - [[processi-aleatori]]
 
-_Aggiornato: 2026-09-28 — creazione da ingest random_processes.pdf_
+_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-28 — creazione da ingest random_processes.pdf_

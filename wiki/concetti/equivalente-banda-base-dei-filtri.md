@@ -25,13 +25,13 @@ In banda base, filtrare significa **convolvere gli inviluppi**, con un fattore $
 | $Y_p(f) = S_p(f)\,H_p(f)$ | filtro LTI in frequenza |
 | $Y_p^+ = \sqrt2 Y_p u(f)$, $S_p^+ = \sqrt2 S_p u(f)$, $H_p^+ = \sqrt2 H_p u(f)$ | segnali analitici ("segmenti a frequenze positive") |
 | $Y(f) = \frac{1}{\sqrt2}S(f)H(f)$ | eq. (22) |
-| $y(t) = \frac{1}{\sqrt2}\,s(t) * h(t)$ | eq. (23) |
-| $y_c = \frac{1}{\sqrt2}[s_c * h_c - s_s * h_s]$ | componente I dell'uscita, eq. (24) |
-| $y_s = \frac{1}{\sqrt2}[s_s * h_c + s_c * h_s]$ | componente Q dell'uscita, eq. (25) |
+| $y(t) = \frac{1}{\sqrt2}\,s(t) \ast h(t)$ | eq. (23) |
+| $y_c = \frac{1}{\sqrt2}[s_c \ast h_c - s_s \ast h_s]$ | componente I dell'uscita, eq. (24) |
+| $y_s = \frac{1}{\sqrt2}[s_s \ast h_c + s_c \ast h_s]$ | componente Q dell'uscita, eq. (25) |
 
-Simboli: $h_p(t)$ = risposta impulsiva del filtro passa-banda [1/s]; $h = h_c + jh_s$ = suo inviluppo complesso; $s = s_c + js_s$ e $y = y_c + jy_s$ = inviluppi di ingresso e uscita; $*$ = convoluzione; $u(\cdot)$ = gradino unitario.
+Simboli: $h_p(t)$ = risposta impulsiva del filtro passa-banda [1/s]; $h = h_c + jh_s$ = suo inviluppo complesso; $s = s_c + js_s$ e $y = y_c + jy_s$ = inviluppi di ingresso e uscita; $\ast$ = convoluzione; $u(\cdot)$ = gradino unitario.
 
-> 🧮 Formula chiave: $y(t) = \frac{1}{\sqrt2}\,s(t) * h(t)$.
+> 🧮 Formula chiave: $y(t) = \frac{1}{\sqrt2}\,s(t) \ast h(t)$.
 
 ## Derivazioni
 
@@ -39,7 +39,7 @@ Simboli: $h_p(t)$ = risposta impulsiva del filtro passa-banda [1/s]; $h = h_c + 
 **Fonte:** p. 23 (slide 16) per l'impostazione; p. 24 (appunti a mano) per la catena completa, compreso il passaggio che la slide salta.
 > 📄 La catena è quella degli appunti di p.24. Lì l'ingresso si chiama $x_p(t)$ (inviluppo $x(t)$); qui uso $s$ come nella slide. Tra virgolette le note a mano; gli altri commenti sono 🧩 miei.
 
-Gli appunti partono da $y_p(t) = x_p(t) * h_p(t)$ e dalla domanda «l'uscita come diventa in termini di inviluppo complesso?». La risposta: «ragioniamo in $f$». Nel tempo c'è una convoluzione; in frequenza diventa un prodotto, $Y_p(f) = X_p(f)\,H_p(f)$, molto più facile da maneggiare. Servono poi i tre segnali analitici, scritti uno sotto l'altro negli appunti:
+Gli appunti partono da $y_p(t) = x_p(t) \ast h_p(t)$ e dalla domanda «l'uscita come diventa in termini di inviluppo complesso?». La risposta: «ragioniamo in $f$». Nel tempo c'è una convoluzione; in frequenza diventa un prodotto, $Y_p(f) = X_p(f)\,H_p(f)$, molto più facile da maneggiare. Servono poi i tre segnali analitici, scritti uno sotto l'altro negli appunti:
 $$Y_p^+(f) = \sqrt2\,Y_p(f)\,u(f), \qquad X_p^+(f) = \sqrt2\,X_p(f)\,u(f), \qquad H_p^+(f) = \sqrt2\,H_p(f)\,u(f)$$
 
 $$
@@ -65,7 +65,7 @@ Il perché dei due trucchi:
 *Appunti a mano.*
 - *A sinistra, due schemi: in alto il sistema reale, $x_p(t)$ → LTI con $h_p(t)$ → $y_p(t)$; sotto lo stesso sistema visto sugli inviluppi, $x(t)$ → LTI con $h(t)$ → $y(t)$.*
 - *A destra la catena della (22), come sopra, con le tre note in verde e azzurro: «sostituisco l'uscita», «non altera nulla» su $u^2$, «resta fuori» sotto $\frac{1}{\sqrt2}$.*
-- *In fondo la conclusione: l'inviluppo complesso di $y_p(t)$ nel dominio della frequenza è $Y(f) = \frac{1}{\sqrt2}X(f)H(f)$, «che si traduce nel dominio del tempo» in $y(t) = \frac{1}{\sqrt2}\,x(t) * h(t)$.*
+- *In fondo la conclusione: l'inviluppo complesso di $y_p(t)$ nel dominio della frequenza è $Y(f) = \frac{1}{\sqrt2}X(f)H(f)$, «che si traduce nel dominio del tempo» in $y(t) = \frac{1}{\sqrt2}\,x(t) \ast h(t)$.*
 
 ### Derivazione — Eq. (23) · [[Rappresentazione_Rice.pdf#page=24|p. 24]], [[Rappresentazione_Rice.pdf#page=25|25]]
 **Fonte:** p. 25 (slide 17); lo stesso passaggio chiude gli appunti di p. 24.
@@ -88,7 +88,7 @@ y_s(t) &= \frac{1}{\sqrt2}\big[s_s * h_c + s_c * h_s\big] && \text{parte immagin
 $$
 Servono **quattro convoluzioni reali**. È la stessa regola del prodotto di due numeri complessi, $(a + jb)(c + jd) = (ac - bd) + j(bc + ad)$, con la convoluzione al posto del prodotto.
 
-> 🧩 Perché si può sviluppare come un prodotto: la convoluzione è lineare in ciascuno dei due argomenti, $(a + b) * c = a * c + b * c$ e $(\alpha a) * c = \alpha\,(a * c)$ anche per $\alpha = j$. I segnali $s_c, s_s, h_c, h_s$ sono reali, quindi ogni convoluzione $s_\cdot * h_\cdot$ è reale e la separazione tra parte reale e immaginaria è quella scritta.
+> 🧩 Perché si può sviluppare come un prodotto: la convoluzione è lineare in ciascuno dei due argomenti, $(a + b) \ast c = a \ast c + b \ast c$ e $(\alpha a) \ast c = \alpha\,(a \ast c)$ anche per $\alpha = j$. I segnali $s_c, s_s, h_c, h_s$ sono reali, quindi ogni convoluzione $s_\cdot \ast h_\cdot$ è reale e la separazione tra parte reale e immaginaria è quella scritta.
 
 ### Derivazione — Controllo sulle altezze della figura (slide 17) · [[Rappresentazione_Rice.pdf#page=25|p. 25]]
 > 🧩 Verifica mia. In figura $A$ è l'altezza del filtro e $B$ quella dello spettro d'ingresso (non la banda).
@@ -113,7 +113,7 @@ Coincide con il $\sqrt2 AB$ della figura, ed è anche l'inviluppo di $Y_p$ calco
 
 ![[rappresentazione-rice-p26-filtro-banda-base-iq.png]]
 - *Il segnale passa-banda $s_p(t)$ entra nel downconverter, che produce $s_c(t)$ e $s_s(t)$.*
-- *Il riquadro tratteggiato, "operazioni reali in banda base", contiene quattro filtri reali: $s_c$ passa per $h_c$ e $h_s$, $s_s$ per $h_c$ e $h_s$. Due sommatori formano $y_c = s_c * h_c - s_s * h_s$ (con il segno meno) e $y_s = s_s * h_c + s_c * h_s$.*
+- *Il riquadro tratteggiato, "operazioni reali in banda base", contiene quattro filtri reali: $s_c$ passa per $h_c$ e $h_s$, $s_s$ per $h_c$ e $h_s$. Due sommatori formano $y_c = s_c \ast h_c - s_s \ast h_s$ (con il segno meno) e $y_s = s_s \ast h_c + s_c \ast h_s$.*
 - *A mano, sotto: la catena delle (24)–(25) riportata nella derivazione sopra.*
 - *A mano, a destra: le due uscite confluiscono in un sommatore che forma $y(t)$, «segnale in banda base». $y(t)$ va a un DSP «che lavora in banda base».*
 
@@ -121,7 +121,7 @@ Coincide con il $\sqrt2 AB$ della figura, ed è anche l'inviluppo di $Y_p$ calco
 
 > 🧩 Il sommatore disegnato a mano va letto come $y = y_c + j\,y_s$: la componente Q entra moltiplicata per $j$, non sommata così com'è. Nel DSP le due componenti viaggiano come parte reale e parte immaginaria di un unico numero complesso.
 
-> 🧩 Quando i termini incrociati spariscono (osservazione mia): se $h(t)$ è reale, cioè $h_s = 0$, le (24)–(25) diventano $y_c = \frac{1}{\sqrt2}\,s_c * h_c$ e $y_s = \frac{1}{\sqrt2}\,s_s * h_c$. I e Q vengono filtrati separatamente, senza mescolarsi. Per la simmetria hermitiana ([[segnali-banda-base-e-passa-banda]]), $h$ è reale quando $H(f) = H^*(-f)$, cioè quando il filtro passa-banda è simmetrico (coniugato) attorno a $f_c$. Nella figura della slide 17 il rettangolo $H(f)$ non è centrato in 0: in quel caso $h_s \neq 0$ e i termini incrociati ci sono.
+> 🧩 Quando i termini incrociati spariscono (osservazione mia): se $h(t)$ è reale, cioè $h_s = 0$, le (24)–(25) diventano $y_c = \frac{1}{\sqrt2}\,s_c \ast h_c$ e $y_s = \frac{1}{\sqrt2}\,s_s \ast h_c$. I e Q vengono filtrati separatamente, senza mescolarsi. Per la simmetria hermitiana ([[segnali-banda-base-e-passa-banda]]), $h$ è reale quando $H(f) = H^\ast (-f)$, cioè quando il filtro passa-banda è simmetrico (coniugato) attorno a $f_c$. Nella figura della slide 17 il rettangolo $H(f)$ non è centrato in 0: in quel caso $h_s \neq 0$ e i termini incrociati ci sono.
 
 ### A cosa serve · [[Rappresentazione_Rice.pdf#page=21|p. 21]], [[Rappresentazione_Rice.pdf#page=26|p. 26]]
 
@@ -144,4 +144,4 @@ Completa la rappresentazione in banda base. Non solo i segnali, ma anche i **sis
 
 - [[rappresentazione-complessa-banda-base]]
 
-_Aggiornato: 2026-09-28 — re-ingest del PDF con appunti: dimostrazione della (22) dagli appunti di p.24 (trucchi $u^2$ e $\sqrt2/\sqrt2$ spiegati), (24)–(25) dalla nota a mano di p.26, uscita verso il DSP in banda base; 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_
+_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-28 — re-ingest del PDF con appunti: dimostrazione della (22) dagli appunti di p.24 (trucchi $u^2$ e $\sqrt2/\sqrt2$ spiegati), (24)–(25) dalla nota a mano di p.26, uscita verso il DSP in banda base; 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_

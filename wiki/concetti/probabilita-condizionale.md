@@ -22,10 +22,10 @@ $$P(AB) = P(A)\,P(B)$$
 
 | Formula | Significato | Validità |
 |---|---|---|
-| $P(A\|B) = \dfrac{P(AB)}{P(B)}$ | condizionale | $P(B)\neq 0$ |
-| $P(AB) = P(A\|B)P(B) = P(B\|A)P(A)$ | **legge della probabilità composta** | $P(A),P(B)\neq0$ |
-| $P(A\|B,C) = \dfrac{P(ABC)}{P(BC)}$ | condizionamento su più eventi ($B\cap C$) | $P(BC)\neq 0$ |
-| $P(A_1\cdots A_n) = P(A_1)P(A_2\|A_1)\cdots P(A_n\|A_1,\dots,A_{n-1})$ | **regola della catena** | condizionanti a prob. non nulla |
+| $P(A\mid B) = \dfrac{P(AB)}{P(B)}$ | condizionale | $P(B)\neq 0$ |
+| $P(AB) = P(A\mid B)P(B) = P(B\mid A)P(A)$ | **legge della probabilità composta** | $P(A),P(B)\neq0$ |
+| $P(A\mid B,C) = \dfrac{P(ABC)}{P(BC)}$ | condizionamento su più eventi ($B\cap C$) | $P(BC)\neq 0$ |
+| $P(A_1\cdots A_n) = P(A_1)P(A_2\mid A_1)\cdots P(A_n\mid A_1,\dots,A_{n-1})$ | **regola della catena** | condizionanti a prob. non nulla |
 | $P(AB)=P(A)P(B)$ | indipendenza di due eventi | — |
 | $P\left(\bigcap_{i\in I}A_i\right)=\prod_{i\in I}P(A_i)\ \forall I\subseteq\{1..n\}$ | indipendenza di $n$ eventi | — |
 
@@ -119,4 +119,4 @@ In ricezione si ragiona sempre per condizionamento: la probabilità d'errore *da
 
 - [[elementi-teoria-probabilita]]
 
-_Aggiornato: 2026-09-23 — creazione da ingest Probabilità.pdf_
+_Aggiornato: 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-23 — creazione da ingest Probabilità.pdf_

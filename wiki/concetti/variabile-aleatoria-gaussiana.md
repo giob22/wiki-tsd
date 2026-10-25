@@ -40,8 +40,8 @@ $$
 |---|---|
 | $P(X<x)$ | $\frac12\left[1+\text{erf}\frac{x-\mu}{\sqrt2\sigma}\right] = \frac12\,\text{erfc}\frac{\mu-x}{\sqrt2\sigma}$ |
 | $P(X>x)$ | $\frac12\,\text{erfc}\frac{x-\mu}{\sqrt2\sigma}$ |
-| $P(\|X\|<x)$ | $\frac12\left[\text{erf}\frac{x-\mu}{\sqrt2\sigma} + \text{erf}\frac{x+\mu}{\sqrt2\sigma}\right]$ |
-| $P(\|X\|>x)$ | $\frac12\left[\text{erfc}\frac{x-\mu}{\sqrt2\sigma} + \text{erfc}\frac{x+\mu}{\sqrt2\sigma}\right]$ |
+| $P(\lvert X\rvert<x)$ | $\frac12\left[\text{erf}\frac{x-\mu}{\sqrt2\sigma} + \text{erf}\frac{x+\mu}{\sqrt2\sigma}\right]$ |
+| $P(\lvert X\rvert>x)$ | $\frac12\left[\text{erfc}\frac{x-\mu}{\sqrt2\sigma} + \text{erfc}\frac{x+\mu}{\sqrt2\sigma}\right]$ |
 
 > 🧮 Formula chiave (🧩 mia, conseguenza diretta): $P(X>x) = Q\!\left(\frac{x-\mu}{\sigma}\right)$.
 
@@ -145,4 +145,4 @@ Il rumore termico è somma di moltissimi contributi indipendenti (moto degli ele
 
 - [[elementi-teoria-probabilita]]
 
-_Aggiornato: 2026-09-28 — collegamento al processo gaussiano; 2026-09-23 — creazione da ingest Probabilità.pdf_
+_Aggiornato: 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-28 — collegamento al processo gaussiano; 2026-09-23 — creazione da ingest Probabilità.pdf_

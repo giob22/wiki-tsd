@@ -26,9 +26,9 @@ con valori confinati in $[-1, 1]$, cioè $|\rho_{XX}(\tau)| \le 1$.
 | $R_{XX}(\tau) = E[X(t)X(t-\tau)]$ | lag-acf, eq. (7) |
 | $R_{XX}(0) = E[X^2(t)]$ | proprietà 1: valore quadratico medio |
 | $R_{XX}(-\tau) = R_{XX}(\tau)$ | proprietà 2: funzione pari |
-| $\|R_{XX}(\tau)\| \le R_{XX}(0)$ | proprietà 3: massimo in modulo in $\tau = 0$ |
-| $\rho_{XX}(\tau) = R_{XX}(\tau)/R_{XX}(0)$, $\ \|\rho_{XX}\| \le 1$ | normalizzata, eq. (8) |
-| $\|R_{XX}(\tau)\| <$ valore prescritto per $\tau > \tau_{dec}$ | tempo di decorrelazione |
+| $\lvert R_{XX}(\tau)\rvert\le R_{XX}(0)$ | proprietà 3: massimo in modulo in $\tau = 0$ |
+| $\rho_{XX}(\tau) = R_{XX}(\tau)/R_{XX}(0)$, $\ \lvert \rho_{XX}\rvert\le 1$ | normalizzata, eq. (8) |
+| $\lvert R_{XX}(\tau)\rvert<$ valore prescritto per $\tau > \tau_{dec}$ | tempo di decorrelazione |
 
 Simboli: $\tau$ = ritardo [s]; $R_{XX}$ nell'unità del segnale al quadrato (es. V²); $\rho_{XX}$ adimensionale; $\tau_{dec}$ = tempo di decorrelazione [s].
 
@@ -135,4 +135,4 @@ Dice quanto "memoria" ha un processo: per quanto tempo il suo valore attuale dà
 
 - [[processi-aleatori]]
 
-_Aggiornato: 2026-09-28 — creazione da ingest random_processes.pdf_
+_Aggiornato: 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-28 — creazione da ingest random_processes.pdf_

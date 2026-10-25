@@ -25,18 +25,18 @@ $$\mu_Y = \mu_X\,H(0) \qquad R_{YY}(\tau) = R_{XX}(\tau) * h(\tau) * h(-\tau) \q
 | Formula | Significato |
 |---|---|
 | $\mu_Y(t) = E\big[\int h(\tau_1)X(t - \tau_1)\,d\tau_1\big]$ | media dell'uscita, eq. (14) |
-| $\mu_Y(t) = \int h(\tau_1)\,\mu_X(t - \tau_1)\,d\tau_1 = \mu_X(t) * h(t)$ | eq. (15) |
+| $\mu_Y(t) = \int h(\tau_1)\,\mu_X(t - \tau_1)\,d\tau_1 = \mu_X(t) \ast h(t)$ | eq. (15) |
 | $\mu_Y = \mu_X\int h(\tau_1)\,d\tau_1 = \mu_X H(0)$ | ingresso WSS, eq. (16) |
 | $R_{Y_1Y_2}(t_1, t_2) = \iint h_1(\tau_1)h_2(\tau_2)\,R_{X_1X_2}(t_1 - \tau_1, t_2 - \tau_2)\,d\tau_1 d\tau_2$ | mutua correlazione delle uscite, eq. (17)–(18) |
 | $R_{Y_1Y_2}(\tau) = \iint h_1(\tau_1)h_2(\tau_2)\,R_{X_1X_2}(\tau - \tau_1 + \tau_2)\,d\tau_1 d\tau_2$ | ingressi congiuntamente WSS, eq. (19) |
-| $R_{Y_1Y_2}(\tau) = R_{X_1X_2}(\tau) * h_1(\tau) * h_2(-\tau) = R_{X_1X_2}(\tau) * r_{h_1h_2}(\tau)$ | eq. (20) |
-| $R_{YY}(\tau) = R_{XX}(\tau) * h(\tau) * h(-\tau) = R_{XX}(\tau) * r_{hh}(\tau)$ | autocorrelazione dell'uscita |
-| $R_{YX}(\tau) = R_{XX}(\tau) * h(\tau)$, $\ R_{XY}(\tau) = R_{XX}(\tau) * h(-\tau)$ | mutue correlazioni ingresso-uscita |
-| $S_{YY}(f) = S_{XX}(f)\,\|H(f)\|^2$ | PSD dell'uscita, eq. (22) |
+| $R_{Y_1Y_2}(\tau) = R_{X_1X_2}(\tau) \ast h_1(\tau) \ast h_2(-\tau) = R_{X_1X_2}(\tau) \ast r_{h_1h_2}(\tau)$ | eq. (20) |
+| $R_{YY}(\tau) = R_{XX}(\tau) \ast h(\tau) \ast h(-\tau) = R_{XX}(\tau) \ast r_{hh}(\tau)$ | autocorrelazione dell'uscita |
+| $R_{YX}(\tau) = R_{XX}(\tau) \ast h(\tau)$, $\ R_{XY}(\tau) = R_{XX}(\tau) \ast h(-\tau)$ | mutue correlazioni ingresso-uscita |
+| $S_{YY}(f) = S_{XX}(f)\,\lvert H(f)\rvert^2$ | PSD dell'uscita, eq. (22) |
 
 Simboli:
 - $h(t)$ = risposta impulsiva [1/s]; $H(f) = \int h(t)e^{-j2\pi ft}dt$ = risposta in frequenza (adimensionale); $H(0)$ = risposta a frequenza zero;
-- $r_{h_1h_2}(\tau) = h_1(\tau) * h_2(-\tau) = \int h_1(s)\,h_2(s - \tau)\,ds$ = mutua correlazione **deterministica** delle due risposte impulsive (🧩 la slide la usa senza definirla), e $r_{hh}$ l'autocorrelazione deterministica di $h$;
+- $r_{h_1h_2}(\tau) = h_1(\tau) \ast h_2(-\tau) = \int h_1(s)\,h_2(s - \tau)\,ds$ = mutua correlazione **deterministica** delle due risposte impulsive (🧩 la slide la usa senza definirla), e $r_{hh}$ l'autocorrelazione deterministica di $h$;
 - $S_{XX}$, $S_{YY}$ = densità spettrali di potenza ([[densita-spettrale-di-potenza]]).
 
 > 🧮 Formula chiave: $\mu_Y = \mu_X H(0)$ e $S_{YY}(f) = S_{XX}(f)\,|H(f)|^2$.
@@ -89,7 +89,7 @@ R_{Y_1Y_2}(\tau) &= \int h_1(\tau_1)\,\big[R_{X_1X_2} * \tilde h_2\big](\tau - \
 $$
 Il risultato dipende **solo dal ritardo** $\tau$.
 
-**LTI conserva l'incoerenza**: se gli ingressi sono incoerenti, $R_{X_1X_2} \equiv 0$, allora $R_{Y_1Y_2} = 0 * r_{h_1h_2} \equiv 0$ e anche le uscite sono incoerenti.
+**LTI conserva l'incoerenza**: se gli ingressi sono incoerenti, $R_{X_1X_2} \equiv 0$, allora $R_{Y_1Y_2} = 0 \ast r_{h_1h_2} \equiv 0$ e anche le uscite sono incoerenti.
 
 ### Derivazione — Autocorrelazione dell'uscita e mutue correlazioni ingresso-uscita · [[random_processes.pdf#page=31|p. 31]]
 $$
@@ -105,17 +105,17 @@ R_{YX}(\tau) &= R_{XX}(\tau) * h(\tau) * \delta(-\tau) = R_{XX}(\tau) * h(\tau) 
 R_{XY}(\tau) &= R_{XX}(\tau) * \delta(\tau) * h(-\tau) = R_{XX}(\tau) * h(-\tau) && Y_1 = X,\ Y_2 = Y,\ h_1 = \delta,\ h_2 = h
 \end{aligned}
 $$
-**Sanity check** (🧩): la simmetria $R_{XY}(\tau) = R_{YX}(-\tau)$ di [[momenti-di-un-processo]] vale. Infatti $R_{YX}(-\tau) = [R_{XX} * h](-\tau) = [R_{XX}(-\cdot) * h(-\cdot)](\tau) = R_{XX}(\tau) * h(-\tau)$, perché $R_{XX}$ è pari ✓.
+**Sanity check** (🧩): la simmetria $R_{XY}(\tau) = R_{YX}(-\tau)$ di [[momenti-di-un-processo]] vale. Infatti $R_{YX}(-\tau) = [R_{XX} \ast h](-\tau) = [R_{XX}(-\cdot) \ast h(-\cdot)](\tau) = R_{XX}(\tau) \ast h(-\tau)$, perché $R_{XX}$ è pari ✓.
 
 ### Derivazione — Ingresso WSS ⇒ uscita WSS · [[random_processes.pdf#page=31|p. 31]]
 **Fonte:** «se l'ingresso di un sistema LTI stabile è WSS, anche l'uscita è WSS».
 > 🧩 Derivazione mia: le due condizioni della WSS ([[stazionarieta]]).
 
 - **Media costante:** $\mu_Y = \mu_X H(0)$, eq. (16), non dipende da $t$.
-- **Autocorrelazione funzione del solo ritardo:** $R_{YY}(\tau) = R_{XX}(\tau) * r_{hh}(\tau)$ dipende solo da $\tau$.
+- **Autocorrelazione funzione del solo ritardo:** $R_{YY}(\tau) = R_{XX}(\tau) \ast r_{hh}(\tau)$ dipende solo da $\tau$.
 
 ### Derivazione — PSD dell'uscita, eq. (22) · [[random_processes.pdf#page=33|p. 33]]
-**Fonte:** dalla relazione di Wiener-Khinchin e da $R_{YY} = R_{XX} * h(\tau) * h(-\tau)$.
+**Fonte:** dalla relazione di Wiener-Khinchin e da $R_{YY} = R_{XX} \ast h(\tau) \ast h(-\tau)$.
 $$
 \begin{aligned}
 S_{YY}(f) &= \mathcal{F}\big[R_{XX}(\tau) * h(\tau) * h(-\tau)\big] && \text{Wiener-Khinchin: } S_{YY} = \mathcal{F}[R_{YY}] \\
@@ -153,4 +153,4 @@ Ogni blocco lineare di un sistema di comunicazione (filtri di trasmissione e ric
 
 - [[processi-aleatori]]
 
-_Aggiornato: 2026-09-28 — creazione da ingest random_processes.pdf_
+_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-28 — creazione da ingest random_processes.pdf_

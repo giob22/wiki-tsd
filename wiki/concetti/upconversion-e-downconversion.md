@@ -2,7 +2,7 @@
 tipo: concetto
 importanza_esame: alta
 prerequisiti: ["inviluppo-complesso"]
-fonti_pdf: ["Rappresentazione_Rice.pdf#page=2", "Rappresentazione_Rice.pdf#page=10", "Rappresentazione_Rice.pdf#page=20", "Rappresentazione_Rice.pdf#page=21", "Rappresentazione_Rice.pdf#page=22"]
+fonti_pdf: ["Rappresentazione_Rice.pdf#page=2", "Rappresentazione_Rice.pdf#page=10", "Rappresentazione_Rice.pdf#page=15", "Rappresentazione_Rice.pdf#page=16", "Rappresentazione_Rice.pdf#page=20", "Rappresentazione_Rice.pdf#page=21", "Rappresentazione_Rice.pdf#page=22"]
 ---
 
 # Upconversion e downconversion
@@ -25,6 +25,9 @@ Gli appunti di p.2 descrivono i due stadi dal punto di vista di cosa fanno al se
   - in trasmissione il passaggio è **complesso → reale**: dall'inviluppo $s = s_c + js_s$ al segnale fisico $s_p$;
   - in ricezione è **reale → complesso**: da $s_p$ di nuovo a $s_c$ e $s_s$.
 - Nota finale: «in entrambi i casi è un processo eseguito da un DSP».
+
+![[rappresentazione-rice-p2-appunti-sistema-e-canale.png|650]]
+*Appunti a mano: sorgente → MOD → canale; a destra la $H(f)$ del canale passa-banda con i due lobi di larghezza $B$ in $\pm f_c$; sotto le note su trasmettitore, ricevitore e passaggio complesso ↔ reale.*
 
 > 🧩 Perché il segnale fisico è reale e quello in banda base complesso: sul canale viaggia una tensione o un campo, che è una grandezza reale, quindi $s_p(t)$ è reale. In banda base invece lo spettro di $s_p$ attorno a $+f_c$, spostato in 0, non è in generale simmetrico, e un segnale con spettro non hermitiano è complesso ([[inviluppo-complesso]]). La (17) è il complesso → reale: prende $s_c$ e $s_s$ e restituisce un solo segnale reale. La downconversion fa il contrario.
 
@@ -78,6 +81,14 @@ Dopo il passa-basso resta $s_s(t)$. Il segno meno davanti a $\sqrt2\sin$ compens
 $$W \le f_{LP} \le 2f_c - W$$
 - L'intervallo esiste se $W \le 2f_c - W$, cioè $W \le f_c$: sempre vero per un segnale passa-banda, perché $W = B/2 < f_c$. Con la banda stretta ($B \ll f_c$) i termini a $2f_c$ sono lontanissimi e il filtro è facile da realizzare.
 
+![[grafico-rice-requisito-passabasso.png|650]]
+*🧩 Grafico mio, con $f_c = 10$ kHz e $W = 2$ kHz (i valori dell'esempio nel tempo). Spettro dopo il moltiplicatore: in blu la banda utile $|f| < W$, in arancio le due copie a $\pm 2f_c$, che occupano $|f \mp 2f_c| < W$, cioè da $2f_c - W = 18$ kHz a $22$ kHz. Il riquadro tratteggiato è la risposta del passa-basso, con taglio $f_{LP}$. Le altezze sono solo indicative.*
+- *(a) Con $f_{LP} = 5$ kHz il filtro contiene tutta la banda utile e nessuna copia: è la scelta giusta. La freccia verde mostra l'intero intervallo ammesso, da $W$ a $2f_c - W$, cioè qui da 2 a 18 kHz.*
+- *(b) Con $f_{LP} = 1$ kHz $< W$ il taglio cade dentro la banda utile: le parti tratteggiate in rosso, tra 1 e 2 kHz, sono perse e $s_c$ esce deformato.*
+- *(c) Con $f_{LP} = 19$ kHz $> 2f_c - W$ il filtro lascia passare l'inizio delle copie a $\pm 2f_c$, tra 18 e 19 kHz: il segnale in uscita porta con sé un residuo della portante.*
+
+Le due condizioni sono i due lati dell'intervallo. Il lato inferiore, $f_{LP} \geq W$, protegge il segnale utile. Il lato superiore, $f_{LP} \leq 2f_c - W$, elimina le copie. L'intervallo è lungo $2f_c - 2W$: più la portante è alta rispetto alla banda, più c'è margine per realizzare un filtro non ideale, con una fascia di transizione.
+
 ### Derivazione — Perché il √2 nei moltiplicatori · [[Rappresentazione_Rice.pdf#page=20|p. 20]]
 **Fonte:** figura di p. 20 (slide 14): portanti $\sqrt2\cos(2\pi f_c t)$ e $-\sqrt2\sin(2\pi f_c t)$ sia in trasmissione sia in ricezione.
 > 🧩 Derivazione mia
@@ -109,6 +120,37 @@ La downconversion è quindi "moltiplica per $\sqrt2\,e^{-j2\pi f_c t}$ e filtra"
 
 > 💡 Connessione: «esce l'inviluppo» vuol dire che il modulatore di questo disegno è la sola parte in banda base (il DSP della slide 7). Nelle note di p. 10 il macroblocco "modulatore" comprende anche l'upconversion: il nome MOD qui indica solo il primo dei due passi ([[modulazione-digitale]]).
 
+### L'upconversion nel tempo: cosa produce ogni ramo · [[Rappresentazione_Rice.pdf#page=16|p. 16]], [[Rappresentazione_Rice.pdf#page=20|p. 20]]
+
+![[grafico-rice-upconversion-tempo.png|650]]
+*🧩 Grafico mio dell'eq. (17). Esempio: $f_c = 10$ kHz, $s_c(t) = \cos(2\pi\,1\,\text{kHz}\,t) + 0.5\cos(2\pi\,2\,\text{kHz}\,t)$ (blu), $s_s(t) = 0.8\sin(2\pi\,1.5\,\text{kHz}\,t)$ (arancio). Tempo in ms, due periodi della banda base.*
+- *In alto, ramo I: la curva spessa è $s_c(t)$; moltiplicata per $\sqrt{2}\cos(2\pi f_c t)$ diventa una portante a 10 kHz la cui ampiezza segue $s_c$ (curva sottile). Dove $s_c$ è negativo la portante è capovolta.*
+- *Al centro, ramo Q: lo stesso con $s_s(t)$ e la portante in quadratura $-\sqrt{2}\sin(2\pi f_c t)$.*
+- *In basso, la somma dei due rami è $s_p(t)$, un unico segnale reale. Il suo inviluppo (tratteggio rosso) è $\pm\sqrt{2}\,|s(t)|$, con $|s| = \sqrt{s_c^2 + s_s^2}$: a $t = 0$ vale $\sqrt{2}\cdot 1.5 = 2.12$, perché $s_s(0) = 0$.*
+
+La portante ha periodo 0.1 ms, cioè 20 oscillazioni nel grafico, mentre l'inviluppo cambia in frazioni di ms: è la separazione "lento contro veloce" della slide 15. Qui $f_c$ è bassa solo per rendere visibili le oscillazioni.
+
+### La downconversion nel tempo: perché serve il passa-basso · [[Rappresentazione_Rice.pdf#page=20|p. 20]]
+
+![[grafico-rice-downconversion-tempo.png|650]]
+*🧩 Grafico mio dell'eq. (21), stesso esempio. A sinistra il ramo I, a destra il ramo Q.*
+- *In alto: l'ingresso $s_p(t)$, lo stesso segnale passa-banda dell'upconversion.*
+- *Al centro: dopo il moltiplicatore (blu per il ramo I, arancio per il Q) il segnale è la **parte lenta** (tratteggio rosso, $s_c$ o $s_s$) più oscillazioni a $2f_c = 20$ kHz che la attraversano. Sono i termini $s_c\cos(4\pi f_c t) - s_s\sin(4\pi f_c t)$ della (21), e per il ramo Q i termini $-s_s\cos(4\pi f_c t) - s_c\sin(4\pi f_c t)$.*
+- *In basso: il passa-basso (taglio a 5 kHz, tra la banda 2 kHz e i 18 kHz in cui iniziano i termini a $2f_c$) toglie le oscillazioni veloci e restituisce $s_c$ e $s_s$. L'uscita (colore) si sovrappone alla componente originale (grigio), con scarto sotto $10^{-6}$ nella verifica numerica.*
+
+> 🧩 Si vede anche perché la componente Q non disturba il ramo I: nel ramo I compare nel solo termine a $2f_c$, che il filtro elimina, e non nella parte lenta.
+
+### Upconversion e downconversion in frequenza · [[Rappresentazione_Rice.pdf#page=15|p. 15]], [[Rappresentazione_Rice.pdf#page=20|p. 20]]
+
+![[grafico-rice-up-down-frequenza.png|650]]
+*🧩 Grafico mio, con $f_c = 6$ kHz per avere le copie più vicine e leggibili. Per disegnare, $S(f)$ è preso **reale e asimmetrico** (picco a 0.5 kHz, supporto da −1 a 2 kHz): quindi $S(f) \ne S^\ast (-f)$ e $s(t)$ è comunque complesso. Le ampiezze sono in unità del picco di $S$.*
+- *Primo pannello: l'inviluppo complesso $S(f)$ in banda base, altezza 1.*
+- *Upconversion (eq. (14)): $S_p(f) = [S(f - f_c) + S^{\ast}(-f - f_c)]/\sqrt{2}$. Il lobo si sposta a $+f_c$ e la sua copia coniugata e specchiata a $-f_c$, entrambi alti $1/\sqrt{2}$.*
+- *Downconversion, ramo I: moltiplicare per $\sqrt{2}\cos(2\pi f_c t)$ vuol dire sommare $S_p$ traslato di $\pm f_c$, con un fattore $1/\sqrt{2}$. Si ottengono tre copie: due a $\pm 2f_c$, di altezza $1/2$, e una in banda base, $[S(f) + S^{\ast}(-f)]/2$. Quest'ultima è la somma di due lobi e qui ha altezza circa 0.67, non 1/2. Il riquadro tratteggiato è il passa-basso.*
+- *Dopo il passa-basso resta la sola copia in banda base: $[S(f) + S^{\ast}(-f)]/2$ è la trasformata di $\text{Re}\{s(t)\} = s_c(t)$.*
+
+> 🧩 Derivazione mia: per il ramo Q si ragiona allo stesso modo con $-\sqrt{2}\sin(2\pi f_c t) = -\frac{\sqrt{2}}{2j}(e^{j2\pi f_c t} - e^{-j2\pi f_c t})$, e la copia in banda base è $[S(f) - S^{\ast}(-f)]/(2j)$, la trasformata di $\text{Im}\{s(t)\} = s_s(t)$. È la versione in frequenza di "parte reale e parte immaginaria dell'inviluppo".
+
 ### La downconversion passo per passo (animazione) · [[Rappresentazione_Rice.pdf#page=20|p. 20]]
 ![[grafico-rice-downconversion.gif]]
 *🧩 Animazione mia della (21). Stesso esempio del grafico I/Q in [[inviluppo-complesso]]: I con righe a 1 e 2 kHz (blu), Q con una riga a 1.5 kHz (arancio), $f_c = 10$ kHz.*
@@ -138,6 +180,9 @@ La downconversion estrae le variazioni **lente** di ampiezza e fase dovute alla 
 
 Nello schema modulare del transceiver upconversion e downconversion sono gli unici passi che toccano il segnale passa-banda. Tutto il resto lo fa il DSP sull'inviluppo in banda base: codifica, modulazione e filtraggio in trasmissione; sincronizzazione, demodulazione e decodifica in ricezione. Upconverter e downconverter sono quindi l'interfaccia tra il mondo in banda base del DSP e il canale fisico passa-banda. La slide 6 aggiunge che così i transceiver elaborano in digitale direttamente l'inviluppo, «riducendo al minimo la parte di elaborazione analogica» (nota a mano).
 
+![[rappresentazione-rice-p10-schema-modulare-transceiver.png|650]]
+*Slide 7 con le note a mano: le parentesi graffe raggruppano i quattro passi in modulatore e demodulatore.*
+
 Le note a mano della slide 7 raggruppano i passi in due **macroblocchi**:
 - **modulatore** = DSP di trasmissione + upconversion;
 - **demodulatore** = downconversion + DSP di ricezione.
@@ -158,4 +203,4 @@ Grazie a questa separazione gli algoritmi si sviluppano in banda base, indipende
 
 - [[rappresentazione-complessa-banda-base]]
 
-_Aggiornato: 2026-09-28 — re-ingest del PDF con appunti: passaggio complesso ↔ reale (p.2), macroblocchi e svincolo da $f_c$ (p.10), «esce l'inviluppo» e «tagliati dal filtro» (p.20), nota di p.22; ruolo dei convertitori riformulato su slide 6–7; 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_
+_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-10-20 — grafico sulla frequenza di taglio del passa-basso; figure: upconversion e downconversion nel tempo, spettri della catena, appunti di p.2 e schema della slide 7; 2026-09-28 — re-ingest del PDF con appunti: passaggio complesso ↔ reale (p.2), macroblocchi e svincolo da $f_c$ (p.10), «esce l'inviluppo» e «tagliati dal filtro» (p.20), nota di p.22; ruolo dei convertitori riformulato su slide 6–7; 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_

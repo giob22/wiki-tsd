@@ -50,7 +50,7 @@ R_{XX}(t, \tau) &= E[X(t)\,X(t - \tau)] = \sum_n\sum_m E[b[n]b[m]]\;E\big[p(t - 
 &= \frac{\sigma_b^2}{T}\int_{-\infty}^{+\infty} p(u)\,p(u - \tau)\,du = \frac{\sigma_b^2}{T}\,r_{pp}(\tau) && \text{gli intervalli, al variare di } n, \text{ ricoprono } \mathbb{R} \text{ una volta sola}
 \end{aligned}
 $$
-$r_{pp}(\tau) = p(\tau) * p(-\tau)$ è l'autocorrelazione deterministica dell'impulso (la stessa $r_{hh}$ di [[processi-e-sistemi-lti]]). Il risultato **non dipende da $t$**, e la media è costante: il processo è **WSS**.
+$r_{pp}(\tau) = p(\tau) \ast p(-\tau)$ è l'autocorrelazione deterministica dell'impulso (la stessa $r_{hh}$ di [[processi-e-sistemi-lti]]). Il risultato **non dipende da $t$**, e la media è costante: il processo è **WSS**.
 
 **Passo 3 — PSD (Wiener-Khinchin).**
 $$
@@ -90,4 +90,4 @@ $$
 - **Media nulla dei simboli (H1)**: con simboli $\pm A$ **non** equiprobabili la media non è nulla e la derivazione non vale così com'è ($E[b[n]b[m]] \neq 0$ per $n \neq m$).
 - **Banda e primo zero**: il lobo principale va da $-1/T$ a $1/T$. Dire che "la banda è $1/T$" è una convenzione, perché lo spettro non si annulla mai del tutto.
 
-_Aggiornato: 2026-09-28 — creazione da ingest random_processes.pdf (esempio della slide 32)_
+_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-28 — creazione da ingest random_processes.pdf (esempio della slide 32)_

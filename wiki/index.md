@@ -3,7 +3,7 @@
 ## Overview
 - [[overview]] — panoramica del corso, programma, copertura
 - [[lezioni]] — elenco lezioni con gli argomenti in ordine di PDF
-- [[corso-completo]] — tutto il corso in un unico file, lezione per lezione (generato da `output/genera_compendio.py`)
+- [[corso-completo]] — il corso in un unico file schematico, lezioni 1–6 nell'ordine delle slide (solo contenuto dei PDF; PDF di studio con `output/crea_pdf.py`)
 
 ## Concetti
 
@@ -39,14 +39,14 @@
 - [[segnale-analitico]] — $S_p^+ = \sqrt2 S_p u(f)$, trasformata di Hilbert, perché $\sqrt2$ (alta)
 - [[inviluppo-complesso]] — $s = s_c + js_s$, $s_p = \sqrt2\,\text{Re}\{s\,e^{j2\pi f_c t}\}$, ortogonalità I/Q, energia, banda (alta)
 - [[upconversion-e-downconversion]] — mixer $\sqrt2\cos$, $-\sqrt2\sin$ e passa-basso; complesso ↔ reale in Tx e Rx; catena come canale unico (alta)
-- [[equivalente-banda-base-dei-filtri]] — $y = s * h/\sqrt2$ con la dimostrazione degli appunti, quattro filtri reali (alta)
+- [[equivalente-banda-base-dei-filtri]] — $y = s \ast h/\sqrt2$ con la dimostrazione degli appunti, quattro filtri reali (alta)
 
 **Processi aleatori**
 - [[processo-aleatorio]] — realizzazioni e v.a. a $t_0$, sinusoide a fase casuale, distribuzioni di ordine $k$ e marginali, DF del processo di Bernoulli, tempo discreto (alta)
 - [[momenti-di-un-processo]] — media, autocorrelazione, autocovarianza, mutue correlazioni; indipendenti/incoerenti/incorrelati; processi complessi; momenti del rettangolo (non stazionario) e della sinusoide (WSS) (alta)
 - [[stazionarieta]] — ordine $k$, SSS, primo e secondo ordine, WSS; SSS ⇒ WSS (alta)
 - [[autocorrelazione-processi-wss]] — lag-acf, proprietà, $\rho_{XX}$, tempo di decorrelazione (alta)
-- [[processi-e-sistemi-lti]] — $\mu_Y = \mu_X H(0)$, $R_{YY} = R_{XX} * h * h(-\tau)$, $S_{YY} = S_{XX}|H|^2$ (alta)
+- [[processi-e-sistemi-lti]] — $\mu_Y = \mu_X H(0)$, $R_{YY} = R_{XX} \ast h \ast h(-\tau)$, $S_{YY} = S_{XX}|H|^2$ (alta)
 - [[densita-spettrale-di-potenza]] — definizione, Wiener-Khinchin, $2\Delta f\,S_{XX}$, proprietà, PSD mutue e della somma (alta)
 - [[processo-gaussiano]] — gaussiana multivariata; WSS ⇒ SSS; incorrelati ⇒ indipendenti (alta)
 

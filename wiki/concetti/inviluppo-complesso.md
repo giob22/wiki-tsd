@@ -36,20 +36,20 @@ $$s_p(t) = \sqrt2\,\text{Re}\{s(t)\,e^{j2\pi f_c t}\} = \sqrt2\,s_c(t)\cos(2\pi 
 | Formula | Significato |
 |---|---|
 | $S(f) = S_p^+(f + f_c) = \sqrt2\,S_p(f + f_c)\,u(f + f_c)$ | inviluppo complesso in frequenza, eq. (13) |
-| $S_p(f) = \dfrac{S(f - f_c) + S^*(-f - f_c)}{\sqrt2}$ | ritorno al passa-banda in frequenza, eq. (14) |
+| $S_p(f) = \dfrac{S(f - f_c) + S^\ast (-f - f_c)}{\sqrt2}$ | ritorno al passa-banda in frequenza, eq. (14) |
 | $s(t) = s_p^+(t)\,e^{-j2\pi f_c t} = s_c(t) + j s_s(t)$ | inviluppo nel tempo, eq. (15) |
 | $s_p(t) = \sqrt2\,\text{Re}\{s(t)\,e^{j2\pi f_c t}\}$ | eq. (16) |
 | $s_p(t) = \sqrt2\,s_c\cos(2\pi f_c t) - \sqrt2\,s_s\sin(2\pi f_c t)$ | forma I/Q, eq. (17) |
-| $s_p(t) = \sqrt2\,a(t)\cos\big(2\pi f_c t + \theta(t)\big)$, con $a = \|s\|$ e $\theta = \arg s$ | forma ampiezza-fase |
+| $s_p(t) = \sqrt2\,a(t)\cos\big(2\pi f_c t + \theta(t)\big)$, con $a = \lvert s\rvert$ e $\theta = \arg s$ | forma ampiezza-fase |
 | $\langle x_c, x_s\rangle = \int x_c(t)\,x_s(t)\,dt = 0$ | ortogonalità delle portanti I e Q, eq. (18) |
 | $\langle u_p, v_p\rangle = \langle u_c, v_c\rangle + \langle u_s, v_s\rangle = \text{Re}\{\langle u, v\rangle\}$ | prodotto scalare, eq. (19) |
-| $\|s_p\|^2 = \|s\|^2$ | conservazione dell'energia, eq. (20) |
+| $\lVert s_p\rVert^2 = \lVert s\rVert^2$ | conservazione dell'energia, eq. (20) |
 
 Simboli:
-- $f_c$ = frequenza portante [Hz]; $u(\cdot)$ = gradino unitario; $^*$ = coniugato;
+- $f_c$ = frequenza portante [Hz]; $u(\cdot)$ = gradino unitario; $^\ast$ = coniugato;
 - $s(t)$ = inviluppo complesso (stessa unità di $s_p$, es. V); $s_c$, $s_s$ = sue parti reale e immaginaria;
 - $x_c(t) = \sqrt2\,s_c(t)\cos(2\pi f_c t)$ e $x_s(t) = \sqrt2\,s_s(t)\sin(2\pi f_c t)$ = le due forme d'onda passa-banda di I e Q;
-- $\langle x, y\rangle = \int x(t)\,y^*(t)\,dt$ = prodotto scalare [V²·s]; $\|x\|^2 = \langle x, x\rangle$ = energia [V²·s].
+- $\langle x, y\rangle = \int x(t)\,y^\ast (t)\,dt$ = prodotto scalare [V²·s]; $\|x\|^2 = \langle x, x\rangle$ = energia [V²·s].
 
 > 🧮 Formula chiave: $s_p(t) = \sqrt2\,\text{Re}\{s(t)\,e^{j2\pi f_c t}\} = \sqrt2\,s_c\cos(2\pi f_c t) - \sqrt2\,s_s\sin(2\pi f_c t)$ e $\|s_p\|^2 = \|s\|^2$.
 
@@ -91,7 +91,7 @@ S_p(f) &= \frac{1}{\sqrt2}\Big[S(f - f_c) + S^*\big(-(f + f_c)\big)\Big] && x\,e
 &= \frac{S(f - f_c) + S^*(-f - f_c)}{\sqrt2}
 \end{aligned}
 $$
-**Lettura:** il primo termine ricostruisce il lobo attorno a $+f_c$, il secondo quello attorno a $-f_c$ come specchio coniugato. Il segnale che si ottiene è reale, perché il suo spettro è hermitiano per costruzione. Note a mano sulla (14): è la «relazione inversa», e il termine $S^*(-f - f_c)$ rimette la «parte tagliata da $u(f)$», cioè il lobo negativo scartato costruendo il segnale analitico.
+**Lettura:** il primo termine ricostruisce il lobo attorno a $+f_c$, il secondo quello attorno a $-f_c$ come specchio coniugato. Il segnale che si ottiene è reale, perché il suo spettro è hermitiano per costruzione. Note a mano sulla (14): è la «relazione inversa», e il termine $S^\ast (-f - f_c)$ rimette la «parte tagliata da $u(f)$», cioè il lobo negativo scartato costruendo il segnale analitico.
 **Sanity check:** per $f$ vicino a $+f_c$ il secondo termine è nullo e, dalla (13), $S(f - f_c) = \sqrt2\,S_p(f)$. Quindi $S_p(f) = \sqrt2\,S_p(f)/\sqrt2$ ✓.
 
 ### Derivazione — Forma ampiezza-fase · [[Rappresentazione_Rice.pdf#page=22|p. 22]]
@@ -127,7 +127,7 @@ X_s^*(f) &= \frac{1}{j\sqrt2}\big[S_s^*(f + f_c) - S_s^*(f - f_c)\big] && (1/j)^
 $$
 
 Sviluppando il prodotto escono quattro termini:
-- **$S_c(f - f_c)\,S_s^*(f + f_c)$ e $S_c(f + f_c)\,S_s^*(f - f_c)$** sono nulli. Il primo fattore vive attorno a $\pm f_c$, il secondo attorno a $\mp f_c$, e le due zone non si sovrappongono. Negli appunti la giustificazione è in rosso: «per ipotesi i segnali sono a banda stretta: lo spettro centrato a $+f_c$ non si sovrappone mai a quello centrato in $-f_c$, perché $B/f_c \ll 1$».
+- **$S_c(f - f_c)\,S_s^\ast (f + f_c)$ e $S_c(f + f_c)\,S_s^\ast (f - f_c)$** sono nulli. Il primo fattore vive attorno a $\pm f_c$, il secondo attorno a $\mp f_c$, e le due zone non si sovrappongono. Negli appunti la giustificazione è in rosso: «per ipotesi i segnali sono a banda stretta: lo spettro centrato a $+f_c$ non si sovrappone mai a quello centrato in $-f_c$, perché $B/f_c \ll 1$».
 - Restano gli altri due, con il cambio di variabile $\nu = f \mp f_c$:
 $$
 \langle x_c, x_s\rangle = \frac{1}{2j}\Big[\underbrace{\int S_c(f + f_c)\,S_s^*(f + f_c)\,df}_{=\int S_c(\nu) S_s^*(\nu)\,d\nu} - \underbrace{\int S_c(f - f_c)\,S_s^*(f - f_c)\,df}_{=\int S_c(\nu) S_s^*(\nu)\,d\nu}\Big] = 0
@@ -140,7 +140,7 @@ $$
 $$
 È la trasformata del prodotto $s_c s_s$ calcolata in $\pm 2f_c$. Il prodotto ha banda al più $2W < 2f_c$, quindi l'integrale è nullo.
 
-> ⚠️ Segni negli appunti: gli appunti scrivono $X_s = -\frac{\sqrt2}{2j}S_s(f) * [\delta(f - f_c) - \delta(f + f_c)]$, con un meno davanti che non ci va, perché $\sqrt2\sin\alpha = \frac{\sqrt2}{2j}(e^{j\alpha} - e^{-j\alpha})$. Anche l'ordine dei due integrali finali è invertito rispetto allo sviluppo. Il risultato, $\frac{1}{2j}\big[\int S_c S_s^* - \int S_c S_s^*\big] = 0$, non cambia: è la differenza di due integrali uguali.
+> ⚠️ Segni negli appunti: gli appunti scrivono $X_s = -\frac{\sqrt2}{2j}S_s(f) \ast [\delta(f - f_c) - \delta(f + f_c)]$, con un meno davanti che non ci va, perché $\sqrt2\sin\alpha = \frac{\sqrt2}{2j}(e^{j\alpha} - e^{-j\alpha})$. Anche l'ordine dei due integrali finali è invertito rispetto allo sviluppo. Il risultato, $\frac{1}{2j}\big[\int S_c S_s^\ast - \int S_c S_s^\ast \big] = 0$, non cambia: è la differenza di due integrali uguali.
 
 Nota a mano sulla slide 12: «quadratura indica che il prodotto ortogonale [scalare] con $s_c$ è 0». È proprio questa proprietà.
 
@@ -187,7 +187,7 @@ In componenti: $\|s_p\|^2 = \|s_c\|^2 + \|s_s\|^2$, cioè l'energia di I più qu
 > - in alto c'è scritto $s_p(t) = x_c(t) + x_s(t) = \sqrt2 s_c\cos(2\pi f_c t) + \sqrt2 s_s\sin(2\pi f_c t)$, ma dalla (17) è $s_p = x_c - x_s$, con il meno davanti al termine in seno. Per l'ortogonalità il segno non conta, per l'uguaglianza con $s_p$ sì.
 
 ![[rappresentazione-rice-p19-appunti-prodotto-scalare-energia.png]]
-*Appunti a mano: conclusione della verifica della (19), $\text{Re}\{\int[u_c + ju_s][v_c - jv_s]\,dt\} = \text{Re}\{\langle u, v\rangle\}$, con $u$ inviluppo complesso di $u_p$ e $v^*$ il coniugato di $v$. Sotto, la (20): $\langle s_p, s_p\rangle = \int s_p^2\,dt = \|s_p\|^2 = \text{Re}\{\langle s, s\rangle\} = \text{Re}\{\int|s|^2dt\} = \|s\|^2$, dove l'integrale è reale e quindi si può togliere Re.*
+*Appunti a mano: conclusione della verifica della (19), $\text{Re}\{\int[u_c + ju_s][v_c - jv_s]\,dt\} = \text{Re}\{\langle u, v\rangle\}$, con $u$ inviluppo complesso di $u_p$ e $v^\ast$ il coniugato di $v$. Sotto, la (20): $\langle s_p, s_p\rangle = \int s_p^2\,dt = \|s_p\|^2 = \text{Re}\{\langle s, s\rangle\} = \text{Re}\{\int|s|^2dt\} = \|s\|^2$, dove l'integrale è reale e quindi si può togliere Re.*
 **Perché torna esatto:** è l'effetto del $\sqrt2$ nella (3), vedi [[segnale-analitico]] (sezione «Derivazione — Perché proprio √2»). Nota a mano di p. 21: alla domanda se tutti i passaggi conservano l'energia, la risposta è «sì, per le accortezze fatte ($\sqrt2$)».
 
 ### Derivazione — Frequenza di campionamento: passa-banda contro inviluppo · Rice [[Rappresentazione_Rice.pdf#page=9|p. 9]] · Campionamento [[Campionamento_AD_DA.pdf#page=12|p. 12]], [[Campionamento_AD_DA.pdf#page=14|p. 14]]
@@ -254,7 +254,7 @@ Note a mano sulla slide 7:
 - *(b) Il segnale analitico: si butta il lobo negativo e si moltiplica per $\sqrt2$.*
 - *(c) L'inviluppo complesso: lo stesso lobo spostato in 0.*
 
-*Il lobo in (c) non è simmetrico attorno a 0. Non vale $S(f) = S^*(-f)$, e per questo $s(t)$ è complesso: è la nota a mano di p. 2, «il ricevitore porta in banda base, e questo rende il segnale complesso».*
+*Il lobo in (c) non è simmetrico attorno a 0. Non vale $S(f) = S^\ast (-f)$, e per questo $s(t)$ è complesso: è la nota a mano di p. 2, «il ricevitore porta in banda base, e questo rende il segnale complesso».*
 
 ### Componenti I/Q nel tempo · [[Rappresentazione_Rice.pdf#page=16|p. 16]], [[Rappresentazione_Rice.pdf#page=22|p. 22]]
 
@@ -281,7 +281,7 @@ Note a mano sulla slide 7:
 
 ### Banda di un segnale complesso (slide 19) · [[Rappresentazione_Rice.pdf#page=27|p. 27]]
 
-- L'occupazione spettrale di un segnale **fisico reale** è la più piccola banda di frequenze **positive** che contiene la maggior parte del segnale. Per un segnale reale vale $S(f) = S^*(-f)$, quindi le frequenze negative non aggiungono nulla.
+- L'occupazione spettrale di un segnale **fisico reale** è la più piccola banda di frequenze **positive** che contiene la maggior parte del segnale. Per un segnale reale vale $S(f) = S^\ast (-f)$, quindi le frequenze negative non aggiungono nulla.
 - Nei segnali **complessi** in banda base l'informazione sta sia nelle frequenze positive sia in quelle **negative**.
 - L'occupazione spettrale di un segnale complesso in banda base è quindi la più piccola banda **attorno all'origine** che contiene la maggior parte del segnale, contando frequenze positive e negative.
 
@@ -310,4 +310,4 @@ Note a mano sulla slide 7:
 - [[rappresentazione-complessa-banda-base]]
 - Appunti a mano: p. 6 (vantaggi della banda base), p. 18 e p. 19 (dimostrazioni di (18), (19), (20)), p. 21 (catena e energia)
 
-_Aggiornato: 2026-09-28 — re-ingest del PDF con nuovi appunti: vantaggi della banda base (p.6), macroblocchi modulatore/demodulatore, note sulle slide 11–15; dimostrazioni di (18), (19), (20) ora da fonte (appunti p.18–19), con le mie precisazioni marcate 🧩 e i refusi degli appunti segnalati; pagine rimappate; 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_
+_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-28 — re-ingest del PDF con nuovi appunti: vantaggi della banda base (p.6), macroblocchi modulatore/demodulatore, note sulle slide 11–15; dimostrazioni di (18), (19), (20) ora da fonte (appunti p.18–19), con le mie precisazioni marcate 🧩 e i refusi degli appunti segnalati; pagine rimappate; 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_

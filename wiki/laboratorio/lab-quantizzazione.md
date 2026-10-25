@@ -55,7 +55,7 @@ Cosa succede ai campioni:
 | 0.506 (in $\pm 1.494$) | 0.53125 (distanza 0.025, contro 0.038 da 0.46875) | +0.025 |
 | 1 (5 campioni) | 0.96875 | $-0.03125 = -\Delta/2$ |
 
-È il quantizzatore uniforme delle slide: celle larghe $\Delta$, livello nel punto medio, $|e| \le \Delta/2$ nella regione granulare. Qui la dinamica non è simmetrica ($[0, 1]$ invece di $[-X_{max}, X_{max}]$), ma la relazione è la stessa: $M\Delta = $ ampiezza della dinamica, con $M = N_q$ ([[quantizzazione-uniforme]]).
+È il quantizzatore uniforme delle slide: celle larghe $\Delta$, livello nel punto medio, $|e| \le \Delta/2$ nella regione granulare. Qui la dinamica non è simmetrica ($[0, 1]$ invece di $[-X_{max}, X_{max}]$), ma la relazione è la stessa: $M\Delta$ = ampiezza della dinamica, con $M = N_q$ ([[quantizzazione-uniforme]]).
 
 ### Lo zero non esiste · [[Campionamento_AD_DA.pdf#page=30|p. 30]]
 Con i livelli al centro delle celle e l'estremo della dinamica in 0, **nessun livello vale 0**: il più basso è $\Delta/2$. Tutti i campioni nulli, cioè 112 su 121, diventano 0.03125. Dopo l'interpolazione il segnale ricostruito ha un "pavimento" a 0.031 su tutta la finestra fuori dal trapezio: è la riga sollevata che si vede in basso nelle due figure del laboratorio.

@@ -71,6 +71,16 @@ In una frase: **quantizzare in modo uniforme il segnale compresso $F(x)$ equival
 
 > 🎯 Esame: spiegare perché compressione + quantizzazione uniforme + espansione equivale a un quantizzatore non uniforme su $x$, perché il progetto si riduce alla scelta di $F$, e con quale criterio la si sceglie.
 
+### Il companding in movimento · [[Campionamento_AD_DA.pdf#page=36|p. 36]], [[Campionamento_AD_DA.pdf#page=38|p. 38]], [[Campionamento_AD_DA.pdf#page=41|p. 41]], [[Campionamento_AD_DA.pdf#page=43|p. 43]]
+
+![[grafico-companding-animazione.gif]]
+*🧩 Animazione mia (script `output/grafici/genera_animazione_companding.py`). Legge µ con $\mu$ che cresce da quasi 0 (compressore quasi lineare, cioè quantizzatore uniforme) fino a 255, il valore dello standard [[g711]].*
+- *In alto a sinistra: la legge di compressione $F(x)$ (blu). Le 16 celle **uguali** sull'asse compresso $y$ (righe verdi) vengono riportate sull'asse $x$ da $F^{-1}$ (righe arancio). Al crescere di $\mu$, $F$ diventa ripidissima vicino a 0 e le celle su $x$ si addensano attorno allo zero e si allargano ai bordi: è $\Delta_i \approx \Delta/F'(x_i)$.*
+- *In alto a destra: la caratteristica complessiva $Q(x) = F^{-1}(Q_u(F(x)))$ (blu) contro il quantizzatore uniforme (tratteggiato). Gradini piccoli per i valori piccoli, grandi per i valori grandi.*
+- *In basso: SNR con $b = 8$ bit in funzione del livello del segnale (pdf di Laplace). Con il quantizzatore uniforme l'SNR scende di 1 dB per ogni dB di segnale in meno. Al crescere di $\mu$ la curva rossa si **appiattisce**: a $\mu = 255$ resta tra circa 32 e 38 dB su 30 dB di dinamica. È la **quantizzazione robusta**, ottenuta perdendo qualche dB rispetto all'uniforme a pieno carico. A destra della linea $k_c = 4$ entrambe le curve crollano per il sovraccarico.*
+
+> 🧩 Il picco dell'uniforme nella simulazione è circa 35 dB, non i 40.9 dB della formula $6.02b - 7.3$: con una pdf di Laplace le code lunghe rendono non trascurabile il rumore di sovraccarico, che la formula ignora ([[snr-di-quantizzazione]]).
+
 ## Formule · [[Campionamento_AD_DA.pdf#page=36|p. 36]]–[[Campionamento_AD_DA.pdf#page=43|43]]
 
 | Formula | Significato |
@@ -82,9 +92,9 @@ In una frase: **quantizzare in modo uniforme il segnale compresso $F(x)$ equival
 | $\text{SNR} = \dfrac{\int_0^{X_{max}}x^2f_X(x)\,dx}{\frac{X_{max}^2}{3M^2}\int_0^{X_{max}}\frac{f_X(x)}{[F'(x)]^2}dx}$ | SNR del compander |
 | $F(x) = X_{max}+\frac1k\ln\frac{x}{X_{max}}$, $x\in[0,X_{max}]$ | legge logaritmica ideale |
 | $\text{SNR} = \dfrac{3M^2}{k^2X_{max}^2}$ | SNR della legge logaritmica |
-| $F(x) = X_{max}\dfrac{\ln(1+\mu\|x\|/X_{max})}{\ln(1+\mu)}\text{sgn}(x)$ | **µ-law** ($\mu=255$) → [[legge-mu]] |
+| $F(x) = X_{max}\dfrac{\ln(1+\mu\lvert x\rvert/X_{max})}{\ln(1+\mu)}\text{sgn}(x)$ | **µ-law** ($\mu=255$) → [[legge-mu]] |
 | $x_j = \dfrac{X_{max}}{\mu}\Big[(1+\mu)^{2j/M}-1\Big]$, $j = 0,\dots,M/2$ | soglie equivalenti della µ-law sull'asse $x$ |
-| $F(x) = \begin{cases}X_{max}\frac{A\|x\|/X_{max}}{1+\ln A}\text{sgn}(x) & 0\le\|x\|\le X_{max}/A\\ X_{max}\frac{1+\ln(A\|x\|/X_{max})}{1+\ln A}\text{sgn}(x) & X_{max}/A\le\|x\|\le X_{max}\end{cases}$ | **A-law** ($A=87.6$) → [[legge-a]] |
+| $F(x) = \begin{cases}X_{max}\frac{A\lvert x\rvert/X_{max}}{1+\ln A}\text{sgn}(x) & 0\le\lvert x\rvert\le X_{max}/A\\ X_{max}\frac{1+\ln(A\lvert x\rvert/X_{max})}{1+\ln A}\text{sgn}(x) & X_{max}/A\le\lvert x\rvert\le X_{max}\end{cases}$ | **A-law** ($A=87.6$) → [[legge-a]] |
 
 > 🧮 Formula chiave — prestazioni, segnale che impegna tutta la dinamica:
 > $$\text{SNR}_{dB}\approx6.02\,b+\alpha,\qquad \alpha = \begin{cases}4.77-20\log_{10}[\ln(1+\mu)] & \mu\text{-law}\\ 4.77-20\log_{10}[1+\ln A] & A\text{-law}\\ 4.77-20\log_{10}(X_{max}/x_{rms}) & \text{uniforme}\end{cases}$$
@@ -319,4 +329,4 @@ Risolve il problema della quantizzazione robusta posto dalle applicazioni telefo
 
 - [[campionamento-conversione-ad-da]]
 
-_Aggiornato: 2026-09-24 — resa esplicita l'idea chiave (quantizzare uniformemente $F(x)$ = quantizzare in modo non uniforme $x$; il progetto si sposta su $F$), esempio µ-law con soglie e livelli; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_
+_Aggiornato: 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-10-14 — animazione del companding al variare di µ; 2026-09-24 — resa esplicita l'idea chiave (quantizzare uniformemente $F(x)$ = quantizzare in modo non uniforme $x$; il progetto si sposta su $F$), esempio µ-law con soglie e livelli; 2026-09-23 — creazione da ingest Campionamento_AD_DA.pdf; revisione di copertura totale vs PDF (testo + figure)_

@@ -27,10 +27,10 @@ Con due processi $X(t)$ e $Y(t)$ si definiscono allo stesso modo la **mutua corr
 | $R_{XY}(\tau) = R_{YX}(-\tau)$ | simmetria (processi congiuntamente WSS) |
 | $C_{XY}(t, \tau) = E\{[X(t) - \mu_X(t)][Y(t-\tau) - \mu_Y(t-\tau)]\}$ | mutua covarianza, eq. (10); la (11) è $C_{YX}$ |
 | $\mu_Z(t) = \mu_X(t) + j\mu_Y(t)$ | media di un processo complesso, eq. (12) |
-| $R_{ZZ}(t_1, t_2) = E[Z(t_1)Z^*(t_2)]$ | autocorrelazione di un processo complesso, eq. (13) |
+| $R_{ZZ}(t_1, t_2) = E[Z(t_1)Z^\ast (t_2)]$ | autocorrelazione di un processo complesso, eq. (13) |
 | $\mu_X(n)$, $R_{XY}(n, k) = E[X(n)Y(k)]$, $C_{XY}(n,k) = R_{XY}(n,k) - \mu_X(n)\mu_Y(k)$ | versioni a tempo discreto, eq. (35)–(37) |
 
-Simboli: $E[\cdot]$ = valore atteso; $f_{X(t)}$ = pdf del primo ordine, $f_{X(t_1),X(t_2)}$ = pdf del secondo ordine; $\tau$ = ritardo (*lag*) [s]; $Z^*$ = coniugato. Unità: $\mu$ come il segnale (es. V); $R$ e $C$ come il segnale al quadrato (es. V², cioè W su 1 Ω).
+Simboli: $E[\cdot]$ = valore atteso; $f_{X(t)}$ = pdf del primo ordine, $f_{X(t_1),X(t_2)}$ = pdf del secondo ordine; $\tau$ = ritardo (*lag*) [s]; $Z^\ast$ = coniugato. Unità: $\mu$ come il segnale (es. V); $R$ e $C$ come il segnale al quadrato (es. V², cioè W su 1 Ω).
 
 ## Derivazioni
 
@@ -173,10 +173,10 @@ che dipende da $t$: il processo non sarebbe più WSS.
 ### Processi complessi (slide 20) · [[random_processes.pdf#page=25|p. 25]]
 
 - $Z(t) = X(t) + jY(t)$. La caratterizzazione completa di $Z$ richiede quella **congiunta** di parte reale e immaginaria.
-- Caratterizzazione parziale: media (12) e autocorrelazione (13), con il **coniugato** sul secondo fattore. Si può scrivere come funzione di $(t_1, t_2)$ o di $(t, \tau)$: $R_{ZZ}(t, \tau) = E[Z(t)Z^*(t - \tau)]$.
-- A rigore servirebbe anche un altro momento del secondo ordine, la **autocorrelazione coniugata** $R_{ZZ^*}(t_1, t_2) = E[Z(t_1)Z(t_2)]$, senza coniugato. Per la maggior parte dei processi però è nulla.
+- Caratterizzazione parziale: media (12) e autocorrelazione (13), con il **coniugato** sul secondo fattore. Si può scrivere come funzione di $(t_1, t_2)$ o di $(t, \tau)$: $R_{ZZ}(t, \tau) = E[Z(t)Z^\ast (t - \tau)]$.
+- A rigore servirebbe anche un altro momento del secondo ordine, la **autocorrelazione coniugata** $R_{ZZ^\ast}(t_1, t_2) = E[Z(t_1)Z(t_2)]$, senza coniugato. Per la maggior parte dei processi però è nulla.
 
-> 🧩 Perché il coniugato (osservazione mia): con $t_1 = t_2 = t$ si ottiene $E[Z(t)Z^*(t)] = E[|Z(t)|^2] \ge 0$, un numero reale che è la potenza istantanea media. Senza coniugato si otterrebbe $E[Z^2(t)]$, che in generale è complesso e non misura la potenza. È lo stesso motivo del coniugato nel prodotto scalare $\langle u, v\rangle = \int u v^*$ di [[inviluppo-complesso]].
+> 🧩 Perché il coniugato (osservazione mia): con $t_1 = t_2 = t$ si ottiene $E[Z(t)Z^\ast (t)] = E[|Z(t)|^2] \ge 0$, un numero reale che è la potenza istantanea media. Senza coniugato si otterrebbe $E[Z^2(t)]$, che in generale è complesso e non misura la potenza. È lo stesso motivo del coniugato nel prodotto scalare $\langle u, v\rangle = \int u v^\ast$ di [[inviluppo-complesso]].
 
 ### Tempo discreto (slide 40–41) · [[random_processes.pdf#page=45|p. 45]], [[random_processes.pdf#page=46|46]]
 
@@ -211,4 +211,4 @@ Media e autocorrelazione sono le grandezze con cui si lavora in pratica. Si prop
 
 - [[processi-aleatori]]
 
-_Aggiornato: 2026-09-28 — re-ingest del PDF con appunti: momenti della sinusoide a fase casuale (p.4–5), processo WSS a confronto con il rettangolo. Prima, nello stesso giorno: creazione da ingest random_processes.pdf_
+_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-28 — re-ingest del PDF con appunti: momenti della sinusoide a fase casuale (p.4–5), processo WSS a confronto con il rettangolo. Prima, nello stesso giorno: creazione da ingest random_processes.pdf_
