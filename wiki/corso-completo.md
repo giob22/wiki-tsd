@@ -8,12 +8,12 @@ Testo unico di studio del corso (LM Ingegneria Informatica, UNINA, D. Darsena; t
 
 | # | Lezione | PDF sorgente |
 |---|---|---|
-| 1 | [[#Lezione 1 — Introduzione al corso|Introduzione al corso]] | Intro.pdf |
-| 2 | [[#Lezione 2 — Elementi di teoria della probabilità|Elementi di teoria della probabilità]] | Probabilità.pdf |
-| 3 | [[#Lezione 3 — Campionamento e conversione A/D e D/A|Campionamento e conversione A/D e D/A]] | Campionamento_AD_DA.pdf |
-| 4 | [[#Lezione 4 — Rappresentazione complessa in banda base|Rappresentazione complessa in banda base]] | Rappresentazione_Rice.pdf |
-| 5 | [[#Lezione 5 — Processi aleatori|Processi aleatori]] | random_processes.pdf (+ random_processes_v2.pdf) |
-| 6 | [[#Lezione 6 — Laboratorio Matlab: conversione A/D e D/A (28/09)|Laboratorio Matlab: conversione A/D e D/A]] | AD_conversion.m + figure |
+| 1 | [[#Lezione 1 — Introduzione al corso\|Introduzione al corso]] | Intro.pdf |
+| 2 | [[#Lezione 2 — Elementi di teoria della probabilità\|Elementi di teoria della probabilità]] | Probabilità.pdf |
+| 3 | [[#Lezione 3 — Campionamento e conversione A/D e D/A\|Campionamento e conversione A/D e D/A]] | Campionamento_AD_DA.pdf |
+| 4 | [[#Lezione 4 — Rappresentazione complessa in banda base\|Rappresentazione complessa in banda base]] | Rappresentazione_Rice.pdf |
+| 5 | [[#Lezione 5 — Processi aleatori\|Processi aleatori]] | random_processes.pdf (+ random_processes_v2.pdf) |
+| 6 | [[#Lezione 6 — Laboratorio Matlab: conversione A/D e D/A (28/09)\|Laboratorio Matlab: conversione A/D e D/A]] | AD_conversion.m + figure |
 
 
 

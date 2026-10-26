@@ -35,8 +35,10 @@ for i, r in enumerate(righe, 1):
         # intervalli «p. a–b»: contano anche le pagine intermedie
         for m in re.finditer(r"\[\[([^\]|#]+\.pdf)#page=(\d+)[^\]]*\]\]–\[\[[^\]|#]+\.pdf#page=(\d+)", r):
             citate.setdefault(m.group(1), set()).update(range(int(m.group(2)), int(m.group(3)) + 1))
+    if r.lstrip().startswith("|") and re.search(r"\[\[[^\]]*?(?<!\\)\|[^\]]*?\]\]", r):
+        problemi.append((i, "alias di wikilink con | non protetto in tabella (usa \\|)", r[:50]))
     for m in re.finditer(r"!?\[\[([^\]]+)\]\]", r):
-        base, _, frag = m.group(1).split("|")[0].partition("#")
+        base, _, frag = m.group(1).split("|")[0].rstrip("\\").partition("#")
         if not base:
             if frag not in titoli:
                 problemi.append((i, "ancora mancante", frag))
