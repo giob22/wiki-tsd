@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lezione 7 · Rappresentazione di Rice per i processi aleatori</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="style.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="app.js"></script></head>
+<body><header class="top"><nav><a href="index.html" class="home">TSD</a><a href="lezione-3.html">L3</a><a href="lezione-4.html">L4</a><a href="lezione-5.html">L5</a><a href="lezione-7.html" aria-current="page">L7</a></nav><span class="fs"><button id="fm" aria-label="testo più piccolo">A−</button><button id="fp" aria-label="testo più grande">A+</button></span></header>
+<main>
+<p class="crumb"><a href="index.html">Intercorso</a> · Lezione 7</p>
+<h1>Rappresentazione di Rice per i processi aleatori</h1>
+<p class="breve">Inviluppo complesso e componenti in quadratura di un processo passa-banda, loro PSD, rumore in banda.</p>
+<details class="toc"><summary>Indice della lezione</summary><ul><li class="l3"><a href="#processi-in-banda-base-e-passa-banda">Processi in banda base e passa-banda</a></li><li class="l4"><a href="#ipotesi-definizioni-e-processo-analitico">Ipotesi, definizioni e processo analitico</a></li><li class="l3"><a href="#inviluppo-complesso-e-componenti-in-fase-e-quadr">Inviluppo complesso e componenti in fase e quadratura</a></li><li class="l4"><a href="#definizione-di-inviluppo-complesso">Definizione di inviluppo complesso</a></li><li class="l3"><a href="#le-componenti-sono-congiuntamente-wss">Le componenti sono congiuntamente WSS</a></li><li class="l4"><a href="#teorema-e-dimostrazione">Teorema e dimostrazione</a></li><li class="l3"><a href="#psd-delle-componenti-e-dell-inviluppo">PSD delle componenti e dell'inviluppo</a></li><li class="l4"><a href="#psd-delle-componenti-in-quadratura">PSD delle componenti in quadratura</a></li><li class="l4"><a href="#osservazione-importante-1-2-psd-dell-inviluppo">Osservazione importante (1/2): PSD dell'inviluppo</a></li><li class="l4"><a href="#osservazione-importante-2-2-spettro-simmetrico">Osservazione importante (2/2): spettro simmetrico</a></li><li class="l4"><a href="#vista-grafica">Vista grafica</a></li><li class="l3"><a href="#esempio-rumore-in-banda-passante">Esempio: rumore in banda passante</a></li><li class="l4"><a href="#rumore-in-banda">Rumore in banda</a></li><li class="l4"><a href="#costruzione-grafica-di-s-w-cw-c-f">Costruzione grafica di <span class="math inline">S_{w_cw_c}(f)</span></a></li><li class="l3"><a href="#approfondimenti">Spiegazioni e dimostrazioni passo-passo</a></li><li class="l3"><a href="#domande">Domande da esame</a></li></ul></details>
+<section id="corso"><h2 class="ps">Il corso, slide per slide</h2>
+<h3 id="processi-in-banda-base-e-passa-banda">Processi in banda base e passa-banda</h3>
+<h4 id="ipotesi-definizioni-e-processo-analitico">Ipotesi, definizioni e processo analitico</h4>
+<ul>
+<li>Si assumono processi stocastici <strong>reali, WSS, a media nulla</strong> (<span class="math inline">\mu_x = E[x(t)] = 0</span>). L'ipotesi di processo reale è «non troppo restrittiva».</li>
+<li><span class="math inline">x_b(t)</span> è <strong>in banda base</strong> se la sua PSD è in banda base: <span class="math inline">S_{x_bx_b}(f) = 0</span> per <span class="math inline">|f| &gt; W &gt; 0</span>.</li>
+<li><span class="math inline">x_p(t)</span> è <strong>passa-banda</strong> se la sua PSD è passa-banda, concentrata esclusivamente attorno alle frequenze <span class="math inline">\pm f_c</span> con <span class="math inline">f_c \gg W</span>: <span class="math inline">S_{x_px_p}(f) = 0</span> per <span class="math inline">|f \pm f_c| &gt; W &gt; 0</span>.</li>
+<li>Interessa una rappresentazione adatta dei processi passa-banda. Come nel caso deterministico si costruisce il <strong>processo (complesso) analitico</strong>, per eliminare la ridondanza delle frequenze negative:</li>
+</ul>
+<div class="math block">x_p^+(t) = \frac{1}{\sqrt2}\,x_p(t) + \frac{j}{\sqrt2}\,\widehat{x}_p(t)</div><p>È il segnale ottenuto considerando unicamente lo spettro a frequenze positive.</p>
+<ul>
+<li><span class="math inline">\widehat{x}_p(t)</span> è la <strong>trasformata di Hilbert</strong> del processo, ottenuta filtrando <span class="math inline">x_p(t)</span> con il filtro di Hilbert ideale di risposta impulsiva <span class="math inline">h(t) = \dfrac{1}{\pi t}</span> e risposta in frequenza <span class="math inline">H(f) = -j\,\text{sgn}(f)</span> (cioè <span class="math inline">-j</span> per <span class="math inline">f &gt; 0</span>, <span class="math inline">+j</span> per <span class="math inline">f &lt; 0</span>).</li>
+</ul>
+<h3 id="inviluppo-complesso-e-componenti-in-fase-e-quadr">Inviluppo complesso e componenti in fase e quadratura</h3>
+<h4 id="definizione-di-inviluppo-complesso">Definizione di inviluppo complesso</h4>
+<ul>
+<li>In modo omologo al caso deterministico, l'<strong>inviluppo complesso</strong> del processo <span class="math inline">x_p(t)</span> è</li>
+</ul>
+<div class="math block">x(t) = x_p^+(t)\,e^{-j2\pi f_ct} = x_c(t) + jx_s(t) \tag{1}</div><p>È una <strong>traslazione in frequenza</strong> del processo che centra la PSD nell'origine. <span class="math inline">x_c(t)</span> e <span class="math inline">x_s(t)</span> sono le componenti <strong>in fase</strong> e <strong>in quadratura</strong> di <span class="math inline">x_p(t)</span>; sono entrambe processi aleatori <strong>reali in banda base</strong>.</p>
+<ul>
+<li>Relazione tra il processo passa-banda e l'inviluppo:</li>
+</ul>
+<div class="math block">x_p(t) = \sqrt2\,\text{Re}\{x_p^+(t)\} = \sqrt2\,\text{Re}\{x(t)\,e^{j2\pi f_ct}\} = \sqrt2\,x_c(t)\cos(2\pi f_ct) - \sqrt2\,x_s(t)\sin(2\pi f_ct)</div><ul>
+<li>Estrazione delle componenti, da <span class="math inline">x(t) = \big[\tfrac{1}{\sqrt2}x_p(t) + j\tfrac{1}{\sqrt2}\widehat{x}_p(t)\big]e^{-j2\pi f_ct}</span> (parte reale e parte immaginaria):</li>
+</ul>
+<div class="math block">x_c(t) = \frac{1}{\sqrt2}\Big[x_p(t)\cos(2\pi f_ct) + \widehat{x}_p(t)\sin(2\pi f_ct)\Big]</div><div class="math block">x_s(t) = \frac{1}{\sqrt2}\Big[-x_p(t)\sin(2\pi f_ct) + \widehat{x}_p(t)\cos(2\pi f_ct)\Big]</div><ul>
+<li>Nota a mano sulla slide: le due componenti hanno media nulla (annotazione in parte illeggibile).</li>
+</ul>
+<h3 id="le-componenti-sono-congiuntamente-wss">Le componenti sono congiuntamente WSS</h3>
+<h4 id="teorema-e-dimostrazione">Teorema e dimostrazione</h4>
+<ul>
+<li><strong>Teorema.</strong> Se <span class="math inline">x_p(t)</span> è un processo passa-banda WSS a media nulla, allora le sue componenti in banda base <span class="math inline">x_c(t)</span> e <span class="math inline">x_s(t)</span> sono <strong>processi congiuntamente WSS a media nulla</strong>.</li>
+<li><strong>Dimostrazione.</strong>
+<ul>
+<li><em>Media.</em> <span class="math inline">E[x_p(t)] = \mu_{x_p} = 0</span> per ipotesi. Anche la trasformata di Hilbert ha media nulla: <span class="math inline">E[\widehat{x}_p(t)] = E\big[\int x_p(t-\tau)\frac{1}{\pi\tau}\,d\tau\big] = \int E[x_p(t-\tau)]\frac{1}{\pi\tau}\,d\tau = 0</span>. Quindi <span class="math inline">x_c</span> e <span class="math inline">x_s</span> hanno media nulla, indipendente da <span class="math inline">t</span>.</li>
+<li><em>Resta da verificare</em> che le acf <span class="math inline">R_{x_cx_c}(t,\tau)</span> e <span class="math inline">R_{x_sx_s}(t,\tau)</span> e la crosscorrelazione <span class="math inline">R_{x_cx_s}(t,\tau)</span> dipendano solo da <span class="math inline">\tau</span>.</li>
+<li><em>Relazioni fondamentali tra <span class="math inline">x_p</span> e <span class="math inline">\widehat{x}_p</span></em>, ricordando <span class="math inline">S_{yy}(f) = S_{xx}(f)\,|H(f)|^2</span> e <span class="math inline">R_{yy}(\tau) = R_{xx}(\tau) \ast h(\tau) \ast h(-\tau)</span>, con <span class="math inline">\widehat{R}_{x_px_p}</span> trasformata di Hilbert di <span class="math inline">R_{x_px_p}</span>:</li>
+</ul>
+</li>
+</ul>
+<div class="math block">S_{\widehat{x}_p\widehat{x}_p}(f) = |{-j}\,\text{sgn}(f)|^2\,S_{x_px_p}(f) = S_{x_px_p}(f) \ \Longrightarrow\ R_{\widehat{x}_p\widehat{x}_p}(\tau) = R_{x_px_p}(\tau) \tag{2}</div><div class="math block">S_{\widehat{x}_px_p}(f) = -j\,\text{sgn}(f)\,S_{x_px_p}(f) \ \Longrightarrow\ R_{\widehat{x}_px_p}(\tau) = \widehat{R}_{x_px_p}(\tau) \tag{3}</div><div class="math block">S_{x_p\widehat{x}_p}(f) = j\,\text{sgn}(f)\,S_{x_px_p}(f) \ \Longrightarrow\ R_{x_p\widehat{x}_p}(\tau) = -\widehat{R}_{x_px_p}(\tau) \tag{4}</div><ul>
+<li><em>Acf di <span class="math inline">x_c</span>.</em> Con <span class="math inline">a = 2\pi f_ct</span> e <span class="math inline">b = 2\pi f_c(t-\tau)</span>:</li>
+</ul>
+<div class="math block">
+\begin{aligned}
+2R_{x_cx_c}(t,\tau) &amp;= 2E[x_c(t)\,x_c(t-\tau)] \\
+&amp;= R_{x_px_p}(\tau)\cos a\cos b + R_{\widehat{x}_p\widehat{x}_p}(\tau)\sin a\sin b + R_{x_p\widehat{x}_p}(\tau)\cos a\sin b + R_{\widehat{x}_px_p}(\tau)\sin a\cos b
+\end{aligned} \tag{5}
+</div><ul>
+<li>Sostituendo (2), (3), (4) in (5) (e usando le formule di Werner <span class="math inline">\sin\alpha\cos\beta = \frac12[\sin(\alpha+\beta) + \sin(\alpha-\beta)]</span>, <span class="math inline">\cos\alpha\cos\beta = \frac12[\cos(\alpha+\beta) + \cos(\alpha-\beta)]</span>, <span class="math inline">\sin\alpha\sin\beta = \frac12[\cos(\alpha-\beta) - \cos(\alpha+\beta)]</span>):</li>
+</ul>
+<div class="math block">
+\begin{aligned}
+2R_{x_cx_c}(t,\tau) &amp;= R_{x_px_p}(\tau)\{\cos a\cos b + \sin a\sin b\} + \widehat{R}_{x_px_p}(\tau)\{\sin a\cos b - \cos a\sin b\} \\
+&amp;= R_{x_px_p}(\tau)\cos(2\pi f_c\tau) + \widehat{R}_{x_px_p}(\tau)\sin(2\pi f_c\tau) \triangleq 2R_{x_cx_c}(\tau)
+\end{aligned} \tag{6}
+</div><p>La (6) <strong>dipende unicamente dal ritardo</strong> <span class="math inline">\tau</span>.</p>
+<ul>
+<li>Ripetendo gli stessi passaggi per <span class="math inline">x_s</span> e per le mutue correlazioni:</li>
+</ul>
+<div class="math block">2R_{x_sx_s}(t,\tau) = R_{x_px_p}(\tau)\cos(2\pi f_c\tau) + \widehat{R}_{x_px_p}(\tau)\sin(2\pi f_c\tau) = 2R_{x_cx_c}(\tau) \tag{7}</div><div class="math block">2R_{x_cx_s}(t,\tau) = R_{x_px_p}(\tau)\sin(2\pi f_c\tau) - \widehat{R}_{x_px_p}(\tau)\cos(2\pi f_c\tau) \triangleq 2R_{x_cx_s}(\tau) \tag{8}</div><div class="math block">2R_{x_sx_c}(t,\tau) = -R_{x_px_p}(\tau)\sin(2\pi f_c\tau) + \widehat{R}_{x_px_p}(\tau)\cos(2\pi f_c\tau) = -2R_{x_cx_s}(\tau) \tag{9}</div><p>Il teorema è dimostrato. ∎</p>
+<ul>
+<li><strong>Conclusione:</strong> un processo passa-banda WSS è tale che</li>
+</ul>
+<div class="math block">R_{x_cx_c}(\tau) = R_{x_sx_s}(\tau) \qquad R_{x_cx_s}(\tau) = -R_{x_sx_c}(\tau) \tag{10}</div><ul>
+<li><strong>Acf dell'inviluppo complesso</strong> (il coniugato serve perché <span class="math inline">x</span> è complesso):</li>
+</ul>
+<div class="math block">
+\begin{aligned}
+R_{xx}(\tau) &amp;\triangleq E[x(t)\,x^\ast(t-\tau)] \\
+&amp;= R_{x_cx_c}(\tau) + R_{x_sx_s}(\tau) + j\big[R_{x_sx_c}(\tau) - R_{x_cx_s}(\tau)\big]
+\end{aligned} \tag{11}
+</div><div class="math block">R_{xx}(\tau) = 2R_{x_cx_c}(\tau) + 2j\,R_{x_sx_c}(\tau) \tag{12}</div><p>dove <span class="math inline">2R_{x_cx_c}</span> è l'autocorrelazione di <span class="math inline">x_c</span> e <span class="math inline">R_{x_sx_c}</span> la mutua correlazione <span class="math inline">x_s</span>, <span class="math inline">x_c</span>.</p>
+<ul>
+<li>Poiché <span class="math inline">R_{xx}(0) = E[|x(t)|^2] = P_{x_p}</span> è una quantità <strong>reale</strong>, risulta <span class="math inline">R_{x_cx_s}(0) = 0 = R_{x_sx_c}(0)</span> (la slide lo accompagna con la domanda «Perché?»: è la parte immaginaria di (12) per <span class="math inline">\tau = 0</span>). Significa che, per ogni istante <span class="math inline">t_0</span>, le variabili aleatorie a media nulla <span class="math inline">x_c(t_0)</span> e <span class="math inline">x_s(t_0)</span> sono <strong>incorrelate</strong> (infatti <span class="math inline">C_{x_cx_s}(0) = R_{x_cx_s}(0) - \mu_{x_s}\mu_{x_c} = 0</span>). Quindi <span class="math inline">x_c(t_0)</span> e <span class="math inline">x_s(t_0)</span> sono <strong>statisticamente indipendenti</strong> per ogni <span class="math inline">t_0</span> se sono gaussiane.</li>
+</ul>
+<h3 id="psd-delle-componenti-e-dell-inviluppo">PSD delle componenti e dell'inviluppo</h3>
+<h4 id="psd-delle-componenti-in-quadratura">PSD delle componenti in quadratura</h4>
+<ul>
+<li>Per il teorema di Wiener-Khinchin la PSD delle componenti si ottiene trasformando (6) e (7). Per la componente in fase, con <span class="math inline">R_{x_cx_c}(\tau) = \frac12\big[R_{x_px_p}(\tau)\cos(2\pi f_c\tau) + \widehat{R}_{x_px_p}(\tau)\sin(2\pi f_c\tau)\big]</span>:</li>
+</ul>
+<div class="math block">
+\begin{aligned}
+S_{x_cx_c}(f) &amp;= \frac12\bigg[\frac{S_{x_px_p}(f-f_c) + S_{x_px_p}(f+f_c)}{2} + \frac{-j\,S_{x_px_p}(f-f_c)\,\text{sgn}(f-f_c) + j\,S_{x_px_p}(f+f_c)\,\text{sgn}(f+f_c)}{2j}\bigg] \\
+&amp;= \frac12\bigg[S_{x_px_p}(f-f_c)\,\frac{1 - \text{sgn}(f-f_c)}{2} + S_{x_px_p}(f+f_c)\,\frac{1 + \text{sgn}(f+f_c)}{2}\bigg] \\
+&amp;= \frac12\Big[S_{x_px_p}(f-f_c)\,u(-f+f_c) + S_{x_px_p}(f+f_c)\,u(f+f_c)\Big]
+\end{aligned} \tag{13}
+</div><p>con <span class="math inline">1 - \text{sgn}(f-f_c) = 2u(-f+f_c)</span> e <span class="math inline">1 + \text{sgn}(f+f_c) = 2u(f+f_c)</span>.</p>
+<ul>
+<li>Poiché <span class="math inline">R_{x_cx_c}(\tau) = R_{x_sx_s}(\tau)</span>, si ha <span class="math inline">S_{x_cx_c}(f) = S_{x_sx_s}(f)</span>.</li>
+<li>Le <strong>cross-spectral density</strong> di <span class="math inline">x_c</span> e <span class="math inline">x_s</span> si ottengono trasformando (8) e (9), sfruttando <span class="math inline">R_{x_cx_s}(\tau) = -R_{x_sx_c}(\tau)</span>.</li>
+</ul>
+<h4 id="osservazione-importante-1-2-psd-dell-inviluppo">Osservazione importante (1/2): PSD dell'inviluppo</h4>
+<ul>
+<li>Il segnale analitico si ottiene filtrando <span class="math inline">x_p(t)</span> con <span class="math inline">H(f) = \sqrt2\,u(f)</span>; ricordando che per un filtro LTI <span class="math inline">S_{\text{out}}(f) = S_{\text{in}}(f)\,|H(f)|^2</span>:</li>
+</ul>
+<div class="math block">S_{x_p^+x_p^+}(f) = S_{x_px_p}(f)\,|H(f)|^2 = 2S_{x_px_p}(f)\,u(f)</div><p>Il segnale analitico annulla completamente le frequenze negative e <strong>raddoppia la potenza delle frequenze positive</strong>.</p>
+<ul>
+<li>Da <span class="math inline">x(t) = x_p^+(t)\,e^{-j2\pi f_ct}</span>:</li>
+</ul>
+<div class="math block">R_{xx}(\tau) = E[x(t)\,x^\ast(t-\tau)] = R_{x_p^+x_p^+}(\tau)\,e^{-j2\pi f_c\tau}</div><p>cioè dipende unicamente dal ritardo: <strong>la moltiplicazione per un esponenziale complesso conserva la stazionarietà in senso lato (WSS)</strong>.</p>
+<ul>
+<li>Di conseguenza la PSD dell'inviluppo è la PSD del segnale analitico <strong>traslata nell'origine</strong> (spostata a sinistra di <span class="math inline">f_c</span>):</li>
+</ul>
+<div class="math block">S_{xx}(f) = S_{x_p^+x_p^+}(f + f_c) = 2S_{x_px_p}(f + f_c)\,u(f + f_c) \tag{14}</div><ul>
+<li><strong>In conclusione</strong>, per ottenere la PSD dell'inviluppo di un processo passa-banda si deve: (1) vedere la PSD del segnale passa-banda <span class="math inline">S_{x_px_p}(f)</span>; (2) eliminare le frequenze negative con <span class="math inline">H(f) = \sqrt2\,u(f)</span> e moltiplicare per <span class="math inline">\sqrt2</span> (permette di preservare la potenza originaria del segnale), ottenendo <span class="math inline">2S_{x_px_p}(f)\,u(f)</span>; (3) traslare a sinistra di <span class="math inline">f_c</span>, portando la PSD del segnale analitico centrata nell'origine.</li>
+</ul>
+<figure class="fig"><svg viewBox="0 0 400 304" role="img" aria-label="dalla PSD passa-banda alla PSD dell&#x27;inviluppo" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a20" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><line class="ax" x1="20.0" y1="96.0" x2="392.0" y2="96.0" marker-end="url(#a20)"/><text class="ts" x="394.0" y="111.0" text-anchor="end">f</text><line class="ax" x1="200.0" y1="99.0" x2="200.0" y2="22.0" marker-end="url(#a20)"/><line class="ax" x1="20.0" y1="194.0" x2="392.0" y2="194.0" marker-end="url(#a20)"/><text class="ts" x="394.0" y="209.0" text-anchor="end">f</text><line class="ax" x1="200.0" y1="197.0" x2="200.0" y2="120.0" marker-end="url(#a20)"/><line class="ax" x1="20.0" y1="292.0" x2="392.0" y2="292.0" marker-end="url(#a20)"/><text class="ts" x="394.0" y="307.0" text-anchor="end">f</text><line class="ax" x1="200.0" y1="295.0" x2="200.0" y2="218.0" marker-end="url(#a20)"/><path class="fl" d="M70.0 96.0 L100.0 62.0 L130.0 96.0 Z"/><path class="cv" d="M70.0 96.0 L100.0 62.0 L130.0 96.0"/><path class="fl" d="M270.0 96.0 L300.0 62.0 L330.0 96.0 Z"/><path class="cv" d="M270.0 96.0 L300.0 62.0 L330.0 96.0"/><path class="fl" d="M270.0 194.0 L300.0 126.0 L330.0 194.0 Z"/><path class="cv" d="M270.0 194.0 L300.0 126.0 L330.0 194.0"/><path class="fl" d="M170.0 292.0 L200.0 224.0 L230.0 292.0 Z"/><path class="cv" d="M170.0 292.0 L200.0 224.0 L230.0 292.0"/><text class="tx a1" x="10.0" y="16.0" text-anchor="start">(a) PSD del processo passa-banda: S(f)</text><text class="tx a1" x="10.0" y="114.0" text-anchor="start">(b) processo analitico: 2 S(f) u(f)</text><text class="tx a1" x="10.0" y="212.0" text-anchor="start">(c) inviluppo: S<tspan dy="3" font-size="0.72em">xx</tspan><tspan dy="-3">​</tspan>(f) = 2 S(f+f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan>) u(f+f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan>)</text><text class="ts" x="100.0" y="111.0" text-anchor="middle">−f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="300.0" y="111.0" text-anchor="middle">f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="300.0" y="209.0" text-anchor="middle">f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="200.0" y="307.0" text-anchor="middle">0</text><line class="ln" x1="340.0" y1="114.0" x2="340.0" y2="136.0" marker-end="url(#a20)"/><text class="ts a2" x="346.0" y="135.0" text-anchor="start">× 2 · u(f)</text><line class="ln" x1="340.0" y1="212.0" x2="340.0" y2="234.0" marker-end="url(#a20)"/><text class="ts a2" x="346.0" y="233.0" text-anchor="start">trasla di</text><text class="ts a2" x="346.0" y="245.0" text-anchor="start">−f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text></svg><figcaption>🧩 Costruzione della (14): si prende la PSD del processo reale, si eliminano le frequenze negative (filtro <span class="math inline">\sqrt2\,u(f)</span>, quindi <span class="math inline">\lvert H\rvert^2=2\,u(f)</span>) e si trasla di <span class="math inline">-f_c</span>. Per un processo il quadrato del filtro raddoppia l'altezza.</figcaption></figure>
+<h4 id="osservazione-importante-2-2-spettro-simmetrico">Osservazione importante (2/2): spettro simmetrico</h4>
+<ul>
+<li>Caso particolare molto frequente nei sistemi di trasmissione: la PSD del processo reale <span class="math inline">S_{x_px_p}(f)</span> è <strong>simmetrica rispetto alla frequenza portante <span class="math inline">f_c</span></strong>.</li>
+<li>Dalla relazione (14) la PSD dell'inviluppo è una funzione <strong>pari</strong>: <span class="math inline">S_{xx}(-f) = S_{xx}(f)</span>. Infatti <span class="math inline">S_{xx}(-f) = 2S_{x_px_p}(-f+f_c)\,u(-f+f_c) = 2S_{x_px_p}(f+f_c)\,u(f+f_c)</span>, perché <span class="math inline">S_{x_px_p}</span> è pari rispetto a <span class="math inline">f_c</span>.</li>
+<li>Essendo <span class="math inline">S_{xx}(f) = \mathcal{F}\{R_{xx}(\tau)\}</span>, per le proprietà della trasformata di Fourier l'antitrasformata di una funzione pari e reale è anch'essa pari e reale: <span class="math inline">R_{xx}(\tau)</span> è <strong>reale e pari</strong>, quindi <span class="math inline">\text{Im}\{R_{xx}(\tau)\} = 0</span> per ogni <span class="math inline">\tau</span>.</li>
+<li>Dalla (12), <span class="math inline">R_{xx}(\tau) = 2R_{x_cx_c}(\tau) + j2R_{x_sx_c}(\tau)</span>, segue (con <span class="math inline">x_p</span> WSS)</li>
+</ul>
+<div class="math block">R_{x_sx_c}(\tau) = 0 \ \Rightarrow\ R_{x_cx_s}(\tau) = -R_{x_sx_c}(\tau) = 0 \qquad \forall\tau</div><p>Quindi <span class="math inline">x_c(t)</span> e <span class="math inline">x_s(t)</span> sono <strong>incoerenti</strong>. Se <span class="math inline">x_p(t)</span> ha anche media nulla, sono <strong>incorrelate</strong>, e <strong>statisticamente indipendenti</strong> supponendo <span class="math inline">x_p</span> gaussiano.</p>
+<ul>
+<li>In questa situazione, dalla (12): <span class="math inline">S_{xx}(f) = 2S_{x_cx_c}(f) = 2S_{x_sx_s}(f)</span>.</li>
+<li>Mentre l'incoerenza in generale è garantita solo nel singolo istante (<span class="math inline">\tau = 0</span>), quando lo spettro è simmetrico attorno a <span class="math inline">f_c</span> le due componenti <span class="math inline">x_c(t)</span> e <span class="math inline">x_s(t)</span> sono <strong>completamente incoerenti/incorrelate</strong> per ogni <span class="math inline">\tau \in \mathbb{R}</span>.</li>
+</ul>
+<figure class="fig"><svg viewBox="0 0 400 172" role="img" aria-label="PSD dell&#x27;inviluppo simmetrica e non simmetrica" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a21" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><text class="tx tb" x="100.0" y="16.0" text-anchor="middle">PSD simmetrica attorno a f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text><line class="ax" x1="10.0" y1="120.0" x2="190.0" y2="120.0" marker-end="url(#a21)"/><text class="ts" x="192.0" y="135.0" text-anchor="end">f</text><line class="ax" x1="100.0" y1="123.0" x2="100.0" y2="40.0" marker-end="url(#a21)"/><path class="fl" d="M50.0 120.0 L100.0 58.0 L150.0 120.0 Z"/><path class="cv" d="M50.0 120.0 L100.0 58.0 L150.0 120.0"/><text class="ts" x="100.0" y="135.0" text-anchor="middle">0</text><text class="tx tb" x="300.0" y="16.0" text-anchor="middle">PSD non simmetrica</text><line class="ax" x1="210.0" y1="120.0" x2="390.0" y2="120.0" marker-end="url(#a21)"/><text class="ts" x="392.0" y="135.0" text-anchor="end">f</text><line class="ax" x1="300.0" y1="123.0" x2="300.0" y2="40.0" marker-end="url(#a21)"/><path class="fl" d="M250.0 120.0 L340.0 58.0 L350.0 120.0 Z"/><path class="cv" d="M250.0 120.0 L340.0 58.0 L350.0 120.0"/><text class="ts" x="300.0" y="135.0" text-anchor="middle">0</text><text class="ts a1" x="100.0" y="154.0" text-anchor="middle">S<tspan dy="3" font-size="0.72em">xx</tspan><tspan dy="-3">​</tspan> pari  ⇒  R<tspan dy="3" font-size="0.72em">xx</tspan><tspan dy="-3">​</tspan> reale</text><text class="ts a1" x="100.0" y="166.0" text-anchor="middle">⇒ x<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan>, x<tspan dy="3" font-size="0.72em">s</tspan><tspan dy="-3">​</tspan> incoerenti</text><text class="ts a2" x="300.0" y="154.0" text-anchor="middle">S<tspan dy="3" font-size="0.72em">xx</tspan><tspan dy="-3">​</tspan> non pari ⇒ R<tspan dy="3" font-size="0.72em">xx</tspan><tspan dy="-3">​</tspan> complessa</text><text class="ts a2" x="300.0" y="166.0" text-anchor="middle">⇒ x<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan>, x<tspan dy="3" font-size="0.72em">s</tspan><tspan dy="-3">​</tspan> correlate (τ ≠ 0)</text></svg><figcaption>🧩 Lo spettro dell'inviluppo è pari solo se quello passa-banda è simmetrico attorno alla portante. In quel caso <span class="math inline">R_{x_cx_s}\equiv0</span> e <span class="math inline">S_{xx}=2S_{x_cx_c}</span>.</figcaption></figure>
+<h4 id="vista-grafica">Vista grafica</h4>
+<img class="zoom" src="img/processi-passabanda-p20-vista-grafica-psd.png" alt="" loading="lazy">
+<p><em>(a) <span class="math inline">S_{x_px_p}(f)</span>: lobi di altezza <span class="math inline">A</span> in <span class="math inline">\pm f_c</span>, larghezza <span class="math inline">W</span>. (b) Il processo analitico <span class="math inline">S_{x_p^+x_p^+}(f)</span>: si elimina lo spettro a frequenze negative e si moltiplica per 2 (<span class="math inline">|H(f)|^2 = 2u(f)</span>): altezza <span class="math inline">2A</span> in <span class="math inline">f_c</span>. (c) <span class="math inline">S_{xx}(f)</span>: traslazione di <span class="math inline">-f_c</span>, secondo la (14); è <strong>pari</strong>, quindi <span class="math inline">R_{xx}(\tau)</span> è reale. (d) Dividendo per 2: <span class="math inline">S_{x_cx_c}(f) = S_{x_sx_s}(f)</span>, altezza <span class="math inline">A</span> su <span class="math inline">|f| &lt; W/2</span>.</em></p>
+<ul>
+<li>Se <span class="math inline">S_{x_px_p}(f)</span> è simmetrica attorno a <span class="math inline">f_c</span>, allora <span class="math inline">S_{xx}(f)</span> è pari <span class="math inline">\Rightarrow R_{x_sx_c}(\tau) = 0</span> e <span class="math inline">S_{xx}(f) = 2S_{x_cx_c}(f) = 2S_{x_sx_s}(f)</span>.</li>
+<li>Note a mano sulla slide: da <span class="math inline">R_{xx}(\tau) = 2R_{x_cx_c}(\tau) + j2R_{x_sx_c}(\tau)</span> si ha <span class="math inline">S_{xx}(f) = 2S_{x_cx_c}(f) + j2S_{x_sx_c}(f)</span>, e con <span class="math inline">R_{x_sx_c} = 0</span> resta <span class="math inline">S_{xx}(f) = 2S_{x_cx_c}(f)</span>; <span class="math inline">S_{xx}(f)</span> è reale per definizione, <span class="math inline">S_{xx}(f) = \lim_{T\to\infty}\frac{1}{2T}E\big[|X_T(f)|^2\big]</span>.</li>
+</ul>
+<h3 id="esempio-rumore-in-banda-passante">Esempio: rumore in banda passante</h3>
+<h4 id="rumore-in-banda">Rumore in banda</h4>
+<ul>
+<li>Si consideri un rumore passa-banda <span class="math inline">w_p(t)</span> con PSD costante <span class="math inline">S_{w_pw_p}(f) = N_0/2</span> su una banda <span class="math inline">W</span>.</li>
+<li>Un <strong>rumore bianco gaussiano (AWGN)</strong>, con <span class="math inline">R_{w_pw_p}(\tau) = \frac{N_0}{2}\delta(\tau)</span>, ha PSD costante <span class="math inline">N_0/2</span> su tutte le frequenze <span class="math inline">(-\infty, +\infty)</span>, quindi potenza media infinita. Nei sistemi reali il ricevitore <strong>filtra</strong> il segnale in ingresso con un filtro di banda <span class="math inline">W</span> centrato su <span class="math inline">f_c</span>, ottenendo un rumore con <span class="math inline">S(f) = N_0/2</span> e banda pari a <span class="math inline">W</span>.</li>
+<li>Si calcolano le PSD <span class="math inline">S_{w_cw_c}(f)</span> e <span class="math inline">S_{w_sw_s}(f)</span> delle componenti in quadratura. Si vede facilmente che</li>
+</ul>
+<div class="math block">S_{w_cw_c}(f) = S_{w_sw_s}(f) = \frac{N_0}{2} \quad \text{per } |f| &lt; \frac W2</div><p>Infatti <span class="math inline">S_{ww}(f) = 2S_{w_pw_p}(f+f_c)\,u(f+f_c) = 2\cdot\frac{N_0}{2} = N_0</span> per <span class="math inline">|f| &lt; W/2</span>; essendo <span class="math inline">S_{w_pw_p}(f)</span> reale e costante, e quindi pari rispetto alla banda, <span class="math inline">S_{ww}(f) = 2S_{w_cw_c}(f)</span>.</p>
+<ul>
+<li>È utile notare che la <strong>potenza</strong> del processo passa-banda originale è <span class="math inline">P_{w_p} = 2W\cdot\frac{N_0}{2} = N_0W</span> e <strong>coincide con la potenza dell'inviluppo complesso</strong>.</li>
+<li>Le condizioni (10) sono di particolare importanza: le proprietà di correlazione dell'inviluppo complesso di un qualunque processo passa-banda WSS si specificano con l'acf della componente in fase e la crosscorrelazione tra le componenti in quadratura. Inoltre, la componente in fase e quella in quadratura nello stesso istante sono <strong>incorrelate</strong>: le componenti in quadratura di un processo gaussiano complesso nello stesso istante sono <strong>statisticamente indipendenti</strong>.</li>
+<li>Appunti: essendo <span class="math inline">S_{ww}(f)</span> reale, <span class="math inline">S_{w_cw_s}(f) = 0</span> per ogni <span class="math inline">f \in \mathbb{R}</span>: sono incoerenti, quindi incorrelate, quindi statisticamente indipendenti se <span class="math inline">w_p</span> è gaussiano.</li>
+</ul>
+<h4 id="costruzione-grafica-di-s-w-cw-c-f">Costruzione grafica di <span class="math inline">S_{w_cw_c}(f)</span></h4>
+<ul>
+<li>Applicando la (13) a <span class="math inline">S_{w_pw_p}(f)</span>: prima si trasla la PSD passa-banda di <span class="math inline">\pm f_c</span>, poi si moltiplica per i gradini unitari <span class="math inline">u(f_c - f)</span> e <span class="math inline">u(f+f_c)</span>.</li>
+</ul>
+<img class="zoom" src="img/processi-passabanda-p24-rumore-costruzione-1.png" alt="" loading="lazy">
+<p><em>(a) <span class="math inline">S_{w_pw_p}(f)</span>: due lobi di altezza <span class="math inline">N_0/2</span> e larghezza <span class="math inline">W</span> in <span class="math inline">\pm f_c</span>. (b) <span class="math inline">S_{w_pw_p}(f-f_c)</span>: traslata di <span class="math inline">+f_c</span> (lobi in <span class="math inline">0</span> e <span class="math inline">2f_c</span>). (c) <span class="math inline">S_{w_pw_p}(f+f_c)</span>: traslata di <span class="math inline">-f_c</span> (lobi in <span class="math inline">-2f_c</span> e <span class="math inline">0</span>). (d) <span class="math inline">u(f_c - f)</span>. (e) <span class="math inline">u(f + f_c)</span>.</em></p>
+<ul>
+<li>Ogni gradino unitario trattiene solo il lobo che cade attorno a <span class="math inline">f = 0</span>; sommando e dimezzando si ottiene <span class="math inline">S_{w_cw_c}(f) = S_{w_sw_s}(f) = N_0/2</span> per <span class="math inline">|f| &lt; W/2</span>.</li>
+</ul>
+<img class="zoom" src="img/processi-passabanda-p25-rumore-costruzione-2.png" alt="" loading="lazy">
+<p><em>(f) <span class="math inline">S_{w_pw_p}(f-f_c)\,u(f_c-f)</span> e (g) <span class="math inline">S_{w_pw_p}(f+f_c)\,u(f+f_c)</span>: restano i lobi in 0 (le copie in <span class="math inline">\pm 2f_c</span> sono barrate). (h) <span class="math inline">\frac12[(f)+(g)]</span> (eq. (13)): <span class="math inline">S_{w_cw_c}(f) = S_{w_sw_s}(f)</span>, con i due contributi di altezza <span class="math inline">N_0/4</span> che insieme valgono <span class="math inline">N_0/2</span>. (i) <span class="math inline">S_{ww}(f) = 2S_{w_cw_c}(f)</span>, altezza <span class="math inline">N_0</span>, ×2.</em></p>
+<ul>
+<li>Poiché <span class="math inline">S_{w_pw_p}(f)</span> è simmetrica attorno a <span class="math inline">f_c</span>: <span class="math inline">S_{ww}(f) = 2S_{w_cw_c}(f) = N_0</span> per <span class="math inline">|f| &lt; W/2</span>, e <span class="math inline">P_{w_p} = N_0W = P_w</span>.</li>
+</ul>
+<hr />
+<figure class="fig"><svg viewBox="0 0 400 296" role="img" aria-label="rumore in banda passante" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a22" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><line class="ax" x1="20.0" y1="92.0" x2="392.0" y2="92.0" marker-end="url(#a22)"/><text class="ts" x="394.0" y="107.0" text-anchor="end">f</text><line class="ax" x1="200.0" y1="95.0" x2="200.0" y2="32.0" marker-end="url(#a22)"/><line class="ax" x1="20.0" y1="190.0" x2="392.0" y2="190.0" marker-end="url(#a22)"/><text class="ts" x="394.0" y="205.0" text-anchor="end">f</text><line class="ax" x1="200.0" y1="193.0" x2="200.0" y2="130.0" marker-end="url(#a22)"/><line class="ax" x1="20.0" y1="280.0" x2="392.0" y2="280.0" marker-end="url(#a22)"/><text class="ts" x="394.0" y="295.0" text-anchor="end">f</text><line class="ax" x1="200.0" y1="283.0" x2="200.0" y2="220.0" marker-end="url(#a22)"/><path class="fl" d="M64.0 92.0 L64.0 58.0 L136.0 58.0 L136.0 92.0 Z"/><path class="cv" d="M64.0 92.0 L64.0 58.0 L136.0 58.0 L136.0 92.0"/><path class="fl" d="M264.0 92.0 L264.0 58.0 L336.0 58.0 L336.0 92.0 Z"/><path class="cv" d="M264.0 92.0 L264.0 58.0 L336.0 58.0 L336.0 92.0"/><path class="fl" d="M164.0 190.0 L164.0 138.0 L236.0 138.0 L236.0 190.0 Z"/><path class="cv" d="M164.0 190.0 L164.0 138.0 L236.0 138.0 L236.0 190.0"/><path class="fl" d="M164.0 280.0 L164.0 246.0 L236.0 246.0 L236.0 280.0 Z"/><path class="cv" d="M164.0 280.0 L164.0 246.0 L236.0 246.0 L236.0 280.0"/><text class="tx a1" x="10.0" y="24.0" text-anchor="start">(a) rumore passa-banda w<tspan dy="3" font-size="0.72em">p</tspan><tspan dy="-3">​</tspan></text><text class="tx a1" x="10.0" y="122.0" text-anchor="start">(b) inviluppo w = w<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan> + j w<tspan dy="3" font-size="0.72em">s</tspan><tspan dy="-3">​</tspan></text><text class="tx a1" x="10.0" y="224.0" text-anchor="start">(c) componenti w<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan> e w<tspan dy="3" font-size="0.72em">s</tspan><tspan dy="-3">​</tspan> (stessa PSD)</text><text class="ts a2" x="340.0" y="70.0" text-anchor="start">N<tspan dy="3" font-size="0.72em">0</tspan><tspan dy="-3">​</tspan>/2</text><text class="ts a2" x="240.0" y="156.0" text-anchor="start">N<tspan dy="3" font-size="0.72em">0</tspan><tspan dy="-3">​</tspan></text><text class="ts a2" x="240.0" y="260.0" text-anchor="start">N<tspan dy="3" font-size="0.72em">0</tspan><tspan dy="-3">​</tspan>/2</text><text class="ts" x="100.0" y="107.0" text-anchor="middle">−f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="300.0" y="107.0" text-anchor="middle">f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text><line class="ar2" x1="164.0" y1="208.0" x2="236.0" y2="208.0" marker-end="url(#a22)" marker-start="url(#a22)"/><text class="ts a2" x="200.0" y="222.0" text-anchor="middle">W</text><text class="ts" x="200.0" y="295.0" text-anchor="middle">0</text></svg><figcaption>🧩 Rumore con PSD <span class="math inline">N_0/2</span> in una banda <span class="math inline">W</span> attorno a <span class="math inline">\pm f_c</span>: l'inviluppo ha PSD <span class="math inline">N_0</span> (si tiene un solo lobo e si raddoppia) e ciascuna componente <span class="math inline">N_0/2</span>. La potenza si conserva: <span class="math inline">2W\cdot N_0/2=N_0W</span>.</figcaption></figure>
+
+</section>
+<section id="approfondimenti"><h2 class="ps">Spiegazioni e dimostrazioni passo-passo</h2>
+<p class="nota">Apri una voce per leggere la spiegazione in parole semplici e le dimostrazioni svolte riga per riga (🧩 = passaggio ricostruito da me).</p>
+<details class="conc"><summary><span class="n">Processi passa-banda: inviluppo complesso e componenti in quadratura</span></summary><div class="cb"><h4 id="processi-passa-banda-spiegazione">Spiegazione</h4>
+<p>Un processo passa-banda <span class="math inline">x_p</span> oscilla alla portante <span class="math inline">f_c</span> con ampiezza e fase che variano lentamente; l'inviluppo complesso <span class="math inline">x = x_c + jx_s</span> raccoglie queste variazioni e vive in banda base, a una frequenza molto più bassa. È lo stesso passaggio fatto nel caso deterministico (inviluppo complesso), con una novità: ora i segnali sono aleatori, e bisogna chiedersi <strong>se le proprietà statistiche si conservano</strong>.</p>
+<p>La risposta del teorema è sì, con una struttura precisa. La portante <span class="math inline">\cos(2\pi f_ct)</span> è periodica in <span class="math inline">t</span>, quindi <span class="math inline">x_p = \sqrt2\,x_c\cos - \sqrt2\,x_s\sin</span> è WSS solo se <span class="math inline">x_c</span> e <span class="math inline">x_s</span> hanno le stesse acf e crosscorrelazioni opposte: allora i termini che dipendono da <span class="math inline">t</span> si cancellano (verifica 🧩 sopra). La trasformata di Hilbert entra perché fornisce il «complice» in quadratura di <span class="math inline">x_p</span>: <span class="math inline">x_p</span> da sola non basta a ricavare entrambe le componenti.</p>
+<p>Il risultato più utile è che, <strong>nello stesso istante</strong>, <span class="math inline">x_c</span> e <span class="math inline">x_s</span> sono incorrelate. Che lo siano <strong>a istanti diversi</strong> non segue in generale: se <span class="math inline">R_{x_sx_c}(\tau) \neq 0</span> per <span class="math inline">\tau \neq 0</span>, l'inviluppo ha una parte immaginaria correlata con quella reale (psd componenti in quadratura studia quando questo accade).</p>
+<h4 id="processi-passa-banda-perche-importa">Perché importa</h4>
+<p>Segnali e rumore reali sono passa-banda e aleatori. Per progettare il ricevitore, il DSP lavora sull'inviluppo complesso in banda base (inviluppo complesso, upconversion e downconversion): serve sapere che statistica ha. In particolare, per il rumore gaussiano passa-banda (rumore in banda passante) le due componenti in quadratura nello stesso istante sono <strong>gaussiane indipendenti</strong>.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — <span class="math inline">x_c</span> e <span class="math inline">x_s</span> hanno media nulla</summary>
+<p><strong>Si parte da:</strong> <span class="math inline">E[x_p(t)] = 0</span> per ipotesi e <span class="math inline">\widehat{x}_p = x_p \ast \frac{1}{\pi t}</span>.</p>
+<div class="math block">
+\begin{aligned}
+E[\widehat{x}_p(t)] &amp;= E\Big[\int_{-\infty}^{+\infty} x_p(t-\tau)\,\frac{1}{\pi\tau}\,d\tau\Big] &amp;&amp; \text{definizione di } \widehat{x}_p \\
+&amp;= \int_{-\infty}^{+\infty} E[x_p(t-\tau)]\,\frac{1}{\pi\tau}\,d\tau = 0 &amp;&amp; \text{valore atteso e integrale si scambiano; } E[x_p] = 0
+\end{aligned}
+</div><blockquote class="co mia"><p>🧩 L'integrale è un valore principale di Cauchy intorno a <span class="math inline">\tau = 0</span>; qui basta che il suo integrando sia nullo. In pratica: un filtro LTI di risposta <span class="math inline">H(f)</span> dà <span class="math inline">\mu_y = \mu_x H(0)</span> (processi e sistemi lti), e se <span class="math inline">\mu_x = 0</span> la media resta zero.</p>
+</blockquote>
+<p>Poiché <span class="math inline">x_c</span> e <span class="math inline">x_s</span> sono combinazioni di <span class="math inline">x_p</span> e <span class="math inline">\widehat{x}_p</span> con coefficienti deterministici <span class="math inline">\cos</span> e <span class="math inline">\sin</span>:</p>
+<div class="math block">E[x_c(t)] = \tfrac{1}{\sqrt2}\big(E[x_p]\cos + E[\widehat{x}_p]\sin\big) = 0, \qquad E[x_s(t)] = 0</div><p>Una media costante (nulla) è la prima metà della WSS; resta da mostrare che le correlazioni dipendono solo da <span class="math inline">\tau</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — Relazioni (2), (3), (4) tra <span class="math inline">x_p</span> e <span class="math inline">\widehat{x}_p</span></summary>
+<p><strong>Si parte da:</strong> processi e sistemi lti — uscita <span class="math inline">y = x \ast h</span> di un filtro LTI con ingresso WSS: <span class="math inline">S_{yy} = |H|^2 S_{xx}</span> e <span class="math inline">S_{yx} = H\,S_{xx}</span>.</p>
+<blockquote class="co mia"><p>🧩 Derivazione mia del passo sulla crosscorrelazione: <span class="math inline">R_{yx}(\tau) = E[y(t)\,x(t-\tau)] = \int h(u)\,E[x(t-u)\,x(t-\tau)]\,du = \int h(u)\,R_{xx}(\tau - u)\,du = (h \ast R_{xx})(\tau)</span>, quindi in frequenza <span class="math inline">S_{yx} = H\,S_{xx}</span>.</p>
+</blockquote>
+<p>Qui <span class="math inline">x = x_p</span>, <span class="math inline">y = \widehat{x}_p</span>, <span class="math inline">H(f) = -j\,\text{sgn}(f)</span>, con <span class="math inline">|H(f)|^2 = 1</span> per <span class="math inline">f \ne 0</span>:</p>
+<div class="math block">
+\begin{aligned}
+S_{\widehat{x}_p\widehat{x}_p}(f) &amp;= |{-j}\,\text{sgn}(f)|^2\,S_{x_px_p}(f) = S_{x_px_p}(f) &amp;&amp; |H|^2 = 1 \ (f \ne 0) \\
+&amp;\Rightarrow R_{\widehat{x}_p\widehat{x}_p}(\tau) = R_{x_px_p}(\tau) &amp;&amp; \text{antitrasformata, (2)} \\
+S_{\widehat{x}_px_p}(f) &amp;= -j\,\text{sgn}(f)\,S_{x_px_p}(f) &amp;&amp; S_{yx} = H\,S_{xx} \\
+&amp;\Rightarrow R_{\widehat{x}_px_p}(\tau) = \big(R_{x_px_p} \ast \tfrac{1}{\pi\tau}\big)(\tau) = \widehat{R}_{x_px_p}(\tau) &amp;&amp; \text{(3): moltiplicare per } -j\,\text{sgn} \text{ = trasformata di Hilbert} \\
+S_{x_p\widehat{x}_p}(f) &amp;= S_{\widehat{x}_px_p}^\ast(f) = j\,\text{sgn}(f)\,S_{x_px_p}(f) &amp;&amp; S_{xy} = S_{yx}^\ast; \ S_{x_px_p} \text{ reale} \\
+&amp;\Rightarrow R_{x_p\widehat{x}_p}(\tau) = -\widehat{R}_{x_px_p}(\tau) &amp;&amp; \text{(4)}
+\end{aligned}
+</div><p><strong>Sanity check:</strong> <span class="math inline">\widehat{R}</span> è dispari perché <span class="math inline">R_{x_px_p}</span> è pari; allora <span class="math inline">R_{x_p\widehat{x}_p}(\tau) = R_{\widehat{x}_px_p}(-\tau) = \widehat{R}(-\tau) = -\widehat{R}(\tau)</span>, coerente con la (4).
+<strong>Ipotesi:</strong> <span class="math inline">x_p</span> WSS reale; <span class="math inline">f = 0</span> ha misura nulla e non influisce sulle antitrasformate.</p>
+</details>
+<details class="der"><summary>Derivazione — Autocorrelazione di <span class="math inline">x_c</span>, eq. (5)–(6)</summary>
+<p><strong>Si parte da:</strong> <span class="math inline">x_c(t) = \frac{1}{\sqrt2}\big[x_p(t)\cos a + \widehat{x}_p(t)\sin a\big]</span> con <span class="math inline">a = 2\pi f_ct</span>, e <span class="math inline">b = 2\pi f_c(t-\tau)</span>.</p>
+<div class="math block">
+\begin{aligned}
+2R_{x_cx_c}(t,\tau) &amp;= 2E[x_c(t)\,x_c(t-\tau)] &amp;&amp; \text{definizione} \\
+&amp;= E\big[\big(x_p(t)\cos a + \widehat{x}_p(t)\sin a\big)\big(x_p(t-\tau)\cos b + \widehat{x}_p(t-\tau)\sin b\big)\big] &amp;&amp; \tfrac{1}{\sqrt2}\cdot\tfrac{1}{\sqrt2} = \tfrac12 \text{ portato a sinistra} \\
+&amp;= R_{x_px_p}\cos a\cos b + R_{x_p\widehat{x}_p}\cos a\sin b + R_{\widehat{x}_px_p}\sin a\cos b + R_{\widehat{x}_p\widehat{x}_p}\sin a\sin b &amp;&amp; \text{(5): cos e sin deterministici escono dal valore atteso} \\
+&amp;= R_{x_px_p}(\cos a\cos b + \sin a\sin b) + \widehat{R}_{x_px_p}(\sin a\cos b - \cos a\sin b) &amp;&amp; \text{(2), (3), (4)} \\
+&amp;= R_{x_px_p}(\tau)\cos(a-b) + \widehat{R}_{x_px_p}(\tau)\sin(a-b) &amp;&amp; \text{formule di addizione} \\
+&amp;= R_{x_px_p}(\tau)\cos(2\pi f_c\tau) + \widehat{R}_{x_px_p}(\tau)\sin(2\pi f_c\tau) &amp;&amp; a - b = 2\pi f_c\tau \ \text{(6)}
+\end{aligned}
+</div><p>Il tempo <span class="math inline">t</span> è sparito: <span class="math inline">R_{x_cx_c}(t,\tau) = R_{x_cx_c}(\tau)</span>. Gli appunti usano le <strong>formule di Werner</strong> (prodotti di seno e coseno come somme) per arrivare allo stesso risultato.</p>
+</details>
+<details class="der"><summary>Derivazione — <span class="math inline">x_s</span> e mutue, eq. (7)–(9)</summary>
+<p><strong>Si parte da:</strong> <span class="math inline">x_s(t) = \frac{1}{\sqrt2}\big[-x_p(t)\sin a + \widehat{x}_p(t)\cos a\big]</span>.</p>
+<div class="math block">
+\begin{aligned}
+2R_{x_sx_s}(t,\tau) &amp;= R_{x_px_p}\sin a\sin b - R_{x_p\widehat{x}_p}\sin a\cos b - R_{\widehat{x}_px_p}\cos a\sin b + R_{\widehat{x}_p\widehat{x}_p}\cos a\cos b &amp;&amp; \text{prodotto delle due espressioni} \\
+&amp;= R_{x_px_p}\cos(a-b) + \widehat{R}_{x_px_p}\sin(a-b) = 2R_{x_cx_c}(\tau) &amp;&amp; \text{(2), (3), (4)} \\
+2R_{x_cx_s}(t,\tau) &amp;= -R_{x_px_p}\cos a\sin b + R_{x_p\widehat{x}_p}\cos a\cos b - R_{\widehat{x}_px_p}\sin a\sin b + R_{\widehat{x}_p\widehat{x}_p}\sin a\cos b &amp;&amp; x_c(t)\,x_s(t-\tau) \\
+&amp;= R_{x_px_p}\sin(a-b) - \widehat{R}_{x_px_p}\cos(a-b) &amp;&amp; \text{(2), (3), (4)} \\
+&amp;= R_{x_px_p}(\tau)\sin(2\pi f_c\tau) - \widehat{R}_{x_px_p}(\tau)\cos(2\pi f_c\tau) &amp;&amp; \text{(8)} \\
+2R_{x_sx_c}(t,\tau) &amp;= -R_{x_px_p}\sin(2\pi f_c\tau) + \widehat{R}_{x_px_p}\cos(2\pi f_c\tau) = -2R_{x_cx_s}(\tau) &amp;&amp; \text{(9): stessi passaggi, segni scambiati}
+\end{aligned}
+</div><p>Tutte le funzioni dipendono solo da <span class="math inline">\tau</span>: <span class="math inline">x_c</span> e <span class="math inline">x_s</span> sono <strong>congiuntamente WSS</strong>, e valgono le condizioni (10). ∎</p>
+<blockquote class="co mia"><p>🧩 Verifica di coerenza (conversione inversa): da <span class="math inline">x_p = \sqrt2(x_c\cos a - x_s\sin a)</span> e (10), <span class="math inline">R_{x_px_p}(t,\tau) = 2R_{x_cx_c}(\tau)\cos(a-b) + 2R_{x_cx_s}(\tau)\sin(a-b)</span>. Sostituendo (6) e (8): <span class="math inline">R_{x_px_p}(\cos^2 + \sin^2) + \widehat{R}_{x_px_p}(\sin\cos - \cos\sin) = R_{x_px_p}(\tau)</span> ✓, indipendente da <span class="math inline">t</span>. Le (10) sono proprio ciò che serve perché i termini periodici in <span class="math inline">t</span> si cancellino.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Autocorrelazione dell'inviluppo, eq. (11)–(12)</summary>
+<p><strong>Si parte da:</strong> <span class="math inline">x = x_c + jx_s</span> e <span class="math inline">R_{xx}(\tau) = E[x(t)\,x^\ast(t-\tau)]</span> (il coniugato serve perché <span class="math inline">x</span> è complesso).</p>
+<div class="math block">
+\begin{aligned}
+R_{xx}(\tau) &amp;= E\big[(x_c(t) + jx_s(t))(x_c(t-\tau) - jx_s(t-\tau))\big] &amp;&amp; x^\ast = x_c - jx_s \\
+&amp;= R_{x_cx_c}(\tau) + R_{x_sx_s}(\tau) + j\big[R_{x_sx_c}(\tau) - R_{x_cx_s}(\tau)\big] &amp;&amp; \text{(11): sviluppo e raccolgo } j \\
+&amp;= 2R_{x_cx_c}(\tau) + 2j\,R_{x_sx_c}(\tau) &amp;&amp; \text{(10): } R_{x_sx_s} = R_{x_cx_c},\ R_{x_cx_s} = -R_{x_sx_c} \ \text{(12)}
+\end{aligned}
+</div><p>La parte reale è <strong>2× l'autocorrelazione di <span class="math inline">x_c</span></strong>, la parte immaginaria è <strong>2× la mutua correlazione</strong> <span class="math inline">R_{x_sx_c}</span> (appunti).</p>
+</details>
+<details class="der"><summary>Derivazione — Perché <span class="math inline">R_{x_cx_s}(0) = 0</span></summary>
+<p><strong>Si parte da:</strong> <span class="math inline">R_{xx}(0) = E[|x(t)|^2] = P_x</span> è una quantità <strong>reale</strong>.</p>
+<div class="math block">
+\begin{aligned}
+R_{xx}(0) &amp;= 2R_{x_cx_c}(0) + 2j\,R_{x_sx_c}(0) \in \mathbb{R} &amp;&amp; \text{(12) con } \tau = 0 \\
+&amp;\Rightarrow R_{x_sx_c}(0) = 0 &amp;&amp; \text{la parte immaginaria deve annullarsi} \\
+&amp;\Rightarrow R_{x_cx_s}(0) = -R_{x_sx_c}(0) = 0 &amp;&amp; \text{(10)}
+\end{aligned}
+</div><blockquote class="co mia"><p>🧩 Seconda strada, senza passare da <span class="math inline">R_{xx}</span>: spostando l'origine dei tempi, <span class="math inline">R_{x_sx_c}(\tau) = E[x_s(t)\,x_c(t-\tau)] = R_{x_cx_s}(-\tau)</span>; con la (10) si ha <span class="math inline">R_{x_cx_s}(\tau) = -R_{x_cx_s}(-\tau)</span>, cioè <span class="math inline">R_{x_cx_s}</span> è <strong>dispari</strong>, quindi nulla in <span class="math inline">\tau = 0</span>.</p>
+</blockquote>
+<p>Con medie nulle la covarianza coincide con la correlazione: <span class="math inline">C_{x_cx_s}(0) = R_{x_cx_s}(0) - \mu_{x_c}\mu_{x_s} = 0</span>. Quindi per ogni <span class="math inline">t_0</span> le variabili aleatorie a media nulla <span class="math inline">x_c(t_0)</span> e <span class="math inline">x_s(t_0)</span> sono <strong>incorrelate</strong>; se sono <strong>congiuntamente gaussiane</strong> (processo gaussiano) sono anche <strong>statisticamente indipendenti</strong>.</p>
+<blockquote class="co mia"><p>🧩 Per <span class="math inline">x_p</span> gaussiano, <span class="math inline">\widehat{x}_p</span> è uscita di un filtro lineare e <span class="math inline">x_c</span>, <span class="math inline">x_s</span> sono combinazioni lineari di <span class="math inline">x_p</span> e <span class="math inline">\widehat{x}_p</span> con coefficienti deterministici: congiuntamente gaussiane (proprietà del processo gaussiano, processo gaussiano).</p>
+</blockquote>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">PSD delle componenti in quadratura e dell&#x27;inviluppo complesso</span></summary><div class="cb"><h4 id="psd-componenti-in-quadratura-spiegazione">Spiegazione</h4>
+<img class="zoom" src="img/processi-passabanda-p20-vista-grafica-psd.png" alt="" loading="lazy">
+<p><em>(a) PSD del processo passa-banda: due lobi in <span class="math inline">\pm f_c</span>. (b) Si elimina la parte a frequenze negative e si moltiplica per 2 (filtro con <span class="math inline">\lvert H\rvert^2 = 2u(f)</span>): rimane il solo lobo in <span class="math inline">+f_c</span>, di altezza <span class="math inline">2A</span>. (c) Si trasla di <span class="math inline">-f_c</span>: PSD dell'inviluppo, pari per l'ipotesi di simmetria, con <span class="math inline">R_{xx}</span> reale. (d) Dividendo per 2 si ha <span class="math inline">S_{x_cx_c} = S_{x_sx_s}</span> (altezza <span class="math inline">A</span>): <span class="math inline">S_{xx} = 2S_{x_cx_c}</span>.</em></p>
+<p>I quattro grafici sono la costruzione di (14) a occhio. Il passaggio (a)→(b) è l'unica operazione sulla PSD del processo reale; (b)→(c) è solo una traslazione. Quando il lobo è simmetrico attorno a <span class="math inline">f_c</span>, ritrovato nell'origine è simmetrico attorno a 0, cioè pari. Una PSD pari ha antitrasformata reale: ecco perché la parte immaginaria di <span class="math inline">R_{xx}</span> (<span class="math inline">\propto R_{x_sx_c}</span>) sparisce.</p>
+<p>Se il lobo <strong>non</strong> fosse simmetrico, <span class="math inline">S_{xx}</span> non sarebbe pari, <span class="math inline">R_{xx}</span> sarebbe complessa e <span class="math inline">x_c</span>, <span class="math inline">x_s</span> avrebbero una crosscorrelazione non nulla fuori da <span class="math inline">\tau = 0</span>.</p>
+<h4 id="psd-componenti-in-quadratura-perche-importa">Perché importa</h4>
+<p>Il rumore passa-banda dei sistemi reali ha quasi sempre una PSD simmetrica attorno alla portante (filtro del ricevitore centrato su <span class="math inline">f_c</span>). In questo caso le due componenti in quadratura sono processi reali indipendenti con la stessa PSD: la base per i ricevitori in banda base. Vedi l'esempio in rumore in banda passante.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — PSD della componente in fase, eq. (13)</summary>
+<p><strong>Si parte da:</strong> (6), <span class="math inline">R_{x_cx_c}(\tau) = \frac12\big[R_{x_px_p}(\tau)\cos(2\pi f_c\tau) + \widehat{R}_{x_px_p}(\tau)\sin(2\pi f_c\tau)\big]</span>, e dal teorema di Wiener-Khinchin: <span class="math inline">S_{x_cx_c} = \mathcal{F}\{R_{x_cx_c}\}</span>. Con <span class="math inline">S \equiv S_{x_px_p}</span> e <span class="math inline">\widehat{S}(f) = -j\,\text{sgn}(f)\,S(f)</span> (trasformata di <span class="math inline">\widehat{R}</span>).</p>
+<div class="math block">
+\begin{aligned}
+\mathcal{F}\{R\cos(2\pi f_c\tau)\} &amp;= \tfrac12\big[S(f - f_c) + S(f + f_c)\big] &amp;&amp; \text{modulazione: } \cos = \tfrac12(e^{j2\pi f_c\tau} + e^{-j2\pi f_c\tau}) \\
+\mathcal{F}\{\widehat{R}\sin(2\pi f_c\tau)\} &amp;= \tfrac{1}{2j}\big[\widehat{S}(f - f_c) - \widehat{S}(f + f_c)\big] &amp;&amp; \sin = \tfrac{1}{2j}(e^{j2\pi f_c\tau} - e^{-j2\pi f_c\tau}) \\
+&amp;= \tfrac{1}{2j}\big[-j\,\text{sgn}(f - f_c)S(f - f_c) + j\,\text{sgn}(f + f_c)S(f + f_c)\big] &amp;&amp; \widehat{S} = -j\,\text{sgn}\,S \\
+S_{x_cx_c}(f) &amp;= \tfrac12\Big[S(f - f_c)\,\tfrac{1 - \text{sgn}(f - f_c)}{2} + S(f + f_c)\,\tfrac{1 + \text{sgn}(f + f_c)}{2}\Big] &amp;&amp; \text{somma; } \tfrac{-j}{2j} = -\tfrac12,\ \tfrac{j}{2j} = \tfrac12 \\
+&amp;= \tfrac12\big[S(f - f_c)\,u(f_c - f) + S(f + f_c)\,u(f + f_c)\big] &amp;&amp; \tfrac{1 - \text{sgn}(x)}{2} = u(-x),\ \tfrac{1 + \text{sgn}(x)}{2} = u(x)
+\end{aligned}
+</div><p>Il risultato è la (13). Cosa fa: <span class="math inline">S(f - f_c)</span> è lo spettro traslato a destra di <span class="math inline">f_c</span>; il gradino <span class="math inline">u(f_c - f)</span> tiene solo la parte a sinistra di <span class="math inline">f_c</span>, cioè il lobo che sta intorno a <span class="math inline">f = 0</span> (quello che era in <span class="math inline">+f_c</span> nello spettro originale è stato portato in 0, quello in <span class="math inline">-f_c</span> è finito in <span class="math inline">-2f_c</span> e viene eliminato). Analogo per <span class="math inline">S(f + f_c)</span>.</p>
+<p><strong>Sanity check:</strong> <span class="math inline">S_{x_sx_s} = S_{x_cx_c}</span> perché <span class="math inline">R_{x_sx_s} = R_{x_cx_c}</span> (10). Per l'esempio in rumore in banda passante si ritrova il valore.</p>
+</details>
+<details class="der"><summary>Derivazione — Cross-PSD <span class="math inline">S_{x_cx_s}</span></summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia, stessi passaggi della (13).</p>
+</blockquote>
+<p><strong>Si parte da:</strong> (8), <span class="math inline">R_{x_cx_s}(\tau) = \frac12\big[R\sin(2\pi f_c\tau) - \widehat{R}\cos(2\pi f_c\tau)\big]</span>.</p>
+<div class="math block">
+\begin{aligned}
+S_{x_cx_s}(f) &amp;= \tfrac12\Big\{\tfrac{1}{2j}\big[S(f - f_c) - S(f + f_c)\big] - \tfrac12\big[\widehat{S}(f - f_c) + \widehat{S}(f + f_c)\big]\Big\} &amp;&amp; \mathcal{F}\{R\sin\},\ \mathcal{F}\{\widehat{R}\cos\} \\
+&amp;= \tfrac{j}{4}\Big\{S(f - f_c)\big[\text{sgn}(f - f_c) - 1\big] + S(f + f_c)\big[\text{sgn}(f + f_c) + 1\big]\Big\} &amp;&amp; \tfrac{1}{2j} = -\tfrac{j}{2}; \ \widehat{S} = -j\,\text{sgn}\,S \\
+&amp;= \tfrac{j}{2}\big[S(f + f_c)\,u(f + f_c) - S(f - f_c)\,u(f_c - f)\big] &amp;&amp; \text{sgn}(x) - 1 = -2u(-x),\ \text{sgn}(x) + 1 = 2u(x)
+\end{aligned}
+</div><p><strong>Sanity check:</strong> è puramente immaginaria e dispari, coerente con <span class="math inline">R_{x_cx_s}</span> reale e dispari (derivazione in processi passa banda). Con <span class="math inline">S_{x_sx_c} = -S_{x_cx_s}</span> nella (12) si ritrova la (14):</p>
+<div class="math block">S_{xx} = 2S_{x_cx_c} - 2j\,S_{x_cx_s} = \big[S_-u_- + S_+u_+\big] + \big[S_+u_+ - S_-u_-\big] = 2S(f + f_c)\,u(f + f_c)</div><p>con <span class="math inline">S_\mp = S(f \mp f_c)</span> e <span class="math inline">u_- = u(f_c - f)</span>, <span class="math inline">u_+ = u(f + f_c)</span> ✓.</p>
+</details>
+<details class="der"><summary>Derivazione — PSD dell'inviluppo, eq. (14)</summary>
+<p><strong>Si parte da:</strong> il processo analitico <span class="math inline">x_p^+</span> è l'uscita del filtro con <span class="math inline">H(f) = \sqrt2\,u(f)</span> (segnale analitico) con ingresso <span class="math inline">x_p</span>; <span class="math inline">S_{\text{out}} = S_{\text{in}}\,|H|^2</span> (processi e sistemi lti).</p>
+<div class="math block">
+\begin{aligned}
+S_{x_p^+x_p^+}(f) &amp;= S_{x_px_p}(f)\,\lvert\sqrt2\,u(f)\rvert^2 = 2S_{x_px_p}(f)\,u(f) &amp;&amp; u^2 = u \\
+R_{xx}(\tau) &amp;= E\big[x_p^+(t)\,e^{-j2\pi f_ct}\;x_p^{+\ast}(t-\tau)\,e^{+j2\pi f_c(t-\tau)}\big] &amp;&amp; x = x_p^+\,e^{-j2\pi f_ct}, \text{ coniugato in } t-\tau \\
+&amp;= E\big[x_p^+(t)\,x_p^{+\ast}(t-\tau)\big]\,e^{-j2\pi f_c\tau} &amp;&amp; \text{esponenziali portati fuori: } e^{-j2\pi f_ct + j2\pi f_c(t-\tau)} = e^{-j2\pi f_c\tau} \\
+&amp;= R_{x_p^+x_p^+}(\tau)\,e^{-j2\pi f_c\tau} &amp;&amp; \text{dipende solo da } \tau \\
+S_{xx}(f) &amp;= \mathcal{F}\{R_{x_p^+x_p^+}(\tau)\,e^{-j2\pi f_c\tau}\} = S_{x_p^+x_p^+}(f + f_c) &amp;&amp; \text{moltiplicare per } e^{-j2\pi f_c\tau} \text{ sposta lo spettro di } f_c \text{ a sinistra} \\
+&amp;= 2S_{x_px_p}(f + f_c)\,u(f + f_c) &amp;&amp; \text{(14)}
+\end{aligned}
+</div><p>La seconda riga mostra che <strong>moltiplicare per un esponenziale complesso conserva la WSS</strong>: <span class="math inline">R_{xx}</span> dipende solo da <span class="math inline">\tau</span> (e la media resta zero).</p>
+<p><strong>Riassunto operativo</strong> per avere la PSD dell'inviluppo di un processo passa-banda:</p>
+<ol>
+<li>si disegna la PSD del processo passa-banda, <span class="math inline">S_{x_px_p}(f)</span>;</li>
+<li>si eliminano le frequenze negative con <span class="math inline">H(f) = \sqrt2\,u(f)</span> e si moltiplica per <span class="math inline">\sqrt2</span> (il fattore <strong>conserva la potenza</strong>), ottenendo <span class="math inline">S_{x_p^+x_p^+} = 2S_{x_px_p}u</span>;</li>
+<li>si trasla a sinistra di <span class="math inline">f_c</span>, portando la PSD del segnale analitico centrata nell'origine.</li>
+</ol>
+<p><strong>Sanity check (potenza):</strong> <span class="math inline">\int S_{xx}\,df = \int S_{x_p^+x_p^+}\,df = \int_0^{+\infty}2S_{x_px_p}\,df = \int_{-\infty}^{+\infty}S_{x_px_p}\,df</span>, perché <span class="math inline">S_{x_px_p}</span> è pari (processo reale): la potenza dell'inviluppo è quella del processo passa-banda.</p>
+</details>
+<details class="der"><summary>Derivazione — Spettro simmetrico attorno a <span class="math inline">f_c</span></summary>
+<p><strong>Ipotesi:</strong> <span class="math inline">S_{x_px_p}(f_c + g) = S_{x_px_p}(f_c - g)</span> per ogni <span class="math inline">g</span> (simmetria attorno alla portante).</p>
+<div class="math block">
+\begin{aligned}
+S_{xx}(-f) &amp;= 2S_{x_px_p}(-f + f_c)\,u(-f + f_c) &amp;&amp; \text{(14) in } -f \\
+&amp;= 2S_{x_px_p}(f + f_c)\,u(f + f_c) = S_{xx}(f) &amp;&amp; \text{simmetria: } S(f_c - f) = S(f_c + f); \ u(f_c - f) = u(f_c + f) = 1 \text{ sul lobo}
+\end{aligned}
+</div><blockquote class="co mia"><p>🧩 L'ultima uguaglianza usa che i due gradini valgono entrambi 1 dove <span class="math inline">S(f + f_c) \ne 0</span>, cioè per <span class="math inline">|f| &lt; W/2</span> con <span class="math inline">f_c &gt; W/2</span>: fuori dal lobo <span class="math inline">S = 0</span> e il gradino non conta.</p>
+</blockquote>
+<p>Quindi <span class="math inline">S_{xx}</span> è <strong>pari</strong>. Poiché <span class="math inline">S_{xx}</span> è reale e pari, la sua antitrasformata <span class="math inline">R_{xx}</span> è <strong>reale e pari</strong>, dunque <span class="math inline">\text{Im}\{R_{xx}(\tau)\} = 0</span> per ogni <span class="math inline">\tau</span>. Dalla (12):</p>
+<div class="math block">
+\begin{aligned}
+R_{xx}(\tau) &amp;= 2R_{x_cx_c}(\tau) + 2j\,R_{x_sx_c}(\tau) &amp;&amp; \text{(12)} \\
+\text{Im}\{R_{xx}\} = 0 &amp;\Rightarrow R_{x_sx_c}(\tau) = 0 \ \ \forall\tau \Rightarrow R_{x_cx_s}(\tau) = -R_{x_sx_c}(\tau) = 0 &amp;&amp; \text{(10); } x_p \text{ WSS}
+\end{aligned}
+</div><p><span class="math inline">x_c</span> e <span class="math inline">x_s</span> sono <strong>incoerenti</strong> (<span class="math inline">R_{x_cx_s} \equiv 0</span>). Con medie nulle sono anche <strong>incorrelate</strong>; se <span class="math inline">x_p</span> è gaussiano, sono <strong>statisticamente indipendenti</strong> (e non solo nello stesso istante: per ogni coppia di istanti). Infine, trasformando la (12):</p>
+<div class="math block">S_{xx}(f) = 2S_{x_cx_c}(f) + 2j\,S_{x_sx_c}(f) = 2S_{x_cx_c}(f) = 2S_{x_sx_s}(f) \qquad (S_{x_sx_c} = 0)</div><p>Gli appunti aggiungono che <span class="math inline">S_{xx}</span> è reale per definizione: <span class="math inline">S_{xx}(f) = \lim_{T\to\infty}\frac{1}{2T}E[\lvert X_T(f)\rvert^2]</span>.</p>
+<p><strong>Confronto con il caso generale:</strong> l'incoerenza di <span class="math inline">x_c</span> e <span class="math inline">x_s</span> è sempre garantita nel solo istante coincidente (<span class="math inline">\tau = 0</span>, vedi processi passa banda); quando lo spettro è simmetrico attorno a <span class="math inline">f_c</span> lo è per ogni <span class="math inline">\tau</span> — le due componenti sono <em>completamente</em> incoerenti/incorrelate.</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Rumore in banda passante</span></summary><div class="cb"><h4 id="rumore-in-banda-passante-spiegazione">Spiegazione</h4>
+<p>Nell'esempio il rumore è «bianco dentro la banda»: tutte le frequenze utili ricevono la stessa potenza per unità di frequenza. Il filtro del ricevitore è centrato su <span class="math inline">f_c</span>, quindi lo spettro risulta simmetrico attorno a <span class="math inline">f_c</span> e vale tutta la teoria del caso simmetrico: in banda base le due componenti in quadratura sono processi reali con la stessa PSD piatta <span class="math inline">N_0/2</span> e l'inviluppo ha PSD <span class="math inline">N_0</span>.</p>
+<p>Perché <span class="math inline">N_0</span> e non <span class="math inline">N_0/2</span> per l'inviluppo? Nell'inviluppo si eliminano le frequenze negative (un lobo su due) raddoppiando l'altezza: <span class="math inline">2\cdot N_0/2 = N_0</span>. La potenza non cambia perché la banda dell'inviluppo è la metà della banda totale (<span class="math inline">W</span> invece di <span class="math inline">2W</span>).</p>
+<h4 id="rumore-in-banda-passante-perche-importa">Perché importa</h4>
+<p>È il modello del rumore nel ricevitore, dove il DSP lavora sull'inviluppo in banda base (inviluppo complesso): sapere che <span class="math inline">w_c</span> e <span class="math inline">w_s</span> hanno la stessa PSD piatta e, se il rumore è gaussiano, sono <strong>indipendenti</strong> descrive statisticamente il rumore in banda base.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — PSD delle componenti in quadratura</summary>
+<p><strong>Si parte da:</strong> (14) di psd componenti in quadratura.</p>
+<div class="math block">
+\begin{aligned}
+S_{ww}(f) &amp;= 2S_{w_pw_p}(f + f_c)\,u(f + f_c) &amp;&amp; \text{(14)} \\
+&amp;= 2\cdot\frac{N_0}{2}\cdot 1 = N_0 \quad (\lvert f\rvert &lt; W/2) &amp;&amp; S_{w_pw_p}(f + f_c) = N_0/2 \text{ sul lobo traslato; } u = 1 \text{ per } f &gt; -f_c \\
+S_{ww}(f) &amp;= 2S_{w_cw_c}(f) &amp;&amp; \text{PSD simmetrica attorno a } f_c \text{ (reale e costante)} \\
+\Rightarrow S_{w_cw_c}(f) &amp;= S_{w_sw_s}(f) = \frac{S_{ww}}{2} = \frac{N_0}{2} \quad (\lvert f\rvert &lt; W/2) &amp;&amp; \text{caso simmetrico}
+\end{aligned}
+</div><p>Il motivo per cui <span class="math inline">S_{w_pw_p}</span> è simmetrica rispetto a <span class="math inline">f_c</span>: è reale e <strong>costante</strong> sul lobo, quindi uguale a sinistra e a destra di <span class="math inline">f_c</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — Costruzione grafica con (13)</summary>
+<p><strong>Si parte da:</strong> <span class="math inline">S_{w_cw_c} = \frac12\big[S(f - f_c)\,u(f_c - f) + S(f + f_c)\,u(f + f_c)\big]</span>.</p>
+<img class="zoom" src="img/processi-passabanda-p24-rumore-costruzione-1.png" alt="" loading="lazy">
+<p><em>(a) <span class="math inline">S_{w_pw_p}</span>: due lobi di altezza <span class="math inline">N_0/2</span> e larghezza <span class="math inline">W</span> in <span class="math inline">\pm f_c</span>. (b) Traslata di <span class="math inline">+f_c</span>: i lobi vanno in <span class="math inline">0</span> e <span class="math inline">2f_c</span>. (c) Traslata di <span class="math inline">-f_c</span>: lobi in <span class="math inline">-2f_c</span> e <span class="math inline">0</span>. (d)–(e) I gradini <span class="math inline">u(f_c - f)</span> e <span class="math inline">u(f + f_c)</span>.</em></p>
+<p>Ciascun gradino mantiene solo il lobo vicino a <span class="math inline">f = 0</span> e taglia quello in <span class="math inline">\pm 2f_c</span>:</p>
+<div class="math block">
+\begin{aligned}
+S_{w_pw_p}(f - f_c)\,u(f_c - f) &amp;= \tfrac{N_0}{2} &amp;&amp; \lvert f\rvert &lt; W/2 \ \text{(il lobo in } 2f_c \text{ cade dove } f &gt; f_c\text{, quindi viene azzerato)} \\
+S_{w_pw_p}(f + f_c)\,u(f + f_c) &amp;= \tfrac{N_0}{2} &amp;&amp; \lvert f\rvert &lt; W/2 \ \text{(il lobo in } -2f_c \text{ cade dove } f &lt; -f_c\text{)} \\
+S_{w_cw_c}(f) &amp;= \tfrac12\Big[\tfrac{N_0}{2} + \tfrac{N_0}{2}\Big] = \tfrac{N_0}{2} &amp;&amp; \text{somma e dimezzo (13)}
+\end{aligned}
+</div><img class="zoom" src="img/processi-passabanda-p25-rumore-costruzione-2.png" alt="" loading="lazy">
+<p><em>(f), (g) I due prodotti: restano i soli lobi centrati in 0, di altezza <span class="math inline">N_0/2</span>. (h) <span class="math inline">\frac12[(f)+(g)]</span>: <span class="math inline">S_{w_cw_c} = S_{w_sw_s} = N_0/2</span> su <span class="math inline">\lvert f\rvert &lt; W/2</span>. (i) Moltiplicando per 2: <span class="math inline">S_{ww} = N_0</span>.</em></p>
+<blockquote class="co mia"><p>🧩 Nel disegno (h) i due contributi sono sovrapposti: ciascuno vale <span class="math inline">\tfrac12\cdot\tfrac{N_0}{2} = \tfrac{N_0}{4}</span> (blu e arancione) e insieme danno <span class="math inline">\tfrac{N_0}{2}</span>.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Conservazione della potenza</summary>
+<div class="math block">
+\begin{aligned}
+P_{w_p} &amp;= \int_{-\infty}^{+\infty}S_{w_pw_p}(f)\,df = 2W\cdot\frac{N_0}{2} = N_0W &amp;&amp; \text{due lobi di larghezza } W \text{ e altezza } N_0/2 \\
+P_w &amp;= \int_{-W/2}^{W/2}S_{ww}(f)\,df = N_0\cdot W = N_0W &amp;&amp; \text{un lobo di larghezza } W \text{ e altezza } N_0 \\
+P_{w_c} + P_{w_s} &amp;= 2\cdot\frac{N_0}{2}W = N_0W &amp;&amp; \text{ciascuna componente: } \tfrac{N_0}{2}\cdot W
+\end{aligned}
+</div><p>La potenza del processo originale coincide con quella dell'inviluppo complesso, come per i segnali deterministici (il <span class="math inline">\sqrt2</span> nella definizione di segnale analitico serve a questo). <strong>Unità:</strong> <span class="math inline">N_0</span> in W/Hz, <span class="math inline">W</span> in Hz ⇒ potenze in W. <strong>Sanity check:</strong> <span class="math inline">N_0W</span> cresce con la banda: più banda, più rumore.</p>
+</details>
+<details class="der"><summary>Derivazione — Indipendenza delle componenti</summary>
+<p>Poiché <span class="math inline">S_{ww}(f)</span> è <strong>reale</strong> (il rumore passa-banda ha spettro simmetrico attorno a <span class="math inline">f_c</span>), <span class="math inline">S_{w_cw_s}(f) = 0</span> per ogni <span class="math inline">f</span>: le componenti <span class="math inline">w_c</span> e <span class="math inline">w_s</span> sono <strong>incoerenti</strong>. Con media nulla, sono <strong>incorrelate</strong>, e nello stesso istante sono statisticamente <strong>indipendenti se <span class="math inline">w_p</span> è gaussiano</strong> (processo gaussiano, psd componenti in quadratura).</p>
+</details>
+</div></details>
+</section>
+<section id="domande"><h2 class="ps">Domande da esame</h2>
+<ul>
+<li>Come si costruisce l'inviluppo complesso di un processo passa-banda? Perché si usa il processo analitico?</li>
+<li>Dimostra che, se <span class="math inline">x_p</span> è WSS a media nulla, <span class="math inline">x_c</span> e <span class="math inline">x_s</span> sono congiuntamente WSS.</li>
+<li>Quali relazioni valgono tra <span class="math inline">R_{x_cx_c}</span>, <span class="math inline">R_{x_sx_s}</span>, <span class="math inline">R_{x_cx_s}</span> e <span class="math inline">R_{x_sx_c}</span>? Perché <span class="math inline">R_{x_cx_s}(0) = 0</span>?</li>
+<li>Che relazione c'è tra la PSD del processo passa-banda e quella dell'inviluppo complesso? E quella di <span class="math inline">x_c</span>?</li>
+<li>Cosa cambia se la PSD passa-banda è simmetrica attorno a <span class="math inline">f_c</span>? Quando <span class="math inline">x_c</span> e <span class="math inline">x_s</span> sono indipendenti?</li>
+<li>Calcola le PSD delle componenti in quadratura del rumore a PSD <span class="math inline">N_0/2</span> in banda <span class="math inline">W</span> e verifica la conservazione della potenza.</li>
+</ul>
+
+</section>
+<nav class="pn"><a href="lezione-5.html">← Lezione 5</a><span></span></nav>
+</main>
+<footer>Appunti personali del corso di Trasmissione dei Segnali Digitali (LM Ingegneria Informatica, UNINA). Generato dal wiki con <code>output/crea_sito.py</code>.</footer>
+<div id="lb" hidden></div><a id="su" href="#" hidden aria-label="torna su">↑</a>
+</body></html>

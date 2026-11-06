@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lezione 4 · Rappresentazione complessa in banda base</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="style.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="app.js"></script></head>
+<body><header class="top"><nav><a href="index.html" class="home">TSD</a><a href="lezione-3.html">L3</a><a href="lezione-4.html" aria-current="page">L4</a><a href="lezione-5.html">L5</a><a href="lezione-7.html">L7</a></nav><span class="fs"><button id="fm" aria-label="testo più piccolo">A−</button><button id="fp" aria-label="testo più grande">A+</button></span></header>
+<main>
+<p class="crumb"><a href="index.html">Intercorso</a> · Lezione 4</p>
+<h1>Rappresentazione complessa in banda base</h1>
+<p class="breve">Segnali in banda base e passa-banda, segnale analitico, inviluppo complesso, componenti I/Q, up/down-conversion, filtri.</p>
+<details class="toc"><summary>Indice della lezione</summary><ul><li class="l3"><a href="#il-modulatore-nel-sistema">Il modulatore nel sistema</a></li><li class="l3"><a href="#modulazione">Modulazione</a></li><li class="l3"><a href="#segnali-in-banda-base-e-in-banda-passante">Segnali in banda base e in banda passante</a></li><li class="l3"><a href="#vantaggi-della-banda-base">Vantaggi della banda base</a></li><li class="l3"><a href="#banda">Banda</a></li><li class="l3"><a href="#rappresentazione-complessa-in-banda-base">Rappresentazione complessa in banda base</a></li><li class="l3"><a href="#segnale-analitico">Segnale analitico</a></li><li class="l3"><a href="#ritorno-al-segnale-reale-e-hilbert-in-frequenza">Ritorno al segnale reale e Hilbert in frequenza</a></li><li class="l3"><a href="#inviluppo-complesso">Inviluppo complesso</a></li><li class="l3"><a href="#energia-dell-inviluppo">Energia dell'inviluppo</a></li><li class="l4"><a href="#dimostrazione-di-18-appunti">Dimostrazione di (18) — appunti</a></li><li class="l4"><a href="#verifica-di-19-e-20-appunti">Verifica di (19) e (20) — appunti</a></li><li class="l3"><a href="#upconversion-e-downconversion">Upconversion e downconversion</a></li><li class="l3"><a href="#cosa-porta-l-inviluppo">Cosa porta l'inviluppo</a></li><li class="l3"><a href="#filtraggio-passa-banda-in-banda-base">Filtraggio passa-banda in banda base</a></li><li class="l3"><a href="#banda-di-un-segnale-complesso">Banda di un segnale complesso</a></li><li class="l3"><a href="#approfondimenti">Spiegazioni e dimostrazioni passo-passo</a></li><li class="l3"><a href="#domande">Domande da esame</a></li></ul></details>
+<section id="corso"><h2 class="ps">Il corso, slide per slide</h2>
+<h3 id="il-modulatore-nel-sistema">Il modulatore nel sistema</h3>
+<img class="zoom" src="img/rappresentazione-rice-p2-appunti-sistema-e-canale.png" alt="" loading="lazy">
+<ul>
+<li>Sorgente → <span class="math inline">s(n)</span> → <strong>modulatore</strong> (MOD) → <span class="math inline">s(t)</span> → canale fisico. Il modulatore <strong>associa una forma d'onda analogica a ogni simbolo o stringa di bit</strong>.</li>
+<li>Deve <strong>allocare</strong> il segnale in una specifica porzione dello spettro, centrata attorno a una frequenza portante <span class="math inline">f_c</span> (<em>carrier</em>). Il canale è caratterizzato da una risposta in frequenza <span class="math inline">H(f)</span> e da una determinata banda a disposizione (disegno: due lobi di larghezza <span class="math inline">B</span> attorno a <span class="math inline">\pm f_c</span>).</li>
+<li>Il <strong>trasmettitore</strong> porta il segnale nella porzione di spettro prevista, per adattarlo alla capacità del canale; il <strong>ricevitore</strong> lo riporta in banda base, e questo comporta che il segnale diventa <strong>complesso</strong>.</li>
+<li>In entrambi i momenti, trasmissione e ricezione, c'è un passaggio <strong>complesso ↔ reale</strong> (trasmissione: complesso → reale; ricezione: reale → complesso), eseguito da un DSP.</li>
+</ul>
+<h3 id="modulazione">Modulazione</h3>
+<img class="zoom" src="img/rappresentazione-rice-p3-modulazione-binaria.png" alt="" loading="lazy">
+<ul>
+<li>La <strong>modulazione</strong> è la rappresentazione dell'informazione digitale con forme d'onda analogiche trasmissibili su canali fisici.</li>
+<li>Esempio di modulazione binaria: i simboli (bit) sono mappati su una forma d'onda moltiplicando ciascun simbolo per traslate di un impulso rettangolare (<strong>modulazione lineare</strong>; nota: «perché <span class="math inline">s(t)</span> dipende linearmente dai simboli»):</li>
+</ul>
+<div class="math block">s(t)=\sum_m b[m]\,\Pi(t-mT),\qquad b[m]\in\{-1,+1\}</div><p>(figura: sequenza <span class="math inline">+1,-1,-1,+1,+1,+1,-1,+1,-1,+1,+1,\dots</span>). Gli appunti scrivono la somma con l'indice sbagliato: va letta sull'indice <span class="math inline">m</span> dei simboli.</p>
+<ul>
+<li>Nell'esempio la forma d'onda è limitata nel tempo; le forme d'onda usate per modulare sono spesso <strong>vincolate nel dominio della frequenza</strong>, per le caratteristiche fisiche del mezzo o per fattori esterni (es. regole sull'uso dello spettro). Nota: i segnali da trasmettere devono soddisfare vincoli nel dominio della frequenza, che riguardano <strong>dove</strong> è allocato il loro spettro.</li>
+</ul>
+<h3 id="segnali-in-banda-base-e-in-banda-passante">Segnali in banda base e in banda passante</h3>
+<ul>
+<li>Un segnale <span class="math inline">s_b(t)</span> è <strong>in banda base</strong> se, per qualche <span class="math inline">B&gt;0</span>,</li>
+</ul>
+<div class="math block">S_b(f)\approx0,\qquad\lvert f\rvert&gt;B\tag{1}</div><p>Un canale LTI è in banda base se la sua <span class="math inline">H(f)</span> soddisfa la (1).</p>
+<ul>
+<li>Un segnale <span class="math inline">s_p(t)</span> è <strong>in banda passante</strong> se</li>
+</ul>
+<div class="math block">S_p(f)\approx0,\qquad\lvert f\pm f_c\rvert&gt;B/2\tag{2}</div><p>con <span class="math inline">f_c&gt;B&gt;0</span> detta frequenza <strong>portante</strong> (<em>carrier</em>). Un canale LTI è passa-banda se <span class="math inline">H(f)</span> soddisfa la (2). Nota: si dice banda passante perché il contenuto informativo è traslato e centrato attorno a <span class="math inline">f_c</span>.</p>
+<ul>
+<li>Sia <span class="math inline">s_b(t)</span> che <span class="math inline">s_p(t)</span> reali, con trasformate (in senso ordinario o generalizzato) <span class="math inline">S_b(f)</span>, <span class="math inline">S_p(f)</span>: per la simmetria coniugata <span class="math inline">S_b(f)=S_b^\ast(-f)</span> e <span class="math inline">S_p(f)=S_p^\ast(-f)</span> (le trasformate dei segnali reali godono della <strong>simmetria hermitiana</strong>).</li>
+</ul>
+<img class="zoom" src="img/rappresentazione-rice-p5-spettri-banda-base-passa-banda.png" alt="" loading="lazy">
+<p>A sinistra il segnale in banda base: <span class="math inline">\text{Re}\,S(f)</span> è un triangolo di altezza 1 su <span class="math inline">(-B,B)</span> (pari), <span class="math inline">\text{Im}\,S(f)</span> vale <span class="math inline">+1</span> su <span class="math inline">(-B,0)</span> e <span class="math inline">-1</span> su <span class="math inline">(0,B)</span> (dispari). A destra il passa-banda: stesse forme attorno a <span class="math inline">\pm f_c</span>, larghe <span class="math inline">B</span>. Nota (con <span class="math inline">f_c</span> cerchiato): <strong>l'obiettivo è svincolarsi da <span class="math inline">f_c</span></strong>, perché l'informazione di <span class="math inline">s(t)</span> non dipende da <span class="math inline">f_c</span> e si può descrivere tutto con un segnale in banda base.</p>
+<img class="zoom" src="img/grafico-rice-condizione-passabanda.png" alt="" loading="lazy">
+<p><em>Figura di supporto: perché <span class="math inline">f_c&gt;B</span>. Il bordo inferiore del lobo positivo è <span class="math inline">f_c-B/2&gt;B/2&gt;0</span>, quindi i due lobi non si toccano e non contengono <span class="math inline">f=0</span>. (a) <span class="math inline">f_c=2B</span>, (b) <span class="math inline">f_c=B</span> (soglia), (c) <span class="math inline">f_c=B/2</span>: i lobi si toccano in 0, (d) <span class="math inline">f_c=B/4</span>: si sovrappongono e lo spettro diventa di banda base.</em></p>
+<figure class="fig"><svg viewBox="0 0 400 250" role="img" aria-label="spettri in banda base e in banda passante" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a9" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><text class="tx tb" x="10.0" y="16.0" text-anchor="start">banda base</text><line class="ax" x1="20.0" y1="84.0" x2="388.0" y2="84.0" marker-end="url(#a9)"/><text class="ts" x="390.0" y="99.0" text-anchor="end">f</text><line class="ax" x1="200.0" y1="87.0" x2="200.0" y2="18.0" marker-end="url(#a9)"/><path class="fl" d="M154.0 84.0 L200.0 32.0 L246.0 84.0 Z"/><path class="cv" d="M154.0 84.0 L200.0 32.0 L246.0 84.0"/><text class="ts" x="208.0" y="22.0" text-anchor="start">|S(f)|</text><text class="ts" x="200.0" y="99.0" text-anchor="middle">0</text><line class="ar2" x1="154.0" y1="111.0" x2="246.0" y2="111.0" marker-end="url(#a9)" marker-start="url(#a9)"/><text class="ts a1" x="256.0" y="115.0" text-anchor="start">banda ≈ B</text><text class="tx tb" x="10.0" y="128.0" text-anchor="start">banda passante</text><line class="ax" x1="20.0" y1="196.0" x2="388.0" y2="196.0" marker-end="url(#a9)"/><text class="ts" x="390.0" y="211.0" text-anchor="end">f</text><line class="ax" x1="200.0" y1="199.0" x2="200.0" y2="130.0" marker-end="url(#a9)"/><path class="fl" d="M48.0 196.0 L88.0 144.0 L128.0 196.0 Z"/><path class="cv" d="M48.0 196.0 L88.0 144.0 L128.0 196.0"/><path class="fl" d="M272.0 196.0 L312.0 144.0 L352.0 196.0 Z"/><path class="cv" d="M272.0 196.0 L312.0 144.0 L352.0 196.0"/><text class="ts" x="208.0" y="134.0" text-anchor="start">|S<tspan dy="3" font-size="0.72em">p</tspan><tspan dy="-3">​</tspan>(f)|</text><text class="ts" x="88.0" y="211.0" text-anchor="middle">−f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="312.0" y="211.0" text-anchor="middle">f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text><line class="ar2" x1="272.0" y1="223.0" x2="352.0" y2="223.0" marker-end="url(#a9)" marker-start="url(#a9)"/><text class="ts a1" x="312.0" y="238.0" text-anchor="middle">B</text></svg><figcaption>🧩 Segnale in banda base: spettro concentrato attorno a <span class="math inline">f=0</span>. Segnale passa-banda reale: due lobi in <span class="math inline">\pm f_c</span>, uno immagine hermitiana dell'altro (<span class="math inline">S_p(-f)=S_p^\ast(f)</span>), con <span class="math inline">B\ll f_c</span>.</figcaption></figure>
+<h3 id="vantaggi-della-banda-base">Vantaggi della banda base</h3>
+<img class="zoom" src="img/rappresentazione-rice-p6-appunti-vantaggi-banda-base.png" alt="" loading="lazy">
+<p>Portare il segnale in banda base permette di:</p>
+<ul>
+<li>ridurre i costi hardware per il campionamento;</li>
+<li>guadagnare <strong>modularità e indipendenza</strong>: si riutilizzano componenti che operano in banda base, senza costruirli ad hoc per la specifica banda del segnale;</li>
+<li>(in rosso) altrimenti non si potrebbero generalizzare gli algoritmi, e calcolarli in digitale costerebbe troppo.</li>
+</ul>
+<h3 id="banda">Banda</h3>
+<ul>
+<li><strong>Banda</strong> = ampiezza dell'intervallo di frequenze occupato dalla trasformata di Fourier. <strong>Banda monolatera</strong> (<em>one-sided</em>): occupazione spettrale sulle frequenze positive; <strong>bilatera</strong> (<em>two-sided</em>): su frequenze positive e negative. Per un segnale reale la bilatera è il doppio della monolatera, per la simmetria coniugata <span class="math inline">X(f)=X^\ast(-f)</span>. Di solito «banda» indica la monolatera.</li>
+<li>Un segnale passa-banda è <strong>a banda stretta</strong> (<em>narrowband</em>) se <span class="math inline">B/f_c\ll1</span> (nota: non è un'ipotesi stringente). Da qui in poi si trattano solo segnali passa-banda a banda stretta.</li>
+</ul>
+<img class="zoom" src="img/rappresentazione-rice-p8-appunti-banda-stretta.png" alt="" loading="lazy">
+<h3 id="rappresentazione-complessa-in-banda-base">Rappresentazione complessa in banda base</h3>
+<ul>
+<li>
+<p>I canali passa-banda sono molto usati: bisogna saper trasmettere e ricevere segnali passa-banda.</p>
+</li>
+<li>
+<p><strong>Tutta l'informazione</strong> di un segnale passa-banda reale è contenuta in un corrispondente segnale <strong>complesso in banda base</strong>, detto <em>rappresentazione complessa in banda base</em> o <strong>inviluppo complesso</strong>.</p>
+</li>
+<li>
+<p>L'inviluppo si può rappresentare a tempo discreto con una frequenza di campionamento <strong>molto più piccola</strong> di quella del segnale passa-banda <span class="math inline">s_p(t)</span> (nota: «il vantaggio»). Perciò i transceiver moderni implementano algoritmi complessi in digitale (DSP), direttamente sui segnali complessi in banda base, <strong>riducendo al minimo l'elaborazione analogica</strong>. (Ordini di grandezza: per <span class="math inline">s_p</span> serve <span class="math inline">f_s\ge2f_c+B</span>, per l'inviluppo <span class="math inline">f_s\ge B</span>.)</p>
+</li>
+<li>
+<p><strong>Schema modulare del transceiver:</strong></p>
+<ol>
+<li>un DSP codifica l'informazione nella forma d'onda complessa in banda base (codifica, modulazione, filtraggio);</li>
+<li>la forma d'onda in banda base è convertita in su (<em>upconverted</em>) nel segnale passa-banda da inviare sul canale fisico;</li>
+<li>il segnale passa-banda ricevuto è convertito in giù (<em>downconverted</em>) in banda base;</li>
+<li>il DSP opera sul segnale in banda base per sincronizzazione, demodulazione e decodifica.</li>
+</ol>
+<p>Così algoritmi sofisticati si sviluppano in banda base, indipendentemente dalla banda fisica usata.</p>
+</li>
+</ul>
+<img class="zoom" src="img/rappresentazione-rice-p10-schema-modulare-transceiver.png" alt="" loading="lazy">
+<p>Note a mano: i punti 1–2 formano il <strong>modulatore</strong> e i punti 3–4 il <strong>demodulatore</strong> («macroblocchi»); il modulatore comprende anche l'upconversion; dal punto 1 si ottiene l'inviluppo complesso in banda base; ci si è svincolati dalla frequenza carrier <span class="math inline">f_c</span>.</p>
+<h3 id="segnale-analitico">Segnale analitico</h3>
+<p>Per definire l'inviluppo si costruisce prima il <strong>segnale analitico</strong> associato a <span class="math inline">s_p(t)</span> (con trasformata <span class="math inline">S_p(f)</span>):</p>
+<div class="math block">S_p^+(f)=\sqrt2\,S_p(f)\,u(f)\tag{3}</div><p>con <span class="math inline">u(\cdot)</span> gradino unitario: si annullano le frequenze negative (ridondanti) e si moltiplica per <span class="math inline">\sqrt2</span>, fattore «introdotto per motivi energetici» (conserva l'energia: la parte tenuta ha metà dell'energia, e il <span class="math inline">\sqrt2</span> la ripristina). A ogni segnale passa-banda corrisponde un unico segnale analitico, e viceversa. Nel tempo:</p>
+<div class="math block">s_p^+(t)=\mathcal F^{-1}[S_p^+(f)]=\sqrt2\,s_p(t)\ast\mathcal F^{-1}[u(f)]\tag{4}</div><div class="math block">\mathcal F[u(t)]=\tfrac12\delta(f)+\frac1{j2\pi f}\triangleq U(f)\quad(5)\qquad\mathcal F[U(t)]=u(-f)\ \ (\text{dualità})\quad(6)</div><p>Dalla (5) e (6), con la proprietà di riflessione:</p>
+<div class="math block">\mathcal F^{-1}[u(f)]=U(-t)=\tfrac12\delta(t)+\frac{j}{2\pi t}\tag{7}</div><p>Sostituendo la (7) nella (4):</p>
+<div class="math block">s_p^+(t)=\frac1{\sqrt2}s_p(t)+\frac j{\sqrt2}\,s_p(t)\ast\frac1{\pi t}=\frac1{\sqrt2}s_p(t)+\frac j{\sqrt2}\widehat s_p(t)\tag{8}</div><p>dove</p>
+<div class="math block">\widehat s_p(t)\triangleq s_p(t)\ast\frac1{\pi t}=\int_{-\infty}^{+\infty}\frac{s_p(\tau)}{\pi(t-\tau)}\,d\tau\tag{9}</div><p>è la <strong>trasformata di Hilbert</strong> di <span class="math inline">s_p(t)</span>. La (8) dice che il segnale analitico è un segnale <strong>complesso</strong>: parte reale = il segnale passa-banda originale scalato; parte immaginaria = la sua trasformata di Hilbert scalata.</p>
+<h3 id="ritorno-al-segnale-reale-e-hilbert-in-frequenza">Ritorno al segnale reale e Hilbert in frequenza</h3>
+<img class="zoom" src="img/rappresentazione-rice-p13-segnale-analitico-hilbert.png" alt="" loading="lazy">
+<p>Dalla (8) si deduce immediatamente (relazione inversa) e questo conclude la dimostrazione della corrispondenza biunivoca:</p>
+<div class="math block">s_p(t)=\sqrt2\,\text{Re}\{s_p^+(t)\}\tag{10}</div><p>Trasformata del segnale analitico:</p>
+<div class="math block">S_p^+(f)=\frac1{\sqrt2}S_p(f)+\frac j{\sqrt2}\mathcal F[\widehat s_p(t)]\quad(11)\qquad\widehat S_p(f)=S_p(f)\,\mathcal F\Big[\frac1{\pi t}\Big]\quad(12)</div><p>Per calcolare la (12): <span class="math inline">\text{sgn}(t)=2u(t)-1</span>, quindi (appunti, con la (5))</p>
+<div class="math block">\mathcal F[\text{sgn}(t)]=2\,\mathcal F[u(t)]-\delta(f)=\delta(f)+\frac1{j\pi f}-\delta(f)=\frac1{j\pi f}</div><p>e per dualità <span class="math inline">\mathcal F\big[\frac1{\pi t}\big]=j\,\text{sgn}(-f)=-j\,\text{sgn}(f)</span>. Perciò</p>
+<div class="math block">\widehat S_p(f)=-j\,\text{sgn}(f)\,S_p(f)</div><img class="zoom" src="img/rappresentazione-rice-p14-appunti-trasformata-sgn.png" alt="" loading="lazy">
+<p><em>Appunti. Nell'ultima riga manca un meno (<span class="math inline">j\,\text{sign}(f)</span> invece di <span class="math inline">-j\,\text{sgn}(f)</span>); la slide ha il segno giusto.</em></p>
+<p><strong>Interpretazione (nota a mano):</strong> la trasformata di Hilbert equivale a sfasare di <span class="math inline">-90°</span> tutte le componenti frequenziali positive e di <span class="math inline">+90°</span> quelle negative. <em>(Refuso della slide, corretto a mano: nella (12) e nell'ultima formula va <span class="math inline">S_p(f)</span>, non <span class="math inline">S(f)</span>.)</em></p>
+<figure class="fig"><svg viewBox="0 0 400 138" role="img" aria-label="risposta in frequenza del filtro di Hilbert" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a11" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><line class="ax" x1="16.0" y1="72.0" x2="184.0" y2="72.0" marker-end="url(#a11)"/><line class="ax" x1="100.0" y1="118.0" x2="100.0" y2="24.0" marker-end="url(#a11)"/><text class="tx tb" x="100.0" y="14.0" text-anchor="middle">|H(f)| = 1</text><text class="ts" x="188.0" y="88.0" text-anchor="end">f</text><line class="ax" x1="216.0" y1="72.0" x2="384.0" y2="72.0" marker-end="url(#a11)"/><line class="ax" x1="300.0" y1="118.0" x2="300.0" y2="24.0" marker-end="url(#a11)"/><text class="tx tb" x="300.0" y="14.0" text-anchor="middle">fase di H(f)</text><text class="ts" x="388.0" y="88.0" text-anchor="end">f</text><line class="cv" x1="16.0" y1="44.0" x2="100.0" y2="44.0"/><line class="cv" x1="100.0" y1="44.0" x2="184.0" y2="44.0"/><circle class="bx" cx="100.0" cy="44.0" r="3.0"/><text class="ts" x="180.0" y="38.0" text-anchor="end">1</text><line class="cv2" x1="216.0" y1="44.0" x2="300.0" y2="44.0"/><line class="cv2" x1="300.0" y1="100.0" x2="384.0" y2="100.0"/><line class="gd" x1="300.0" y1="44.0" x2="300.0" y2="100.0"/><text class="ts a2" x="310.0" y="40.0" text-anchor="start">+90° (f &lt; 0)</text><text class="ts a2" x="236.0" y="114.0" text-anchor="start">−90° (f &gt; 0)</text></svg><figcaption>🧩 Il filtro di Hilbert <span class="math inline">H(f)=-j\,\text{sgn}(f)</span> ha modulo 1 e sfasa di <span class="math inline">-90°</span> le frequenze positive e di <span class="math inline">+90°</span> le negative: non cambia le ampiezze, solo le fasi.</figcaption></figure>
+<h3 id="inviluppo-complesso">Inviluppo complesso</h3>
+<p>L'<strong>inviluppo complesso</strong> è il segnale analitico traslato in banda base:</p>
+<div class="math block">S(f)\triangleq S_p^+(f+f_c)=\sqrt2\,S_p(f+f_c)\,u(f+f_c)\tag{13}</div><p>Viceversa, dato l'inviluppo in frequenza (relazione inversa; la parte tagliata dal gradino viene rimessa dal termine coniugato):</p>
+<div class="math block">S_p(f)=\frac{S(f-f_c)+S^\ast(-f-f_c)}{\sqrt2}\tag{14}</div><p><em>(dimostrazione dalla (16): <span class="math inline">s_p=\frac{\sqrt2}2[s\,e^{j2\pi f_ct}+s^\ast e^{-j2\pi f_ct}]</span> e traslazioni in frequenza.)</em></p>
+<img class="zoom" src="img/rappresentazione-rice-p15-inviluppo-complesso-spettri.png" alt="" loading="lazy">
+<p><em>In alto <span class="math inline">S_p(f)</span>: <span class="math inline">\text{Re}</span> con due triangoli di altezza <span class="math inline">A</span> attorno a <span class="math inline">\pm f_c</span>, <span class="math inline">\text{Im}</span> con due rettangoli di altezza <span class="math inline">B</span> (positivo in <span class="math inline">f_c</span>, negativo in <span class="math inline">-f_c</span>; qui <span class="math inline">A</span>, <span class="math inline">B</span> sono altezze, non la banda). In basso l'inviluppo: resta solo il lobo positivo, spostato attorno a 0 e moltiplicato per <span class="math inline">\sqrt2</span> (altezze <span class="math inline">\sqrt2A</span>, <span class="math inline">\sqrt2B</span>).</em></p>
+<p>Nel tempo, per la proprietà di traslazione di Fourier (nota: «corrisponde a una traslazione del segnale analitico»):</p>
+<div class="math block">s(t)=\mathcal F^{-1}[S(f)]=s_p^+(t)\,e^{-j2\pi f_ct}=s_c(t)+j\,s_s(t)\tag{15}</div><p><span class="math inline">s_c(t)</span> = componente <strong>in fase (I)</strong>, <span class="math inline">s_s(t)</span> = componente <strong>in quadratura (Q)</strong>: segnali reali. Per ottenere <span class="math inline">s_p</span> dall'inviluppo (<span class="math inline">s_p^+=s\,e^{j2\pi f_ct}=[s_c+js_s]e^{j2\pi f_ct}</span>), valida per <strong>qualunque</strong> segnale passa-banda:</p>
+<div class="math block">s_p(t)=\sqrt2\,\text{Re}\{s_p^+(t)\}=\sqrt2\,\text{Re}\{s(t)\,e^{j2\pi f_ct}\}\tag{16}</div><div class="math block">s_p(t)=\sqrt2\,s_c(t)\cos(2\pi f_ct)-\sqrt2\,s_s(t)\sin(2\pi f_ct)\tag{17}</div><p>(«in termini di seno e coseno»; il <span class="math inline">-</span> viene da <span class="math inline">\text{Re}\{(s_c+js_s)(\cos\alpha+j\sin\alpha)\}=s_c\cos\alpha-s_s\sin\alpha</span>, con <span class="math inline">\alpha=2\pi f_ct</span>.) Nota: «quadratura» indica che il prodotto scalare con <span class="math inline">s_c</span> è nullo (eq. (18)).</p>
+<img class="zoom" src="img/rappresentazione-rice-p16-componenti-iq.png" alt="" loading="lazy">
+<figure class="fig"><svg viewBox="0 0 400 304" role="img" aria-label="dallo spettro passa-banda all&#x27;inviluppo" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a10" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><line class="ax" x1="20.0" y1="96.0" x2="392.0" y2="96.0" marker-end="url(#a10)"/><text class="ts" x="394.0" y="111.0" text-anchor="end">f</text><line class="ax" x1="200.0" y1="99.0" x2="200.0" y2="22.0" marker-end="url(#a10)"/><line class="ax" x1="20.0" y1="194.0" x2="392.0" y2="194.0" marker-end="url(#a10)"/><text class="ts" x="394.0" y="209.0" text-anchor="end">f</text><line class="ax" x1="200.0" y1="197.0" x2="200.0" y2="120.0" marker-end="url(#a10)"/><line class="ax" x1="20.0" y1="292.0" x2="392.0" y2="292.0" marker-end="url(#a10)"/><text class="ts" x="394.0" y="307.0" text-anchor="end">f</text><line class="ax" x1="200.0" y1="295.0" x2="200.0" y2="218.0" marker-end="url(#a10)"/><path class="fl" d="M70.0 96.0 L100.0 62.0 L130.0 96.0 Z"/><path class="cv" d="M70.0 96.0 L100.0 62.0 L130.0 96.0"/><path class="fl" d="M270.0 96.0 L300.0 62.0 L330.0 96.0 Z"/><path class="cv" d="M270.0 96.0 L300.0 62.0 L330.0 96.0"/><path class="fl" d="M270.0 194.0 L300.0 146.0 L330.0 194.0 Z"/><path class="cv" d="M270.0 194.0 L300.0 146.0 L330.0 194.0"/><path class="fl" d="M170.0 292.0 L200.0 244.0 L230.0 292.0 Z"/><path class="cv" d="M170.0 292.0 L200.0 244.0 L230.0 292.0"/><text class="tx a1" x="10.0" y="16.0" text-anchor="start">S<tspan dy="3" font-size="0.72em">p</tspan><tspan dy="-3">​</tspan>(f)</text><text class="tx a1" x="10.0" y="114.0" text-anchor="start">S<tspan dy="3" font-size="0.72em">p</tspan><tspan dy="-3">​</tspan>⁺(f) = √2 S<tspan dy="3" font-size="0.72em">p</tspan><tspan dy="-3">​</tspan>(f) u(f)</text><text class="tx a1" x="10.0" y="212.0" text-anchor="start">S(f) = S<tspan dy="3" font-size="0.72em">p</tspan><tspan dy="-3">​</tspan>⁺(f + f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan>)</text><text class="ts" x="100.0" y="111.0" text-anchor="middle">−f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="300.0" y="111.0" text-anchor="middle">f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="300.0" y="209.0" text-anchor="middle">f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="200.0" y="307.0" text-anchor="middle">0</text><line class="ln" x1="340.0" y1="114.0" x2="340.0" y2="136.0" marker-end="url(#a10)"/><text class="ts a2" x="346.0" y="135.0" text-anchor="start">× √2 · u(f)</text><line class="ln" x1="340.0" y1="212.0" x2="340.0" y2="234.0" marker-end="url(#a10)"/><text class="ts a2" x="346.0" y="233.0" text-anchor="start">trasla di</text><text class="ts a2" x="346.0" y="245.0" text-anchor="start">−f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text></svg><figcaption>🧩 Dal segnale reale all'inviluppo complesso: si tengono solo le frequenze positive (filtro <span class="math inline">\sqrt2\,u(f)</span>, il <span class="math inline">\sqrt2</span> conserva l'energia) e si trasla il lobo nell'origine. L'inviluppo in generale ha spettro asimmetrico, quindi è complesso.</figcaption></figure>
+<figure class="fig"><svg viewBox="0 0 400 238" role="img" aria-label="inviluppo complesso e rotazione della portante" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a12" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><line class="ax" x1="60.0" y1="190.0" x2="380.0" y2="190.0" marker-end="url(#a12)"/><line class="ax" x1="70.0" y1="200.0" x2="70.0" y2="12.0" marker-end="url(#a12)"/><text class="ts" x="380.0" y="205.0" text-anchor="end">I = Re</text><text class="ts" x="76.0" y="14.0" text-anchor="start">Q = Im</text><line class="cv" x1="70.0" y1="190.0" x2="190.0" y2="120.0" marker-end="url(#a12)"/><line class="gd" x1="190.0" y1="120.0" x2="190.0" y2="190.0"/><line class="gd" x1="70.0" y1="120.0" x2="190.0" y2="120.0"/><text class="ts a1" x="130.0" y="205.0" text-anchor="middle">s<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text><text class="ts a1" x="62.0" y="155.0" text-anchor="end">s<tspan dy="3" font-size="0.72em">s</tspan><tspan dy="-3">​</tspan></text><text class="tx a1" x="200.0" y="124.0" text-anchor="start">s = s<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan> + j s<tspan dy="3" font-size="0.72em">s</tspan><tspan dy="-3">​</tspan></text><line class="cv2 dash" x1="70.0" y1="190.0" x2="121.5" y2="61.0" marker-end="url(#a12)"/><line class="gd" x1="121.5" y1="61.0" x2="121.5" y2="190.0"/><text class="tx a2" x="129.5" y="57.0" text-anchor="start">s e<tspan dy="-4" font-size="0.72em">jα</tspan><tspan dy="4">​</tspan></text><path class="ax" d="M109.7 166.8 L87.0 147.3"/><text class="tx a2" x="107.1" y="144.0" text-anchor="middle">α</text><text class="ts a2" x="380.0" y="34.0" text-anchor="end">α = 2π f<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan> t</text><text class="ts a2" x="115.5" y="221.0" text-anchor="start">proiezione: Re{s e<tspan dy="-4" font-size="0.72em">jα</tspan><tspan dy="4">​</tspan>} = s<tspan dy="3" font-size="0.72em">p</tspan><tspan dy="-3">​</tspan>/√2</text></svg><figcaption>🧩 Nel piano complesso <span class="math inline">s=s_c+js_s</span> ruota con la portante: <span class="math inline">s\,e^{j2\pi f_ct}</span>. La proiezione sull'asse reale, moltiplicata per <span class="math inline">\sqrt2</span>, è il segnale passa-banda <span class="math inline">s_p(t)=\sqrt2\,s_c\cos\alpha-\sqrt2\,s_s\sin\alpha</span>.</figcaption></figure>
+<h3 id="energia-dell-inviluppo">Energia dell'inviluppo</h3>
+<p>Le forme d'onda passa-banda delle componenti I e Q, <span class="math inline">x_c(t)=\sqrt2\,s_c(t)\cos(2\pi f_ct)</span> e <span class="math inline">x_s(t)=\sqrt2\,s_s(t)\sin(2\pi f_ct)</span>, sono <strong>ortogonali</strong>:</p>
+<div class="math block">\langle x_c,x_s\rangle=\int_{-\infty}^{+\infty}x_c(t)\,x_s(t)\,dt=0\tag{18}</div><p>Per segnali passa-banda reali <span class="math inline">u_p</span>, <span class="math inline">v_p</span> con inviluppi <span class="math inline">u</span>, <span class="math inline">v</span>:</p>
+<div class="math block">\langle u_p,v_p\rangle=\langle u_c,v_c\rangle+\langle u_s,v_s\rangle=\text{Re}\{\langle u,v\rangle\}\tag{19}</div><p>Con <span class="math inline">u=v=s</span> l'<strong>energia dell'inviluppo è uguale a quella del segnale passa-banda</strong>:</p>
+<div class="math block">\lVert s_p\rVert^2=\langle s_p,s_p\rangle=\text{Re}\{\langle s,s\rangle\}=\text{Re}\{\lVert s\rVert^2\}=\lVert s\rVert^2\tag{20}</div><p>(l'energia è reale, quindi si toglie <span class="math inline">\text{Re}</span>). In componenti, <span class="math inline">\lVert s_p\rVert^2=\lVert s_c\rVert^2+\lVert s_s\rVert^2</span>.</p>
+<h4 id="dimostrazione-di-18-appunti">Dimostrazione di (18) — appunti</h4>
+<img class="zoom" src="img/rappresentazione-rice-p18-appunti-ortogonalita-parseval.png" alt="" loading="lazy">
+<p>Con Parseval, <span class="math inline">X_c(f)=\frac1{\sqrt2}[S_c(f-f_c)+S_c(f+f_c)]</span> e <span class="math inline">X_s(f)=\frac1{j\sqrt2}[S_s(f-f_c)-S_s(f+f_c)]</span>:</p>
+<div class="math block">\langle x_c,x_s\rangle=\int X_c(f)X_s^\ast(f)\,df=\frac1{2j}\int\big[S_c(f-f_c)+S_c(f+f_c)\big]\big[S_s^\ast(f+f_c)-S_s^\ast(f-f_c)\big]\,df</div><p>Dei quattro termini del prodotto, i due <strong>misti</strong> <span class="math inline">S_c(f\mp f_c)S_s^\ast(f\pm f_c)</span> sono nulli: per ipotesi i segnali sono a banda stretta (<span class="math inline">B/f_c\ll1</span>), e lo spettro centrato in <span class="math inline">+f_c</span> non si sovrappone mai a quello in <span class="math inline">-f_c</span>. Restano, con il cambio di variabile <span class="math inline">\nu=f\pm f_c</span>,</p>
+<div class="math block">\frac1{2j}\Big[\int S_c(\nu)S_s^\ast(\nu)\,d\nu-\int S_c(\nu)S_s^\ast(\nu)\,d\nu\Big]=0</div><h4 id="verifica-di-19-e-20-appunti">Verifica di (19) e (20) — appunti</h4>
+<img class="zoom" src="img/rappresentazione-rice-p19-appunti-prodotto-scalare-energia.png" alt="" loading="lazy">
+<p>Si sviluppa <span class="math inline">\langle u_p,v_p\rangle</span> con la (17). I termini misti si annullano per l'ortogonalità (18); restano <span class="math inline">2\int u_cv_c\cos^2(2\pi f_ct)</span> e <span class="math inline">2\int u_sv_s\sin^2(2\pi f_ct)</span>, che con <span class="math inline">\cos^2=\frac{1+\cos(4\pi f_ct)}2</span>, <span class="math inline">\sin^2=\frac{1-\cos(4\pi f_ct)}2</span> danno <span class="math inline">\int u_cv_c+\int u_sv_s</span> più integrali in <span class="math inline">\cos(4\pi f_ct)</span> che valgono circa 0 («le aree positive vengono bilanciate da quelle negative, poiché <span class="math inline">B/f_c\ll1</span>»). Infine <span class="math inline">\text{Re}\{\int[u_c+ju_s][v_c-jv_s]\,dt\}=\text{Re}\{\langle u,v\rangle\}</span>, cioè la (19); la (20) segue con <span class="math inline">u=v=s</span>.</p>
+<p><em>(Nelle note della la somma <span class="math inline">x_c+x_s</span> andrebbe scritta <span class="math inline">x_c-x_s</span>, per il segno della (17); per l'ortogonalità non cambia nulla.)</em></p>
+<h3 id="upconversion-e-downconversion">Upconversion e downconversion</h3>
+<img class="zoom" src="img/rappresentazione-rice-p20-upconversion-downconversion.png" alt="" loading="lazy">
+<ul>
+<li><strong>Upconversion</strong> (banda base → banda passante): la (17) dice «immediatamente» come farla. <span class="math inline">s_c</span> è moltiplicato per <span class="math inline">\sqrt2\cos(2\pi f_ct)</span>, <span class="math inline">s_s</span> per <span class="math inline">-\sqrt2\sin(2\pi f_ct)</span> e i due rami si sommano.</li>
+<li><strong>Downconversion</strong> (banda passante → banda base): si considera il prodotto</li>
+</ul>
+<div class="math block">\sqrt2\,s_p(t)\cos(2\pi f_ct)=2s_c\cos^2(2\pi f_ct)-2s_s\sin(2\pi f_ct)\cos(2\pi f_ct)=s_c(t)+s_c(t)\cos(4\pi f_ct)-s_s(t)\sin(4\pi f_ct)\tag{21}</div><p>Con un <strong>filtro passa-basso</strong> (i due termini a <span class="math inline">2f_c</span> sono «tagliati dal filtro») si recupera la componente I. Analogamente la componente Q si ottiene filtrando passa-basso <span class="math inline">-\sqrt2\,s_p(t)\sin(2\pi f_ct)</span>: infatti <span class="math inline">-\sqrt2s_p\sin\alpha=s_s-s_s\cos2\alpha-s_c\sin2\alpha</span>.</p>
+<ul>
+<li>Note a mano: S → <span class="math inline">s(n)</span> → MOD → (<span class="math inline">s_c</span>, <span class="math inline">s_s</span>); «dal modulatore esce l'inviluppo».</li>
+</ul>
+<img class="zoom" src="img/grafico-rice-requisito-passabasso.png" alt="" loading="lazy">
+<p><em>Figura di supporto: posizione in banda del requisito sul passa-basso. Dopo il moltiplicatore la banda utile occupa <span class="math inline">\lvert f\rvert&lt;W</span> (<span class="math inline">W</span> = banda di <span class="math inline">s_c</span>, <span class="math inline">s_s</span>) e le copie occupano <span class="math inline">\lvert f\mp2f_c\rvert&lt;W</span>; il taglio <span class="math inline">f_{LP}</span> deve stare in <span class="math inline">W\le f_{LP}\le2f_c-W</span> ((a) corretto; (b) <span class="math inline">f_{LP}&lt;W</span> taglia il segnale; (c) <span class="math inline">f_{LP}&gt;2f_c-W</span> lascia passare le copie).</em></p>
+<img class="zoom" src="img/grafico-rice-up-down-frequenza.png" alt="" loading="lazy">
+<p><em>Figura di supporto: up/down in frequenza con un <span class="math inline">S(f)</span> asimmetrico (quindi <span class="math inline">s(t)</span> complesso). Upconversion = (14); downconversion = tre copie (<span class="math inline">\pm2f_c</span> e una in banda base), il passa-basso lascia solo <span class="math inline">[S(f)+S^\ast(-f)]/2</span>, trasformata di <span class="math inline">\text{Re}\{s\}=s_c</span>.</em></p>
+<p><strong>Catena unica:</strong> S → MOD → upconverter → canale fisico → downconverter → DEMOD → utente. I tre blocchi centrali sono modellati come <strong>un unico canale</strong>. «Con tutti i passaggi fatti si conserva l'energia?» — «Sì, per le accortezze fatte (<span class="math inline">\sqrt2</span>).»</p>
+<img class="zoom" src="img/rappresentazione-rice-p21-appunti-canale-equivalente.png" alt="" loading="lazy">
+<figure class="fig"><svg viewBox="0 0 400 332" role="img" aria-label="upconversion e downconversion" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a13" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><text class="tx tb" x="10.0" y="16.0" text-anchor="start">Upconversion (trasmissione)</text><text class="tx a1" x="18.0" y="69.0" text-anchor="middle">s<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan></text><line class="ln" x1="32.0" y1="64.0" x2="84.0" y2="64.0" marker-end="url(#a13)"/><circle class="bx" cx="94.0" cy="64.0" r="9.0"/><line class="ln" x1="89.0" y1="59.0" x2="99.0" y2="69.0"/><line class="ln" x1="89.0" y1="69.0" x2="99.0" y2="59.0"/><text class="ts" x="94.0" y="42.0" text-anchor="middle">√2 cos(2πf<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan>t)</text><line class="ln" x1="94.0" y1="46.0" x2="94.0" y2="54.0" marker-end="url(#a13)"/><text class="tx a1" x="18.0" y="121.0" text-anchor="middle">s<tspan dy="3" font-size="0.72em">s</tspan><tspan dy="-3">​</tspan></text><line class="ln" x1="32.0" y1="116.0" x2="84.0" y2="116.0" marker-end="url(#a13)"/><circle class="bx" cx="94.0" cy="116.0" r="9.0"/><line class="ln" x1="89.0" y1="111.0" x2="99.0" y2="121.0"/><line class="ln" x1="89.0" y1="121.0" x2="99.0" y2="111.0"/><text class="ts" x="94.0" y="148.0" text-anchor="middle">−√2 sin(2πf<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan>t)</text><line class="ln" x1="94.0" y1="136.0" x2="94.0" y2="126.0" marker-end="url(#a13)"/><path class="ln" d="M104.0 64.0 L200.0 64.0 L200.0 81.0" marker-end="url(#a13)"/><path class="ln" d="M104.0 116.0 L200.0 116.0 L200.0 99.0" marker-end="url(#a13)"/><circle class="bx" cx="200.0" cy="90.0" r="9.0"/><text class="ts" x="200.0" y="94.0" text-anchor="middle">+</text><line class="ln" x1="209.0" y1="90.0" x2="268.0" y2="90.0" marker-end="url(#a13)"/><text class="tx a2" x="300.0" y="94.0" text-anchor="middle">s<tspan dy="3" font-size="0.72em">p</tspan><tspan dy="-3">​</tspan>(t)</text><text class="tx tb" x="10.0" y="184.0" text-anchor="start">Downconversion (ricezione)</text><text class="tx a2" x="18.0" y="266.0" text-anchor="start">s<tspan dy="3" font-size="0.72em">p</tspan><tspan dy="-3">​</tspan>(t)</text><line class="ln" x1="56.0" y1="262.0" x2="68.0" y2="262.0"/><line class="ln" x1="68.0" y1="232.0" x2="68.0" y2="292.0"/><line class="ln" x1="68.0" y1="232.0" x2="148.0" y2="232.0" marker-end="url(#a13)"/><line class="ln" x1="68.0" y1="292.0" x2="148.0" y2="292.0" marker-end="url(#a13)"/><circle class="bx" cx="158.0" cy="232.0" r="9.0"/><line class="ln" x1="153.1" y1="227.1" x2="162.9" y2="236.9"/><line class="ln" x1="153.1" y1="236.9" x2="162.9" y2="227.1"/><circle class="bx" cx="158.0" cy="292.0" r="9.0"/><line class="ln" x1="153.1" y1="287.1" x2="162.9" y2="296.9"/><line class="ln" x1="153.1" y1="296.9" x2="162.9" y2="287.1"/><text class="ts" x="158.0" y="210.0" text-anchor="middle">√2 cos(2πf<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan>t)</text><line class="ln" x1="158.0" y1="214.0" x2="158.0" y2="222.0" marker-end="url(#a13)"/><text class="ts" x="158.0" y="322.0" text-anchor="middle">−√2 sin(2πf<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan>t)</text><line class="ln" x1="158.0" y1="312.0" x2="158.0" y2="302.0" marker-end="url(#a13)"/><line class="ln" x1="168.0" y1="232.0" x2="214.0" y2="232.0" marker-end="url(#a13)"/><line class="ln" x1="168.0" y1="292.0" x2="214.0" y2="292.0" marker-end="url(#a13)"/><rect class="bx bx1" x="214.0" y="217.0" width="62.0" height="30.0" rx="4"/><text class="ts" x="245.0" y="236.0" text-anchor="middle">passa-basso</text><rect class="bx bx1" x="214.0" y="277.0" width="62.0" height="30.0" rx="4"/><text class="ts" x="245.0" y="296.0" text-anchor="middle">passa-basso</text><line class="ln" x1="276.0" y1="232.0" x2="326.0" y2="232.0" marker-end="url(#a13)"/><line class="ln" x1="276.0" y1="292.0" x2="326.0" y2="292.0" marker-end="url(#a13)"/><text class="tx a1" x="350.0" y="236.0" text-anchor="middle">s<tspan dy="3" font-size="0.72em">c</tspan><tspan dy="-3">​</tspan>(t)</text><text class="tx a1" x="350.0" y="296.0" text-anchor="middle">s<tspan dy="3" font-size="0.72em">s</tspan><tspan dy="-3">​</tspan>(t)</text></svg><figcaption>🧩 Upconversion: <span class="math inline">s_c</span> per <span class="math inline">\sqrt2\cos</span>, <span class="math inline">s_s</span> per <span class="math inline">-\sqrt2\sin</span>, somma (eq. 17). Downconversion: si moltiplica per gli stessi segnali e il passa-basso elimina i termini a <span class="math inline">2f_c</span> (eq. 21). Il taglio del filtro deve stare tra <span class="math inline">W</span> e <span class="math inline">2f_c-W</span>.</figcaption></figure>
+<h3 id="cosa-porta-l-inviluppo">Cosa porta l'inviluppo</h3>
+<p>La rappresentazione complessa in banda base corrisponde a ricavare le variazioni «lente» di ampiezza e fase indotte dalla modulazione in banda base, <strong>eliminando</strong> la rapida variazione di fase prevedibile dovuta alla portante <span class="math inline">f_c</span>. Poiché quella variazione è prevedibile, non porta informazione: <strong>l'informazione di un segnale passa-banda è interamente contenuta nel suo inviluppo complesso</strong>. Nota: l'inviluppo permette di separare le variazioni lente dovute alla modulazione. (Forma ampiezza-fase: con <span class="math inline">s=a\,e^{j\theta}</span>, <span class="math inline">s_p=\sqrt2\,a(t)\cos(2\pi f_ct+\theta(t))</span>.)</p>
+<h3 id="filtraggio-passa-banda-in-banda-base">Filtraggio passa-banda in banda base</h3>
+<p><strong>Qualunque filtro passa-banda si può realizzare in banda base complessa.</strong> Sia <span class="math inline">y_p(t)=s_p(t)\ast h_p(t)</span> l'uscita di un filtro passa-banda di risposta impulsiva <span class="math inline">h_p(t)</span>; siano <span class="math inline">s(t)</span>, <span class="math inline">h(t)</span>, <span class="math inline">y(t)</span> gli inviluppi complessi di <span class="math inline">s_p</span>, <span class="math inline">h_p</span>, <span class="math inline">y_p</span> rispetto a un <strong>riferimento di frequenza comune</strong> <span class="math inline">f_c</span>, e <span class="math inline">S</span>, <span class="math inline">H</span>, <span class="math inline">Y</span> le loro trasformate. In frequenza <span class="math inline">Y_p(f)=S_p(f)H_p(f)</span>; sui segmenti a frequenze positive <span class="math inline">Y_p^+=\sqrt2Y_pu</span>, <span class="math inline">S_p^+=\sqrt2S_pu</span>, <span class="math inline">H_p^+=\sqrt2H_pu</span>.</p>
+<p><strong>Catena:</strong></p>
+<div class="math block">
+\begin{aligned}
+Y(f)&amp;=Y_p^+(f+f_c)=\sqrt2\,Y_p(f+f_c)\,u(f+f_c)&amp;&amp;\text{(13) e (3)}\\
+&amp;=\sqrt2\,S_p(f+f_c)H_p(f+f_c)\,u^2(f+f_c)&amp;&amp;\text{«sostituisco l&#x27;uscita»; }u^2=u\text{ «non altera nulla»}\\
+&amp;=\frac1{\sqrt2}\big[\sqrt2\,S_p(f+f_c)u(f+f_c)\big]\big[\sqrt2\,H_p(f+f_c)u(f+f_c)\big]&amp;&amp;\text{moltiplico e divido per }\sqrt2\text{; }\tfrac1{\sqrt2}\text{ «resta fuori»}\\
+&amp;=\frac1{\sqrt2}\,S(f)\,H(f)&amp;&amp;\text{(13) per }s\text{ e }h
+\end{aligned}
+\tag{22}
+</div><p>Nel tempo (prodotto → convoluzione):</p>
+<div class="math block">y(t)=\frac1{\sqrt2}\,s(t)\ast h(t)\tag{23}</div><img class="zoom" src="img/rappresentazione-rice-p24-appunti-filtro-equivalente.png" alt="" loading="lazy">
+<img class="zoom" src="img/rappresentazione-rice-p25-filtraggio-spettri.png" alt="" loading="lazy">
+<p><em>A sinistra, in banda passante: <span class="math inline">H_p(f)</span> rettangoli di altezza <span class="math inline">A</span> attorno a <span class="math inline">\pm f_c</span>, <span class="math inline">S_p(f)</span> triangoli di altezza <span class="math inline">B</span>, <span class="math inline">Y_p(f)</span> di altezza <span class="math inline">AB</span>. A destra, in banda base: <span class="math inline">H</span> di altezza <span class="math inline">\sqrt2A</span>, <span class="math inline">S</span> di altezza <span class="math inline">\sqrt2B</span>, <span class="math inline">Y</span> di altezza <span class="math inline">\sqrt2AB</span> (coerente con la (22)).</em></p>
+<p>In termini di componenti I e Q (<span class="math inline">s=s_c+js_s</span>, <span class="math inline">h=h_c+jh_s</span>, la convoluzione si sviluppa come un prodotto):</p>
+<div class="math block">y_c(t)=\frac1{\sqrt2}\big[s_c(t)\ast h_c(t)-s_s(t)\ast h_s(t)\big]\tag{24}</div><div class="math block">y_s(t)=\frac1{\sqrt2}\big[s_s(t)\ast h_c(t)+s_c(t)\ast h_s(t)\big]\tag{25}</div><img class="zoom" src="img/rappresentazione-rice-p26-filtro-banda-base-iq.png" alt="" loading="lazy">
+<p><em>Realizzazione in banda base: <span class="math inline">s_p</span> entra nel downconverter che produce <span class="math inline">s_c</span>, <span class="math inline">s_s</span>; il riquadro «operazioni reali in banda base» contiene quattro filtri reali (<span class="math inline">h_c</span>, <span class="math inline">h_s</span> per ciascuna componente) e due sommatori (<span class="math inline">y_c</span> con il meno); le uscite formano <span class="math inline">y(t)=y_c+jy_s</span>, «segnale in banda base», che va a un DSP in banda base. (Nella figura manca il fattore <span class="math inline">1/\sqrt2</span>, presente nella nota a mano.)</em></p>
+<h3 id="banda-di-un-segnale-complesso">Banda di un segnale complesso</h3>
+<p>L'occupazione spettrale di un segnale fisico a valori reali è la più piccola banda di frequenze <strong>positive</strong> che ne contiene la maggior parte (<span class="math inline">S(-f)=S^\ast(f)</span>). Per i segnali complessi in banda base l'informazione sta sia nelle frequenze positive sia in quelle negative: l'occupazione spettrale è la più piccola banda <strong>attorno all'origine</strong> che contiene la maggior parte del segnale (frequenze positive e negative).</p>
+
+</section>
+<section id="approfondimenti"><h2 class="ps">Spiegazioni e dimostrazioni passo-passo</h2>
+<p class="nota">Apri una voce per leggere la spiegazione in parole semplici e le dimostrazioni svolte riga per riga (🧩 = passaggio ricostruito da me).</p>
+<details class="conc"><summary><span class="n">Modulazione digitale</span></summary><div class="cb"><h4 id="modulazione-digitale-spiegazione">Spiegazione</h4>
+<h4 id="modulazione-digitale-l-esempio-della-slide-modulazione-lineare-binari">L'esempio della slide: modulazione lineare binaria</h4>
+<img class="zoom" src="img/rappresentazione-rice-p3-modulazione-binaria.png" alt="" loading="lazy">
+<p><em>La sequenza di simboli +1, −1, −1, +1, +1, +1, −1, +1, −1, +1, +1, … diventa una forma d'onda a gradini: ogni simbolo moltiplica un impulso rettangolare traslato. Nota a mano sotto la figura: i segnali di comunicazione devono essere allocati in certe porzioni dello spettro.</em></p>
+<ul>
+<li>I simboli (bit) diventano una forma d'onda analogica moltiplicando ogni simbolo per una copia traslata di un impulso rettangolare: è la <strong>modulazione lineare</strong>. Nota a mano: si chiama così «perché <span class="math inline">s(t)</span> dipende linearmente dai simboli».</li>
+<li>La forma d'onda dell'esempio è <strong>limitata nel tempo</strong>. Le forme d'onda usate davvero per modulare, però, sono spesso <strong>vincolate nel dominio della frequenza</strong>:
+<ul>
+<li>per le caratteristiche fisiche del mezzo di comunicazione;</li>
+<li>per fattori esterni, per esempio le <strong>regole sull'uso dello spettro</strong>.</li>
+</ul>
+</li>
+<li>Note a mano: i segnali di comunicazione devono essere allocati in certe porzioni dello spettro. I segnali da trasmettere sul canale devono soddisfare <strong>vincoli nel dominio della frequenza</strong>, che riguardano <strong>dove</strong> è allocato il loro spettro.</li>
+</ul>
+<blockquote class="co mia"><p>🧩 Cosa vuol dire &quot;dipende linearmente&quot;: moltiplicare tutti i <span class="math inline">b[m]</span> per una costante moltiplica <span class="math inline">s(t)</span> per la stessa costante, e la forma d'onda di una somma di sequenze di simboli è la somma delle forme d'onda.</p>
+</blockquote>
+<h4 id="modulazione-digitale-dove-deve-finire-il-segnale-modulato">Dove deve finire il segnale modulato</h4>
+<p>Il canale del disegno lascia passare solo le frequenze attorno a <span class="math inline">\pm f_c</span>: il segnale trasmesso deve quindi essere <strong>in banda passante</strong> (segnali banda base e passa banda). Nello schema modulare della lezione:</p>
+<ol>
+<li>il DSP del trasmettitore esegue codifica, modulazione e filtraggio <strong>in banda base</strong>, producendo l'inviluppo complesso;</li>
+<li>l'upconverter lo porta in banda passante (upconversion e downconversion).</li>
+</ol>
+<p>Note a mano:</p>
+<ul>
+<li>il <strong>modulatore</strong> è il macroblocco che comprende entrambi i passi, cioè il DSP e anche l'upconversion;</li>
+<li>il <strong>demodulatore</strong> è il macroblocco speculare: downconversion e DSP.</li>
+</ul>
+<p>Nella figura una nota a mano collega S → <span class="math inline">s(n)</span> → MOD alle due uscite <span class="math inline">s_c(t)</span> e <span class="math inline">s_s(t)</span> che entrano nell'upconverter. Dal modulatore «esce l'inviluppo».</p>
+<h4 id="modulazione-digitale-perche-importa">Perché importa</h4>
+<p>La modulazione digitale è il terzo tema del programma. In questa lezione fa da motivazione: il modulatore deve produrre forme d'onda che stiano in una precisa porzione di spettro, e per descriverle e generarle serve la rappresentazione complessa in banda base.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Spettro dell'impulso rettangolare</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia. Impulso <span class="math inline">p(t) = 1</span> per <span class="math inline">|t| &lt; T/2</span>, 0 altrove.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+P(f) &amp;= \int_{-T/2}^{T/2} e^{-j2\pi ft}\,dt &amp;&amp; \text{definizione di trasformata, } p = 1 \text{ solo in } |t| &lt; T/2 \\
+&amp;= \frac{e^{-j\pi fT} - e^{j\pi fT}}{-j2\pi f} &amp;&amp; \text{primitiva di } e^{-j2\pi ft} \text{ è } e^{-j2\pi ft}/(-j2\pi f) \\
+&amp;= \frac{\sin(\pi fT)}{\pi f} &amp;&amp; e^{jx} - e^{-jx} = 2j\sin x \\
+&amp;= T\,\text{sinc}(fT) &amp;&amp; \text{sinc}(x) = \sin(\pi x)/(\pi x)
+\end{aligned}
+</div><p><strong>Risultato:</strong> <span class="math inline">|P(f)|</span> si annulla solo nei punti <span class="math inline">f = k/T</span> (<span class="math inline">k \neq 0</span>) e tra uno zero e l'altro decresce solo come <span class="math inline">1/(\pi|f|)</span>: non esiste una <span class="math inline">B</span> oltre la quale <span class="math inline">P(f) = 0</span>. L'impulso rettangolare, limitato nel tempo, <strong>non è a banda limitata</strong>.
+<strong>Sanity check:</strong> <span class="math inline">P(0) = T</span>, cioè l'area dell'impulso ✓. È lo stesso fatto: un segnale di durata finita non può avere banda rigorosamente limitata (aliasing).
+<strong>Ipotesi:</strong> impulso rettangolare ideale (fronti verticali).</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Segnali in banda base e in banda passante</span></summary><div class="cb"><h4 id="segnali-banda-base-e-passa-banda-spiegazione">Spiegazione</h4>
+<h4 id="segnali-banda-base-e-passa-banda-esempi-di-spettri">Esempi di spettri</h4>
+<p>La slide considera due segnali <strong>reali</strong>, <span class="math inline">s_b(t)</span> in banda base e <span class="math inline">s_p(t)</span> in banda passante. Le loro trasformate <span class="math inline">S_b(f)</span> e <span class="math inline">S_p(f)</span> possono esistere in senso ordinario o in <strong>senso generalizzato</strong>, per esempio con delta di Dirac. Per la simmetria coniugata <span class="math inline">S_b(f) = S_b^\ast (-f)</span> e <span class="math inline">S_p(f) = S_p^\ast (-f)</span>.</p>
+<img class="zoom" src="img/rappresentazione-rice-p5-spettri-banda-base-passa-banda.png" alt="" loading="lazy">
+<ul>
+<li><em>A sinistra, il segnale in banda base. <span class="math inline">\text{Re}(S(f))</span> è un triangolo di altezza 1 su <span class="math inline">(-B, B)</span>, pari. <span class="math inline">\text{Im}(S(f))</span> vale <span class="math inline">+1</span> su <span class="math inline">(-B, 0)</span> e <span class="math inline">-1</span> su <span class="math inline">(0, B)</span>, dispari.</em></li>
+<li><em>A destra, il segnale passa-banda: stesse forme spostate attorno a <span class="math inline">\pm f_c</span>, larghezza <span class="math inline">B</span>; parte reale pari, parte immaginaria dispari.</em></li>
+<li><em>Note a mano: «le trasformate di Fourier dei segnali reali godono della simmetria hermitiana». Con <span class="math inline">f_c</span> cerchiato: «l'obiettivo è svincolarsi dalla <span class="math inline">f_c</span>, ovvero dalla frequenza carrier, perché l'informazione di <span class="math inline">s(t)</span> non dipende da <span class="math inline">f_c</span>: si può descrivere tutto con un segnale in banda base».</em></li>
+</ul>
+<blockquote class="co conn"><p>💡 Connessione: &quot;svincolarsi da <span class="math inline">f_c</span>&quot; è il programma della lezione. L'informazione di <span class="math inline">s_p(t)</span> non dipende da <span class="math inline">f_c</span>, quindi si può descrivere tutto con un segnale in banda base: l'inviluppo complesso.</p>
+</blockquote>
+<blockquote class="co avv"><p>⚠️ Nella figura il segnale in banda base è indicato con <span class="math inline">S(f)</span> invece di <span class="math inline">S_b(f)</span>. Più avanti, <span class="math inline">S(f)</span> indica l'inviluppo complesso.</p>
+</blockquote>
+<h4 id="segnali-banda-base-e-passa-banda-banda">Banda</h4>
+<ul>
+<li>La <strong>banda</strong> è l'ampiezza dell'intervallo di frequenze occupato dalla trasformata di Fourier.</li>
+<li><strong>Banda monolatera</strong> (<em>one-sided</em>): occupazione spettrale sulle frequenze positive.</li>
+<li><strong>Banda bilatera</strong> (<em>two-sided</em>): occupazione su frequenze positive e negative.</li>
+<li>Per i segnali <strong>reali</strong> la bilatera è il doppio della monolatera, per la simmetria coniugata <span class="math inline">X(f) = X^\ast (-f)</span>.</li>
+<li>Di solito &quot;banda&quot; senza aggettivi indica la <strong>monolatera</strong>.</li>
+<li>Un segnale passa-banda è <strong>a banda stretta</strong> (<em>narrowband</em>) se <span class="math inline">B/f_c \ll 1</span>. Da qui in poi si considerano solo segnali passa-banda a banda stretta.</li>
+</ul>
+<blockquote class="co mia"><p>🧩 Con gli spettri: il segnale in banda base ha banda monolatera <span class="math inline">B</span> e bilatera <span class="math inline">2B</span>. Il passa-banda ha banda monolatera <span class="math inline">B</span> (il lobo positivo) e bilatera <span class="math inline">2B</span> (i due lobi).</p>
+</blockquote>
+<h4 id="segnali-banda-base-e-passa-banda-definizioni-negli-appunti-e-banda-stretta">Definizioni negli appunti e banda stretta</h4>
+<p>Gli appunti riprendono in italiano le definizioni:</p>
+<ul>
+<li><strong>larghezza di banda</strong>: dimensione dell'intervallo di frequenze occupato dalla trasformata di Fourier del segnale;</li>
+<li>si distingue tra banda <strong>monolatera</strong> e <strong>bilatera</strong>; la bilatera considera sia le frequenze positive sia quelle negative;</li>
+<li>se <span class="math inline">s(t)</span> è reale, la bilatera è il doppio della monolatera, per la simmetria hermitiana <span class="math inline">S(f) = S^\ast (-f)</span>;</li>
+<li><strong>segnale passa-banda a banda stretta</strong>: la sua banda <span class="math inline">B</span> è molto minore della frequenza portante, <span class="math inline">B/f_c \ll 1</span>. Nota: <strong>non è un'ipotesi stringente</strong>.</li>
+</ul>
+<img class="zoom" src="img/rappresentazione-rice-p8-appunti-banda-stretta.png" alt="" loading="lazy">
+<p><em>Appunti a mano: un segnale a banda stretta ha banda molto minore di <span class="math inline">f_c</span> (<span class="math inline">B \ll f_c</span>), cioè due lobi stretti attorno a <span class="math inline">\pm f_c</span>. Sotto, le definizioni di larghezza di banda, banda monolatera e bilatera e segnale a banda stretta.</em></p>
+<blockquote class="co mia"><p>🧩 Perché &quot;non è un'ipotesi stringente&quot; (lettura mia): nei sistemi reali la portante è molto più alta della banda del segnale. È lo stesso ordine di grandezza del grafico I/Q di inviluppo complesso, dove per rendere visibili le oscillazioni si è dovuta scegliere una <span class="math inline">f_c</span> artificialmente bassa.</p>
+</blockquote>
+<blockquote class="co mia"><p>🧩 Perché l'ipotesi di banda stretta aiuta, anticipando i risultati della lezione:</p>
+<ul>
+<li><span class="math inline">s_p(t)</span> appare come una portante a <span class="math inline">f_c</span> con ampiezza e fase che cambiano lentamente (inviluppo complesso);</li>
+<li>nella downconversion i termini a <span class="math inline">2f_c</span> cadono lontanissimi dalla banda base e si filtrano con facilità (upconversion e downconversion).</li>
+</ul>
+</blockquote>
+<h4 id="segnali-banda-base-e-passa-banda-canale-passa-banda">Canale passa-banda</h4>
+<p>Il disegno (modulazione digitale) mostra la <span class="math inline">H(f)</span> di un canale passa-banda: due lobi di larghezza <span class="math inline">B</span>, la &quot;banda utile&quot;, centrati in <span class="math inline">\pm f_c</span>.</p>
+<ul>
+<li>Il segnale attraversa il canale, che è caratterizzato da una sua risposta in frequenza e da una determinata banda a disposizione.</li>
+<li>Il trasmettitore deve portare il segnale in quella porzione di spettro, per adattarlo al canale.</li>
+<li>Il ricevitore lo riporta in banda base, «e questo rende il segnale complesso» (inviluppo complesso).</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: dare le definizioni (1) e (2), spiegare banda monolatera e bilatera e perché per i segnali reali una è il doppio dell'altra, definire la banda stretta.</p>
+</blockquote>
+<h4 id="segnali-banda-base-e-passa-banda-perche-importa">Perché importa</h4>
+<p>I canali passa-banda sono molto usati, quindi bisogna saper trasmettere e ricevere segnali passa-banda. Le definizioni fissano la notazione (<span class="math inline">B</span>, <span class="math inline">f_c</span>) di tutta la lezione. L'ipotesi di banda stretta è usata in tutti i risultati successivi.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Simmetria hermitiana di un segnale reale</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+X(f) &amp;= \int_{-\infty}^{+\infty} x(t)\,e^{-j2\pi ft}\,dt &amp;&amp; \text{definizione di trasformata} \\
+X^*(f) &amp;= \int_{-\infty}^{+\infty} x(t)\,e^{+j2\pi ft}\,dt &amp;&amp; \text{coniugo; } x(t) \text{ è reale, quindi } x^* = x \\
+&amp;= X(-f) &amp;&amp; \text{è la stessa definizione calcolata in } -f \\
+\Rightarrow\ X(f) &amp;= X^*(-f) &amp;&amp; \text{coniugo entrambi i membri}
+\end{aligned}
+</div><p><strong>Conseguenze</strong>, scrivendo <span class="math inline">X(-f) = X^\ast (f)</span> per parte reale e parte immaginaria:</p>
+<ul>
+<li><span class="math inline">\text{Re}\,X(-f) = \text{Re}\,X(f)</span>: la parte reale è <strong>pari</strong>;</li>
+<li><span class="math inline">\text{Im}\,X(-f) = -\text{Im}\,X(f)</span>: la parte immaginaria è <strong>dispari</strong>;</li>
+<li><span class="math inline">|X(-f)| = |X(f)|</span>: il modulo è pari.</li>
+</ul>
+<p>È quello che mostra la figura. La metà a frequenze negative è l'immagine speculare (coniugata) di quella positiva: <strong>non contiene informazione nuova</strong>. È l'osservazione da cui nasce il segnale analitico.</p>
+</details>
+<details class="der"><summary>Derivazione — La banda bilatera è il doppio della monolatera</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia</p>
+</blockquote>
+<p>Se le frequenze positive occupate formano un insieme di ampiezza <span class="math inline">B</span>, per <span class="math inline">|X(-f)| = |X(f)|</span> le frequenze negative occupate ne sono lo specchio, e hanno ampiezza <span class="math inline">B</span> anch'esse. In totale: <span class="math inline">2B</span>.
+<strong>Caso limite:</strong> per un segnale <strong>complesso</strong> la simmetria non vale e le due metà sono indipendenti, quindi la regola del &quot;doppio&quot; non si applica (banda dei segnali complessi: inviluppo complesso).</p>
+</details>
+<details class="der"><summary>Derivazione — Perché si chiede <span class="math inline">f_c &gt; B</span></summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia: cosa succederebbe altrimenti.</p>
+</blockquote>
+<div class="math block">
+f_c &gt; B \ \Rightarrow\ f_c - \frac{B}{2} &gt; B - \frac{B}{2} = \frac{B}{2} &gt; 0
+</div><p>Il bordo inferiore del lobo positivo sta sopra <span class="math inline">B/2 &gt; 0</span>, e per simmetria il bordo superiore del lobo negativo sta sotto <span class="math inline">-B/2</span>. I due lobi quindi <strong>non si toccano e non contengono <span class="math inline">f = 0</span></strong>. Senza questa condizione, &quot;passa-banda&quot; non avrebbe senso.</p>
+<img class="zoom" src="img/grafico-rice-condizione-passabanda.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio (script <code>output/grafici/genera_grafico_condizione_passabanda.py</code>): stessi due lobi larghi <span class="math inline">B</span> in <span class="math inline">\pm f_c</span>, con la portante sempre più bassa. La riga tratteggiata colorata segna il bordo inferiore del lobo positivo, <span class="math inline">f_c - B/2</span>.</em></p>
+<ul>
+<li><em>(a) <span class="math inline">f_c = 2B</span>: bordo a <span class="math inline">1.5B</span>, i lobi sono lontanissimi dall'origine.</em></li>
+<li><em>(b) <span class="math inline">f_c = B</span>, la soglia della slide: bordo a <span class="math inline">B/2</span>. Attorno a <span class="math inline">f = 0</span> resta libera una fascia larga <span class="math inline">B</span>, da <span class="math inline">-B/2</span> a <span class="math inline">B/2</span>.</em></li>
+<li><em>(c) <span class="math inline">f_c = B/2</span>: bordo a 0, i due lobi si toccano proprio in <span class="math inline">f = 0</span>. È il limite oltre il quale smettono di essere separati.</em></li>
+<li><em>(d) <span class="math inline">f_c = B/4</span>: bordo a <span class="math inline">-0.25B</span>. I lobi si sovrappongono attorno all'origine, e la loro somma (tratteggiata nera) ha contenuto anche in <span class="math inline">f = 0</span>: è uno spettro in banda base, non più un segnale passa-banda.</em></li>
+</ul>
+<blockquote class="co mia"><p>🧩 Osservazione mia: per tenere separati i lobi basterebbe <span class="math inline">f_c &gt; B/2</span>, cioè il caso (c) escluso. La slide chiede di più, <span class="math inline">f_c &gt; B</span>, e quindi lascia sempre libera attorno all'origine almeno una fascia larga <span class="math inline">B</span>, come nel caso (b).</p>
+</blockquote>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Segnale analitico e trasformata di Hilbert</span></summary><div class="cb"><h4 id="segnale-analitico-spiegazione">Spiegazione</h4>
+<h4 id="segnale-analitico-esempio-il-segnale-analitico-di-un-coseno">Esempio: il segnale analitico di un coseno</h4>
+<blockquote class="co mia"><p>🧩 Esempio mio: applica le formule della slide al segnale passa-banda più semplice, <span class="math inline">s_p(t) = \cos(2\pi f_0 t)</span> con <span class="math inline">f_0 &gt; 0</span>.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+s_p(t) &amp;= \tfrac12\,e^{j2\pi f_0 t} + \tfrac12\,e^{-j2\pi f_0 t} &amp;&amp; \text{Eulero: una riga a } +f_0 \text{ e una a } -f_0 \\
+\widehat{s}_p(t) &amp;= \tfrac12(-j)\,e^{j2\pi f_0 t} + \tfrac12(+j)\,e^{-j2\pi f_0 t} &amp;&amp; -j\,\text{sgn}(f): \text{ la riga positiva } \times(-j), \text{ la negativa } \times(+j) \\
+&amp;= \frac{e^{j2\pi f_0 t} - e^{-j2\pi f_0 t}}{2j} = \sin(2\pi f_0 t) &amp;&amp; -\tfrac{j}{2} = \tfrac{1}{2j} \\
+s_p^+(t) &amp;= \frac{1}{\sqrt2}\big[\cos(2\pi f_0 t) + j\sin(2\pi f_0 t)\big] = \frac{1}{\sqrt2}\,e^{j2\pi f_0 t} &amp;&amp; \text{eq. (8) e formula di Eulero}
+\end{aligned}
+</div><p>Si legge tutto:</p>
+<ul>
+<li>la trasformata di Hilbert trasforma il coseno nel seno, cioè lo <strong>sfasa di 90°</strong>;</li>
+<li>il segnale analitico è un <strong>esponenziale complesso</strong>, un vettore che ruota. Ha una sola riga, a <span class="math inline">+f_0</span>: è proprio lo spettro di <span class="math inline">s_p</span> senza la parte negativa, come vuole la (3);</li>
+<li><span class="math inline">\sqrt2\,\text{Re}\{s_p^+\} = \text{Re}\{e^{j2\pi f_0 t}\} = \cos(2\pi f_0 t)</span> ✓, eq. (10);</li>
+<li>energia: la riga di <span class="math inline">s_p^+</span> ha modulo <span class="math inline">1/\sqrt2</span>, quelle di <span class="math inline">s_p</span> hanno modulo <span class="math inline">1/2</span>. Vale <span class="math inline">(1/\sqrt2)^2 = 1/2 = (1/2)^2 + (1/2)^2</span>: la potenza è la stessa ✓.</li>
+</ul>
+<h4 id="segnale-analitico-la-trasformata-di-hilbert-come-sfasatore-di-90">La trasformata di Hilbert come sfasatore di 90°</h4>
+<blockquote class="co mia"><p>📄 Fonte: nota a mano su: «in pratica la trasformata di Hilbert di un segnale equivale a sfasare di −90° tutte le componenti frequenziali positive e di +90° tutte quelle negative».</p>
+</blockquote>
+<img class="zoom" src="img/rappresentazione-rice-p13-segnale-analitico-hilbert.png" alt="" loading="lazy">
+<p><em>con le note a mano: relazione inversa (10), proprietà di Fourier nella (12), trasformata di Hilbert in frequenza e sfasamento di ∓90°.</em></p>
+<blockquote class="co mia"><p>🧩 Perché, in termini di filtro (lettura mia): il trasformatore di Hilbert è un sistema LTI con risposta in frequenza <span class="math inline">H_{\mathcal{H}}(f) = -j\,\text{sgn}(f)</span> e risposta impulsiva <span class="math inline">1/(\pi t)</span>.</p>
+<ul>
+<li><span class="math inline">|H_{\mathcal{H}}(f)| = 1</span>: non cambia l'ampiezza di nessuna componente.</li>
+<li>Per <span class="math inline">f &gt; 0</span> moltiplica per <span class="math inline">-j = e^{-j\pi/2}</span>, cioè fase <span class="math inline">-90°</span>; per <span class="math inline">f &lt; 0</span> moltiplica per <span class="math inline">+j = e^{+j\pi/2}</span>, cioè <span class="math inline">+90°</span>. È lo sfasamento della nota, verificato sul coseno qui sopra.</li>
+</ul>
+</blockquote>
+<p>Il segnale analitico (8) è quindi il segnale di partenza più <span class="math inline">j</span> volte la sua versione sfasata di 90°, a meno del fattore <span class="math inline">1/\sqrt2</span>. La somma cancella le frequenze negative e raddoppia le positive.</p>
+<blockquote class="co esame"><p>🎯 Esame: definire il segnale analitico (3); ricavarne l'espressione nel tempo (8) passando per la (7); dimostrare la (10) e la biunivocità; ricavare <span class="math inline">\widehat{S}_p(f) = -j\,\text{sgn}(f)\,S_p(f)</span>; spiegare il ruolo del <span class="math inline">\sqrt2</span>.</p>
+</blockquote>
+<h4 id="segnale-analitico-perche-importa">Perché importa</h4>
+<p>È il passo intermedio verso l'inviluppo complesso. Scartare le frequenze negative non perde nulla, perché sono ridondanti per un segnale reale. Dopo lo scarto resta un solo lobo, attorno a <span class="math inline">+f_c</span>, che si può traslare in banda base (eq. (13)).</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Eq. (4): dal prodotto in frequenza alla convoluzione nel tempo</summary>
+<div class="math block">
+\begin{aligned}
+s_p^+(t) &amp;= \mathcal{F}^{-1}\big[S_p^+(f)\big] &amp;&amp; \text{definizione di } s_p^+(t) \\
+&amp;= \mathcal{F}^{-1}\big[\sqrt2\,S_p(f)\cdot u(f)\big] &amp;&amp; \text{sostituisco la (3)} \\
+&amp;= \sqrt2\,s_p(t) * \mathcal{F}^{-1}[u(f)] &amp;&amp; \text{prodotto in frequenza} \leftrightarrow \text{convoluzione nel tempo}
+\end{aligned}
+</div><p>Lo stesso passaggio è annotato a mano sopra la (4): <span class="math inline">\sqrt2\,\mathcal{F}^{-1}[S_p(f)] \ast \mathcal{F}^{-1}[u(f)]</span>. Resta da calcolare l'antitrasformata del gradino <strong>in frequenza</strong>, che la nota a mano sulla (7) chiama appunto «antitrasformata del gradino».</p>
+</details>
+<details class="der"><summary>Derivazione — Eq. (7): antitrasformata di <span class="math inline">u(f)</span></summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia dei passaggi</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+\text{U}(t) &amp;\ \xrightarrow{\ \mathcal{F}\ }\ u(-f) &amp;&amp; \text{dualità, eq. (6): se } g(t) \to G(f) \text{ allora } G(t) \to g(-f) \\
+\text{U}(-t) &amp;\ \xrightarrow{\ \mathcal{F}\ }\ u(f) &amp;&amp; \text{riflessione: } x(-t) \to X(-f) \\
+\Rightarrow\ \mathcal{F}^{-1}[u(f)] &amp;= \text{U}(-t) = \tfrac12\,\delta(-t) + \frac{1}{j2\pi(-t)} &amp;&amp; \text{sostituisco } f \to -t \text{ nella (5)} \\
+&amp;= \tfrac12\,\delta(t) - \frac{1}{j2\pi t} &amp;&amp; \delta \text{ è pari} \\
+&amp;= \tfrac12\,\delta(t) + \frac{j}{2\pi t} &amp;&amp; -\tfrac1j = j
+\end{aligned}
+</div></details>
+<details class="der"><summary>Derivazione — Eq. (8): il segnale analitico nel tempo</summary>
+<div class="math block">
+\begin{aligned}
+s_p^+(t) &amp;= \sqrt2\,s_p(t) * \Big[\tfrac12\,\delta(t) + \frac{j}{2\pi t}\Big] &amp;&amp; \text{la (7) nella (4)} \\
+&amp;= \frac{\sqrt2}{2}\,s_p(t) + \frac{\sqrt2\,j}{2}\;s_p(t) * \frac{1}{\pi t} &amp;&amp; s * \delta = s;\ \tfrac{1}{2\pi t} = \tfrac12\cdot\tfrac{1}{\pi t} \\
+&amp;= \frac{1}{\sqrt2}\,s_p(t) + \frac{j}{\sqrt2}\,\widehat{s}_p(t) &amp;&amp; \tfrac{\sqrt2}{2} = \tfrac{1}{\sqrt2};\ \text{definizione (9)}
+\end{aligned}
+</div><p>Note a mano: <span class="math inline">s_p(t)</span> è il «segnale reale passa-banda», <span class="math inline">\widehat{s}_p(t)</span> è la «trasformata di Hilbert di <span class="math inline">s_p</span>».</p>
+</details>
+<details class="der"><summary>Derivazione — Eq. (10) e corrispondenza biunivoca</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia dei passaggi</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+\widehat{s}_p(t) &amp;\in \mathbb{R} &amp;&amp; \text{convoluzione di due funzioni reali, } s_p \text{ e } 1/(\pi t) \\
+\text{Re}\{s_p^+(t)\} &amp;= \frac{1}{\sqrt2}\,s_p(t) &amp;&amp; \text{nella (8) } s_p \text{ e } \widehat{s}_p \text{ sono reali} \\
+s_p(t) &amp;= \sqrt2\,\text{Re}\{s_p^+(t)\} &amp;&amp; \text{moltiplico per } \sqrt2
+\end{aligned}
+</div><p><strong>Cosa è stato dimostrato</strong>, cioè l'affermazione: da <span class="math inline">s_p</span> si calcola <span class="math inline">s_p^+</span> con la (8), e da <span class="math inline">s_p^+</span> si torna a <span class="math inline">s_p</span> con la (10). La corrispondenza è quindi <strong>biunivoca</strong>: il segnale analitico contiene tutta l'informazione di <span class="math inline">s_p</span>.</p>
+<blockquote class="co mia"><p>🧩 Perché basta la parte reale: la parte negativa dello spettro scartata nella (3) si ricostruisce prendendo la parte reale, proprio perché per un segnale reale è lo specchio coniugato di quella positiva (segnali banda base e passa banda).</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Trasformata di <span class="math inline">\text{sgn}(t)</span> e di <span class="math inline">1/(\pi t)</span></summary>
+<blockquote class="co mia"><p>📄 I primi tre passaggi sono quelli degli appunti; 🧩 gli ultimi due, con la dualità, sono miei.</p>
+</blockquote>
+<img class="zoom" src="img/rappresentazione-rice-p14-appunti-trasformata-sgn.png" alt="" loading="lazy">
+<p><em>Appunti a mano: <span class="math inline">\mathcal{F}[\text{sign}(t)] = \mathcal{F}[2u(t) - 1] = 2\mathcal{F}[u(t)] - \delta(f) = \delta(f) + \frac{1}{j\pi f} - \delta(f) = \frac{1}{j\pi f}</span> (le due delta barrate si cancellano). Sotto, <span class="math inline">\mathcal{F}[1/(\pi t)]</span>.</em></p>
+<div class="math block">
+\begin{aligned}
+\text{sgn}(t) &amp;= 2\,u(t) - 1 &amp;&amp; \text{vale } +1 \text{ per } t&gt;0 \text{ e } -1 \text{ per } t&lt;0 \\
+\mathcal{F}[\text{sgn}(t)] &amp;= 2\Big[\tfrac12\,\delta(f) + \frac{1}{j2\pi f}\Big] - \delta(f) &amp;&amp; \text{linearità; eq. (5); } \mathcal{F}[1] = \delta(f) \\
+&amp;= \frac{1}{j\pi f} &amp;&amp; \text{le delta si cancellano} \\
+\mathcal{F}\Big[\frac{1}{j\pi t}\Big] &amp;= \text{sgn}(-f) &amp;&amp; \text{dualità} \\
+\mathcal{F}\Big[\frac{1}{\pi t}\Big] &amp;= j\,\text{sgn}(-f) = -j\,\text{sgn}(f) &amp;&amp; \text{moltiplico per } j;\ \text{sgn è dispari}
+\end{aligned}
+</div><blockquote class="co avv"><p>⚠️ Negli appunti l'ultima riga è <span class="math inline">\mathcal{F}[1/(\pi t)] = j\,\text{sign}(f)</span>: manca il meno. La slide scrive <span class="math inline">j\,\text{sgn}(-f)</span>, cioè <span class="math inline">-j\,\text{sgn}(f)</span>, ed è il segno giusto. È quello che dà <span class="math inline">\widehat{S}_p = -j\,\text{sgn}(f)\,S_p</span> e che fa tornare il controllo con la (3) qui sotto: con <span class="math inline">+j</span> si cancellerebbero le frequenze positive invece delle negative.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Trasformata di Hilbert in frequenza, eq. (12)</summary>
+<div class="math block">
+\begin{aligned}
+\widehat{S}_p(f) &amp;= \mathcal{F}\Big[s_p(t) * \frac{1}{\pi t}\Big] = S_p(f)\,\mathcal{F}\Big[\frac{1}{\pi t}\Big] &amp;&amp; \text{convoluzione} \to \text{prodotto, eq. (12)} \\
+&amp;= -j\,\text{sgn}(f)\,S_p(f) &amp;&amp; \text{derivazione precedente}
+\end{aligned}
+</div><p>Note a mano: sopra <span class="math inline">\widehat{S}_p</span> «<span class="math inline">s_p(t) \ast \frac{1}{\pi t}</span>», sul segno di uguale «proprietà di Fourier» (convoluzione → prodotto), sotto il risultato «la trasformata di Hilbert in frequenza».</p>
+<blockquote class="co avv"><p>⚠️ Refuso della slide, corretto a mano: nella (12) e nell'ultima formula compare <span class="math inline">S(f)</span> invece di <span class="math inline">S_p(f)</span>. Qui <span class="math inline">S(f)</span> sarebbe l'inviluppo complesso, un'altra cosa.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Controllo: dalla (11) si ritrova la (3)</summary>
+<blockquote class="co mia"><p>🧩 Verifica mia: le due strade, frequenza (3) e tempo (8), devono dare lo stesso segnale analitico.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+S_p^+(f) &amp;= \frac{1}{\sqrt2}\,S_p(f) + \frac{j}{\sqrt2}\,\widehat{S}_p(f) &amp;&amp; \text{eq. (11)} \\
+&amp;= \frac{1}{\sqrt2}\,S_p(f) + \frac{j}{\sqrt2}\big(-j\,\text{sgn}(f)\big)S_p(f) &amp;&amp; \text{Hilbert in frequenza} \\
+&amp;= \frac{1}{\sqrt2}\,S_p(f)\,\big[1 + \text{sgn}(f)\big] &amp;&amp; j\cdot(-j) = 1 \\
+&amp;= \frac{1}{\sqrt2}\,S_p(f)\cdot 2\,u(f) = \sqrt2\,S_p(f)\,u(f) &amp;&amp; 1 + \text{sgn}(f) = 2\,u(f) \text{ per } f \neq 0
+\end{aligned}
+</div><p>È la (3) ✓. Il valore in <span class="math inline">f = 0</span> non conta: per un segnale passa-banda <span class="math inline">S_p(0) \approx 0</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — Perché proprio √2</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia. Uso una costante generica <span class="math inline">k</span> al posto di <span class="math inline">\sqrt2</span>: <span class="math inline">S_p^+(f) = k\,S_p(f)\,u(f)</span>.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+\|s_p^+\|^2 &amp;= \int_{-\infty}^{+\infty}|S_p^+(f)|^2\,df &amp;&amp; \text{Parseval: l&#x27;energia si calcola anche in frequenza} \\
+&amp;= k^2\int_{0}^{+\infty}|S_p(f)|^2\,df &amp;&amp; S_p^+ = 0 \text{ per } f&lt;0 \\
+&amp;= k^2\cdot\frac12\int_{-\infty}^{+\infty}|S_p(f)|^2\,df &amp;&amp; |S_p(f)|^2 \text{ è pari: metà energia per lato} \\
+&amp;= \frac{k^2}{2}\,\|s_p\|^2 &amp;&amp; \text{Parseval}
+\end{aligned}
+</div><p><strong>Risultato:</strong> il segnale analitico ha la <strong>stessa energia</strong> di <span class="math inline">s_p</span> se e solo se <span class="math inline">k^2/2 = 1</span>, cioè <span class="math inline">k = \sqrt2</span>. Buttando via metà dello spettro si perde metà dell'energia, e il <span class="math inline">\sqrt2</span> la rimette.
+<strong>Conseguenza:</strong> con la stessa scelta anche l'inviluppo complesso conserva l'energia, eq. (20) di inviluppo complesso.</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Inviluppo complesso e componenti in fase e quadratura</span></summary><div class="cb"><h4 id="inviluppo-complesso-spiegazione">Spiegazione</h4>
+<h4 id="inviluppo-complesso-perche-serve-la-rappresentazione-in-banda-base">Perché serve la rappresentazione in banda base</h4>
+<ul>
+<li>I canali passa-banda sono molto usati, quindi bisogna saper trasmettere e ricevere segnali passa-banda.</li>
+<li>Tutta l'informazione di un segnale passa-banda reale sta in un segnale complesso in banda base: l'inviluppo complesso.</li>
+<li>L'inviluppo si può rappresentare a tempo discreto, cioè campionato, a una frequenza <strong>molto più bassa</strong> di <span class="math inline">s_p(t)</span> (vedi la derivazione sopra). I transceiver moderni eseguono quindi in digitale, direttamente sull'inviluppo, algoritmi complicati, riducendo al minimo l'elaborazione analogica.</li>
+</ul>
+<p>Le note a mano riscrivono questi punti in italiano e chiamano il campionamento a frequenza bassa <strong>il vantaggio</strong>: l'inviluppo si campiona a una frequenza «nettamente inferiore» a quella che servirebbe per il segnale passa-banda. Di conseguenza i ricetrasmettitori moderni possono implementare in digitale algoritmi molto complessi (DSP), riducendo al minimo la parte analogica.</p>
+<p><strong>Perché conviene portare il segnale in banda base</strong>, dagli appunti. Oltre al fatto che l'informazione non dipende da <span class="math inline">f_c</span>, la banda base permette di:</p>
+<ul>
+<li><strong>ridurre i costi hardware per il campionamento</strong>;</li>
+<li>guadagnare <strong>modularità e indipendenza</strong>: si possono riutilizzare componenti che operano in banda base, senza costruirli ad hoc per la specifica banda del segnale;</li>
+<li>(in rosso) altrimenti non si potrebbero generalizzare gli algoritmi, e calcolarli in digitale costerebbe troppo.</li>
+</ul>
+<img class="zoom" src="img/rappresentazione-rice-p6-appunti-vantaggi-banda-base.png" alt="" loading="lazy">
+<p><em>Appunti a mano: i vantaggi di portare il segnale in banda base (costi di campionamento, modularità e indipendenza).</em></p>
+<p>Lo schema modulare del transceiver:</p>
+<ol>
+<li>un <strong>DSP</strong> codifica l'informazione nella forma d'onda complessa in banda base: codifica, modulazione, filtraggio;</li>
+<li>l'inviluppo viene <strong>convertito in su</strong> (<em>upconverted</em>) nel segnale passa-banda da mandare sul canale fisico;</li>
+<li>al ricevitore il segnale passa-banda ricevuto viene <strong>convertito in giù</strong> (<em>downconverted</em>) in banda base;</li>
+<li>il DSP opera sull'inviluppo per sincronizzazione, demodulazione e decodifica.</li>
+</ol>
+<p>Così gli algoritmi più sofisticati si sviluppano in banda base, <strong>indipendentemente dalla banda fisica</strong> usata. Le conversioni sono in upconversion e downconversion.</p>
+<p>Note a mano:</p>
+<ul>
+<li>i punti 1–2 formano il <strong>modulatore</strong>, i punti 3–4 il <strong>demodulatore</strong>: «sono macroblocchi», e il modulatore «comprende anche l'up conversion»;</li>
+<li>dal punto 1 «si ottiene l'inviluppo complesso in banda base»;</li>
+<li>sviluppare gli algoritmi in banda base vuol dire che «ci si è svincolati dalla frequenza carrier (<span class="math inline">f_c</span>)».</li>
+</ul>
+<img class="zoom" src="img/rappresentazione-rice-p10-schema-modulare-transceiver.png" alt="" loading="lazy">
+<p><em>con le note a mano: le parentesi graffe raggruppano i quattro passi in modulatore e demodulatore.</em></p>
+<h4 id="inviluppo-complesso-dallo-spettro-passa-banda-all-inviluppo-le-figur">Dallo spettro passa-banda all'inviluppo: le figure</h4>
+<img class="zoom" src="img/rappresentazione-rice-p15-inviluppo-complesso-spettri.png" alt="" loading="lazy">
+<p><em>In alto, lo spettro del segnale passa-banda. <span class="math inline">\text{Re}(S_p(f))</span> ha due triangoli di altezza <span class="math inline">A</span> attorno a <span class="math inline">\pm f_c</span>, speculari. <span class="math inline">\text{Im}(S_p(f))</span> ha due rettangoli di altezza <span class="math inline">B</span>: positivo attorno a <span class="math inline">f_c</span>, negativo attorno a <span class="math inline">-f_c</span>. In basso, l'inviluppo: resta solo il lobo positivo, spostato attorno a 0 e moltiplicato per <span class="math inline">\sqrt2</span>. <span class="math inline">\text{Re}(S(f))</span> è un triangolo di altezza <span class="math inline">\sqrt2 A</span>, <span class="math inline">\text{Im}(S(f))</span> un rettangolo di altezza <span class="math inline">\sqrt2 B</span>.</em></p>
+<blockquote class="co avv"><p>⚠️ In questa figura, e, <span class="math inline">A</span> e <span class="math inline">B</span> sono <strong>altezze</strong> dello spettro, non la banda. Nel resto della lezione <span class="math inline">B</span> è la banda.</p>
+</blockquote>
+<blockquote class="co mia"><p>🧩 Controllo mio delle altezze con la (13): <span class="math inline">S(f) = \sqrt2\,S_p(f + f_c)</span> attorno a <span class="math inline">f = 0</span>. Le altezze del lobo positivo vengono moltiplicate per <span class="math inline">\sqrt2</span>: <span class="math inline">A \to \sqrt2 A</span> e <span class="math inline">B \to \sqrt2 B</span> ✓. Il lobo negativo sparisce per il fattore <span class="math inline">u(f + f_c)</span>.</p>
+</blockquote>
+<img class="zoom" src="img/grafico-rice-catena-spettri.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio (eq. (3) e (13) e; script in <code>output/grafici/</code>). La catena in tre passi, con un lobo asimmetrico come quello.</em></p>
+<ul>
+<li><em>(a) Lo spettro reale del segnale passa-banda: i lobi a <span class="math inline">\pm f_c</span> sono speculari, quindi portano la stessa informazione.</em></li>
+<li><em>(b) Il segnale analitico: si butta il lobo negativo e si moltiplica per <span class="math inline">\sqrt2</span>.</em></li>
+<li><em>(c) L'inviluppo complesso: lo stesso lobo spostato in 0.</em></li>
+</ul>
+<p><em>Il lobo in (c) non è simmetrico attorno a 0. Non vale <span class="math inline">S(f) = S^\ast (-f)</span>, e per questo <span class="math inline">s(t)</span> è complesso: è la nota a mano, «il ricevitore porta in banda base, e questo rende il segnale complesso».</em></p>
+<h4 id="inviluppo-complesso-componenti-i-q-nel-tempo">Componenti I/Q nel tempo</h4>
+<img class="zoom" src="img/rappresentazione-rice-p16-componenti-iq.png" alt="" loading="lazy">
+<p><em>con le note a mano:</em></p>
+<ul>
+<li><em>la (15) corrisponde a una traslazione del segnale analitico, per la proprietà di Fourier;</em></li>
+<li><em><span class="math inline">s_c</span> è la componente in fase (I), <span class="math inline">s_s</span> quella in quadratura (Q); quadratura vuol dire prodotto scalare nullo con <span class="math inline">s_c</span>;</em></li>
+<li><em>i passaggi <span class="math inline">s_p^+ = s\,e^{j2\pi f_c t} = [s_c + js_s]\,e^{j2\pi f_c t}</span> che portano alla (16)–(17), &quot;in termini di seno e coseno&quot;.</em></li>
+</ul>
+<img class="zoom" src="img/grafico-rice-iq-tempo.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio (eq. (17)). Esempio con <span class="math inline">s_c(t) = \cos(2\pi\cdot 1\,\text{kHz}\cdot t) + 0.5\cos(2\pi\cdot 2\,\text{kHz}\cdot t)</span> e <span class="math inline">s_s(t) = 0.8\sin(2\pi\cdot 1.5\,\text{kHz}\cdot t)</span>. In alto I, Q e il modulo <span class="math inline">|s(t)|</span>, che variano lentamente. In basso <span class="math inline">s_p(t)</span> con <span class="math inline">f_c = 10</span> kHz: una portante veloce dentro l'inviluppo <span class="math inline">\pm\sqrt2\,|s(t)|</span>, come prevede la forma ampiezza-fase. <span class="math inline">f_c</span> è scelta piccola per rendere visibili le oscillazioni; nei sistemi reali <span class="math inline">f_c/B</span> è molto più grande.</em></p>
+<p><strong>Cosa rappresenta l'inviluppo</strong>:</p>
+<ul>
+<li>ricavare l'inviluppo complesso significa estrarre le variazioni <strong>lente</strong> di ampiezza e fase introdotte dalla modulazione in banda base, eliminando la variazione di fase <strong>rapida e prevedibile</strong> dovuta a <span class="math inline">f_c</span>. Nota a mano: «l'inviluppo complesso ci permette di separare le variazioni lente introdotte dalla modulazione in banda base»;</li>
+<li>la fase dovuta a <span class="math inline">f_c</span> è prevedibile, quindi <strong>non porta informazione</strong>;</li>
+<li>l'informazione di un segnale passa-banda è <strong>tutta</strong> nel suo inviluppo complesso.</li>
+</ul>
+<h4 id="inviluppo-complesso-energia">Energia</h4>
+<blockquote class="co mia"><p>📄 Fonte:, appunti a mano e</p>
+</blockquote>
+<ul>
+<li>Le forme d'onda passa-banda di I e di Q, <span class="math inline">x_c = \sqrt2 s_c\cos(2\pi f_c t)</span> e <span class="math inline">x_s = \sqrt2 s_s\sin(2\pi f_c t)</span>, sono <strong>ortogonali</strong>, eq. (18). La slide rimanda al libro per la dimostrazione, che è negli appunti (derivazione della (18) qui sopra).</li>
+<li>Per due segnali passa-banda reali il prodotto scalare è la parte reale del prodotto scalare degli inviluppi, eq. (19). Verifica negli appunti.</li>
+<li>Con <span class="math inline">u = v = s</span>: l'energia dell'inviluppo complesso è <strong>uguale</strong> a quella del segnale passa-banda, eq. (20), anch'essa negli appunti.</li>
+</ul>
+<h4 id="inviluppo-complesso-banda-di-un-segnale-complesso">Banda di un segnale complesso</h4>
+<ul>
+<li>L'occupazione spettrale di un segnale <strong>fisico reale</strong> è la più piccola banda di frequenze <strong>positive</strong> che contiene la maggior parte del segnale. Per un segnale reale vale <span class="math inline">S(f) = S^\ast (-f)</span>, quindi le frequenze negative non aggiungono nulla.</li>
+<li>Nei segnali <strong>complessi</strong> in banda base l'informazione sta sia nelle frequenze positive sia in quelle <strong>negative</strong>.</li>
+<li>L'occupazione spettrale di un segnale complesso in banda base è quindi la più piccola banda <strong>attorno all'origine</strong> che contiene la maggior parte del segnale, contando frequenze positive e negative.</li>
+</ul>
+<blockquote class="co mia"><p>🧩 Esempio mio: un segnale passa-banda con banda monolatera <span class="math inline">B</span> e <span class="math inline">f_c</span> al centro del lobo ha l'inviluppo in <span class="math inline">(-B/2,\ B/2)</span>. Contando i due lati, l'occupazione è <span class="math inline">B</span>: la stessa larghezza del lobo positivo di <span class="math inline">s_p</span>. Non va dimezzata né raddoppiata, perché le due metà dello spettro di <span class="math inline">s(t)</span> sono diverse (grafico (c) sopra).</p>
+</blockquote>
+<blockquote class="co esame"><p>🎯 Esame: definire l'inviluppo complesso, (13) e (15), e le componenti I/Q; ricavare la (17) e la (14); dimostrare l'ortogonalità (18) e la conservazione dell'energia (20); spiegare perché l'informazione sta tutta nell'inviluppo e perché conviene lavorare in banda base.</p>
+</blockquote>
+<h4 id="inviluppo-complesso-perche-importa">Perché importa</h4>
+<p>È il concetto centrale del primo tema del corso. Permette di:</p>
+<ul>
+<li>descrivere qualunque segnale passa-banda con un segnale in banda base, senza portarsi dietro <span class="math inline">f_c</span>;</li>
+<li>campionarlo ed elaborarlo in digitale a frequenza bassa;</li>
+<li>progettare modulazione, sincronizzazione e demodulazione indipendentemente dalla banda fisica.</li>
+</ul>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Eq. (15): l'inviluppo nel tempo</summary>
+<div class="math block">
+\begin{aligned}
+s(t) &amp;= \mathcal{F}^{-1}[S(f)] = \mathcal{F}^{-1}\big[S_p^+(f + f_c)\big] &amp;&amp; \text{definizione (13)} \\
+&amp;= s_p^+(t)\,e^{-j2\pi f_c t} &amp;&amp; \text{traslazione in frequenza: } X(f - f_0) \leftrightarrow x(t)\,e^{j2\pi f_0 t},\ f_0 = -f_c
+\end{aligned}
+</div><p>Moltiplicare per <span class="math inline">e^{-j2\pi f_c t}</span> sposta tutto lo spettro di <span class="math inline">-f_c</span>: il lobo che il segnale analitico ha attorno a <span class="math inline">+f_c</span> finisce attorno a 0.</p>
+</details>
+<details class="der"><summary>Derivazione — Eq. (16) e (17): dall'inviluppo al segnale passa-banda</summary>
+<div class="math block">
+\begin{aligned}
+s_p(t) &amp;= \sqrt2\,\text{Re}\{s_p^+(t)\} &amp;&amp; \text{eq. (10) di segnale analitico} \\
+&amp;= \sqrt2\,\text{Re}\{s(t)\,e^{j2\pi f_c t}\} &amp;&amp; \text{dalla (15): } s_p^+ = s\,e^{j2\pi f_c t} \quad \text{(16)} \\
+&amp;= \sqrt2\,\text{Re}\{(s_c + j s_s)(\cos\alpha + j\sin\alpha)\} &amp;&amp; \text{Eulero, } \alpha = 2\pi f_c t \\
+&amp;= \sqrt2\,\text{Re}\{s_c\cos\alpha - s_s\sin\alpha + j(s_c\sin\alpha + s_s\cos\alpha)\} &amp;&amp; \text{moltiplico; } j^2 = -1 \\
+&amp;= \sqrt2\,s_c(t)\cos(2\pi f_c t) - \sqrt2\,s_s(t)\sin(2\pi f_c t) &amp;&amp; \text{parte reale} \quad \text{(17)}
+\end{aligned}
+</div><p>Il secondo passaggio è annotato a mano sulla slide: «abbiamo definito prima l'inviluppo come <span class="math inline">s(t) = s_p^+(t)e^{-j2\pi f_c t}</span>, quindi <span class="math inline">s_p^+(t) = s(t)e^{j2\pi f_c t} = [s_c(t) + js_s(t)]\,e^{j2\pi f_c t}</span>». Sotto la (17): «in termini di seno e coseno».
+<strong>Da qui i nomi:</strong> <span class="math inline">s_c</span> moltiplica il <strong>coseno</strong> della portante, <span class="math inline">s_s</span> il <strong>seno</strong>. Seno e coseno sono sfasati di 90°, &quot;in quadratura&quot;.
+<strong>Ipotesi:</strong> nessuna oltre alla definizione. La slide sottolinea che la (17) vale per <strong>qualunque</strong> segnale passa-banda.</p>
+</details>
+<details class="der"><summary>Derivazione — Eq. (14): dall'inviluppo al passa-banda in frequenza</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+s_p(t) &amp;= \sqrt2\,\text{Re}\{s(t)\,e^{j2\pi f_c t}\} &amp;&amp; \text{eq. (16)} \\
+&amp;= \frac{\sqrt2}{2}\Big[s(t)\,e^{j2\pi f_c t} + s^*(t)\,e^{-j2\pi f_c t}\Big] &amp;&amp; \text{Re}\{z\} = (z + z^*)/2 \\
+S_p(f) &amp;= \frac{1}{\sqrt2}\Big[S(f - f_c) + S^*\big(-(f + f_c)\big)\Big] &amp;&amp; x\,e^{j2\pi f_0 t} \leftrightarrow X(f - f_0);\ \ s^*(t) \leftrightarrow S^*(-f) \\
+&amp;= \frac{S(f - f_c) + S^*(-f - f_c)}{\sqrt2}
+\end{aligned}
+</div><p><strong>Lettura:</strong> il primo termine ricostruisce il lobo attorno a <span class="math inline">+f_c</span>, il secondo quello attorno a <span class="math inline">-f_c</span> come specchio coniugato. Il segnale che si ottiene è reale, perché il suo spettro è hermitiano per costruzione. Note a mano sulla (14): è la «relazione inversa», e il termine <span class="math inline">S^\ast (-f - f_c)</span> rimette la «parte tagliata da <span class="math inline">u(f)</span>», cioè il lobo negativo scartato costruendo il segnale analitico.
+<strong>Sanity check:</strong> per <span class="math inline">f</span> vicino a <span class="math inline">+f_c</span> il secondo termine è nullo e, dalla (13), <span class="math inline">S(f - f_c) = \sqrt2\,S_p(f)</span>. Quindi <span class="math inline">S_p(f) = \sqrt2\,S_p(f)/\sqrt2</span> ✓.</p>
+</details>
+<details class="der"><summary>Derivazione — Forma ampiezza-fase</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia: rende esplicita la frase della slide.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+s(t) &amp;= a(t)\,e^{j\theta(t)}, \quad a = |s| = \sqrt{s_c^2 + s_s^2},\ \ \theta = \arg s &amp;&amp; \text{forma polare del numero complesso } s(t) \\
+s_p(t) &amp;= \sqrt2\,\text{Re}\{a(t)\,e^{j\theta(t)}\,e^{j2\pi f_c t}\} &amp;&amp; \text{eq. (16)} \\
+&amp;= \sqrt2\,a(t)\cos\big(2\pi f_c t + \theta(t)\big) &amp;&amp; \text{Re}\{e^{j\phi}\} = \cos\phi
+\end{aligned}
+</div><p><span class="math inline">s_p(t)</span> è quindi una portante a <span class="math inline">f_c</span> con <strong>ampiezza</strong> <span class="math inline">\sqrt2\,a(t)</span> e <strong>fase</strong> <span class="math inline">\theta(t)</span>. Se <span class="math inline">s(t)</span> ha banda molto minore di <span class="math inline">f_c</span> (banda stretta), ampiezza e fase cambiano lentamente rispetto alla portante.</p>
+</details>
+<details class="der"><summary>Derivazione — Eq. (18): ortogonalità delle componenti I e Q</summary>
+<blockquote class="co mia"><p>📄 La struttura della dimostrazione è quella degli appunti: Parseval, spettri di <span class="math inline">x_c</span> e <span class="math inline">x_s</span>, termini incrociati nulli per la banda stretta, cambio di variabile. 🧩 Esplicito io i fattori e l'ipotesi minima. <span class="math inline">S_c</span> e <span class="math inline">S_s</span> sono le trasformate di <span class="math inline">s_c</span> e <span class="math inline">s_s</span>, e <span class="math inline">W</span> la loro banda.</p>
+</blockquote>
+<img class="zoom" src="img/rappresentazione-rice-p18-appunti-ortogonalita-parseval.png" alt="" loading="lazy">
+<p><em>Appunti a mano.</em></p>
+<ul>
+<li><em>In alto: la dimostrazione di <span class="math inline">\langle x_c, x_s\rangle = 0</span> con Parseval. Si sviluppa il prodotto; i due termini incrociati sono barrati, con la nota in rosso sulla banda stretta; dopo il cambio di variabile i due integrali restanti si cancellano.</em></li>
+<li><em>In basso: la verifica della (19), con i termini misti che si annullano per l'ortogonalità e i termini in <span class="math inline">\cos(4\pi f_c t)</span> che valgono circa 0.</em></li>
+</ul>
+<div class="math block">
+\begin{aligned}
+\langle x_c, x_s\rangle &amp;= \int_{-\infty}^{+\infty} x_c(t)\,x_s(t)\,dt = \int_{-\infty}^{+\infty} X_c(f)\,X_s^*(f)\,df &amp;&amp; \text{Parseval; } x_s \text{ reale} \\
+X_c(f) &amp;= \frac{1}{\sqrt2}\big[S_c(f - f_c) + S_c(f + f_c)\big] &amp;&amp; \sqrt2\cos\alpha = \tfrac{\sqrt2}{2}(e^{j\alpha} + e^{-j\alpha}) \\
+X_s(f) &amp;= \frac{1}{j\sqrt2}\big[S_s(f - f_c) - S_s(f + f_c)\big] &amp;&amp; \sqrt2\sin\alpha = \tfrac{\sqrt2}{2j}(e^{j\alpha} - e^{-j\alpha}) \\
+X_s^*(f) &amp;= \frac{1}{j\sqrt2}\big[S_s^*(f + f_c) - S_s^*(f - f_c)\big] &amp;&amp; (1/j)^* = -1/j \text{: cambio segno alla parentesi} \\
+\langle x_c, x_s\rangle &amp;= \frac{1}{2j}\int\big[S_c(f - f_c) + S_c(f + f_c)\big]\big[S_s^*(f + f_c) - S_s^*(f - f_c)\big]\,df &amp;&amp; \tfrac{1}{\sqrt2}\cdot\tfrac{1}{j\sqrt2} = \tfrac{1}{2j}
+\end{aligned}
+</div><p>Sviluppando il prodotto escono quattro termini:</p>
+<ul>
+<li><strong><span class="math inline">S_c(f - f_c)\,S_s^\ast (f + f_c)</span> e <span class="math inline">S_c(f + f_c)\,S_s^\ast (f - f_c)</span></strong> sono nulli. Il primo fattore vive attorno a <span class="math inline">\pm f_c</span>, il secondo attorno a <span class="math inline">\mp f_c</span>, e le due zone non si sovrappongono. Negli appunti la giustificazione è in rosso: «per ipotesi i segnali sono a banda stretta: lo spettro centrato a <span class="math inline">+f_c</span> non si sovrappone mai a quello centrato in <span class="math inline">-f_c</span>, perché <span class="math inline">B/f_c \ll 1</span>».</li>
+<li>Restano gli altri due, con il cambio di variabile <span class="math inline">\nu = f \mp f_c</span>:
+<div class="math inline">\langle x_c, x_s\rangle = \frac{1}{2j}\Big[\underbrace{\int S_c(f + f_c)\,S_s^*(f + f_c)\,df}_{=\int S_c(\nu) S_s^*(\nu)\,d\nu} - \underbrace{\int S_c(f - f_c)\,S_s^*(f - f_c)\,df}_{=\int S_c(\nu) S_s^*(\nu)\,d\nu}\Big] = 0</div></li>
+</ul>
+<p><strong>Ipotesi:</strong> gli appunti usano la banda stretta, <span class="math inline">B/f_c \ll 1</span>. 🧩 In realtà basta di meno: che <span class="math inline">s_c</span> e <span class="math inline">s_s</span> abbiano banda <span class="math inline">W &lt; f_c</span>. Per un segnale passa-banda questo è sempre garantito: dalla (2) e dalla (13), con <span class="math inline">f_c</span> al centro del lobo, <span class="math inline">S(f) \approx 0</span> per <span class="math inline">|f| &gt; B/2</span>. Quindi <span class="math inline">W = B/2 &lt; f_c</span>, perché <span class="math inline">f_c &gt; B</span>.
+<strong>Alternativa nel tempo</strong> (🧩 mia):
+<div class="math inline">\langle x_c, x_s\rangle = \int 2\,s_c s_s \cos\alpha\sin\alpha\,dt = \int s_c(t)\,s_s(t)\,\sin(4\pi f_c t)\,dt</div>
+È la trasformata del prodotto <span class="math inline">s_c s_s</span> calcolata in <span class="math inline">\pm 2f_c</span>. Il prodotto ha banda al più <span class="math inline">2W &lt; 2f_c</span>, quindi l'integrale è nullo.</p>
+<blockquote class="co avv"><p>⚠️ Segni negli appunti: gli appunti scrivono <span class="math inline">X_s = -\frac{\sqrt2}{2j}S_s(f) \ast [\delta(f - f_c) - \delta(f + f_c)]</span>, con un meno davanti che non ci va, perché <span class="math inline">\sqrt2\sin\alpha = \frac{\sqrt2}{2j}(e^{j\alpha} - e^{-j\alpha})</span>. Anche l'ordine dei due integrali finali è invertito rispetto allo sviluppo. Il risultato, <span class="math inline">\frac{1}{2j}\big[\int S_c S_s^\ast - \int S_c S_s^\ast \big] = 0</span>, non cambia: è la differenza di due integrali uguali.</p>
+</blockquote>
+<p>Nota a mano: «quadratura indica che il prodotto ortogonale [scalare] con <span class="math inline">s_c</span> è 0». È proprio questa proprietà.</p>
+</details>
+<details class="der"><summary>Derivazione — Eq. (19): prodotto scalare tra segnali passa-banda</summary>
+<blockquote class="co mia"><p>📄 Gli appunti procedono così: sviluppano <span class="math inline">\langle u_p, v_p\rangle</span> con la (17); i termini misti si annullano perché le componenti in fase e in quadratura sono ortogonali; restano <span class="math inline">2\int u_cv_c\cos^2</span> e <span class="math inline">2\int u_sv_s\sin^2</span>, che si scrivono con <span class="math inline">\cos^2 = \frac{1 + \cos(4\pi f_ct)}{2}</span> e <span class="math inline">\sin^2 = \frac{1 - \cos(4\pi f_ct)}{2}</span>. I due integrali con <span class="math inline">\cos(4\pi f_c t)</span> valgono circa 0, perché «le aree positive vengono bilanciate da quelle negative, poiché <span class="math inline">B/f_c \ll 1</span>». Resta <span class="math inline">\text{Re}\{\int[u_c + ju_s][v_c - jv_s]\,dt\} = \text{Re}\{\langle u, v\rangle\}</span>.
+🧩 Qui sotto lo stesso conto per esteso. <span class="math inline">u_p</span>, <span class="math inline">v_p</span> sono reali passa-banda, con inviluppi <span class="math inline">u = u_c + ju_s</span> e <span class="math inline">v = v_c + jv_s</span>; <span class="math inline">\alpha = 2\pi f_c t</span>.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+u_p v_p &amp;= \big(\sqrt2 u_c\cos\alpha - \sqrt2 u_s\sin\alpha\big)\big(\sqrt2 v_c\cos\alpha - \sqrt2 v_s\sin\alpha\big) &amp;&amp; \text{eq. (17) per entrambi} \\
+&amp;= 2u_cv_c\cos^2\alpha + 2u_sv_s\sin^2\alpha - 2(u_cv_s + u_sv_c)\sin\alpha\cos\alpha &amp;&amp; \text{sviluppo} \\
+&amp;= u_cv_c + u_sv_s + (u_cv_c - u_sv_s)\cos 2\alpha - (u_cv_s + u_sv_c)\sin 2\alpha &amp;&amp; 2\cos^2 = 1 + \cos 2\alpha;\ 2\sin^2 = 1 - \cos 2\alpha;\ 2\sin\cos = \sin 2\alpha \\
+\langle u_p, v_p\rangle &amp;= \int u_cv_c\,dt + \int u_sv_s\,dt + \underbrace{\int g_1\cos(4\pi f_c t)\,dt - \int g_2\sin(4\pi f_c t)\,dt}_{=\,0} &amp;&amp; g_1, g_2 \text{ prodotti di segnali in banda base} \\
+&amp;= \langle u_c, v_c\rangle + \langle u_s, v_s\rangle
+\end{aligned}
+</div><p>I termini a <span class="math inline">2f_c</span> si annullano. Gli appunti lo giustificano con le aree che si bilanciano, cioè un inviluppo lento moltiplicato per un coseno veloce, e scrivono &quot;≈ 0&quot;.</p>
+<blockquote class="co mia"><p>🧩 Precisazione mia: se la banda è minore di <span class="math inline">f_c</span> l'integrale è <strong>esattamente</strong> 0. Infatti <span class="math inline">\int g(t)\cos(4\pi f_c t)\,dt = \frac12[G(2f_c) + G(-2f_c)]</span>, e allo stesso modo per il seno. <span class="math inline">G</span> è la trasformata di un prodotto di due segnali con banda <span class="math inline">\le W</span>, quindi ha banda <span class="math inline">\le 2W &lt; 2f_c</span> e vale zero in <span class="math inline">\pm 2f_c</span>.</p>
+</blockquote>
+<p>Poi il confronto con l'inviluppo complesso:
+<div class="math inline">\begin{aligned}
+\langle u, v\rangle &amp;= \int u\,v^*\,dt = \int (u_c + ju_s)(v_c - jv_s)\,dt &amp;&amp; \text{definizione; } v^* = v_c - jv_s \\
+&amp;= \int (u_cv_c + u_sv_s)\,dt + j\int (u_sv_c - u_cv_s)\,dt &amp;&amp; \text{sviluppo} \\
+\text{Re}\{\langle u, v\rangle\} &amp;= \langle u_c, v_c\rangle + \langle u_s, v_s\rangle &amp;&amp; \text{è la (19)}
+\end{aligned}</div>
+<strong>Ipotesi:</strong> banda di <span class="math inline">u_c, u_s, v_c, v_s</span> minore di <span class="math inline">f_c</span> (segnali passa-banda secondo la (2)).</p>
+</details>
+<details class="der"><summary>Derivazione — Eq. (20): l'energia si conserva</summary>
+<div class="math block">
+\begin{aligned}
+\|s_p\|^2 &amp;= \langle s_p, s_p\rangle = \int s_p^2(t)\,dt &amp;&amp; \text{definizione di energia} \\
+&amp;= \text{Re}\{\langle s, s\rangle\} &amp;&amp; \text{(19) con } u = v = s \\
+&amp;= \text{Re}\{\|s\|^2\} = \|s\|^2 &amp;&amp; \langle s, s\rangle = \textstyle\int |s|^2 dt \text{ è reale: «posso togliere Re»}
+\end{aligned}
+</div><p>In componenti: <span class="math inline">\|s_p\|^2 = \|s_c\|^2 + \|s_s\|^2</span>, cioè l'energia di I più quella di Q.</p>
+<blockquote class="co avv"><p>⚠️ Nelle note a mano:</p>
+<ul>
+<li>il secondo passaggio è indicato come «proprietà (10)», ma usa la (19);</li>
+<li>in alto c'è scritto <span class="math inline">s_p(t) = x_c(t) + x_s(t) = \sqrt2 s_c\cos(2\pi f_c t) + \sqrt2 s_s\sin(2\pi f_c t)</span>, ma dalla (17) è <span class="math inline">s_p = x_c - x_s</span>, con il meno davanti al termine in seno. Per l'ortogonalità il segno non conta, per l'uguaglianza con <span class="math inline">s_p</span> sì.</li>
+</ul>
+</blockquote>
+<img class="zoom" src="img/rappresentazione-rice-p19-appunti-prodotto-scalare-energia.png" alt="" loading="lazy">
+<p><em>Appunti a mano: conclusione della verifica della (19), <span class="math inline">\text{Re}\{\int[u_c + ju_s][v_c - jv_s]\,dt\} = \text{Re}\{\langle u, v\rangle\}</span>, con <span class="math inline">u</span> inviluppo complesso di <span class="math inline">u_p</span> e <span class="math inline">v^\ast</span> il coniugato di <span class="math inline">v</span>. Sotto, la (20): <span class="math inline">\langle s_p, s_p\rangle = \int s_p^2\,dt = \|s_p\|^2 = \text{Re}\{\langle s, s\rangle\} = \text{Re}\{\int|s|^2dt\} = \|s\|^2</span>, dove l'integrale è reale e quindi si può togliere Re.</em>
+<strong>Perché torna esatto:</strong> è l'effetto del <span class="math inline">\sqrt2</span> nella (3), vedi segnale analitico (sezione «Derivazione — Perché proprio √2»). Nota a mano: alla domanda se tutti i passaggi conservano l'energia, la risposta è «sì, per le accortezze fatte (<span class="math inline">\sqrt2</span>)».</p>
+</details>
+<details class="der"><summary>Derivazione — Frequenza di campionamento: passa-banda contro inviluppo</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia, con il teorema del campionamento (teorema del campionamento).
+⚠️ Notazione: nella lezione sul campionamento <span class="math inline">f_c</span> era la frequenza di campionamento; qui <span class="math inline">f_c</span> è la portante, quindi la frequenza di campionamento si chiama <span class="math inline">f_s</span>.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+f_{s,\,p} &amp;\ge 2\Big(f_c + \frac B2\Big) = 2f_c + B &amp;&amp; s_p \text{ è reale e la sua frequenza massima è } f_c + B/2 \\
+f_{s,\,\text{inv}} &amp;\ge B &amp;&amp; s(t) \text{ occupa } (-B/2,\ B/2):\ \text{repliche ogni } f_s \text{ senza sovrapposizione se } f_s \ge B \\
+\frac{f_{s,\,p}}{f_{s,\,\text{inv}}} &amp;= \frac{2f_c}{B} + 1 \gg 1 &amp;&amp; \text{banda stretta: } B \ll f_c
+\end{aligned}
+</div><p>Ogni campione dell'inviluppo è complesso, cioè due numeri reali. Anche contando <span class="math inline">2B</span> numeri reali al secondo, il rapporto resta dell'ordine di <span class="math inline">f_c/B</span>.
+<strong>Ipotesi:</strong> <span class="math inline">f_c</span> al centro del lobo; campionamento ideale. Per <span class="math inline">s(t)</span> la condizione nasce dallo stesso argomento delle repliche, applicato a uno spettro non simmetrico.</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Upconversion e downconversion</span></summary><div class="cb"><h4 id="upconversion-e-downconversion-spiegazione">Spiegazione</h4>
+<h4 id="upconversion-e-downconversion-gli-schemi-a-blocchi">Gli schemi a blocchi</h4>
+<img class="zoom" src="img/rappresentazione-rice-p20-upconversion-downconversion.png" alt="" loading="lazy">
+<ul>
+<li><em>Upconversion (da banda base a banda passante): <span class="math inline">s_c(t)</span> moltiplicato per <span class="math inline">\sqrt2\cos 2\pi f_c t</span>, <span class="math inline">s_s(t)</span> moltiplicato per <span class="math inline">-\sqrt2\sin 2\pi f_c t</span>; la somma dei due dà <span class="math inline">s_p(t)</span>.</em></li>
+<li><em>Downconversion (da banda passante a banda base): <span class="math inline">s_p(t)</span> entra in due rami; uno lo moltiplica per <span class="math inline">\sqrt2\cos 2\pi f_c t</span> e lo filtra passa-basso ottenendo <span class="math inline">s_c(t)</span>, l'altro lo moltiplica per <span class="math inline">-\sqrt2\sin 2\pi f_c t</span> e lo filtra ottenendo <span class="math inline">s_s(t)</span>.</em></li>
+<li><em>Note a mano: a sinistra S → <span class="math inline">s(n)</span> → MOD, che produce le due componenti <span class="math inline">s_c(t)</span> e <span class="math inline">s_s(t)</span> in ingresso all'upconverter. Sopra il modulatore: «esce l'inviluppo». Sotto la (21), i due termini a <span class="math inline">2f_c</span> sono sottolineati con «tagliati dal filtro».</em></li>
+</ul>
+<blockquote class="co conn"><p>💡 Connessione: «esce l'inviluppo» vuol dire che il modulatore di questo disegno è la sola parte in banda base. Nelle note il macroblocco &quot;modulatore&quot; comprende anche l'upconversion: il nome MOD qui indica solo il primo dei due passi (modulazione digitale).</p>
+</blockquote>
+<h4 id="upconversion-e-downconversion-l-upconversion-nel-tempo-cosa-produce-ogni-ramo">L'upconversion nel tempo: cosa produce ogni ramo</h4>
+<img class="zoom" src="img/grafico-rice-upconversion-tempo.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio dell'eq. (17). Esempio: <span class="math inline">f_c = 10</span> kHz, <span class="math inline">s_c(t) = \cos(2\pi\,1\,\text{kHz}\,t) + 0.5\cos(2\pi\,2\,\text{kHz}\,t)</span> (blu), <span class="math inline">s_s(t) = 0.8\sin(2\pi\,1.5\,\text{kHz}\,t)</span> (arancio). Tempo in ms, due periodi della banda base.</em></p>
+<ul>
+<li><em>In alto, ramo I: la curva spessa è <span class="math inline">s_c(t)</span>; moltiplicata per <span class="math inline">\sqrt{2}\cos(2\pi f_c t)</span> diventa una portante a 10 kHz la cui ampiezza segue <span class="math inline">s_c</span> (curva sottile). Dove <span class="math inline">s_c</span> è negativo la portante è capovolta.</em></li>
+<li><em>Al centro, ramo Q: lo stesso con <span class="math inline">s_s(t)</span> e la portante in quadratura <span class="math inline">-\sqrt{2}\sin(2\pi f_c t)</span>.</em></li>
+<li><em>In basso, la somma dei due rami è <span class="math inline">s_p(t)</span>, un unico segnale reale. Il suo inviluppo (tratteggio rosso) è <span class="math inline">\pm\sqrt{2}\,|s(t)|</span>, con <span class="math inline">|s| = \sqrt{s_c^2 + s_s^2}</span>: a <span class="math inline">t = 0</span> vale <span class="math inline">\sqrt{2}\cdot 1.5 = 2.12</span>, perché <span class="math inline">s_s(0) = 0</span>.</em></li>
+</ul>
+<p>La portante ha periodo 0.1 ms, cioè 20 oscillazioni nel grafico, mentre l'inviluppo cambia in frazioni di ms: è la separazione &quot;lento contro veloce&quot;. Qui <span class="math inline">f_c</span> è bassa solo per rendere visibili le oscillazioni.</p>
+<h4 id="upconversion-e-downconversion-la-downconversion-nel-tempo-perche-serve-il-pass">La downconversion nel tempo: perché serve il passa-basso</h4>
+<img class="zoom" src="img/grafico-rice-downconversion-tempo.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio dell'eq. (21), stesso esempio. A sinistra il ramo I, a destra il ramo Q.</em></p>
+<ul>
+<li><em>In alto: l'ingresso <span class="math inline">s_p(t)</span>, lo stesso segnale passa-banda dell'upconversion.</em></li>
+<li><em>Al centro: dopo il moltiplicatore (blu per il ramo I, arancio per il Q) il segnale è la <strong>parte lenta</strong> (tratteggio rosso, <span class="math inline">s_c</span> o <span class="math inline">s_s</span>) più oscillazioni a <span class="math inline">2f_c = 20</span> kHz che la attraversano. Sono i termini <span class="math inline">s_c\cos(4\pi f_c t) - s_s\sin(4\pi f_c t)</span> della (21), e per il ramo Q i termini <span class="math inline">-s_s\cos(4\pi f_c t) - s_c\sin(4\pi f_c t)</span>.</em></li>
+<li><em>In basso: il passa-basso (taglio a 5 kHz, tra la banda 2 kHz e i 18 kHz in cui iniziano i termini a <span class="math inline">2f_c</span>) toglie le oscillazioni veloci e restituisce <span class="math inline">s_c</span> e <span class="math inline">s_s</span>. L'uscita (colore) si sovrappone alla componente originale (grigio), con scarto sotto <span class="math inline">10^{-6}</span> nella verifica numerica.</em></li>
+</ul>
+<blockquote class="co mia"><p>🧩 Si vede anche perché la componente Q non disturba il ramo I: nel ramo I compare nel solo termine a <span class="math inline">2f_c</span>, che il filtro elimina, e non nella parte lenta.</p>
+</blockquote>
+<h4 id="upconversion-e-downconversion-upconversion-e-downconversion-in-frequenza">Upconversion e downconversion in frequenza</h4>
+<img class="zoom" src="img/grafico-rice-up-down-frequenza.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio, con <span class="math inline">f_c = 6</span> kHz per avere le copie più vicine e leggibili. Per disegnare, <span class="math inline">S(f)</span> è preso <strong>reale e asimmetrico</strong> (picco a 0.5 kHz, supporto da −1 a 2 kHz): quindi <span class="math inline">S(f) \ne S^\ast (-f)</span> e <span class="math inline">s(t)</span> è comunque complesso. Le ampiezze sono in unità del picco di <span class="math inline">S</span>.</em></p>
+<ul>
+<li><em>Primo pannello: l'inviluppo complesso <span class="math inline">S(f)</span> in banda base, altezza 1.</em></li>
+<li><em>Upconversion (eq. (14)): <span class="math inline">S_p(f) = [S(f - f_c) + S^{\ast}(-f - f_c)]/\sqrt{2}</span>. Il lobo si sposta a <span class="math inline">+f_c</span> e la sua copia coniugata e specchiata a <span class="math inline">-f_c</span>, entrambi alti <span class="math inline">1/\sqrt{2}</span>.</em></li>
+<li><em>Downconversion, ramo I: moltiplicare per <span class="math inline">\sqrt{2}\cos(2\pi f_c t)</span> vuol dire sommare <span class="math inline">S_p</span> traslato di <span class="math inline">\pm f_c</span>, con un fattore <span class="math inline">1/\sqrt{2}</span>. Si ottengono tre copie: due a <span class="math inline">\pm 2f_c</span>, di altezza <span class="math inline">1/2</span>, e una in banda base, <span class="math inline">[S(f) + S^{\ast}(-f)]/2</span>. Quest'ultima è la somma di due lobi e qui ha altezza circa 0.67, non 1/2. Il riquadro tratteggiato è il passa-basso.</em></li>
+<li><em>Dopo il passa-basso resta la sola copia in banda base: <span class="math inline">[S(f) + S^{\ast}(-f)]/2</span> è la trasformata di <span class="math inline">\text{Re}\{s(t)\} = s_c(t)</span>.</em></li>
+</ul>
+<blockquote class="co mia"><p>🧩 Derivazione mia: per il ramo Q si ragiona allo stesso modo con <span class="math inline">-\sqrt{2}\sin(2\pi f_c t) = -\frac{\sqrt{2}}{2j}(e^{j2\pi f_c t} - e^{-j2\pi f_c t})</span>, e la copia in banda base è <span class="math inline">[S(f) - S^{\ast}(-f)]/(2j)</span>, la trasformata di <span class="math inline">\text{Im}\{s(t)\} = s_s(t)</span>. È la versione in frequenza di &quot;parte reale e parte immaginaria dell'inviluppo&quot;.</p>
+</blockquote>
+<h4 id="upconversion-e-downconversion-la-downconversion-passo-per-passo-animazione">La downconversion passo per passo (animazione)</h4>
+<img class="zoom" src="img/grafico-rice-downconversion.png" alt="" loading="lazy">
+<p><em>🧩 Animazione mia della (21). Stesso esempio del grafico I/Q in inviluppo complesso: I con righe a 1 e 2 kHz (blu), Q con una riga a 1.5 kHz (arancio), <span class="math inline">f_c = 10</span> kHz.</em></p>
+<ol>
+<li><em>Il segnale passa-banda ha le righe di I e di Q attorno a <span class="math inline">\pm f_c</span>.</em></li>
+<li><em>Moltiplicare per <span class="math inline">\sqrt2\cos(2\pi f_c t)</span> sdoppia ogni riga: una copia va verso 0, l'altra verso <span class="math inline">\pm 2f_c</span>.</em></li>
+<li><em>Attorno a 0 le due copie di I si sommano, quelle di Q hanno segno opposto e si cancellano.</em></li>
+<li><em>Il passa-basso elimina le copie a <span class="math inline">\pm 2f_c</span>.</em></li>
+<li><em>Esce <span class="math inline">s_c(t)</span>, identico a quello di partenza.</em></li>
+</ol>
+<p><em>Le ampiezze delle righe sono controllate con la FFT nello script: 0.5 e 0.25 in banda base, nessuna riga a 1.5 kHz.</em></p>
+<h4 id="upconversion-e-downconversion-tutta-la-catena-come-un-unico-canale">Tutta la catena come un unico canale</h4>
+<img class="zoom" src="img/rappresentazione-rice-p21-appunti-canale-equivalente.png" alt="" loading="lazy">
+<p><em>Appunti a mano: S → MOD → upconverter → canale fisico → downconverter → DEMOD → utente. I tre blocchi centrali, cerchiati, sono «modellati come un unico canale». A destra la domanda «con tutti i passaggi che abbiamo fatto si conserva l'energia?» e la risposta «sì, per le accortezze fatte (<span class="math inline">\sqrt2</span>)».</em></p>
+<ul>
+<li>Modulatore e demodulatore lavorano in banda base. Tutto quello che sta in mezzo (upconverter, canale fisico, downconverter) si può vedere come <strong>un solo canale equivalente in banda base</strong>. Come si descrive il filtraggio del canale in banda base è in equivalente banda base dei filtri.</li>
+<li>L'energia si conserva lungo la catena grazie ai fattori <span class="math inline">\sqrt2</span>: eq. (20) e derivazione del <span class="math inline">\sqrt2</span> qui sopra.</li>
+</ul>
+<h4 id="upconversion-e-downconversion-cosa-si-recupera-davvero">Cosa si recupera davvero</h4>
+<p>La downconversion estrae le variazioni <strong>lente</strong> di ampiezza e fase dovute alla modulazione, e toglie la variazione di fase <strong>rapida e prevedibile</strong> dovuta a <span class="math inline">f_c</span>. Quella variazione non porta informazione, quindi l'inviluppo complesso contiene <strong>tutta</strong> l'informazione del segnale passa-banda. Nota a mano in testa alla slide: «l'inviluppo complesso ci permette di separare le variazioni lente introdotte dalla modulazione in banda base». Sulla slide sono evidenziati «eliminating» e <span class="math inline">f_c</span>: la parte eliminata è proprio quella legata alla portante. Dettagli e grafico in inviluppo complesso.</p>
+<blockquote class="co esame"><p>🎯 Esame: disegnare gli schemi di upconversion e downconversion; ricavare la (21) e il ramo Q; spiegare perché serve il passa-basso e che banda deve avere; spiegare perché Q non &quot;sporca&quot; il ramo I.</p>
+</blockquote>
+<h4 id="upconversion-e-downconversion-perche-importa">Perché importa</h4>
+<p>Nello schema modulare del transceiver upconversion e downconversion sono gli unici passi che toccano il segnale passa-banda. Tutto il resto lo fa il DSP sull'inviluppo in banda base: codifica, modulazione e filtraggio in trasmissione; sincronizzazione, demodulazione e decodifica in ricezione. Upconverter e downconverter sono quindi l'interfaccia tra il mondo in banda base del DSP e il canale fisico passa-banda. La slide aggiunge che così i transceiver elaborano in digitale direttamente l'inviluppo, «riducendo al minimo la parte di elaborazione analogica» (nota a mano).</p>
+<img class="zoom" src="img/rappresentazione-rice-p10-schema-modulare-transceiver.png" alt="" loading="lazy">
+<p><em>Slide con le note a mano: le parentesi graffe raggruppano i quattro passi in modulatore e demodulatore.</em></p>
+<p>Le note a mano raggruppano i passi in due <strong>macroblocchi</strong>:</p>
+<ul>
+<li><strong>modulatore</strong> = DSP di trasmissione + upconversion;</li>
+<li><strong>demodulatore</strong> = downconversion + DSP di ricezione.</li>
+</ul>
+<p>Grazie a questa separazione gli algoritmi si sviluppano in banda base, indipendentemente dalla banda fisica usata. Nota a mano: «quindi ci si è svincolati dalla frequenza carrier (<span class="math inline">f_c</span>)».</p>
+<blockquote class="co mia"><p>🧩 Conseguenza pratica (mia): <span class="math inline">f_c</span> compare solo nelle portanti <span class="math inline">\sqrt2\cos(2\pi f_c t)</span> e <span class="math inline">-\sqrt2\sin(2\pi f_c t)</span> dei due convertitori. Per trasmettere su un'altra banda basta cambiare quelle; il DSP resta identico.</p>
+</blockquote>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Eq. (21): ramo I della downconversion</summary>
+<div class="math block">
+\begin{aligned}
+\sqrt2\,s_p\cos\alpha &amp;= \sqrt2\big[\sqrt2\,s_c\cos\alpha - \sqrt2\,s_s\sin\alpha\big]\cos\alpha &amp;&amp; \text{sostituisco la (17); } \alpha = 2\pi f_c t \\
+&amp;= 2\,s_c\cos^2\alpha - 2\,s_s\sin\alpha\cos\alpha &amp;&amp; \sqrt2\cdot\sqrt2 = 2 \\
+&amp;= s_c\,(1 + \cos 2\alpha) - s_s\sin 2\alpha &amp;&amp; 2\cos^2\alpha = 1 + \cos 2\alpha;\ \ 2\sin\alpha\cos\alpha = \sin 2\alpha \\
+&amp;= s_c(t) + s_c(t)\cos(4\pi f_c t) - s_s(t)\sin(4\pi f_c t) &amp;&amp; 2\alpha = 4\pi f_c t
+\end{aligned}
+</div><p><strong>Lettura:</strong> il primo termine è <span class="math inline">s_c(t)</span>, in banda base. Gli altri due sono <span class="math inline">s_c</span> e <span class="math inline">s_s</span> riportati attorno a <span class="math inline">2f_c</span>. La nota a mano sulla slide li sottolinea con «tagliati dal filtro»: è il passa-basso a eliminarli. La componente Q compare <strong>solo</strong> attorno a <span class="math inline">2f_c</span>: il prodotto <span class="math inline">\sin\alpha\cos\alpha</span> non ha parte lenta.</p>
+</details>
+<details class="der"><summary>Derivazione — Ramo Q della downconversion</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+-\sqrt2\,s_p\sin\alpha &amp;= -\sqrt2\big[\sqrt2\,s_c\cos\alpha - \sqrt2\,s_s\sin\alpha\big]\sin\alpha &amp;&amp; \text{sostituisco la (17)} \\
+&amp;= -2\,s_c\sin\alpha\cos\alpha + 2\,s_s\sin^2\alpha &amp;&amp; \text{sviluppo} \\
+&amp;= -s_c\sin 2\alpha + s_s\,(1 - \cos 2\alpha) &amp;&amp; 2\sin^2\alpha = 1 - \cos 2\alpha \\
+&amp;= s_s(t) - s_s(t)\cos(4\pi f_c t) - s_c(t)\sin(4\pi f_c t)
+\end{aligned}
+</div><p>Dopo il passa-basso resta <span class="math inline">s_s(t)</span>. Il segno meno davanti a <span class="math inline">\sqrt2\sin</span> compensa il meno della (17).</p>
+</details>
+<details class="der"><summary>Derivazione — Requisito sul filtro passa-basso</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia. <span class="math inline">W</span> = banda di <span class="math inline">s_c</span> e <span class="math inline">s_s</span> (per un segnale passa-banda <span class="math inline">W = B/2</span>, vedi inviluppo complesso).</p>
+</blockquote>
+<ul>
+<li>Il termine utile <span class="math inline">s_c(t)</span> occupa <span class="math inline">|f| &lt; W</span>.</li>
+<li>I termini <span class="math inline">s_c\cos(4\pi f_c t)</span> e <span class="math inline">s_s\sin(4\pi f_c t)</span> occupano <span class="math inline">|f \mp 2f_c| &lt; W</span>, cioè da <span class="math inline">2f_c - W</span> in su.</li>
+<li>Un passa-basso con frequenza di taglio <span class="math inline">f_{LP}</span> li separa se
+<div class="math inline">W \le f_{LP} \le 2f_c - W</div></li>
+<li>L'intervallo esiste se <span class="math inline">W \le 2f_c - W</span>, cioè <span class="math inline">W \le f_c</span>: sempre vero per un segnale passa-banda, perché <span class="math inline">W = B/2 &lt; f_c</span>. Con la banda stretta (<span class="math inline">B \ll f_c</span>) i termini a <span class="math inline">2f_c</span> sono lontanissimi e il filtro è facile da realizzare.</li>
+</ul>
+<img class="zoom" src="img/grafico-rice-requisito-passabasso.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio, con <span class="math inline">f_c = 10</span> kHz e <span class="math inline">W = 2</span> kHz (i valori dell'esempio nel tempo). Spettro dopo il moltiplicatore: in blu la banda utile <span class="math inline">|f| &lt; W</span>, in arancio le due copie a <span class="math inline">\pm 2f_c</span>, che occupano <span class="math inline">|f \mp 2f_c| &lt; W</span>, cioè da <span class="math inline">2f_c - W = 18</span> kHz a <span class="math inline">22</span> kHz. Il riquadro tratteggiato è la risposta del passa-basso, con taglio <span class="math inline">f_{LP}</span>. Le altezze sono solo indicative.</em></p>
+<ul>
+<li><em>(a) Con <span class="math inline">f_{LP} = 5</span> kHz il filtro contiene tutta la banda utile e nessuna copia: è la scelta giusta. La freccia verde mostra l'intero intervallo ammesso, da <span class="math inline">W</span> a <span class="math inline">2f_c - W</span>, cioè qui da 2 a 18 kHz.</em></li>
+<li><em>(b) Con <span class="math inline">f_{LP} = 1</span> kHz <span class="math inline">&lt; W</span> il taglio cade dentro la banda utile: le parti tratteggiate in rosso, tra 1 e 2 kHz, sono perse e <span class="math inline">s_c</span> esce deformato.</em></li>
+<li><em>(c) Con <span class="math inline">f_{LP} = 19</span> kHz <span class="math inline">&gt; 2f_c - W</span> il filtro lascia passare l'inizio delle copie a <span class="math inline">\pm 2f_c</span>, tra 18 e 19 kHz: il segnale in uscita porta con sé un residuo della portante.</em></li>
+</ul>
+<p>Le due condizioni sono i due lati dell'intervallo. Il lato inferiore, <span class="math inline">f_{LP} \geq W</span>, protegge il segnale utile. Il lato superiore, <span class="math inline">f_{LP} \leq 2f_c - W</span>, elimina le copie. L'intervallo è lungo <span class="math inline">2f_c - 2W</span>: più la portante è alta rispetto alla banda, più c'è margine per realizzare un filtro non ideale, con una fascia di transizione.</p>
+</details>
+<details class="der"><summary>Derivazione — Perché il √2 nei moltiplicatori</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia</p>
+</blockquote>
+<p>Il guadagno complessivo del ramo I, dal trasmettitore all'uscita del filtro, è
+<div class="math inline">\underbrace{\sqrt2}_{\text{upconverter}}\cdot\underbrace{\sqrt2}_{\text{downconverter}}\cdot\underbrace{\tfrac12}_{\text{parte lenta di }\cos^2} = 1</div>
+Quindi <span class="math inline">s_c</span> esce senza cambiare ampiezza. Nello stesso tempo <span class="math inline">s_p</span> ha la stessa energia di <span class="math inline">s</span>, eq. (20) di inviluppo complesso.</p>
+</details>
+<details class="der"><summary>Derivazione — I due rami sono una sola moltiplicazione complessa</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia: collega lo schema a due rami alla (15).</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+\sqrt2\,s_p(t)\,e^{-j2\pi f_c t} &amp;= \sqrt2\,s_p\cos\alpha - j\sqrt2\,s_p\sin\alpha &amp;&amp; \text{Eulero: } e^{-j\alpha} = \cos\alpha - j\sin\alpha \\
+&amp;= \big[\sqrt2\,s_p\cos\alpha\big] + j\big[-\sqrt2\,s_p\sin\alpha\big] &amp;&amp; \text{parte reale = ramo I, parte immaginaria = ramo Q} \\
+\text{LPF}\{\cdot\} &amp;= s_c(t) + j\,s_s(t) = s(t) &amp;&amp; \text{(21) e ramo Q}
+\end{aligned}
+</div><p>La downconversion è quindi &quot;moltiplica per <span class="math inline">\sqrt2\,e^{-j2\pi f_c t}</span> e filtra&quot;. Corrisponde alla (15), che trasla lo spettro di <span class="math inline">-f_c</span>. Il filtro qui serve a eliminare le repliche a <span class="math inline">\pm 2f_c</span>, che la (15) non genera perché parte dal segnale analitico, privo delle frequenze negative.</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Equivalente in banda base di un filtro passa-banda</span></summary><div class="cb"><h4 id="equivalente-banda-base-dei-filtri-spiegazione">Spiegazione</h4>
+<h4 id="equivalente-banda-base-dei-filtri-passa-banda-e-banda-base-a-confronto">Passa-banda e banda base a confronto</h4>
+<img class="zoom" src="img/rappresentazione-rice-p25-filtraggio-spettri.png" alt="" loading="lazy">
+<p><em>A sinistra, in banda passante: filtro <span class="math inline">H_p(f)</span>, rettangoli di altezza <span class="math inline">A</span> attorno a <span class="math inline">\pm f_c</span>; ingresso <span class="math inline">S_p(f)</span>, triangoli di altezza <span class="math inline">B</span>; uscita <span class="math inline">Y_p(f)</span>, il triangolo &quot;tagliato&quot; dal rettangolo, altezza <span class="math inline">AB</span>. A destra, in banda base complessa, gli stessi spettri attorno a 0 con un solo lobo: filtro <span class="math inline">H(f)</span> di altezza <span class="math inline">\sqrt2 A</span>, ingresso <span class="math inline">S(f)</span> di altezza <span class="math inline">\sqrt2 B</span>, uscita <span class="math inline">Y(f)</span> di altezza <span class="math inline">\sqrt2 AB</span>.</em></p>
+<h4 id="equivalente-banda-base-dei-filtri-realizzazione-con-operazioni-reali">Realizzazione con operazioni reali</h4>
+<img class="zoom" src="img/rappresentazione-rice-p26-filtro-banda-base-iq.png" alt="" loading="lazy">
+<ul>
+<li><em>Il segnale passa-banda <span class="math inline">s_p(t)</span> entra nel downconverter, che produce <span class="math inline">s_c(t)</span> e <span class="math inline">s_s(t)</span>.</em></li>
+<li><em>Il riquadro tratteggiato, &quot;operazioni reali in banda base&quot;, contiene quattro filtri reali: <span class="math inline">s_c</span> passa per <span class="math inline">h_c</span> e <span class="math inline">h_s</span>, <span class="math inline">s_s</span> per <span class="math inline">h_c</span> e <span class="math inline">h_s</span>. Due sommatori formano <span class="math inline">y_c = s_c \ast h_c - s_s \ast h_s</span> (con il segno meno) e <span class="math inline">y_s = s_s \ast h_c + s_c \ast h_s</span>.</em></li>
+<li><em>A mano, sotto: la catena delle (24)–(25) riportata nella derivazione sopra.</em></li>
+<li><em>A mano, a destra: le due uscite confluiscono in un sommatore che forma <span class="math inline">y(t)</span>, «segnale in banda base». <span class="math inline">y(t)</span> va a un DSP «che lavora in banda base».</em></li>
+</ul>
+<blockquote class="co avv"><p>⚠️ Nella figura manca il fattore <span class="math inline">1/\sqrt2</span> delle (24)–(25): le uscite disegnate sono <span class="math inline">\sqrt2\,y_c</span> e <span class="math inline">\sqrt2\,y_s</span>. La nota a mano sotto lo schema invece il <span class="math inline">1/\sqrt2</span> ce l'ha.</p>
+</blockquote>
+<blockquote class="co mia"><p>🧩 Il sommatore disegnato a mano va letto come <span class="math inline">y = y_c + j\,y_s</span>: la componente Q entra moltiplicata per <span class="math inline">j</span>, non sommata così com'è. Nel DSP le due componenti viaggiano come parte reale e parte immaginaria di un unico numero complesso.</p>
+</blockquote>
+<blockquote class="co mia"><p>🧩 Quando i termini incrociati spariscono (osservazione mia): se <span class="math inline">h(t)</span> è reale, cioè <span class="math inline">h_s = 0</span>, le (24)–(25) diventano <span class="math inline">y_c = \frac{1}{\sqrt2}\,s_c \ast h_c</span> e <span class="math inline">y_s = \frac{1}{\sqrt2}\,s_s \ast h_c</span>. I e Q vengono filtrati separatamente, senza mescolarsi. Per la simmetria hermitiana (segnali banda base e passa banda), <span class="math inline">h</span> è reale quando <span class="math inline">H(f) = H^\ast (-f)</span>, cioè quando il filtro passa-banda è simmetrico (coniugato) attorno a <span class="math inline">f_c</span>. Nella figura il rettangolo <span class="math inline">H(f)</span> non è centrato in 0: in quel caso <span class="math inline">h_s \neq 0</span> e i termini incrociati ci sono.</p>
+</blockquote>
+<h4 id="equivalente-banda-base-dei-filtri-a-cosa-serve">A cosa serve</h4>
+<p>Gli appunti vedono upconverter, canale fisico e downconverter come <strong>un unico canale</strong> (upconversion e downconversion). Questa pagina dice come descriverlo: se il canale fisico è un filtro LTI passa-banda <span class="math inline">h_p</span>, visto dalla banda base è il filtro <span class="math inline">h/\sqrt2</span> che agisce sull'inviluppo. Tutto si può quindi simulare e trattare in banda base. La nota a mano chiude il cerchio: l'uscita <span class="math inline">y(t)</span> è un segnale in banda base e va al DSP del ricevitore, che lavora in banda base.</p>
+<blockquote class="co esame"><p>🎯 Esame: ricavare la (22) partendo dai segnali analitici; spiegare il fattore <span class="math inline">1/\sqrt2</span>; scrivere le (24)–(25) e disegnare lo schema con quattro filtri reali.</p>
+</blockquote>
+<h4 id="equivalente-banda-base-dei-filtri-perche-importa">Perché importa</h4>
+<p>Completa la rappresentazione in banda base. Non solo i segnali, ma anche i <strong>sistemi</strong> passa-banda (filtri, canali LTI) hanno un equivalente in banda base. Si può allora lavorare interamente con gli inviluppi, dal modulatore al demodulatore, senza mai tornare a <span class="math inline">f_c</span>.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Eq. (22)</summary>
+<blockquote class="co mia"><p>📄 La catena è quella degli appunti. Lì l'ingresso si chiama <span class="math inline">x_p(t)</span> (inviluppo <span class="math inline">x(t)</span>); qui uso <span class="math inline">s</span> come nella slide. Tra virgolette le note a mano; gli altri commenti sono 🧩 miei.</p>
+</blockquote>
+<p>Gli appunti partono da <span class="math inline">y_p(t) = x_p(t) \ast h_p(t)</span> e dalla domanda «l'uscita come diventa in termini di inviluppo complesso?». La risposta: «ragioniamo in <span class="math inline">f</span>». Nel tempo c'è una convoluzione; in frequenza diventa un prodotto, <span class="math inline">Y_p(f) = X_p(f)\,H_p(f)</span>, molto più facile da maneggiare. Servono poi i tre segnali analitici, scritti uno sotto l'altro negli appunti:
+<div class="math inline">Y_p^+(f) = \sqrt2\,Y_p(f)\,u(f), \qquad X_p^+(f) = \sqrt2\,X_p(f)\,u(f), \qquad H_p^+(f) = \sqrt2\,H_p(f)\,u(f)</div></p>
+<div class="math block">
+\begin{aligned}
+Y(f) &amp;= Y_p^+(f + f_c) &amp;&amp; \text{definizione (13) di inviluppo, applicata a } y_p \\
+&amp;= \sqrt2\,Y_p(f + f_c)\,u(f + f_c) &amp;&amp; \text{definizione (3) di segnale analitico, calcolata in } f + f_c \\
+&amp;= \sqrt2\,S_p(f + f_c)\,H_p(f + f_c)\,u^2(f + f_c) &amp;&amp; \text{«sostituisco l&#x27;uscita» } Y_p = S_p H_p;\ u \to u^2 \text{ «non altera nulla»} \\
+&amp;= \sqrt2\,S_p(f + f_c)\,H_p(f + f_c)\,u^2(f + f_c)\cdot\frac{\sqrt2}{\sqrt2} &amp;&amp; \text{moltiplico e divido per } \sqrt2 \\
+&amp;= \frac{1}{\sqrt2}\,\big[\sqrt2\,S_p(f + f_c)\,u(f + f_c)\big]\,\big[\sqrt2\,H_p(f + f_c)\,u(f + f_c)\big] &amp;&amp; \text{un } \sqrt2 \text{ e una } u \text{ per fattore; } \tfrac{1}{\sqrt2} \text{ «resta fuori»} \\
+&amp;= \frac{1}{\sqrt2}\,S(f)\,H(f) &amp;&amp; \text{(13) per } s \text{ e per } h\text{: le parentesi sono } S(f) \text{ e } H(f)
+\end{aligned}
+</div><p>Il perché dei due trucchi:</p>
+<ul>
+<li><strong><span class="math inline">u \to u^2</span>.</strong> Il gradino vale solo 0 o 1, e <span class="math inline">0^2 = 0</span>, <span class="math inline">1^2 = 1</span>: elevarlo al quadrato non cambia nulla. Serve ad avere <strong>due</strong> gradini, uno da assegnare a <span class="math inline">S_p</span> e uno a <span class="math inline">H_p</span>. Così ciascuno dei due fattori diventa il segnale analitico del suo segnale.</li>
+<li><strong><span class="math inline">\cdot\sqrt2/\sqrt2</span>.</strong> Anche questo non cambia il valore (moltiplica per 1). Nella riga c'è un solo <span class="math inline">\sqrt2</span>, ma per ricostruire due inviluppi ne servono due, uno per fattore. Moltiplicando e dividendo per <span class="math inline">\sqrt2</span> al numeratore ce ne sono due, <span class="math inline">\sqrt2\cdot\sqrt2</span>, e al denominatore resta un <span class="math inline">\sqrt2</span>: è il <span class="math inline">\frac{1}{\sqrt2}</span> che «resta fuori».</li>
+</ul>
+<p><strong>Da dove viene il <span class="math inline">1/\sqrt2</span>:</strong> ogni inviluppo porta con sé un <span class="math inline">\sqrt2</span> (definizione (3)). Nel prodotto <span class="math inline">SH</span> i fattori <span class="math inline">\sqrt2</span> sono due, mentre <span class="math inline">Y</span>, che è un solo inviluppo, ne deve avere uno solo. Il <span class="math inline">1/\sqrt2</span> toglie quello in più.</p>
+<p><strong>Sanity check (🧩):</strong> controllo sulle altezze della figura, più sotto: torna <span class="math inline">\sqrt2 AB</span> ✓.</p>
+<img class="zoom" src="img/rappresentazione-rice-p24-appunti-filtro-equivalente.png" alt="" loading="lazy">
+<p><em>Appunti a mano.</em></p>
+<ul>
+<li><em>A sinistra, due schemi: in alto il sistema reale, <span class="math inline">x_p(t)</span> → LTI con <span class="math inline">h_p(t)</span> → <span class="math inline">y_p(t)</span>; sotto lo stesso sistema visto sugli inviluppi, <span class="math inline">x(t)</span> → LTI con <span class="math inline">h(t)</span> → <span class="math inline">y(t)</span>.</em></li>
+<li><em>A destra la catena della (22), come sopra, con le tre note in verde e azzurro: «sostituisco l'uscita», «non altera nulla» su <span class="math inline">u^2</span>, «resta fuori» sotto <span class="math inline">\frac{1}{\sqrt2}</span>.</em></li>
+<li><em>In fondo la conclusione: l'inviluppo complesso di <span class="math inline">y_p(t)</span> nel dominio della frequenza è <span class="math inline">Y(f) = \frac{1}{\sqrt2}X(f)H(f)</span>, «che si traduce nel dominio del tempo» in <span class="math inline">y(t) = \frac{1}{\sqrt2}\,x(t) \ast h(t)</span>.</em></li>
+</ul>
+</details>
+<details class="der"><summary>Derivazione — Eq. (23)</summary>
+<div class="math block">
+y(t) = \mathcal{F}^{-1}[Y(f)] = \frac{1}{\sqrt2}\,\mathcal{F}^{-1}\big[S(f)\,H(f)\big] = \frac{1}{\sqrt2}\,s(t) * h(t) \qquad \text{prodotto in frequenza} \leftrightarrow \text{convoluzione nel tempo}
+</div></details>
+<details class="der"><summary>Derivazione — Eq. (24) e (25): le componenti I e Q dell'uscita</summary>
+<blockquote class="co mia"><p>📄 La catena è scritta a mano sotto lo schema (prima riga, penultima e ultima). La riga intermedia con i quattro termini e i commenti a destra sono 🧩 miei.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+y(t) &amp;= \frac{1}{\sqrt2}\,s(t) * h(t) &amp;&amp; \text{(23)} \\
+&amp;= \frac{1}{\sqrt2}\,\big[s_c(t) + js_s(t)\big] * \big[h_c(t) + jh_s(t)\big] &amp;&amp; \text{componenti I e Q: } s = s_c + js_s,\ h = h_c + jh_s \\
+&amp;= \frac{1}{\sqrt2}\,\big[s_c * h_c + j\,s_c * h_s + j\,s_s * h_c + j^2\,s_s * h_s\big] &amp;&amp; \text{la convoluzione è bilineare: si sviluppa come un prodotto} \\
+&amp;= \frac{1}{\sqrt2}\,\big[s_c * h_c - s_s * h_s\big] + \frac{j}{\sqrt2}\,\big[s_c * h_s + s_s * h_c\big] &amp;&amp; j^2 = -1;\ \text{raccolgo parte reale e parte immaginaria} \\
+y_c(t) &amp;= \frac{1}{\sqrt2}\big[s_c * h_c - s_s * h_s\big] &amp;&amp; \text{parte reale: eq. (24)} \\
+y_s(t) &amp;= \frac{1}{\sqrt2}\big[s_s * h_c + s_c * h_s\big] &amp;&amp; \text{parte immaginaria: eq. (25)}
+\end{aligned}
+</div><p>Servono <strong>quattro convoluzioni reali</strong>. È la stessa regola del prodotto di due numeri complessi, <span class="math inline">(a + jb)(c + jd) = (ac - bd) + j(bc + ad)</span>, con la convoluzione al posto del prodotto.</p>
+<blockquote class="co mia"><p>🧩 Perché si può sviluppare come un prodotto: la convoluzione è lineare in ciascuno dei due argomenti, <span class="math inline">(a + b) \ast c = a \ast c + b \ast c</span> e <span class="math inline">(\alpha a) \ast c = \alpha\,(a \ast c)</span> anche per <span class="math inline">\alpha = j</span>. I segnali <span class="math inline">s_c, s_s, h_c, h_s</span> sono reali, quindi ogni convoluzione <span class="math inline">s_\cdot \ast h_\cdot</span> è reale e la separazione tra parte reale e immaginaria è quella scritta.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Controllo sulle altezze della figura</summary>
+<blockquote class="co mia"><p>🧩 Verifica mia. In figura <span class="math inline">A</span> è l'altezza del filtro e <span class="math inline">B</span> quella dello spettro d'ingresso (non la banda).</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+\text{passa-banda: } Y_p &amp;= S_p H_p \Rightarrow \text{altezza } A\cdot B = AB &amp;&amp; \text{dove i due spettri si sovrappongono} \\
+\text{banda base: } H &amp;\to \sqrt2 A,\quad S \to \sqrt2 B &amp;&amp; \text{(13): gli inviluppi hanno altezza } \times\sqrt2 \\
+Y &amp;= \tfrac{1}{\sqrt2}\,(\sqrt2 A)(\sqrt2 B) = \sqrt2\,AB &amp;&amp; \text{(22)}
+\end{aligned}
+</div><p>Coincide con il <span class="math inline">\sqrt2 AB</span> della figura, ed è anche l'inviluppo di <span class="math inline">Y_p</span> calcolato direttamente con la (13): <span class="math inline">\sqrt2\cdot AB</span> ✓.</p>
+</details>
+</div></details>
+</section>
+<section id="domande"><h2 class="ps">Domande da esame</h2>
+<ul>
+<li>Definire segnali e canali in banda base e in banda passante. Cos'è la banda monolatera e perché per un segnale reale la bilatera è il doppio? Cos'è un segnale a banda stretta?</li>
+<li>Definire il segnale analitico e ricavarne l'espressione nel tempo con la trasformata di Hilbert. Perché c'è <span class="math inline">\sqrt2</span>? Perché la corrispondenza con <span class="math inline">s_p</span> è biunivoca?</li>
+<li>Definire l'inviluppo complesso e le componenti I/Q. Ricavare <span class="math inline">s_p = \sqrt2 s_c\cos - \sqrt2 s_s\sin</span> e <span class="math inline">S_p(f)</span> in funzione di <span class="math inline">S(f)</span>.</li>
+<li>Dimostrare che l'energia dell'inviluppo è uguale a quella del segnale passa-banda.</li>
+<li>Disegnare e spiegare upconversion e downconversion. Perché serve il passa-basso?</li>
+<li>Ricavare l'equivalente in banda base di un filtro passa-banda e la sua realizzazione con filtri reali.</li>
+<li>Perché conviene elaborare i segnali in banda base?</li>
+</ul>
+
+</section>
+<nav class="pn"><a href="lezione-3.html">← Lezione 3</a><a href="lezione-5.html">Lezione 5 →</a></nav>
+</main>
+<footer>Appunti personali del corso di Trasmissione dei Segnali Digitali (LM Ingegneria Informatica, UNINA). Generato dal wiki con <code>output/crea_sito.py</code>.</footer>
+<div id="lb" hidden></div><a id="su" href="#" hidden aria-label="torna su">↑</a>
+</body></html>

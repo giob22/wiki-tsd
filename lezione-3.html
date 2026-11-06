@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lezione 3 · Quantizzazione non uniforme e companding</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="style.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="app.js"></script></head>
+<body><header class="top"><nav><a href="index.html" class="home">TSD</a><a href="lezione-3.html" aria-current="page">L3</a><a href="lezione-4.html">L4</a><a href="lezione-5.html">L5</a><a href="lezione-7.html">L7</a></nav><span class="fs"><button id="fm" aria-label="testo più piccolo">A−</button><button id="fp" aria-label="testo più grande">A+</button></span></header>
+<main>
+<p class="crumb"><a href="index.html">Intercorso</a> · Lezione 3</p>
+<h1>Quantizzazione non uniforme e companding</h1>
+<p class="breve">Dai limiti della quantizzazione uniforme al quantizzatore ottimo di Lloyd-Max e al companding (leggi µ e A).</p>
+<details class="toc"><summary>Indice della lezione</summary><ul><li class="l3"><a href="#limiti-della-quantizzazione-uniforme">Limiti della quantizzazione uniforme</a></li><li class="l3"><a href="#quantizzazione-non-uniforme">Quantizzazione non uniforme</a></li><li class="l3"><a href="#quantizzazione-ottima-lloyd-max">Quantizzazione ottima: Lloyd-Max</a></li><li class="l3"><a href="#limiti-della-quantizzazione-ottima">Limiti della quantizzazione ottima</a></li><li class="l3"><a href="#analisi-del-companding">Analisi del companding</a></li><li class="l3"><a href="#companding-logaritmico">Companding logaritmico</a></li><li class="l3"><a href="#legge">Legge µ</a></li><li class="l3"><a href="#legge-a">Legge A</a></li><li class="l3"><a href="#prestazioni-del-companding-logaritmico">Prestazioni del companding logaritmico</a></li><li class="l3"><a href="#approfondimenti">Spiegazioni e dimostrazioni passo-passo</a></li><li class="l3"><a href="#domande">Domande da esame</a></li></ul></details>
+<section id="corso"><h2 class="ps">Il corso, slide per slide</h2>
+<h3 id="limiti-della-quantizzazione-uniforme">Limiti della quantizzazione uniforme</h3>
+<p>La quantizzazione uniforme è teoricamente ottima solo se <span class="math inline">x(n)</span> è uniforme in <span class="math inline">(-X_{max},X_{max})</span>. Il segnale vocale ha pdf non uniforme (valori vicini a zero più probabili), ben modellata da una <strong>distribuzione di Laplace</strong>:</p>
+<div class="math block">f_X(x)=\frac\lambda2\,e^{-\lambda\lvert x\rvert}\qquad(\lambda&gt;0)</div><p>Intuitivamente le ampiezze piccole vanno quantizzate più finemente ⇒ <strong>quantizzazione non uniforme</strong>.</p>
+<figure class="fig"><svg viewBox="0 0 400 175" role="img" aria-label="pdf di Laplace e pdf uniforme" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><path class="fl" d="M23.6 140.0 L23.6 138.5 L25.7 138.4 L27.8 138.3 L29.9 138.3 L32.0 138.2 L34.1 138.1 L36.2 138.0 L38.3 137.9 L40.4 137.8 L42.5 137.6 L44.6 137.5 L46.7 137.4 L48.8 137.3 L50.9 137.1 L53.0 137.0 L55.1 136.8 L57.2 136.7 L59.3 136.5 L61.4 136.3 L63.5 136.1 L65.6 135.9 L67.7 135.7 L69.8 135.5 L71.9 135.3 L74.0 135.0 L76.1 134.8 L78.2 134.5 L80.3 134.2 L82.4 133.9 L84.5 133.6 L86.6 133.3 L88.7 132.9 L90.8 132.6 L92.9 132.2 L95.0 131.8 L97.1 131.4 L99.2 130.9 L101.3 130.5 L103.4 130.0 L105.5 129.5 L107.6 128.9 L109.7 128.4 L111.8 127.8 L113.9 127.1 L116.0 126.5 L118.1 125.8 L120.2 125.0 L122.3 124.3 L124.4 123.5 L126.5 122.6 L128.6 121.7 L130.7 120.8 L132.8 119.8 L134.9 118.8 L137.0 117.7 L139.1 116.5 L141.2 115.3 L143.3 114.1 L145.4 112.7 L147.5 111.3 L149.6 109.9 L151.7 108.3 L153.8 106.7 L155.9 105.0 L158.0 103.2 L160.1 101.3 L162.2 99.3 L164.3 97.3 L166.4 95.1 L168.5 92.8 L170.6 90.3 L172.7 87.8 L174.8 85.1 L176.9 82.3 L179.0 79.3 L181.1 76.2 L183.2 73.0 L185.3 69.5 L187.4 65.9 L189.5 62.1 L191.6 58.1 L193.7 53.9 L195.8 49.5 L197.9 44.9 L200.0 40.0 L202.1 44.9 L204.2 49.5 L206.3 53.9 L208.4 58.1 L210.5 62.1 L212.6 65.9 L214.7 69.5 L216.8 73.0 L218.9 76.2 L221.0 79.3 L223.1 82.3 L225.2 85.1 L227.3 87.8 L229.4 90.3 L231.5 92.8 L233.6 95.1 L235.7 97.3 L237.8 99.3 L239.9 101.3 L242.0 103.2 L244.1 105.0 L246.2 106.7 L248.3 108.3 L250.4 109.9 L252.5 111.3 L254.6 112.7 L256.7 114.1 L258.8 115.3 L260.9 116.5 L263.0 117.7 L265.1 118.8 L267.2 119.8 L269.3 120.8 L271.4 121.7 L273.5 122.6 L275.6 123.5 L277.7 124.3 L279.8 125.0 L281.9 125.8 L284.0 126.5 L286.1 127.1 L288.2 127.8 L290.3 128.4 L292.4 128.9 L294.5 129.5 L296.6 130.0 L298.7 130.5 L300.8 130.9 L302.9 131.4 L305.0 131.8 L307.1 132.2 L309.2 132.6 L311.3 132.9 L313.4 133.3 L315.5 133.6 L317.6 133.9 L319.7 134.2 L321.8 134.5 L323.9 134.8 L326.0 135.0 L328.1 135.3 L330.2 135.5 L332.3 135.7 L334.4 135.9 L336.5 136.1 L338.6 136.3 L340.7 136.5 L342.8 136.7 L344.9 136.8 L347.0 137.0 L349.1 137.1 L351.2 137.3 L353.3 137.4 L355.4 137.5 L357.5 137.6 L359.6 137.8 L361.7 137.9 L363.8 138.0 L365.9 138.1 L368.0 138.2 L370.1 138.3 L372.2 138.3 L374.3 138.4 L376.4 138.5 L376.4 140.0 Z"/><line class="ax" x1="15.2" y1="140.0" x2="384.8" y2="140.0" marker-end="url(#a1)"/><line class="ax" x1="200.0" y1="144.0" x2="200.0" y2="28.0" marker-end="url(#a1)"/><path class="cv" d="M23.6 138.5 L25.7 138.4 L27.8 138.3 L29.9 138.3 L32.0 138.2 L34.1 138.1 L36.2 138.0 L38.3 137.9 L40.4 137.8 L42.5 137.6 L44.6 137.5 L46.7 137.4 L48.8 137.3 L50.9 137.1 L53.0 137.0 L55.1 136.8 L57.2 136.7 L59.3 136.5 L61.4 136.3 L63.5 136.1 L65.6 135.9 L67.7 135.7 L69.8 135.5 L71.9 135.3 L74.0 135.0 L76.1 134.8 L78.2 134.5 L80.3 134.2 L82.4 133.9 L84.5 133.6 L86.6 133.3 L88.7 132.9 L90.8 132.6 L92.9 132.2 L95.0 131.8 L97.1 131.4 L99.2 130.9 L101.3 130.5 L103.4 130.0 L105.5 129.5 L107.6 128.9 L109.7 128.4 L111.8 127.8 L113.9 127.1 L116.0 126.5 L118.1 125.8 L120.2 125.0 L122.3 124.3 L124.4 123.5 L126.5 122.6 L128.6 121.7 L130.7 120.8 L132.8 119.8 L134.9 118.8 L137.0 117.7 L139.1 116.5 L141.2 115.3 L143.3 114.1 L145.4 112.7 L147.5 111.3 L149.6 109.9 L151.7 108.3 L153.8 106.7 L155.9 105.0 L158.0 103.2 L160.1 101.3 L162.2 99.3 L164.3 97.3 L166.4 95.1 L168.5 92.8 L170.6 90.3 L172.7 87.8 L174.8 85.1 L176.9 82.3 L179.0 79.3 L181.1 76.2 L183.2 73.0 L185.3 69.5 L187.4 65.9 L189.5 62.1 L191.6 58.1 L193.7 53.9 L195.8 49.5 L197.9 44.9 L200.0 40.0 L202.1 44.9 L204.2 49.5 L206.3 53.9 L208.4 58.1 L210.5 62.1 L212.6 65.9 L214.7 69.5 L216.8 73.0 L218.9 76.2 L221.0 79.3 L223.1 82.3 L225.2 85.1 L227.3 87.8 L229.4 90.3 L231.5 92.8 L233.6 95.1 L235.7 97.3 L237.8 99.3 L239.9 101.3 L242.0 103.2 L244.1 105.0 L246.2 106.7 L248.3 108.3 L250.4 109.9 L252.5 111.3 L254.6 112.7 L256.7 114.1 L258.8 115.3 L260.9 116.5 L263.0 117.7 L265.1 118.8 L267.2 119.8 L269.3 120.8 L271.4 121.7 L273.5 122.6 L275.6 123.5 L277.7 124.3 L279.8 125.0 L281.9 125.8 L284.0 126.5 L286.1 127.1 L288.2 127.8 L290.3 128.4 L292.4 128.9 L294.5 129.5 L296.6 130.0 L298.7 130.5 L300.8 130.9 L302.9 131.4 L305.0 131.8 L307.1 132.2 L309.2 132.6 L311.3 132.9 L313.4 133.3 L315.5 133.6 L317.6 133.9 L319.7 134.2 L321.8 134.5 L323.9 134.8 L326.0 135.0 L328.1 135.3 L330.2 135.5 L332.3 135.7 L334.4 135.9 L336.5 136.1 L338.6 136.3 L340.7 136.5 L342.8 136.7 L344.9 136.8 L347.0 137.0 L349.1 137.1 L351.2 137.3 L353.3 137.4 L355.4 137.5 L357.5 137.6 L359.6 137.8 L361.7 137.9 L363.8 138.0 L365.9 138.1 L368.0 138.2 L370.1 138.3 L372.2 138.3 L374.3 138.4 L376.4 138.5"/><path class="cv2 dash" d="M74.0 140.0 L74.0 106.7 L326.0 106.7 L326.0 140.0"/><text class="ts" x="208.0" y="28.0" text-anchor="start">f<tspan dy="3" font-size="0.72em">X</tspan><tspan dy="-3">​</tspan>(x)</text><text class="ts" x="388.8" y="155.0" text-anchor="end">x</text><text class="ts" x="74.0" y="155.0" text-anchor="middle">−X<tspan dy="3" font-size="0.72em">max</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="326.0" y="155.0" text-anchor="middle">X<tspan dy="3" font-size="0.72em">max</tspan><tspan dy="-3">​</tspan></text><text class="tx a1" x="238.0" y="52.0" text-anchor="start">Laplace (voce)</text><text class="tx a2" x="324.0" y="100.7" text-anchor="end">uniforme</text><text class="ts" x="238.0" y="70.0" text-anchor="start">vicino a 0 la pdf è alta</text></svg><figcaption>🧩 La pdf di Laplace (<span class="math inline">\lambda=1</span>) concentra la probabilità vicino allo zero; la pdf uniforme (tratteggiata) è il caso in cui il quantizzatore uniforme è ottimo.</figcaption></figure>
+<h3 id="quantizzazione-non-uniforme">Quantizzazione non uniforme</h3>
+<p>Dati <span class="math inline">M+1</span> livelli di decisione <span class="math inline">x_0&lt;x_1&lt;\dots&lt;x_M</span>, con <span class="math inline">x_0=-\infty</span>, <span class="math inline">x_M=+\infty</span>, si ha una partizione <span class="math inline">R_1,\dots,R_M</span> dell'asse reale, <span class="math inline">R_i=(x_{i-1},x_i)</span>: intervalli <em>esterni</em> <span class="math inline">R_1=\,]-\infty,x_1]</span>, <span class="math inline">R_M=[x_{M-1},+\infty[</span>; <em>interni</em> <span class="math inline">R_i</span> per <span class="math inline">i=2,\dots,M-1</span>. Assegnati gli <span class="math inline">M</span> livelli di restituzione <span class="math inline">q_1,\dots,q_M</span>, una legge arbitraria è</p>
+<div class="math block">Q(x)=q_i\quad\text{se }x\in R_i</div><p>Regione granulare <span class="math inline">R_g=\bigcup_{i=2}^{M-1}R_i=(x_1,x_{M-1})</span>; regione di sovraccarico <span class="math inline">R_s=R_1\cup R_M=\,]-\infty,x_1]\cup[x_{M-1},+\infty[</span>.</p>
+<figure class="fig"><svg viewBox="0 0 400 262" role="img" aria-label="caratteristica di un quantizzatore non uniforme" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><line class="ax" x1="60.5" y1="125.0" x2="341.8" y2="125.0" marker-end="url(#a2)"/><line class="ax" x1="200.0" y1="244.2" x2="200.0" y2="5.8" marker-end="url(#a2)"/><line class="gd" x1="83.0" y1="242.0" x2="317.0" y2="8.0"/><path class="cv" d="M65.0 224.0 L125.8 224.0 L125.8 174.5 L164.9 174.5 L164.9 145.2 L190.1 145.2 L190.1 125.0 L209.9 125.0 L209.9 104.8 L235.1 104.8 L235.1 75.5 L274.2 75.5 L274.2 26.0 L335.0 26.0"/><line class="gd" x1="125.8" y1="174.5" x2="125.8" y2="125.0"/><line class="ln" x1="125.8" y1="122.0" x2="125.8" y2="128.0"/><line class="gd" x1="164.9" y1="145.2" x2="164.9" y2="125.0"/><line class="ln" x1="164.9" y1="122.0" x2="164.9" y2="128.0"/><line class="gd" x1="190.1" y1="125.0" x2="190.1" y2="125.0"/><line class="ln" x1="190.1" y1="122.0" x2="190.1" y2="128.0"/><line class="gd" x1="209.9" y1="125.0" x2="209.9" y2="125.0"/><line class="ln" x1="209.9" y1="122.0" x2="209.9" y2="128.0"/><line class="gd" x1="235.1" y1="104.8" x2="235.1" y2="125.0"/><line class="ln" x1="235.1" y1="122.0" x2="235.1" y2="128.0"/><line class="gd" x1="274.2" y1="75.5" x2="274.2" y2="125.0"/><line class="ln" x1="274.2" y1="122.0" x2="274.2" y2="128.0"/><text class="ts a1" x="96.5" y="238.0" text-anchor="middle">q<tspan dy="3" font-size="0.72em">1</tspan><tspan dy="-3">​</tspan></text><text class="ts a1" x="146.0" y="188.5" text-anchor="middle">q<tspan dy="3" font-size="0.72em">2</tspan><tspan dy="-3">​</tspan></text><text class="ts a1" x="177.5" y="159.2" text-anchor="middle">q<tspan dy="3" font-size="0.72em">3</tspan><tspan dy="-3">​</tspan></text><text class="ts a1" x="216.0" y="141.0" text-anchor="middle">q<tspan dy="3" font-size="0.72em">4</tspan><tspan dy="-3">​</tspan></text><text class="ts a1" x="222.5" y="99.8" text-anchor="middle">q<tspan dy="3" font-size="0.72em">5</tspan><tspan dy="-3">​</tspan></text><text class="ts a1" x="254.0" y="70.5" text-anchor="middle">q<tspan dy="3" font-size="0.72em">6</tspan><tspan dy="-3">​</tspan></text><text class="ts a1" x="303.5" y="21.0" text-anchor="middle">q<tspan dy="3" font-size="0.72em">7</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="125.8" y="140.0" text-anchor="middle">x<tspan dy="3" font-size="0.72em">1</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="164.9" y="140.0" text-anchor="middle">x<tspan dy="3" font-size="0.72em">2</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="187.1" y="140.0" text-anchor="middle">x<tspan dy="3" font-size="0.72em">3</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="212.9" y="118.0" text-anchor="middle">x<tspan dy="3" font-size="0.72em">4</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="235.1" y="118.0" text-anchor="middle">x<tspan dy="3" font-size="0.72em">5</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="274.2" y="118.0" text-anchor="middle">x<tspan dy="3" font-size="0.72em">6</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="341.8" y="139.0" text-anchor="end">x</text><text class="ts" x="206.0" y="13.8" text-anchor="start">Q(x)</text><line class="ax" x1="67.0" y1="238.0" x2="67.0" y2="243.0"/><line class="ax" x1="67.0" y1="243.0" x2="123.8" y2="243.0"/><line class="ax" x1="123.8" y1="238.0" x2="123.8" y2="243.0"/><text class="ts" x="95.4" y="255.0" text-anchor="middle">R<tspan dy="3" font-size="0.72em">s</tspan><tspan dy="-3">​</tspan></text><line class="ax" x1="127.8" y1="238.0" x2="127.8" y2="243.0"/><line class="ax" x1="127.8" y1="243.0" x2="272.2" y2="243.0"/><line class="ax" x1="272.2" y1="238.0" x2="272.2" y2="243.0"/><text class="ts" x="200.0" y="255.0" text-anchor="middle">regione granulare R<tspan dy="3" font-size="0.72em">g</tspan><tspan dy="-3">​</tspan></text><line class="ax" x1="276.2" y1="238.0" x2="276.2" y2="243.0"/><line class="ax" x1="276.2" y1="243.0" x2="333.0" y2="243.0"/><line class="ax" x1="333.0" y1="238.0" x2="333.0" y2="243.0"/><text class="ts" x="304.6" y="255.0" text-anchor="middle">R<tspan dy="3" font-size="0.72em">s</tspan><tspan dy="-3">​</tspan></text></svg><figcaption>🧩 Quantizzatore con <span class="math inline">M=7</span> livelli: <span class="math inline">Q(x)=q_i</span> se <span class="math inline">x\in R_i=(x_{i-1},x_i)</span>. Gli scalini sono più stretti vicino a 0. Le due regioni esterne (<span class="math inline">R_1</span>, <span class="math inline">R_7</span>) sono di sovraccarico <span class="math inline">R_s</span>; quelle interne formano la regione granulare <span class="math inline">R_g</span>. I livelli sono scelti qui a metà tra i <span class="math inline">q</span> adiacenti.</figcaption></figure>
+<h3 id="quantizzazione-ottima-lloyd-max">Quantizzazione ottima: Lloyd-Max</h3>
+<p>Con <span class="math inline">e(n)=Q[x(n)]-x(n)</span> e <span class="math inline">f_X(x)</span> la pdf di <span class="math inline">x(n)</span> (supposto stazionario del primo ordine), il valore quadratico medio dell'errore (MSE) è</p>
+<div class="math block">\text{MSE}\triangleq E[e^2(n)]=\sum_{i=1}^{M}\int_{R_i}(q_i-x)^2f_X(x)\,dx</div><p>Il quantizzatore ottimo secondo il criterio MMSE minimizza l'MSE rispetto a intervalli <span class="math inline">R_i</span> (livelli di decisione <span class="math inline">x_1,\dots,x_{M-1}</span>) e livelli <span class="math inline">q_1,\dots,q_M</span>. Non esiste soluzione in forma chiusa, ma si trovano <strong>due condizioni necessarie</strong> fissando un sottoinsieme di variabili e ottimizzando l'altro:</p>
+<ol>
+<li><strong>Fissati i livelli di decisione</strong>, i livelli di restituzione ottimi sono i <strong>centroidi</strong>: <span class="math inline">q_i=E[x(n)\mid x(n)\in R_i]</span>, <span class="math inline">i=1,\dots,M</span> (media condizionale; risultato noto della stima ottima MMSE). <em>(Si ottiene azzerando la derivata dell'MSE rispetto a <span class="math inline">q_i</span>: <span class="math inline">2\int_{R_i}(q_i-x)f_X\,dx=0</span>.)</em></li>
+<li><strong>Fissati i livelli di restituzione</strong>, i livelli di decisione sono i punti medi: <span class="math inline">x_i=\frac{q_i+q_{i+1}}2</span>, <span class="math inline">i=1,\dots,M-1</span> (regola a minima distanza: <span class="math inline">x(n)</span> è approssimato dal livello <span class="math inline">q_i</span> più vicino).</li>
+</ol>
+<p><strong>Algoritmo di Lloyd-Max:</strong> si applicano alternativamente le due condizioni, iterando finché l'MSE non si assesta su un valore sufficientemente piccolo.</p>
+<figure class="fig"><svg viewBox="0 0 400 178" role="img" aria-label="centroide e punto medio di una regione di decisione" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><path class="fl" d="M78.0 144.0 L78.0 82.5 L81.1 84.9 L84.2 87.1 L87.2 89.2 L90.3 91.3 L93.4 93.3 L96.5 95.2 L99.5 97.0 L102.6 98.8 L105.7 100.5 L108.8 102.2 L111.8 103.7 L114.9 105.3 L118.0 106.7 L121.1 108.1 L124.2 109.5 L127.2 110.8 L130.3 112.0 L133.4 113.2 L136.5 114.4 L139.5 115.5 L142.6 116.6 L145.7 117.6 L148.8 118.6 L151.8 119.6 L154.9 120.5 L158.0 121.4 L161.1 122.2 L164.2 123.1 L167.2 123.9 L170.3 124.6 L173.4 125.3 L176.5 126.0 L179.5 126.7 L182.6 127.4 L185.7 128.0 L188.8 128.6 L191.8 129.2 L194.9 129.7 L198.0 130.3 L198.0 144.0 Z"/><line class="ax" x1="24.0" y1="144.0" x2="390.0" y2="144.0" marker-end="url(#a3)"/><line class="ax" x1="30.0" y1="147.0" x2="30.0" y2="16.0" marker-end="url(#a3)"/><path class="cv" d="M30.0 32.0 L32.9 36.0 L35.8 39.8 L38.7 43.5 L41.6 47.1 L44.5 50.5 L47.3 53.8 L50.2 57.0 L53.1 60.1 L56.0 63.1 L58.9 66.0 L61.8 68.7 L64.7 71.4 L67.6 74.0 L70.5 76.5 L73.4 78.9 L76.3 81.2 L79.1 83.4 L82.0 85.6 L84.9 87.6 L87.8 89.6 L90.7 91.6 L93.6 93.4 L96.5 95.2 L99.4 96.9 L102.3 98.6 L105.2 100.2 L108.1 101.8 L110.9 103.3 L113.8 104.7 L116.7 106.1 L119.6 107.5 L122.5 108.8 L125.4 110.0 L128.3 111.2 L131.2 112.4 L134.1 113.5 L137.0 114.6 L139.8 115.6 L142.7 116.6 L145.6 117.6 L148.5 118.5 L151.4 119.4 L154.3 120.3 L157.2 121.2 L160.1 122.0 L163.0 122.8 L165.9 123.5 L168.8 124.2 L171.6 124.9 L174.5 125.6 L177.4 126.3 L180.3 126.9 L183.2 127.5 L186.1 128.1 L189.0 128.7 L191.9 129.2 L194.8 129.7 L197.7 130.2 L200.6 130.7 L203.4 131.2 L206.3 131.6 L209.2 132.1 L212.1 132.5 L215.0 132.9 L217.9 133.3 L220.8 133.7 L223.7 134.1 L226.6 134.4 L229.5 134.7 L232.4 135.1 L235.2 135.4 L238.1 135.7 L241.0 136.0 L243.9 136.3 L246.8 136.5 L249.7 136.8 L252.6 137.1 L255.5 137.3 L258.4 137.6 L261.3 137.8 L264.2 138.0 L267.0 138.2 L269.9 138.4 L272.8 138.6 L275.7 138.8 L278.6 139.0 L281.5 139.2 L284.4 139.3 L287.3 139.5 L290.2 139.7 L293.1 139.8 L295.9 140.0 L298.8 140.1 L301.7 140.2 L304.6 140.4 L307.5 140.5 L310.4 140.6 L313.3 140.8 L316.2 140.9 L319.1 141.0 L322.0 141.1 L324.9 141.2 L327.7 141.3 L330.6 141.4 L333.5 141.5 L336.4 141.6 L339.3 141.7 L342.2 141.7 L345.1 141.8 L348.0 141.9 L350.9 142.0 L353.8 142.0 L356.7 142.1 L359.5 142.2 L362.4 142.2 L365.3 142.3 L368.2 142.4 L371.1 142.4 L374.0 142.5"/><line class="ln" x1="78.0" y1="144.0" x2="78.0" y2="82.5"/><line class="ln" x1="198.0" y1="144.0" x2="198.0" y2="130.3"/><line class="gd" x1="138.0" y1="144.0" x2="138.0" y2="64.0"/><line class="cv2" x1="123.5" y1="144.0" x2="123.5" y2="64.0"/><text class="ts" x="78.0" y="159.0" text-anchor="middle">x<tspan dy="3" font-size="0.72em">i−1</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="198.0" y="159.0" text-anchor="middle">x<tspan dy="3" font-size="0.72em">i</tspan><tspan dy="-3">​</tspan></text><text class="tx a2" x="119.5" y="58.0" text-anchor="end">q<tspan dy="3" font-size="0.72em">i</tspan><tspan dy="-3">​</tspan></text><text class="ts a2" x="119.5" y="44.0" text-anchor="end">centroide</text><text class="ts" x="142.0" y="60.0" text-anchor="start">punto medio</text><text class="ts" x="36.0" y="14.0" text-anchor="start">f<tspan dy="3" font-size="0.72em">X</tspan><tspan dy="-3">​</tspan>(x)</text><text class="ts" x="390.0" y="159.0" text-anchor="end">x</text><text class="ts a1" x="270.0" y="90.0" text-anchor="middle">area di R<tspan dy="3" font-size="0.72em">i</tspan><tspan dy="-3">​</tspan></text></svg><figcaption>🧩 Su <span class="math inline">R_i=(x_{i-1},x_i)</span> il livello ottimo <span class="math inline">q_i</span> è il baricentro della pdf (centroide), spostato verso la parte dove la pdf è più alta; la soglia ottima è il punto medio tra due livelli.</figcaption></figure>
+<figure class="fig"><svg viewBox="0 0 400 262" role="img" aria-label="ciclo dell&#x27;algoritmo di Lloyd-Max" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><rect class="bx" x="70.0" y="8.0" width="270.0" height="34.0" rx="4"/><text class="tx" x="205.0" y="29.0" text-anchor="middle">Inizializza i livelli di decisione x<tspan dy="3" font-size="0.72em">i</tspan><tspan dy="-3">​</tspan></text><rect class="bx bx1" x="70.0" y="72.0" width="270.0" height="52.0" rx="4"/><text class="tx" x="205.0" y="93.0" text-anchor="middle">① x<tspan dy="3" font-size="0.72em">i</tspan><tspan dy="-3">​</tspan> fissati: q<tspan dy="3" font-size="0.72em">i</tspan><tspan dy="-3">​</tspan> = E[x | x ∈ R<tspan dy="3" font-size="0.72em">i</tspan><tspan dy="-3">​</tspan>]</text><text class="tx" x="205.0" y="110.0" text-anchor="middle">(centroide)</text><rect class="bx bx2" x="70.0" y="150.0" width="270.0" height="52.0" rx="4"/><text class="tx" x="205.0" y="171.0" text-anchor="middle">② q<tspan dy="3" font-size="0.72em">i</tspan><tspan dy="-3">​</tspan> fissati: x<tspan dy="3" font-size="0.72em">i</tspan><tspan dy="-3">​</tspan> = (q<tspan dy="3" font-size="0.72em">i</tspan><tspan dy="-3">​</tspan> + q<tspan dy="3" font-size="0.72em">i+1</tspan><tspan dy="-3">​</tspan>) / 2</text><text class="tx" x="205.0" y="188.0" text-anchor="middle">(punto medio)</text><rect class="bx" x="70.0" y="224.0" width="270.0" height="32.0" rx="4"/><text class="tx" x="205.0" y="245.0" text-anchor="middle">MSE assestato?</text><line class="ln" x1="205.0" y1="42.0" x2="205.0" y2="72.0" marker-end="url(#a4)"/><line class="ln" x1="205.0" y1="124.0" x2="205.0" y2="150.0" marker-end="url(#a4)"/><line class="ln" x1="205.0" y1="202.0" x2="205.0" y2="224.0" marker-end="url(#a4)"/><path class="ln" d="M70.0 240.0 L30.0 240.0 L30.0 98.0 L70.0 98.0" marker-end="url(#a4)"/><text class="ts" x="22.0" y="172.0" text-anchor="end">no</text><line class="ln" x1="340.0" y1="240.0" x2="380.0" y2="240.0" marker-end="url(#a4)"/><text class="ts" x="360.0" y="232.0" text-anchor="middle">sì</text><text class="ts" x="366.0" y="256.0" text-anchor="middle">fine</text></svg><figcaption>🧩 Lloyd-Max applica a turno le due condizioni necessarie finché l'MSE non si assesta. Ogni passo non aumenta l'MSE, ma si può arrivare a un minimo locale.</figcaption></figure>
+<h3 id="limiti-della-quantizzazione-ottima">Limiti della quantizzazione ottima</h3>
+<img class="zoom" src="img/campionamento-p36-companding.png" alt="" loading="lazy">
+<p>Lloyd-Max assume il segnale stazionario e richiede la conoscenza della pdf; come l'uniforme, ha prestazioni fortemente dipendenti dal livello d'ingresso. In telefonia serve che le prestazioni siano all'incirca <strong>indipendenti dal livello</strong> d'ingresso (grande variabilità dei parlatori): <strong>quantizzazione robusta</strong>. Si studia con lo schema del <strong>companding</strong>: legge di compressione seguita da quantizzazione uniforme; in decodifica si applica la legge simmetrica (espansione). <em>(Nella figura il secondo blocco è etichettato «n-bit uniform decoder» come il terzo; dal testo dovrebbe essere l'encoder.)</em></p>
+<figure class="fig"><svg viewBox="0 0 400 170" role="img" aria-label="schema del companding" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><text class="tx" x="24.0" y="43.0" text-anchor="middle">x(n)</text><line class="ln" x1="42.0" y1="38.0" x2="66.0" y2="38.0" marker-end="url(#a5)"/><rect class="bx bx1" x="66.0" y="18.0" width="104.0" height="40.0" rx="4"/><text class="tx" x="118.0" y="35.0" text-anchor="middle">Compressore</text><text class="tx" x="118.0" y="50.0" text-anchor="middle">F(x)</text><line class="ln" x1="170.0" y1="38.0" x2="218.0" y2="38.0" marker-end="url(#a5)"/><rect class="bx" x="218.0" y="18.0" width="104.0" height="40.0" rx="4"/><text class="tx" x="270.0" y="35.0" text-anchor="middle">Codificatore</text><text class="tx" x="270.0" y="50.0" text-anchor="middle">uniforme n bit</text><path class="ln" d="M270.0 58.0 L270.0 90.0 L118.0 90.0 L118.0 112.0" marker-end="url(#a5)"/><text class="ts" x="194.0" y="84.0" text-anchor="middle">n bit (canale)</text><rect class="bx" x="66.0" y="112.0" width="104.0" height="40.0" rx="4"/><text class="tx" x="118.0" y="129.0" text-anchor="middle">Decodificatore</text><text class="tx" x="118.0" y="144.0" text-anchor="middle">uniforme n bit</text><line class="ln" x1="170.0" y1="132.0" x2="218.0" y2="132.0" marker-end="url(#a5)"/><rect class="bx bx2" x="218.0" y="112.0" width="104.0" height="40.0" rx="4"/><text class="tx" x="270.0" y="129.0" text-anchor="middle">Espansore</text><text class="tx" x="270.0" y="144.0" text-anchor="middle">F⁻¹(x)</text><line class="ln" x1="322.0" y1="132.0" x2="350.0" y2="132.0" marker-end="url(#a5)"/><text class="tx" x="372.0" y="136.0" text-anchor="middle">x̂(n)</text></svg><figcaption>🧩 Companding: legge di compressione <span class="math inline">F</span>, quantizzazione uniforme a <span class="math inline">n</span> bit, e in decodifica la legge simmetrica <span class="math inline">F^{-1}</span> (espansione). Nella figura originale il secondo blocco è chiamato «decoder» per un refuso: è il codificatore.</figcaption></figure>
+<h3 id="analisi-del-companding">Analisi del companding</h3>
+<p><strong>MSE (approssimazione high resolution)</strong>, valida se <span class="math inline">M\gg1</span>, sovraccarico trascurato e pdf circa costante in ogni intervallo:</p>
+<div class="math block">\text{MSE}=E[\lvert e(n)\rvert^2]\approx\frac1{12}\sum_{i=1}^{M}p_i\Delta_i^2,\qquad\Delta_i\triangleq x_i-x_{i-1},\quad p_i\triangleq\Pr(x(n)\in R_i)\approx f_X(x_i)\Delta_i</div><p>Con <span class="math inline">\Delta_i=\Delta</span> (uniforme) si ritrova <span class="math inline">\text{MSE}=\Delta^2/12</span>.</p>
+<img class="zoom" src="img/campionamento-p38-legge-compressione.png" alt="" loading="lazy">
+<p><strong>Legge di compressione</strong> <span class="math inline">F(x)</span>: i livelli <span class="math inline">x_{i-1},x_i</span> del quantizzatore non uniforme sono trasformati in <span class="math inline">F(x_{i-1}),F(x_i)</span> del quantizzatore uniforme, con <span class="math inline">\Delta=\frac{2X_{max}}M=F(x_i)-F(x_{i-1})</span>. Quindi</p>
+<div class="math block">\frac\Delta{\Delta_i}=\frac{F(x_i)-F(x_{i-1})}{x_i-x_{i-1}}\approx F&#x27;(x_i)\ \Rightarrow\ \Delta_i\approx\frac\Delta{F&#x27;(x_i)}=\frac1{F&#x27;(x_i)}\frac{2X_{max}}M</div><p>Sostituendo nell'MSE e passando all'integrale (<span class="math inline">\Delta_i\to dx</span>):</p>
+<div class="math block">\text{MSE}=\frac1{12}\sum_i\frac{p_i}{[F&#x27;(x_i)]^2}\Delta^2=\frac{X_{max}^2}{3M^2}\sum_i\frac{f_X(x_i)}{[F&#x27;(x_i)]^2}\Delta_i\ \longrightarrow\ \frac{X_{max}^2}{3M^2}\int_{-X_{max}}^{X_{max}}\frac{f_X(x)}{[F&#x27;(x)]^2}dx</div><p>Con <span class="math inline">f_X(x)=0</span> fuori da <span class="math inline">(-X_{max},X_{max})</span>, <span class="math inline">f_X</span> pari e <span class="math inline">F</span> dispari:</p>
+<div class="math block">\text{SNR}=\frac{E[x^2(n)]}{E[e^2(n)]}=\frac{\int_{-X_{max}}^{X_{max}}x^2f_X\,dx}{\frac{X_{max}^2}{3M^2}\int_{-X_{max}}^{X_{max}}\frac{f_X}{[F&#x27;]^2}dx}=\frac{\int_0^{X_{max}}x^2f_X\,dx}{\frac{X_{max}^2}{3M^2}\int_0^{X_{max}}\frac{f_X}{[F&#x27;]^2}dx}</div><figure class="fig"><svg viewBox="0 0 400 232" role="img" aria-label="compressione e livelli non uniformi" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><line class="ax" x1="56.0" y1="192.0" x2="364.0" y2="192.0" marker-end="url(#a6)"/><line class="ax" x1="60.0" y1="195.0" x2="60.0" y2="28.0" marker-end="url(#a6)"/><path class="cv" d="M60.0 192.0 L63.7 180.9 L67.3 171.8 L71.0 164.2 L74.7 157.5 L78.4 151.7 L82.0 146.5 L85.7 141.8 L89.4 137.5 L93.0 133.5 L96.7 129.8 L100.4 126.4 L104.1 123.2 L107.7 120.2 L111.4 117.4 L115.1 114.7 L118.7 112.2 L122.4 109.8 L126.1 107.5 L129.7 105.3 L133.4 103.2 L137.1 101.2 L140.8 99.3 L144.4 97.4 L148.1 95.6 L151.8 93.9 L155.4 92.2 L159.1 90.6 L162.8 89.0 L166.5 87.5 L170.1 86.0 L173.8 84.6 L177.5 83.2 L181.1 81.8 L184.8 80.5 L188.5 79.2 L192.2 78.0 L195.8 76.8 L199.5 75.6 L203.2 74.4 L206.8 73.3 L210.5 72.2 L214.2 71.1 L217.8 70.0 L221.5 69.0 L225.2 68.0 L228.9 67.0 L232.5 66.0 L236.2 65.1 L239.9 64.1 L243.5 63.2 L247.2 62.3 L250.9 61.4 L254.6 60.5 L258.2 59.7 L261.9 58.8 L265.6 58.0 L269.2 57.2 L272.9 56.4 L276.6 55.6 L280.3 54.8 L283.9 54.1 L287.6 53.3 L291.3 52.6 L294.9 51.8 L298.6 51.1 L302.3 50.4 L305.9 49.7 L309.6 49.0 L313.3 48.3 L317.0 47.7 L320.6 47.0 L324.3 46.3 L328.0 45.7 L331.6 45.1 L335.3 44.4 L339.0 43.8 L342.7 43.2 L346.3 42.6 L350.0 42.0"/><line class="gd" x1="60.0" y1="167.0" x2="69.6" y2="167.0"/><line class="gd" x1="69.6" y1="167.0" x2="69.6" y2="192.0"/><line class="ln" x1="69.6" y1="189.0" x2="69.6" y2="195.0"/><line class="gd" x1="60.0" y1="142.0" x2="85.5" y2="142.0"/><line class="gd" x1="85.5" y1="142.0" x2="85.5" y2="192.0"/><line class="ln" x1="85.5" y1="189.0" x2="85.5" y2="195.0"/><line class="gd" x1="60.0" y1="117.0" x2="111.9" y2="117.0"/><line class="gd" x1="111.9" y1="117.0" x2="111.9" y2="192.0"/><line class="ln" x1="111.9" y1="189.0" x2="111.9" y2="195.0"/><line class="gd" x1="60.0" y1="92.0" x2="155.9" y2="92.0"/><line class="gd" x1="155.9" y1="92.0" x2="155.9" y2="192.0"/><line class="ln" x1="155.9" y1="189.0" x2="155.9" y2="195.0"/><line class="gd" x1="60.0" y1="67.0" x2="228.8" y2="67.0"/><line class="gd" x1="228.8" y1="67.0" x2="228.8" y2="192.0"/><line class="ln" x1="228.8" y1="189.0" x2="228.8" y2="195.0"/><line class="gd" x1="60.0" y1="42.0" x2="350.0" y2="42.0"/><line class="gd" x1="350.0" y1="42.0" x2="350.0" y2="192.0"/><text class="ts" x="350.0" y="207.0" text-anchor="middle">X<tspan dy="3" font-size="0.72em">max</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="54.0" y="46.0" text-anchor="end">X<tspan dy="3" font-size="0.72em">max</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="364.0" y="186.0" text-anchor="end">x</text><text class="ts" x="66.0" y="36.0" text-anchor="start">F(x)</text><text class="tx a1" x="54.0" y="158.5" text-anchor="end">Δ</text><text class="ts a2" x="192.3" y="220.0" text-anchor="middle">Δ<tspan dy="3" font-size="0.72em">i</tspan><tspan dy="-3">​</tspan> grande</text><text class="ts a2" x="66.8" y="220.0" text-anchor="middle">Δ<tspan dy="3" font-size="0.72em">i</tspan><tspan dy="-3">​</tspan> piccolo</text><text class="ts" x="68.0" y="121.0" text-anchor="start">livelli uniformi</text></svg><figcaption>🧩 Livelli equispaziati (<span class="math inline">\Delta</span>) sull'asse di <span class="math inline">F(x)</span> corrispondono a livelli non uniformi sull'asse di <span class="math inline">x</span>: fitti vicino a 0 (<span class="math inline">\Delta_i</span> piccolo), radi per ampiezze grandi. Curva logaritmica con <span class="math inline">\mu=20</span> per renderla visibile.</figcaption></figure>
+<h3 id="companding-logaritmico">Companding logaritmico</h3>
+<p>Per rendere l'SNR indipendente dal livello basta scegliere <span class="math inline">\frac1{F&#x27;(x)}=kx</span>, cioè</p>
+<div class="math block">F&#x27;(x)=\frac1{kx}\ \Rightarrow\ F(x)=c+\frac1k\ln x</div><p>(<span class="math inline">c</span>, <span class="math inline">k</span> costanti arbitrarie). Imponendo <span class="math inline">F(X_{max})=X_{max}</span>:</p>
+<div class="math block">F(x)=X_{max}+\frac1k\ln\Big(\frac x{X_{max}}\Big),\qquad x\in[0,X_{max}]</div><p>Con questa <span class="math inline">F</span> l'integrale a denominatore diventa <span class="math inline">k^2\int_0^{X_{max}}x^2f_X\,dx</span>, che si semplifica con il numeratore:</p>
+<div class="math block">\text{SNR}=\frac{3M^2}{k^2X_{max}^2}</div><p>Per una pdf <span class="math inline">f_X</span> <strong>arbitraria</strong>, la legge di compressione che rende l'SNR indipendente dal livello è di tipo <strong>logaritmico</strong>: corrisponde a un raddoppio di <span class="math inline">\Delta_i</span> per ogni raddoppio del livello. Per <span class="math inline">x\to0</span> non è implementabile esattamente (<span class="math inline">F(x)\to-\infty</span>): si usano approssimazioni che valgono zero in <span class="math inline">x=0</span>.</p>
+<h3 id="legge">Legge µ</h3>
+<img class="zoom" src="img/campionamento-p41-mu-law.png" alt="" loading="lazy">
+<div class="math block">F(x)=X_{max}\,\frac{\ln(1+\mu\lvert x\rvert/X_{max})}{\ln(1+\mu)}\,\text{sgn}(x),\qquad\lvert x\rvert\le X_{max}</div><p><span class="math inline">\mu</span> determina il livello di compressione; valore usato <span class="math inline">\mu=255</span>; per <span class="math inline">\mu=0</span> si ha <span class="math inline">F(x)=x</span> (quantizzazione uniforme). Usata in USA, Canada, Giappone; una approssimazione a 7 segmenti è standardizzata ITU-T [G.711].</p>
+<h3 id="legge-a">Legge A</h3>
+<img class="zoom" src="img/campionamento-p42-a-law.png" alt="" loading="lazy">
+<div class="math block">F(x)=\begin{cases}X_{max}\dfrac{A\lvert x\rvert/X_{max}}{1+\ln A}\,\text{sgn}(x)&amp;0\le\lvert x\rvert\le X_{max}/A\\[2mm]X_{max}\dfrac{1+\ln(A\lvert x\rvert/X_{max})}{1+\ln A}\,\text{sgn}(x)&amp;X_{max}/A\le\lvert x\rvert\le X_{max}\end{cases}</div><p><span class="math inline">A</span> determina la compressione; valore usato <span class="math inline">A=87.6</span>; per <span class="math inline">A=1</span> si ha <span class="math inline">F(x)=x</span>. Usata in Europa e nei collegamenti internazionali; approssimazione a 7 segmenti standardizzata ITU-T [G.711].</p>
+<figure class="fig"><svg viewBox="0 0 400 232" role="img" aria-label="leggi di compressione mu e A" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><line class="ax" x1="42.0" y1="204.0" x2="238.0" y2="204.0" marker-end="url(#a7)"/><line class="ax" x1="46.0" y1="207.0" x2="46.0" y2="12.0" marker-end="url(#a7)"/><line class="gd" x1="226.0" y1="24.0" x2="226.0" y2="204.0"/><line class="gd" x1="46.0" y1="24.0" x2="226.0" y2="24.0"/><line class="cv3 dash" x1="46.0" y1="204.0" x2="226.0" y2="24.0"/><path class="cv" d="M46.0 204.0 L47.5 166.8 L49.0 150.0 L50.5 138.9 L52.1 130.7 L53.6 124.1 L55.1 118.7 L56.6 114.0 L58.1 109.9 L59.6 106.3 L61.1 103.0 L62.6 100.1 L64.2 97.4 L65.7 94.9 L67.2 92.5 L68.7 90.4 L70.2 88.3 L71.7 86.4 L73.2 84.6 L74.7 82.9 L76.3 81.3 L77.8 79.7 L79.3 78.2 L80.8 76.8 L82.3 75.5 L83.8 74.2 L85.3 72.9 L86.8 71.7 L88.4 70.6 L89.9 69.4 L91.4 68.4 L92.9 67.3 L94.4 66.3 L95.9 65.3 L97.4 64.4 L98.9 63.4 L100.5 62.5 L102.0 61.6 L103.5 60.8 L105.0 60.0 L106.5 59.1 L108.0 58.3 L109.5 57.6 L111.0 56.8 L112.6 56.1 L114.1 55.4 L115.6 54.7 L117.1 54.0 L118.6 53.3 L120.1 52.6 L121.6 52.0 L123.1 51.3 L124.7 50.7 L126.2 50.1 L127.7 49.5 L129.2 48.9 L130.7 48.3 L132.2 47.8 L133.7 47.2 L135.2 46.6 L136.8 46.1 L138.3 45.6 L139.8 45.0 L141.3 44.5 L142.8 44.0 L144.3 43.5 L145.8 43.0 L147.3 42.5 L148.9 42.1 L150.4 41.6 L151.9 41.1 L153.4 40.7 L154.9 40.2 L156.4 39.8 L157.9 39.3 L159.4 38.9 L161.0 38.5 L162.5 38.1 L164.0 37.6 L165.5 37.2 L167.0 36.8 L168.5 36.4 L170.0 36.0 L171.5 35.6 L173.1 35.3 L174.6 34.9 L176.1 34.5 L177.6 34.1 L179.1 33.8 L180.6 33.4 L182.1 33.0 L183.6 32.7 L185.2 32.3 L186.7 32.0 L188.2 31.6 L189.7 31.3 L191.2 30.9 L192.7 30.6 L194.2 30.3 L195.7 29.9 L197.3 29.6 L198.8 29.3 L200.3 29.0 L201.8 28.7 L203.3 28.4 L204.8 28.0 L206.3 27.7 L207.8 27.4 L209.4 27.1 L210.9 26.8 L212.4 26.5 L213.9 26.2 L215.4 26.0 L216.9 25.7 L218.4 25.4 L219.9 25.1 L221.5 24.8 L223.0 24.5 L224.5 24.3 L226.0 24.0"/><path class="cv2 dash2" d="M46.0 204.0 L46.9 189.5 L47.8 175.0 L48.7 162.0 L49.6 152.5 L50.5 145.2 L51.4 139.2 L52.3 134.1 L53.2 129.7 L54.1 125.8 L55.0 122.4 L55.9 119.2 L56.9 116.4 L57.8 113.7 L58.7 111.3 L59.6 109.0 L60.5 106.9 L61.4 104.9 L62.3 103.0 L63.2 101.3 L64.1 99.6 L65.0 98.0 L65.9 96.4 L66.8 95.0 L67.7 93.6 L68.6 92.2 L69.5 90.9 L70.4 89.7 L71.3 88.5 L72.2 87.3 L73.1 86.2 L74.0 85.2 L74.9 84.1 L75.8 83.1 L76.8 82.1 L77.7 81.2 L78.6 80.2 L79.5 79.3 L80.4 78.5 L81.3 77.6 L82.2 76.8 L83.1 76.0 L84.0 75.2 L84.9 74.4 L85.8 73.6 L86.7 72.9 L87.6 72.2 L88.5 71.5 L89.4 70.8 L90.3 70.1 L91.2 69.4 L92.1 68.8 L93.0 68.1 L93.9 67.5 L94.8 66.9 L95.7 66.3 L96.7 65.7 L97.6 65.1 L98.5 64.5 L99.4 64.0 L100.3 63.4 L101.2 62.9 L102.1 62.4 L103.0 61.8 L103.9 61.3 L104.8 60.8 L105.7 60.3 L106.6 59.8 L107.5 59.3 L108.4 58.8 L109.3 58.4 L110.2 57.9 L111.1 57.4 L112.0 57.0 L112.9 56.5 L113.8 56.1 L114.7 55.7 L115.6 55.2 L116.6 54.8 L117.5 54.4 L118.4 54.0 L119.3 53.6 L120.2 53.2 L121.1 52.8 L122.0 52.4 L122.9 52.0 L123.8 51.6 L124.7 51.2 L125.6 50.8 L126.5 50.5 L127.4 50.1 L128.3 49.7 L129.2 49.4 L130.1 49.0 L131.0 48.7 L131.9 48.3 L132.8 48.0 L133.7 47.6 L134.6 47.3 L135.5 47.0 L136.5 46.6 L137.4 46.3 L138.3 46.0 L139.2 45.7 L140.1 45.3 L141.0 45.0 L141.9 44.7 L142.8 44.4 L143.7 44.1 L144.6 43.8 L145.5 43.5 L146.4 43.2 L147.3 42.9 L148.2 42.6 L149.1 42.3 L150.0 42.0 L150.9 41.8 L151.8 41.5 L152.7 41.2 L153.6 40.9 L154.5 40.6 L155.4 40.4 L156.4 40.1 L157.3 39.8 L158.2 39.6 L159.1 39.3 L160.0 39.0 L160.9 38.8 L161.8 38.5 L162.7 38.3 L163.6 38.0 L164.5 37.8 L165.4 37.5 L166.3 37.3 L167.2 37.0 L168.1 36.8 L169.0 36.5 L169.9 36.3 L170.8 36.0 L171.7 35.8 L172.6 35.6 L173.5 35.3 L174.4 35.1 L175.3 34.9 L176.3 34.6 L177.2 34.4 L178.1 34.2 L179.0 34.0 L179.9 33.7 L180.8 33.5 L181.7 33.3 L182.6 33.1 L183.5 32.9 L184.4 32.6 L185.3 32.4 L186.2 32.2 L187.1 32.0 L188.0 31.8 L188.9 31.6 L189.8 31.4 L190.7 31.2 L191.6 31.0 L192.5 30.8 L193.4 30.6 L194.3 30.4 L195.2 30.2 L196.2 30.0 L197.1 29.8 L198.0 29.6 L198.9 29.4 L199.8 29.2 L200.7 29.0 L201.6 28.8 L202.5 28.6 L203.4 28.4 L204.3 28.2 L205.2 28.0 L206.1 27.9 L207.0 27.7 L207.9 27.5 L208.8 27.3 L209.7 27.1 L210.6 26.9 L211.5 26.8 L212.4 26.6 L213.3 26.4 L214.2 26.2 L215.1 26.0 L216.1 25.9 L217.0 25.7 L217.9 25.5 L218.8 25.3 L219.7 25.2 L220.6 25.0 L221.5 24.8 L222.4 24.7 L223.3 24.5 L224.2 24.3 L225.1 24.2 L226.0 24.0"/><text class="ts" x="226.0" y="219.0" text-anchor="middle">1</text><text class="ts" x="40.0" y="28.0" text-anchor="end">1</text><text class="ts" x="40.0" y="208.0" text-anchor="end">0</text><text class="ts" x="238.0" y="219.0" text-anchor="end">|x|/X<tspan dy="3" font-size="0.72em">max</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="52.0" y="16.0" text-anchor="start">F(x)/X<tspan dy="3" font-size="0.72em">max</tspan><tspan dy="-3">​</tspan></text><line class="cv" x1="250.0" y1="60.0" x2="276.0" y2="60.0"/><text class="ts" x="282.0" y="64.0" text-anchor="start">legge µ, µ = 255</text><line class="cv2 dash2" x1="250.0" y1="84.0" x2="276.0" y2="84.0"/><text class="ts" x="282.0" y="88.0" text-anchor="start">legge A, A = 87.6</text><line class="cv3 dash" x1="250.0" y1="108.0" x2="276.0" y2="108.0"/><text class="ts" x="282.0" y="112.0" text-anchor="start">µ = 0, A = 1:</text><text class="ts" x="282.0" y="125.0" text-anchor="start">uniforme F(x) = x</text></svg><figcaption>🧩 Le due leggi (parte <span class="math inline">x\ge0</span>) comprimono molto vicino a 0 e poco in alto; le curve quasi coincidono. Con <span class="math inline">\mu=0</span> o <span class="math inline">A=1</span> si torna alla diagonale, cioè al quantizzatore uniforme.</figcaption></figure>
+<h3 id="prestazioni-del-companding-logaritmico">Prestazioni del companding logaritmico</h3>
+<img class="zoom" src="img/campionamento-p43-prestazioni-companding.png" alt="" loading="lazy">
+<p>Se il segnale impegna tutta la dinamica del quantizzatore:</p>
+<div class="math block">\text{SNR}_{dB}\approx6.02\,b+\alpha,\qquad\alpha=\begin{cases}4.77-20\log_{10}[\ln(1+\mu)]&amp;\mu\text{-law}\\4.77-20\log_{10}[1+\ln A]&amp;A\text{-law}\end{cases}</div><p>Vale ancora la legge dei 6 dB/bit; <strong>quantizzazione robusta</strong>: l'SNR non dipende (idealmente) dal livello di <span class="math inline">x(n)</span>. Per la quantizzazione uniforme <span class="math inline">\alpha=4.77-20\log_{10}(X_{max}/x_{rms})</span>, che dipende dal livello. Numeri:</p>
+<ul>
+<li><span class="math inline">A=87.6</span>: <span class="math inline">1+\ln87.6=5.47</span>, <span class="math inline">\alpha=4.77-14.76\Rightarrow\text{SNR}_{dB}\approx6.02\,b-9.99</span>;</li>
+<li><span class="math inline">\mu=255</span>: <span class="math inline">\ln256=5.55</span>, <span class="math inline">\alpha=4.77-14.88\Rightarrow\text{SNR}_{dB}\approx6.02\,b-10.11</span>;</li>
+<li>uniforme con <span class="math inline">k_c=4</span>: <span class="math inline">\alpha=4.77-12.04\Rightarrow\text{SNR}_{dB}\approx6.02\,b-7.3</span>.</li>
+</ul>
+<figure class="fig"><svg viewBox="0 0 400 250" role="img" aria-label="SNR in funzione del livello del segnale" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><line class="ax" x1="48.0" y1="214.0" x2="380.0" y2="214.0" marker-end="url(#a8)"/><line class="ax" x1="52.0" y1="217.0" x2="52.0" y2="22.0" marker-end="url(#a8)"/><path class="cv2" d="M52.0 205.2 L55.2 203.8 L58.5 202.3 L61.7 200.8 L64.9 199.4 L68.2 197.9 L71.4 196.5 L74.6 195.0 L77.9 193.6 L81.1 192.1 L84.3 190.7 L87.6 189.2 L90.8 187.8 L94.0 186.3 L97.3 184.8 L100.5 183.4 L103.7 181.9 L106.9 180.5 L110.2 179.0 L113.4 177.6 L116.6 176.1 L119.9 174.7 L123.1 173.2 L126.3 171.8 L129.6 170.3 L132.8 168.8 L136.0 167.4 L139.3 165.9 L142.5 164.5 L145.7 163.0 L149.0 161.6 L152.2 160.1 L155.4 158.7 L158.7 157.2 L161.9 155.8 L165.1 154.3 L168.4 152.8 L171.6 151.4 L174.8 149.9 L178.1 148.5 L181.3 147.0 L184.5 145.6 L187.8 144.1 L191.0 142.7 L194.2 141.2 L197.5 139.8 L200.7 138.3 L203.9 136.8 L207.2 135.4 L210.4 133.9 L213.6 132.5 L216.8 131.0 L220.1 129.6 L223.3 128.1 L226.5 126.7 L229.8 125.2 L233.0 123.8 L236.2 122.3 L239.5 120.8 L242.7 119.4 L245.9 117.9 L249.2 116.5 L252.4 115.0 L255.6 113.6 L258.9 112.1 L262.1 110.7 L265.3 109.2 L268.6 107.8 L271.8 106.3 L275.0 104.8 L278.3 103.4 L281.5 101.9 L284.7 100.5 L288.0 99.0 L291.2 97.6 L294.4 96.1 L297.7 94.7 L300.9 93.2 L304.1 91.8 L307.4 90.3 L310.6 88.8 L313.8 87.4 L317.1 85.9 L320.3 84.5 L323.5 83.0 L326.7 81.6 L330.0 80.1 L333.2 78.7 L336.4 77.2 L339.7 75.8 L342.9 74.3 L346.1 72.8 L349.4 71.4 L352.6 69.9 L355.8 68.5 L359.1 67.0 L362.3 65.6 L365.5 64.1 L368.8 62.7 L372.0 61.2"/><path class="cv" d="M52.0 110.1 L55.2 108.9 L58.5 107.7 L61.7 106.5 L64.9 105.3 L68.2 104.2 L71.4 103.1 L74.6 102.0 L77.9 100.9 L81.1 99.8 L84.3 98.8 L87.6 97.7 L90.8 96.7 L94.0 95.7 L97.3 94.7 L100.5 93.8 L103.7 92.8 L106.9 91.9 L110.2 91.0 L113.4 90.2 L116.6 89.3 L119.9 88.5 L123.1 87.7 L126.3 86.9 L129.6 86.2 L132.8 85.5 L136.0 84.7 L139.3 84.1 L142.5 83.4 L145.7 82.8 L149.0 82.2 L152.2 81.6 L155.4 81.0 L158.7 80.5 L161.9 80.0 L165.1 79.5 L168.4 79.0 L171.6 78.5 L174.8 78.1 L178.1 77.7 L181.3 77.3 L184.5 76.9 L187.8 76.5 L191.0 76.2 L194.2 75.9 L197.5 75.5 L200.7 75.2 L203.9 75.0 L207.2 74.7 L210.4 74.4 L213.6 74.2 L216.8 74.0 L220.1 73.7 L223.3 73.5 L226.5 73.3 L229.8 73.2 L233.0 73.0 L236.2 72.8 L239.5 72.6 L242.7 72.5 L245.9 72.4 L249.2 72.2 L252.4 72.1 L255.6 72.0 L258.9 71.8 L262.1 71.7 L265.3 71.6 L268.6 71.5 L271.8 71.4 L275.0 71.4 L278.3 71.3 L281.5 71.2 L284.7 71.1 L288.0 71.1 L291.2 71.0 L294.4 70.9 L297.7 70.9 L300.9 70.8 L304.1 70.8 L307.4 70.7 L310.6 70.7 L313.8 70.6 L317.1 70.6 L320.3 70.5 L323.5 70.5 L326.7 70.5 L330.0 70.4 L333.2 70.4 L336.4 70.4 L339.7 70.3 L342.9 70.3 L346.1 70.3 L349.4 70.3 L352.6 70.2 L355.8 70.2 L359.1 70.2 L362.3 70.2 L365.5 70.1 L368.8 70.1 L372.0 70.1"/><line class="gd" x1="52.0" y1="184.0" x2="372.0" y2="184.0"/><text class="ts" x="46.0" y="188.0" text-anchor="end">0</text><line class="gd" x1="52.0" y1="124.0" x2="372.0" y2="124.0"/><text class="ts" x="46.0" y="128.0" text-anchor="end">20</text><line class="gd" x1="52.0" y1="64.0" x2="372.0" y2="64.0"/><text class="ts" x="46.0" y="68.0" text-anchor="end">40</text><line class="ln" x1="52.0" y1="211.0" x2="52.0" y2="217.0"/><text class="ts" x="52.0" y="229.0" text-anchor="middle">-60</text><line class="ln" x1="132.0" y1="211.0" x2="132.0" y2="217.0"/><text class="ts" x="132.0" y="229.0" text-anchor="middle">-48</text><line class="ln" x1="212.0" y1="211.0" x2="212.0" y2="217.0"/><text class="ts" x="212.0" y="229.0" text-anchor="middle">-36</text><line class="ln" x1="292.0" y1="211.0" x2="292.0" y2="217.0"/><text class="ts" x="292.0" y="229.0" text-anchor="middle">-24</text><line class="ln" x1="372.0" y1="211.0" x2="372.0" y2="217.0"/><text class="ts" x="372.0" y="229.0" text-anchor="middle">-12</text><text class="ts" x="380.0" y="242.0" text-anchor="end">livello rms del segnale [dB rispetto a X<tspan dy="3" font-size="0.72em">max</tspan><tspan dy="-3">​</tspan>]</text><text class="ts" x="56.0" y="28.0" text-anchor="start">SNR [dB]</text><text class="tx a1" x="105.3" y="94.0" text-anchor="start">µ-law (µ = 255)</text><text class="tx a2" x="105.3" y="193.0" text-anchor="start">uniforme</text></svg><figcaption>🧩 SNR con <span class="math inline">b=8</span> bit e pdf di Laplace (ad alta risoluzione, sovraccarico trascurato): per il quantizzatore uniforme l'SNR cala di 1 dB per ogni dB di livello perso; con la legge <span class="math inline">\mu=255</span> resta circa costante (≈38 dB, cioè <span class="math inline">6.02\,b-10.11</span>). Curve calcolate da me con la formula di <span class="math inline">\text{MSE}</span>.</figcaption></figure>
+
+</section>
+<section id="approfondimenti"><h2 class="ps">Spiegazioni e dimostrazioni passo-passo</h2>
+<p class="nota">Apri una voce per leggere la spiegazione in parole semplici e le dimostrazioni svolte riga per riga (🧩 = passaggio ricostruito da me).</p>
+<details class="conc"><summary><span class="n">Quantizzazione non uniforme e quantizzatore ottimo di Lloyd-Max</span></summary><div class="cb"><h4 id="quantizzazione-non-uniforme-spiegazione">Spiegazione</h4>
+<h4 id="quantizzazione-non-uniforme-perche-non-uniforme">Perché non uniforme</h4>
+<ul>
+<li>Dal punto di vista teorico la quantizzazione uniforme è ottima <strong>solo</strong> se <span class="math inline">x(n)</span> è distribuito uniformemente in <span class="math inline">(-X_{max},X_{max})</span>.</li>
+<li>Il segnale vocale ha una pdf <strong>non uniforme</strong>: i valori vicini allo zero sono più probabili di quelli elevati.</li>
+<li>Questo comportamento è ben modellato da una <strong>distribuzione di Laplace</strong>, <span class="math inline">f_X(x) = \frac\lambda2e^{-\lambda|x|}</span> con <span class="math inline">\lambda&gt;0</span>.</li>
+<li>Intuitivamente, le ampiezze più piccole vanno quantizzate <strong>più finemente</strong>: da qui la <strong>quantizzazione non uniforme</strong>.</li>
+</ul>
+<img class="zoom" src="img/grafico-laplace-pdf-lambda.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio. La pdf di Laplace ha una <strong>cuspide</strong> in 0 e code esponenziali. <span class="math inline">\lambda</span> regola la larghezza: il picco vale <span class="math inline">\lambda/2</span> e il valore efficace è <span class="math inline">x_{rms} = \sqrt2/\lambda</span> (derivazione in variabili aleatorie notevoli). Un parlatore a voce alta ha <span class="math inline">\lambda</span> piccolo (curva larga), uno a voce bassa ha <span class="math inline">\lambda</span> grande (curva stretta).</em></p>
+<img class="zoom" src="img/grafico-laplace-gauss-uniforme.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio: tre pdf con la <strong>stessa potenza</strong> <span class="math inline">E[x^2] = 1</span>. Rispetto a gaussiana e uniforme, la Laplace concentra molta più probabilità vicino a zero e ha code più lunghe. Un quantizzatore uniforme, che spende gli stessi livelli ovunque, &quot;spreca&quot; risoluzione sulle ampiezze grandi (rare) e ne dà poca a quelle piccole (frequenti). È ottimo solo per la pdf uniforme (verde).</em></p>
+<h4 id="quantizzazione-non-uniforme-algoritmo-di-lloyd-max">Algoritmo di Lloyd-Max</h4>
+<ul>
+<li>Errore di quantizzazione: <span class="math inline">e(n) \triangleq x_q(n) - x(n) = Q[x(n)] - x(n)</span>, con <span class="math inline">f_X(x)</span> pdf del segnale <span class="math inline">x(n)</span> supposto <strong>stazionario del primo ordine</strong>. Il suo valor quadratico medio (<em>mean square error</em>, MSE) è la funzione da minimizzare.</li>
+<li>Trovare la legge ottima secondo il criterio a <strong>minimo errore quadratico medio</strong> (MMSE) significa determinare gli intervalli <span class="math inline">R_1,\dots,R_M</span> (cioè i livelli di decisione <span class="math inline">x_1,\dots,x_{M-1}</span>) e i livelli di restituzione <span class="math inline">q_1,\dots,q_M</span> che minimizzano l'MSE.</li>
+<li>Il problema <strong>non</strong> ha soluzione in forma chiusa. Si ricavano però facilmente <strong>due condizioni necessarie</strong>, fissando un sottoinsieme delle variabili e ottimizzando rispetto all'altro: è il <strong>quantizzatore ottimo di Lloyd-Max</strong>.</li>
+<li><strong>Regioni fissate</strong>: i livelli ottimi sono i <strong>centroidi</strong> delle regioni di decisione (centroide = media condizionale; risultato ben noto dalla teoria della stima ottima MMSE).</li>
+<li><strong>Livelli fissati</strong>: le soglie sono i punti medi tra livelli adiacenti, cioè <span class="math inline">x(n)</span> viene approssimato con il livello <span class="math inline">q_i</span> più vicino (<strong>regola a minima distanza</strong>).</li>
+<li>L'algoritmo applica <strong>alternativamente</strong> le due condizioni e itera finché l'MSE si assesta su un valore sufficientemente piccolo → algoritmo lloyd max.</li>
+</ul>
+<img class="zoom" src="img/grafico-lloyd-max-laplace.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio: risultato dell'algoritmo di Lloyd-Max per <span class="math inline">M = 8</span> e pdf di Laplace con <span class="math inline">x_{rms} = 1</span>. Livelli <span class="math inline">q_i = \pm0.233, \pm0.833, \pm1.672, \pm3.087</span>; soglie <span class="math inline">x_i = 0, \pm0.533, \pm1.253, \pm2.380</span>; MSE <span class="math inline">= 0.0545</span>, quindi SNR <span class="math inline">= 10\log_{10}(1/0.0545) \approx 12.6</span> dB. Si vede l'idea della slide: intervalli <strong>stretti</strong> dove la pdf è alta, <strong>larghi</strong> sulle code. Ogni soglia sta a metà fra due livelli; ogni livello è il baricentro della pdf nel suo intervallo, quindi è spostato verso lo zero rispetto al centro dell'intervallo.</em></p>
+<h4 id="quantizzazione-non-uniforme-limiti-del-quantizzatore-ottimo">Limiti del quantizzatore ottimo</h4>
+<ol>
+<li>richiede segnale <strong>stazionario</strong> e <strong>pdf nota</strong>;</li>
+<li>come l'uniforme, ha prestazioni <strong>fortemente dipendenti dal livello</strong> del segnale.</li>
+</ol>
+<p>In telefonia serve una <strong>quantizzazione robusta</strong>, con prestazioni circa indipendenti dal livello, vista la grande variabilità dei parlatori. La soluzione è il companding: compressione, poi quantizzazione uniforme, e in decodifica espansione.</p>
+<p>L'idea del companding è non progettare più soglie e livelli uno per uno. Si sceglie una legge di compressione <span class="math inline">F</span> e si quantizza uniformemente il segnale compresso <span class="math inline">F(x)</span>. Quantizzare uniformemente <span class="math inline">F(x)</span> equivale a quantizzare in modo non uniforme <span class="math inline">x</span>: le soglie sull'asse <span class="math inline">x</span> sono <span class="math inline">x_i = F^{-1}(y_i)</span>, dove <span class="math inline">y_i</span> sono le soglie equidistanti del quantizzatore uniforme. Così tutto il progetto si sposta sulla scelta di <span class="math inline">F</span> → companding (sezione «Idea chiave del companding»).</p>
+<blockquote class="co esame"><p>🎯 Esame: derivare le due condizioni (centroide, punto medio), dire perché sono solo <em>necessarie</em>, spiegare i limiti che portano al companding.</p>
+</blockquote>
+<h4 id="quantizzazione-non-uniforme-perche-importa">Perché importa</h4>
+<p>Mostra che il quantizzatore va progettato <strong>sulla statistica</strong> della sorgente: con la stessa <span class="math inline">M</span>, mettere intervalli più stretti dove la pdf è più alta riduce l'MSE. Le sue limitazioni motivano il companding.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Condizione del centroide</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia. Fisso le regioni <span class="math inline">R_i</span> e ottimizzo rispetto a <span class="math inline">q_i</span>, che compare solo nel termine <span class="math inline">i</span>-esimo.
+<div class="math inline">\begin{aligned}
+\frac{\partial\,\text{MSE}}{\partial q_i} &amp;= \int_{R_i} 2(q_i-x)f_X(x)\,dx = 0 &amp;&amp; \text{derivo sotto il segno di integrale} \\
+q_i\int_{R_i}f_X(x)\,dx &amp;= \int_{R_i}x\,f_X(x)\,dx &amp;&amp; \text{separo} \\
+q_i &amp;= \frac{\int_{R_i}x\,f_X(x)\,dx}{\int_{R_i}f_X(x)\,dx} = \int_{R_i} x\,\frac{f_X(x)}{P(x\in R_i)}\,dx &amp;&amp; \text{pdf condizionata a } \{x\in R_i\} \\
+&amp;= E[x(n)\,|\,x(n)\in R_i] &amp;&amp; \text{media condizionale}
+\end{aligned}</div>
+È un minimo: <span class="math inline">\partial^2\text{MSE}/\partial q_i^2 = 2P(x\in R_i)&gt;0</span>.
+<strong>Interpretazione:</strong> <span class="math inline">q_i</span> è il <strong>baricentro</strong> della porzione di pdf in <span class="math inline">R_i</span>.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Condizione del punto medio</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia. Fisso i <span class="math inline">q_i</span>; <span class="math inline">x_i</span> è l'estremo superiore di <span class="math inline">R_i</span> e quello inferiore di <span class="math inline">R_{i+1}</span>.
+<div class="math inline">\begin{aligned}
+\text{MSE} &amp;\ni \int_{x_{i-1}}^{x_i}(q_i-x)^2f_X\,dx + \int_{x_i}^{x_{i+1}}(q_{i+1}-x)^2f_X\,dx &amp;&amp; \text{termini che dipendono da } x_i \\
+\frac{\partial\,\text{MSE}}{\partial x_i} &amp;= (q_i-x_i)^2f_X(x_i) - (q_{i+1}-x_i)^2f_X(x_i) = 0 &amp;&amp; \text{regola di Leibniz} \\
+(x_i-q_i)^2 &amp;= (q_{i+1}-x_i)^2 &amp;&amp; f_X(x_i)&gt;0 \\
+x_i - q_i &amp;= q_{i+1}-x_i &amp;&amp; q_i&lt;x_i&lt;q_{i+1} \Rightarrow \text{entrambi positivi} \\
+x_i &amp;= \frac{q_i+q_{i+1}}{2}
+\end{aligned}</div>
+<strong>Interpretazione:</strong> ogni <span class="math inline">x</span> va al livello <span class="math inline">q_i</span> <strong>più vicino</strong> (regola a minima distanza).</p>
+</blockquote>
+</details>
+<details class="der"><summary>Caso uniforme come verifica</summary>
+<blockquote class="co mia"><p>🧩 Sanity check mio: con <span class="math inline">f_X</span> uniforme su <span class="math inline">(-X_{max},X_{max})</span> e intervalli uguali, il centroide di ogni <span class="math inline">R_i</span> è il punto medio e le soglie sono a metà tra livelli adiacenti. Il quantizzatore uniforme soddisfa quindi entrambe le condizioni ed è ottimo, in accordo con.</p>
+</blockquote>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Companding e quantizzazione robusta (legge logaritmica, µ-law, A-law)</span></summary><div class="cb"><h4 id="companding-spiegazione">Spiegazione</h4>
+<h4 id="companding-confronto-delle-prestazioni">Confronto delle prestazioni</h4>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Quantizzatore</th>
+<th><span class="math inline">\text{SNR}_{dB}</span></th>
+<th>Dipende dal livello?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A-law, <span class="math inline">A=87.6</span></td>
+<td><span class="math inline">6.02b-9.99</span></td>
+<td>no (idealmente)</td>
+</tr>
+<tr>
+<td>µ-law, <span class="math inline">\mu=255</span></td>
+<td><span class="math inline">6.02b-10.11</span></td>
+<td>no (idealmente)</td>
+</tr>
+<tr>
+<td>Uniforme, <span class="math inline">k_c=4</span></td>
+<td><span class="math inline">6.02b-7.3</span></td>
+<td><strong>sì</strong>, tramite <span class="math inline">k_c = X_{max}/x_{rms}</span></td>
+</tr>
+</tbody>
+</table></div>
+<p>La legge dei 6 dB/bit vale ancora. A pieno carico il companding perde circa 3 dB rispetto all'uniforme con <span class="math inline">k_c=4</span>, ma <strong>mantiene</strong> l'SNR quando il segnale si abbassa, mentre l'uniforme perde 6 dB per ogni dimezzamento di <span class="math inline">x_{rms}</span>.</p>
+<blockquote class="co mia"><p>🧩 Derivazione mia (il confronto quantitativo): <span class="math inline">-7.3-(-9.99)\approx2.7</span> dB e <span class="math inline">-7.3-(-10.11)\approx2.8</span> dB. Con un segnale 20 dB sotto il four-sigma loading (<span class="math inline">k_c = 40</span>), l'uniforme dà <span class="math inline">6.02b + 4.77 - 32.04 = 6.02b - 27.3</span> dB: 17 dB peggio del compander.</p>
+</blockquote>
+<img class="zoom" src="img/campionamento-p43-prestazioni-companding.png" alt="" loading="lazy">
+<p><em>SNR (dB) in funzione del livello relativo d'ingresso (dB, da −50 a 0) —. La curva <strong>µ-law</strong> (<span class="math inline">\mu = 255</span>) è quasi piatta su un ampio intervallo di livelli e cala solo per livelli molto bassi. La retta della <strong>quantizzazione uniforme</strong> (senza companding) cresce di 1 dB per ogni dB di livello, supera la µ-law solo vicino al fondo scala e le resta nettamente sotto per segnali deboli. La tacca a −4.77 dB sull'asse orizzontale segna l'estremo destro del grafico.</em></p>
+<blockquote class="co mia"><p>🧩 Lettura mia della figura: la pendenza unitaria della retta uniforme discende da <span class="math inline">\text{SNR}_{dB} = 6.02b + 4.77 - 20\log_{10}(X_{max}/x_{rms})</span>. Ogni dB in più di <span class="math inline">x_{rms}</span> riduce <span class="math inline">[k_c]_{dB}</span> di 1 dB.</p>
+</blockquote>
+<h4 id="companding-grafico-snr-in-funzione-del-livello-anche-per-la">Grafico SNR in funzione del livello, anche per la legge A</h4>
+<img class="zoom" src="img/grafico-snr-vs-livello-companding.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio. Ricostruisce il grafico con le formule della slide, e aggiunge la legge A. Parametri: <span class="math inline">b = 8</span>, ingresso di Laplace con <span class="math inline">x_{rms}</span> variabile, sovraccarico trascurato. Le curve µ e A si assestano proprio su <span class="math inline">6.02b + \alpha</span>: <span class="math inline">48.2 - 10.11 = 38.0</span> dB e <span class="math inline">48.2 - 9.99 = 38.2</span> dB. Tra −40 e 0 dB restano entro circa 2.5 dB da quel valore (quantizzazione robusta), mentre la retta uniforme perde 1 dB per ogni dB di livello. L'uniforme è migliore solo sopra circa −15 dB. Con <span class="math inline">k_c = 4</span>, cioè livello <span class="math inline">-12</span> dB, vale <span class="math inline">48.2 - 7.3 = 40.9</span> dB, in accordo con il valore. La legge A cala prima della µ a livelli molto bassi: sotto <span class="math inline">X_{max}/A</span> lavora nel tratto lineare, che equivale a un quantizzatore uniforme.</em></p>
+<blockquote class="co mia"><p>🧩 Derivazione mia delle curve (formula integrale, <span class="math inline">\text{MSE} = \frac{X_{max}^2}{3M^2}E\big[1/F&#x27;(x)^2\big]</span>, ingresso di Laplace con <span class="math inline">\lambda = \sqrt2/x_{rms}</span>, <span class="math inline">E|x| = x_{rms}/\sqrt2</span>):
+<div class="math inline">\begin{aligned}
+\text{uniforme: } F' = 1 &amp;\Rightarrow \text{SNR} = 3M^2\,x_{rms}^2/X_{max}^2 \\
+\mu\text{-law: } \frac{1}{F'(x)} = \frac{\ln(1+\mu)}{\mu}\Big(1+\frac{\mu|x|}{X_{max}}\Big) &amp;\Rightarrow E\Big[\frac{1}{F'^2}\Big] = \frac{\ln^2(1+\mu)}{\mu^2}\Big(1 + \frac{2\mu E|x|}{X_{max}} + \frac{\mu^2x_{rms}^2}{X_{max}^2}\Big) \\
+A\text{-law: } \frac{1}{F'(x)^2} = (1+\ln A)^2\cdot\begin{cases}1/A^2 &amp; |x|&lt;X_{max}/A\\ x^2/X_{max}^2 &amp; \text{altrimenti}\end{cases} &amp;\Rightarrow E\Big[\frac{1}{F'^2}\Big] = (1+\ln A)^2\Big[\frac{1-e^{-\lambda a}}{A^2} + \frac{e^{-\lambda a}(a^2+2a/\lambda+2/\lambda^2)}{X_{max}^2}\Big],\ a = \frac{X_{max}}{A}
+\end{aligned}</div>
+Per <span class="math inline">\mu|x|\gg X_{max}</span> il termine dominante della µ-law è <span class="math inline">\mu^2x_{rms}^2/X_{max}^2</span>: si ritrova <span class="math inline">\text{SNR} = 3M^2/\ln^2(1+\mu)</span>, cioè il valore costante della slide.</p>
+</blockquote>
+<h4 id="companding-curve-delle-leggi-e-a">Curve delle leggi µ e A</h4>
+<img class="zoom" src="img/campionamento-p41-mu-law.png" alt="" loading="lazy">
+<p><em><span class="math inline">F(x)</span> normalizzata (output vs input in <span class="math inline">[0,1]</span>) per <span class="math inline">\mu = 0, 1, 5, 100, 255</span> —. Con <span class="math inline">\mu = 0</span> è la bisettrice (uniforme); al crescere di <span class="math inline">\mu</span> la curva è sempre più ripida vicino a 0, cioè comprime di più.</em></p>
+<img class="zoom" src="img/campionamento-p42-a-law.png" alt="" loading="lazy">
+<p><em><span class="math inline">F(x)</span> normalizzata per <span class="math inline">A = 1, 2, 5, 87.6, 100</span> —. Con <span class="math inline">A = 1</span> è la bisettrice (uniforme); al crescere di <span class="math inline">A</span> la compressione aumenta.</em></p>
+<blockquote class="co esame"><p>🎯 Esame: derivare la legge logaritmica dalla richiesta &quot;SNR indipendente da <span class="math inline">f_X</span>&quot;; spiegare perché serve µ/A-law; confrontare gli SNR; sapere µ=255 (USA, Canada, Giappone) e A=87.6 (Europa, collegamenti internazionali), entrambe nella g711.</p>
+</blockquote>
+<h4 id="companding-perche-importa">Perché importa</h4>
+<p>Risolve il problema della quantizzazione robusta posto dalle applicazioni telefoniche. Le approssimazioni a 7 segmenti delle leggi µ e A sono standardizzate dall'ITU-T in g711.</p>
+<blockquote class="co esame"><p>🎯 Esame: spiegare perché compressione + quantizzazione uniforme + espansione equivale a un quantizzatore non uniforme su <span class="math inline">x</span>, perché il progetto si riduce alla scelta di <span class="math inline">F</span>, e con quale criterio la si sceglie.</p>
+</blockquote>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — MSE ad alta risoluzione</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia del termine <span class="math inline">\Delta_i^2/12</span>
+<div class="math inline">\begin{aligned}
+\text{MSE} &amp;= \sum_i\int_{R_i}(q_i-x)^2f_X(x)\,dx &amp;&amp; quantizzazione non uniforme \\
+&amp;\approx \sum_i f_X(x_i)\int_{-\Delta_i/2}^{\Delta_i/2}u^2\,du &amp;&amp; f_X \approx \text{cost. in } R_i;\ q_i \text{ al centro};\ u = x-q_i \\
+&amp;= \sum_i f_X(x_i)\frac{\Delta_i^3}{12} &amp;&amp; \textstyle\int_{-a}^{a}u^2du = 2a^3/3,\ a=\Delta_i/2 \\
+&amp;= \frac{1}{12}\sum_i p_i\Delta_i^2 &amp;&amp; p_i\approx f_X(x_i)\Delta_i
+\end{aligned}</div>
+<strong>Ipotesi (high resolution):</strong> <span class="math inline">M\gg1</span>; sovraccarico trascurato; <span class="math inline">f_X</span> circa costante in ogni intervallo; <span class="math inline">q_i</span> circa al centro di <span class="math inline">R_i</span> (ipotesi implicita, 🧩 esplicitata da me).
+<strong>Sanity check:</strong> con <span class="math inline">\Delta_i = \Delta</span> si ha <span class="math inline">\text{MSE} = \frac{\Delta^2}{12}\sum_ip_i = \frac{\Delta^2}{12}</span>, come in snr di quantizzazione.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — <span class="math inline">\Delta_i \approx \Delta/F&#x27;(x_i)</span></summary>
+<div class="math block">
+\begin{aligned}
+F(x_i)-F(x_{i-1}) &amp;= \Delta = \frac{2X_{max}}{M} &amp;&amp; \text{dopo la compressione gli intervalli sono uniformi} \\
+\frac{\Delta}{\Delta_i} &amp;= \frac{F(x_i)-F(x_{i-1})}{x_i-x_{i-1}} \approx F&#x27;(x_i) &amp;&amp; \text{rapporto incrementale, } \Delta_i \text{ piccolo} \\
+\Delta_i &amp;\approx \frac{\Delta}{F&#x27;(x_i)} = \frac{1}{F&#x27;(x_i)}\frac{2X_{max}}{M}
+\end{aligned}
+</div><p>Dove <span class="math inline">F&#x27;</span> è grande (compressione &quot;ripida&quot;) gli intervalli originali sono <strong>stretti</strong>.</p>
+<blockquote class="co mia"><p>🧩 Lettura mia: è la forma quantitativa dell'«Idea chiave del companding» (in questa pagina). Intervalli uguali (<span class="math inline">\Delta</span>) sull'asse compresso corrispondono a intervalli diversi (<span class="math inline">\Delta_i</span>) sull'asse <span class="math inline">x</span>, e il fattore di conversione è la pendenza locale <span class="math inline">F&#x27;(x_i)</span>. Il segno <span class="math inline">\approx</span> viene solo dal rapporto incrementale sostituito con la derivata: le soglie <span class="math inline">x_i = F^{-1}(y_i)</span> sono esatte.</p>
+</blockquote>
+<img class="zoom" src="img/campionamento-p38-legge-compressione.png" alt="" loading="lazy">
+<p><em>Legge di compressione <span class="math inline">F(x)</span> concava: l'intervallo <span class="math inline">\Delta_i = x_i - x_{i-1}</span> sull'asse <span class="math inline">x</span> viene mappato in un intervallo di ampiezza <span class="math inline">\Delta</span> sull'asse <span class="math inline">F(x)</span>. Dove la curva è ripida, un <span class="math inline">\Delta_i</span> piccolo basta a coprire un <span class="math inline">\Delta</span> intero.</em></p>
+</details>
+<details class="der"><summary>Derivazione — MSE e SNR in forma integrale</summary>
+<div class="math block">
+\begin{aligned}
+\text{MSE} &amp;= \frac{1}{12}\sum_ip_i\Delta_i^2 = \frac1{12}\sum_ip_i\frac{4X_{max}^2}{M^2[F&#x27;(x_i)]^2} &amp;&amp; \text{sostituisco } \Delta_i \\
+&amp;= \frac{X_{max}^2}{3M^2}\sum_i\frac{f_X(x_i)}{[F&#x27;(x_i)]^2}\Delta_i &amp;&amp; 4/12 = 1/3;\ p_i = f_X(x_i)\Delta_i \\
+&amp;\to \frac{X_{max}^2}{3M^2}\int_{-X_{max}}^{X_{max}}\frac{f_X(x)}{[F&#x27;(x)]^2}dx &amp;&amp; \Delta_i\to dx \text{ (somma di Riemann)} \\
+\text{SNR} &amp;= \frac{E[x^2]}{\text{MSE}} = \frac{\int_{-X_{max}}^{X_{max}}x^2f_X\,dx}{\frac{X_{max}^2}{3M^2}\int_{-X_{max}}^{X_{max}}\frac{f_X}{[F&#x27;]^2}dx} &amp;&amp; f_X = 0 \text{ fuori da } (-X_{max},X_{max}) \\
+&amp;= \frac{\int_0^{X_{max}}x^2f_X\,dx}{\frac{X_{max}^2}{3M^2}\int_0^{X_{max}}\frac{f_X}{[F&#x27;]^2}dx} &amp;&amp; f_X \text{ pari, } F \text{ dispari} \Rightarrow F&#x27; \text{ pari: integrandi pari, il fattore 2 si semplifica}
+\end{aligned}
+</div></details>
+<details class="der"><summary>Derivazione — Legge logaritmica ottima per la robustezza</summary>
+<p><strong>Idea:</strong> l'SNR è indipendente da <span class="math inline">f_X</span> se il denominatore è proporzionale al numeratore, cioè se <span class="math inline">1/[F&#x27;(x)]^2\propto x^2</span>.
+<div class="math inline">\begin{aligned}
+\frac{1}{F'(x)} &amp;= kx \Rightarrow F'(x) = \frac{1}{kx} &amp;&amp; \text{scelta} \\
+F(x) &amp;= c+\frac1k\ln x &amp;&amp; \text{integro} \\
+F(X_{max}) &amp;= X_{max} \Rightarrow c = X_{max}-\frac1k\ln X_{max} &amp;&amp; \text{vincolo sul fondo scala} \\
+F(x) &amp;= X_{max}+\frac1k\ln\frac{x}{X_{max}},\quad x\in[0,X_{max}] &amp;&amp; \ln x - \ln X_{max} = \ln(x/X_{max}) \\
+\text{SNR} &amp;= \frac{\int_0^{X_{max}}x^2f_X\,dx}{\frac{X_{max}^2}{3M^2}\int_0^{X_{max}}k^2x^2f_X\,dx} = \frac{3M^2}{k^2X_{max}^2} &amp;&amp; \text{gli integrali si semplificano}
+\end{aligned}</div>
+<strong>Risultato:</strong> SNR <strong>indipendente dalla pdf</strong>, quindi anche dal livello <span class="math inline">x_{rms}</span> del segnale. <span class="math inline">c</span> e <span class="math inline">k</span> sono costanti arbitrarie; <span class="math inline">c</span> si fissa con il vincolo <span class="math inline">F(X_{max}) = X_{max}</span>.
+<strong>Conclusione della slide</strong>: per una pdf <span class="math inline">f_X(x)</span> <strong>arbitraria</strong>, la legge di compressione che rende l'SNR indipendente dal livello del segnale è di tipo <strong>logaritmico</strong>.
+<strong>Interpretazione</strong>: <span class="math inline">\Delta_i = \Delta/F&#x27;(x_i) = \Delta\,k\,x_i</span>, cioè l'intervallo raddoppia quando raddoppia il livello, e l'errore <strong>relativo</strong> resta costante.
+<strong>Limite:</strong> per <span class="math inline">x\to0</span>, <span class="math inline">F(x)\to-\infty</span>, quindi non è implementabile esattamente. Si usano approssimazioni con <span class="math inline">F(0) = 0</span>: µ-law e A-law.</p>
+</details>
+<details class="der"><summary>Derivazione — Costante <span class="math inline">\alpha</span> per µ-law</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia (ricondotta alla legge logaritmica per <span class="math inline">\mu|x|/X_{max}\gg1</span>)
+<div class="math inline">\begin{aligned}
+F(x) &amp;= \frac{X_{max}}{\ln(1+\mu)}\ln\left(1+\frac{\mu x}{X_{max}}\right) &amp;&amp; x&gt;0 \\
+&amp;\approx \frac{X_{max}}{\ln(1+\mu)}\left[\ln\frac{\mu}{X_{max}} + \ln x\right] &amp;&amp; 1+\mu x/X_{max}\approx\mu x/X_{max} \\
+\Rightarrow \frac1k &amp;= \frac{X_{max}}{\ln(1+\mu)} \Rightarrow kX_{max} = \ln(1+\mu) &amp;&amp; \text{confronto con } c+\tfrac1k\ln x \\
+\text{SNR} &amp;= \frac{3M^2}{(kX_{max})^2} = \frac{3\cdot2^{2b}}{\ln^2(1+\mu)} &amp;&amp; \text{SNR logaritmico} \\
+\text{SNR}_{dB} &amp;= 6.02\,b + 4.77 - 20\log_{10}\ln(1+\mu) &amp;&amp; \text{come per i 6 dB/bit}
+\end{aligned}</div>
+<strong>Numeri:</strong> <span class="math inline">\mu = 255</span>: <span class="math inline">\ln256 = 5.545</span>; <span class="math inline">20\log_{10}5.545 = 14.88</span> dB; <span class="math inline">\alpha = 4.77-14.88 = -10.11</span> dB ✓.
+<strong>Termine trascurato:</strong> esattamente <span class="math inline">1/F&#x27;(x) = \frac{\ln(1+\mu)}{X_{max}}\left(x + \frac{X_{max}}{\mu}\right)</span>. L'approssimazione trascura <span class="math inline">X_{max}/\mu</span> rispetto a <span class="math inline">|x|</span>, quindi vale per <span class="math inline">|x|\gg X_{max}/255</span>; per segnali molto deboli l'SNR peggiora.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Costante <span class="math inline">\alpha</span> per A-law</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia
+<div class="math inline">\begin{aligned}
+F(x) &amp;= \frac{X_{max}}{1+\ln A}\left[1+\ln A+\ln\frac{x}{X_{max}}\right] &amp;&amp; \text{ramo logaritmico, } x\ge X_{max}/A \\
+\Rightarrow \frac1k &amp;= \frac{X_{max}}{1+\ln A} \Rightarrow kX_{max} = 1+\ln A &amp;&amp; \text{coefficiente di } \ln x \\
+\text{SNR}_{dB} &amp;= 6.02\,b+4.77-20\log_{10}(1+\ln A)
+\end{aligned}</div>
+<strong>Numeri:</strong> <span class="math inline">A = 87.6</span>: <span class="math inline">\ln87.6 = 4.473</span>; <span class="math inline">1+\ln A = 5.473</span>; <span class="math inline">20\log_{10}5.473 = 14.76</span> dB; <span class="math inline">\alpha = 4.77-14.76 = -9.99</span> dB ✓.
+Qui il ramo logaritmico è <strong>esatto</strong> (non approssimato) per <span class="math inline">|x|\ge X_{max}/A</span>. Sotto quella soglia la legge è <strong>lineare</strong>, cioè equivale a una quantizzazione uniforme.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Controlli sulle leggi µ e A</summary>
+<blockquote class="co mia"><p>🧩 Sanity check miei</p>
+</blockquote>
+<ul>
+<li><span class="math inline">F(X_{max}) = X_{max}</span> per entrambe: <span class="math inline">\ln(1+\mu)/\ln(1+\mu) = 1</span> e <span class="math inline">(1+\ln A)/(1+\ln A) = 1</span> ✓.</li>
+<li>A-law continua in <span class="math inline">|x| = X_{max}/A</span>: entrambi i rami valgono <span class="math inline">X_{max}/(1+\ln A)</span> ✓.</li>
+<li>µ-law con <span class="math inline">\mu\to0</span>: <span class="math inline">\ln(1+\mu a)/\ln(1+\mu)\to\mu a/\mu = a</span>, quindi <span class="math inline">F(x) = x</span> ✓.</li>
+<li>A-law con <span class="math inline">A = 1</span>: la soglia <span class="math inline">X_{max}/A = X_{max}</span> copre tutto il range, e <span class="math inline">F(x) = X_{max}\cdot\frac{|x|/X_{max}}{1}\text{sgn}(x) = x</span> ✓.</li>
+</ul>
+</details>
+<details class="der"><summary>Derivazione — Esempio µ-law, soglie e livelli equivalenti</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia: rende numerica l'«Idea chiave del companding» (in questa pagina). Lavoro sul semiasse <span class="math inline">0\le x\le X_{max}</span>; il semiasse negativo è simmetrico perché <span class="math inline">F</span> è dispari.</p>
+</blockquote>
+<p><strong>Passo 1 — inversa della µ-law</strong> (è l'espansore, e serve per calcolare le soglie):
+<div class="math inline">\begin{aligned}
+y &amp;= X_{max}\frac{\ln(1+\mu x/X_{max})}{\ln(1+\mu)} &amp;&amp; \mu\text{-law per } x\ge0\ \text{} \\
+\frac{y}{X_{max}}\ln(1+\mu) &amp;= \ln\Big(1+\frac{\mu x}{X_{max}}\Big) &amp;&amp; \text{moltiplico per } \ln(1+\mu)/X_{max} \\
+(1+\mu)^{y/X_{max}} &amp;= 1+\frac{\mu x}{X_{max}} &amp;&amp; \text{esponenziale dei due membri: } e^{a\ln b} = b^{a} \\
+x = F^{-1}(y) &amp;= \frac{X_{max}}{\mu}\Big[(1+\mu)^{y/X_{max}}-1\Big] &amp;&amp; \text{isolo } x
+\end{aligned}</div></p>
+<p><strong>Passo 2 — soglie equivalenti.</strong> Le soglie uniformi positive sull'asse <span class="math inline">y</span> sono <span class="math inline">y_j = j\Delta</span>, <span class="math inline">j = 0,\dots,M/2</span>, con <span class="math inline">\Delta = 2X_{max}/M</span>. Con <span class="math inline">M</span> pari lo zero è una soglia (come nell'esempio <span class="math inline">M = 4</span> di quantizzazione uniforme).
+<div class="math inline">\begin{aligned}
+x_j &amp;= F^{-1}(j\Delta) = \frac{X_{max}}{\mu}\Big[(1+\mu)^{j\Delta/X_{max}}-1\Big] &amp;&amp; \text{passo 1 con } y = j\Delta \\
+&amp;= \frac{X_{max}}{\mu}\Big[(1+\mu)^{2j/M}-1\Big] &amp;&amp; \Delta/X_{max} = 2/M
+\end{aligned}</div></p>
+<p><strong>Passo 3 — ampiezze degli intervalli.</strong>
+<div class="math inline">\begin{aligned}
+\Delta_j = x_j - x_{j-1} &amp;= \frac{X_{max}}{\mu}\Big[(1+\mu)^{2j/M}-(1+\mu)^{2(j-1)/M}\Big] &amp;&amp; \text{differenza di due soglie: i } -1 \text{ si elidono} \\
+&amp;= \frac{X_{max}}{\mu}(1+\mu)^{2(j-1)/M}\Big[(1+\mu)^{2/M}-1\Big] &amp;&amp; \text{raccolgo } (1+\mu)^{2(j-1)/M} \\
+\frac{\Delta_{j+1}}{\Delta_j} &amp;= (1+\mu)^{2/M} &amp;&amp; \text{rapporto tra ampiezze consecutive: costante}
+\end{aligned}</div>
+Ogni intervallo è più largo del precedente sempre dello stesso fattore: le ampiezze crescono in <strong>progressione geometrica</strong>.</p>
+<p><strong>Passo 4 — numeri con <span class="math inline">\mu = 255</span> e <span class="math inline">M = 8</span> (<span class="math inline">b = 3</span> bit).</strong></p>
+<ul>
+<li><span class="math inline">1+\mu = 256</span>, quindi <span class="math inline">(1+\mu)^{2/M} = 256^{1/4} = 4</span> e <span class="math inline">x_j = \frac{4^j-1}{255}X_{max}</span>.</li>
+<li>Il quantizzatore uniforme con lo stesso <span class="math inline">M</span> ha <span class="math inline">\Delta = 2X_{max}/8 = 0.25\,X_{max}</span>.</li>
+<li>I livelli vengono dal passo 1 con <span class="math inline">y = (j-\tfrac12)\Delta</span>, cioè il centro dell'intervallo uniforme <span class="math inline">j</span>: <span class="math inline">q_j = \frac{X_{max}}{255}\big[256^{(2j-1)/8}-1\big] = \frac{2^{2j-1}-1}{255}X_{max}</span>, perché <span class="math inline">256^{1/8} = 2</span>.</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th><span class="math inline">j</span></th>
+<th>soglia uniforme <span class="math inline">y_j = j\Delta</span></th>
+<th>soglia su <span class="math inline">x</span>: <span class="math inline">x_j</span></th>
+<th>ampiezza <span class="math inline">\Delta_j</span></th>
+<th><span class="math inline">\Delta_j/\Delta</span></th>
+<th>livello <span class="math inline">q_j</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><span class="math inline">0.25\,X_{max}</span></td>
+<td><span class="math inline">3/255 = 0.0118\,X_{max}</span></td>
+<td><span class="math inline">0.0118\,X_{max}</span></td>
+<td><span class="math inline">0.047</span> (21 volte più stretto)</td>
+<td><span class="math inline">1/255 = 0.0039\,X_{max}</span></td>
+</tr>
+<tr>
+<td>2</td>
+<td><span class="math inline">0.50\,X_{max}</span></td>
+<td><span class="math inline">15/255 = 0.0588\,X_{max}</span></td>
+<td><span class="math inline">0.0471\,X_{max}</span></td>
+<td><span class="math inline">0.188</span></td>
+<td><span class="math inline">7/255 = 0.0275\,X_{max}</span></td>
+</tr>
+<tr>
+<td>3</td>
+<td><span class="math inline">0.75\,X_{max}</span></td>
+<td><span class="math inline">63/255 = 0.2471\,X_{max}</span></td>
+<td><span class="math inline">0.1882\,X_{max}</span></td>
+<td><span class="math inline">0.753</span></td>
+<td><span class="math inline">31/255 = 0.1216\,X_{max}</span></td>
+</tr>
+<tr>
+<td>4</td>
+<td><span class="math inline">1.00\,X_{max}</span></td>
+<td><span class="math inline">255/255 = X_{max}</span></td>
+<td><span class="math inline">0.7529\,X_{max}</span></td>
+<td><span class="math inline">3.01</span> (3 volte più largo)</td>
+<td><span class="math inline">127/255 = 0.4980\,X_{max}</span></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Lettura:</strong> quattro intervalli <strong>uguali</strong> sull'asse compresso diventano quattro intervalli <strong>diversi</strong> sull'asse <span class="math inline">x</span>, ognuno 4 volte il precedente. Sotto <span class="math inline">X_{max}/4</span> il companding mette tre soglie (<span class="math inline">0.0118</span>, <span class="math inline">0.0588</span> e <span class="math inline">0.2471\,X_{max}</span>), mentre l'uniforme non ne ha nessuna oltre allo zero. Sopra <span class="math inline">0.2471\,X_{max}</span> c'è un solo intervallo, restituito col livello <span class="math inline">0.498\,X_{max}</span>.</p>
+<p><strong>Verifiche:</strong></p>
+<ul>
+<li>Estremi: <span class="math inline">x_0 = 0</span> e <span class="math inline">x_{M/2} = \frac{X_{max}}{\mu}\big[(1+\mu)-1\big] = X_{max}</span>. Le soglie coprono esattamente <span class="math inline">[0, X_{max}]</span> ✓.</li>
+<li>Somma delle ampiezze: <span class="math inline">(3+12+48+192)/255 = 255/255 = 1</span>, cioè <span class="math inline">X_{max}</span> ✓.</li>
+<li>Caso limite <span class="math inline">\mu\to0</span>: per Taylor <span class="math inline">(1+\mu)^{2j/M}\approx1+\frac{2j}{M}\mu</span>, quindi <span class="math inline">x_j\approx\frac{X_{max}}{\mu}\cdot\frac{2j}{M}\mu = j\Delta</span>. Si ritrova il quantizzatore uniforme, coerente con <span class="math inline">F(x) = x</span> per <span class="math inline">\mu = 0</span> ✓.</li>
+<li>Livelli: <span class="math inline">q_4 = 0.498\,X_{max}</span> non sta al centro di <span class="math inline">R_4 = (0.247, 1)\,X_{max}</span>, che è <span class="math inline">0.624\,X_{max}</span>. <span class="math inline">F^{-1}</span> non è lineare e sposta verso lo zero il centro dell'intervallo uniforme. Con <span class="math inline">M = 8</span> non siamo ad alta risoluzione. Al crescere di <span class="math inline">M</span>, <span class="math inline">F</span> è quasi lineare dentro ogni intervallo e <span class="math inline">q_i</span> torna circa al centro, come assume.</li>
+</ul>
+<p><strong>Passo 5 — esatto contro alta risoluzione.</strong> Derivata della µ-law:
+<div class="math inline">\begin{aligned}
+F'(x) &amp;= \frac{X_{max}}{\ln(1+\mu)}\cdot\frac{\mu/X_{max}}{1+\mu x/X_{max}} &amp;&amp; \tfrac{d}{dx}\ln(1+ax) = \tfrac{a}{1+ax},\ a = \mu/X_{max} \\
+&amp;= \frac{\mu}{\ln(1+\mu)\,(1+\mu x/X_{max})} &amp;&amp; X_{max} \text{ si semplifica} \\
+F'(0) &amp;= \frac{\mu}{\ln(1+\mu)} = \frac{255}{5.545} = 45.99 &amp;&amp; x = 0 \\
+F'(X_{max}) &amp;= \frac{\mu}{(1+\mu)\ln(1+\mu)} = \frac{255}{256\cdot5.545} = 0.180 &amp;&amp; x = X_{max}
+\end{aligned}</div>
+La formula ad alta risoluzione <span class="math inline">\Delta_i\approx\Delta/F&#x27;(x_i)</span> prevede quindi un intervallo più stretto <span class="math inline">\approx\Delta/46</span> e uno più largo <span class="math inline">\approx\Delta/0.180 = 5.57\,\Delta</span>. Le ampiezze esatte del passo 3 si avvicinano a questi valori al crescere di <span class="math inline">M</span>:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th><span class="math inline">b</span></th>
+<th><span class="math inline">M</span></th>
+<th><span class="math inline">(1+\mu)^{2/M}</span></th>
+<th>più stretto / <span class="math inline">\Delta</span> (esatto)</th>
+<th>più largo / <span class="math inline">\Delta</span> (esatto)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>8</td>
+<td>4</td>
+<td><span class="math inline">1/21.3</span></td>
+<td><span class="math inline">3.01</span></td>
+</tr>
+<tr>
+<td>4</td>
+<td>16</td>
+<td>2</td>
+<td><span class="math inline">1/31.9</span></td>
+<td><span class="math inline">4.02</span></td>
+</tr>
+<tr>
+<td>8</td>
+<td>256</td>
+<td>1.044</td>
+<td><span class="math inline">1/45.0</span></td>
+<td><span class="math inline">5.45</span></td>
+</tr>
+<tr>
+<td><span class="math inline">\to\infty</span></td>
+<td><span class="math inline">\to\infty</span></td>
+<td><span class="math inline">\to1</span></td>
+<td><span class="math inline">\to 1/F&#x27;(0) = 1/46.0</span></td>
+<td><span class="math inline">\to 1/F&#x27;(X_{max}) = 5.57</span></td>
+</tr>
+</tbody>
+</table></div>
+<p>Le soglie <span class="math inline">x_j = F^{-1}(j\Delta)</span> sono esatte per ogni <span class="math inline">M</span>. La formula <span class="math inline">\Delta_i\approx\Delta/F&#x27;(x_i)</span> invece diventa accurata solo per <span class="math inline">M</span> grande: con <span class="math inline">b = 8</span> sbaglia già solo del 2% circa.</p>
+<p><strong>Collegamento con.</strong> Con <span class="math inline">M = 16</span> il rapporto è esattamente 2: ogni intervallo è il doppio del precedente, e le soglie <span class="math inline">x_j = \frac{2^j-1}{255}X_{max}</span> quasi raddoppiano a ogni passo. È il comportamento della legge logaritmica descritto: l'intervallo raddoppia quando raddoppia il livello. In generale, dal passo 2 si ha <span class="math inline">\frac{X_{max}}{\mu}(1+\mu)^{2(j-1)/M} = x_{j-1}+\frac{X_{max}}{\mu}</span>, e sostituendo nel passo 3:
+<div class="math inline">\Delta_j = \Big(x_{j-1}+\frac{X_{max}}{\mu}\Big)\Big[(1+\mu)^{2/M}-1\Big]</div>
+L'ampiezza è proporzionale al livello <span class="math inline">x_{j-1}</span>, a meno della costante <span class="math inline">X_{max}/\mu</span>. Per <span class="math inline">x\gg X_{max}/\mu</span> il comportamento è logaritmico puro (<span class="math inline">\Delta_i\propto x_i</span>). La costante è il prezzo di avere <span class="math inline">F(0) = 0</span>: è lo stesso termine trascurato nella derivazione di <span class="math inline">\alpha</span> per la µ-law.</p>
+<p><strong>Ipotesi:</strong> <span class="math inline">F</span> = µ-law (strettamente crescente e dispari); quantizzatore uniforme simmetrico con <span class="math inline">M</span> pari e livelli al centro degli intervalli; nessun sovraccarico (<span class="math inline">|x|\le X_{max}</span>).</p>
+</details>
+</div></details>
+</section>
+<section id="domande"><h2 class="ps">Domande da esame</h2>
+<ul>
+<li>Condizioni di Lloyd-Max: derivazione e significato.</li>
+<li>Perché serve la quantizzazione robusta? Derivare la legge logaritmica. µ-law vs A-law.</li>
+</ul>
+
+</section>
+<nav class="pn"><span></span><a href="lezione-4.html">Lezione 4 →</a></nav>
+</main>
+<footer>Appunti personali del corso di Trasmissione dei Segnali Digitali (LM Ingegneria Informatica, UNINA). Generato dal wiki con <code>output/crea_sito.py</code>.</footer>
+<div id="lb" hidden></div><a id="su" href="#" hidden aria-label="torna su">↑</a>
+</body></html>

@@ -1,0 +1,1193 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lezione 5 · Processi aleatori</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="style.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="app.js"></script></head>
+<body><header class="top"><nav><a href="index.html" class="home">TSD</a><a href="lezione-3.html">L3</a><a href="lezione-4.html">L4</a><a href="lezione-5.html" aria-current="page">L5</a><a href="lezione-7.html">L7</a></nav><span class="fs"><button id="fm" aria-label="testo più piccolo">A−</button><button id="fp" aria-label="testo più grande">A+</button></span></header>
+<main>
+<p class="crumb"><a href="index.html">Intercorso</a> · Lezione 5</p>
+<h1>Processi aleatori</h1>
+<p class="breve">Processi stocastici, momenti, stazionarietà, acf, passaggio attraverso filtri LTI, PSD, processo gaussiano, tempo discreto.</p>
+<details class="toc"><summary>Indice della lezione</summary><ul><li class="l3"><a href="#introduzione-ai-processi-aleatori">Introduzione ai processi aleatori</a></li><li class="l4"><a href="#introduzione">Introduzione</a></li><li class="l4"><a href="#dal-segnale-deterministico-al-processo">Dal segnale deterministico al processo</a></li><li class="l4"><a href="#sinusoide-a-fase-casuale-fissare-omega-o-t">Sinusoide a fase casuale; fissare <span class="math inline">\omega</span> o <span class="math inline">t</span></a></li><li class="l4"><a href="#definizione-di-processo-stocastico-1-2">Definizione di processo stocastico (1/2)</a></li><li class="l4"><a href="#definizione-di-processo-stocastico-2-2">Definizione di processo stocastico (2/2)</a></li><li class="l3"><a href="#caratterizzazione-statistica-completa">Caratterizzazione statistica completa</a></li><li class="l4"><a href="#cdf-del-primo-e-del-secondo-ordine">CDF del primo e del secondo ordine</a></li><li class="l4"><a href="#distribuzioni-congiunte-dei-campioni-temporali-1">Distribuzioni congiunte dei campioni temporali (1/2)</a></li><li class="l4"><a href="#il-processo-di-bernoulli-df-del-primo-e-del-seco">Il processo di Bernoulli: DF del primo e del secondo ordine</a></li><li class="l4"><a href="#distribuzioni-congiunte-dei-campioni-temporali-2">Distribuzioni congiunte dei campioni temporali (2/2)</a></li><li class="l3"><a href="#caratterizzazione-statistica-parziale">Caratterizzazione statistica parziale</a></li><li class="l4"><a href="#media-di-un-processo">Media di un processo</a></li><li class="l4"><a href="#funzione-di-correlazione">Funzione di correlazione</a></li><li class="l4"><a href="#funzione-di-covarianza">Funzione di covarianza</a></li><li class="l3"><a href="#processi-stazionari">Processi stazionari</a></li><li class="l4"><a href="#processi-stazionari-1-3">Processi stazionari (1/3)</a></li><li class="l4"><a href="#processi-stazionari-2-3">Processi stazionari (2/3)</a></li><li class="l4"><a href="#processi-stazionari-3-3">Processi stazionari (3/3)</a></li><li class="l4"><a href="#processi-stazionari-in-senso-lato">Processi stazionari in senso lato</a></li><li class="l3"><a href="#funzione-di-autocorrelazione-dei-processi-wss">Funzione di autocorrelazione dei processi WSS</a></li><li class="l4"><a href="#proprieta-della-acf-1-2">Proprietà della acf (1/2)</a></li><li class="l4"><a href="#significato-fisico-della-auto-correlation-functi">Significato fisico della Auto Correlation Function (acf) (1/2)</a></li><li class="l4"><a href="#significato-fisico-della-acf-2-2">Significato fisico della acf (2/2)</a></li><li class="l3"><a href="#funzioni-di-correlazione-incrociata">Funzioni di correlazione incrociata</a></li><li class="l4"><a href="#crosscorrelazione">Crosscorrelazione</a></li><li class="l4"><a href="#crosscovarianza">Crosscovarianza</a></li><li class="l4"><a href="#processi-indipendenti-incoerenti-incorrelati">Processi indipendenti, incoerenti, incorrelati</a></li><li class="l3"><a href="#processi-complessi">Processi complessi</a></li><li class="l4"><a href="#processi-stocastici-complessi">Processi stocastici complessi</a></li><li class="l3"><a href="#trasmissione-di-un-processo-attraverso-un-filtro">Trasmissione di un processo attraverso un filtro LTI</a></li><li class="l4"><a href="#trasmissione-di-un-processo-wss-attraverso-un-fi">Trasmissione di un processo WSS attraverso un filtro LTI</a></li><li class="l4"><a href="#media-dell-uscita-1-2">Media dell'uscita (1/2)</a></li><li class="l4"><a href="#media-dell-uscita-2-2">Media dell'uscita (2/2)</a></li><li class="l4"><a href="#funzioni-di-correlazione-delle-uscite-di-un-sist">Funzioni di correlazione delle uscite di un sistema LTI (1/3)</a></li><li class="l4"><a href="#funzioni-di-correlazione-delle-uscite-di-un-sist-2">Funzioni di correlazione delle uscite di un sistema LTI (2/3)</a></li><li class="l4"><a href="#funzioni-di-correlazione-delle-uscite-di-un-sist-3">Funzioni di correlazione delle uscite di un sistema LTI (3/3)</a></li><li class="l3"><a href="#densita-spettrale-di-potenza">Densità spettrale di potenza</a></li><li class="l4"><a href="#densita-spettrale-di-potenza-psd">Densità spettrale di potenza (PSD)</a></li><li class="l4"><a href="#psd-e-sistemi-lti">PSD e sistemi LTI</a></li><li class="l4"><a href="#significato-fisico-della-psd">Significato fisico della PSD</a></li><li class="l4"><a href="#proprieta-della-psd">Proprietà della PSD</a></li><li class="l4"><a href="#densita-spettrali-mutue-versione-aggiornata">Densità spettrali mutue (versione aggiornata)</a></li><li class="l4"><a href="#somma-di-due-processi-wss">Somma di due processi WSS</a></li><li class="l3"><a href="#il-processo-gaussiano">Il processo gaussiano</a></li><li class="l4"><a href="#il-processo-gaussiano-1-3">Il processo gaussiano (1/3)</a></li><li class="l4"><a href="#il-processo-gaussiano-2-3">Il processo gaussiano (2/3)</a></li><li class="l4"><a href="#il-processo-gaussiano-3-3">Il processo gaussiano (3/3)</a></li><li class="l4"><a href="#proprieta-dei-processi-gaussiani">Proprietà dei processi gaussiani</a></li><li class="l3"><a href="#processi-a-tempo-discreto">Processi a tempo discreto</a></li><li class="l4"><a href="#processi-aleatori-a-tempo-discreto-1-2-versione-">Processi aleatori a tempo discreto (1/2) (versione aggiornata)</a></li><li class="l4"><a href="#processi-aleatori-a-tempo-discreto-2-2-versione-">Processi aleatori a tempo discreto (2/2) (versione aggiornata)</a></li><li class="l3"><a href="#approfondimenti">Spiegazioni e dimostrazioni passo-passo</a></li><li class="l3"><a href="#domande">Domande da esame</a></li></ul></details>
+<section id="corso"><h2 class="ps">Il corso, slide per slide</h2>
+<h3 id="introduzione-ai-processi-aleatori">Introduzione ai processi aleatori</h3>
+<h4 id="introduzione">Introduzione</h4>
+<ul>
+<li>Un <strong>processo stocastico</strong> (o processo aleatorio, o segnale aleatorio) è l'estensione naturale del concetto di variabile aleatoria quando si trattano <strong>segnali</strong>.</li>
+<li>In molte situazioni l'ipotesi di segnale deterministico non regge, ed è più appropriato modellare i segnali come funzioni aleatorie. Esempi: il rumore termico nei circuiti elettronici; i segnali generati da una sorgente di informazione.</li>
+<li><strong>Esempio.</strong> <span class="math inline">\Omega = \{0, 1\}</span> con <span class="math inline">P(\{\omega = 1\}) \triangleq p</span> e <span class="math inline">P(\{\omega = 0\}) \triangleq q = 1 - p</span>. Il segnale aleatorio è</li>
+</ul>
+<div class="math block">X(t, \omega) = \begin{cases} A\,\text{rect}\Big(\dfrac{t - 0.5T}{T}\Big), &amp; \omega = 0 \\[2mm] -A\,\text{rect}\Big(\dfrac{t - 0.5T}{T}\Big), &amp; \omega = 1 \end{cases}</div><img class="zoom" src="img/random-processes-p2-esempio-rect.png" alt="" loading="lazy">
+<p><em>Le due realizzazioni: <span class="math inline">x(t, \omega = 0)</span> vale <span class="math inline">A</span> per <span class="math inline">0 &lt; t &lt; T</span>, <span class="math inline">x(t, \omega = 1)</span> vale <span class="math inline">-A</span> nello stesso intervallo.</em></p>
+<h4 id="dal-segnale-deterministico-al-processo">Dal segnale deterministico al processo</h4>
+<ul>
+<li>Un segnale <span class="math inline">s(t)</span> descritto nel dominio del tempo, con una descrizione analitica o con un grafico, è un <strong>segnale deterministico</strong>. «Prendiamo questi segnali e li estendiamo su fenomeni non predicibili a priori».</li>
+<li>Una variabile aleatoria associa a ogni esito un numero: <span class="math inline">X: \omega \to X(\omega) \in \mathbb{R}</span>.</li>
+<li>In un processo, a ogni esito <span class="math inline">\omega_i</span> si associa non un numero ma una <strong>funzione del tempo</strong> <span class="math inline">S(\omega_i, t)</span>.</li>
+</ul>
+<img class="zoom" src="img/random-processes-p3-appunti-da-va-a-processo.png" alt="" loading="lazy">
+<h4 id="sinusoide-a-fase-casuale-fissare-omega-o-t">Sinusoide a fase casuale; fissare <span class="math inline">\omega</span> o <span class="math inline">t</span></h4>
+<ul>
+<li>Esempio: <span class="math inline">X(t) = A\cos(2\pi f_0 t + \Theta)</span>, con <span class="math inline">A</span> e <span class="math inline">f_0</span> deterministiche e <span class="math inline">\Theta \sim \mathcal{U}(0, 2\pi)</span>. È un «segnale aleatorio ad ampiezza continua».</li>
+<li><span class="math inline">X(t, \omega)</span> «si particolarizza» a seconda che si fissi <span class="math inline">\omega</span> o <span class="math inline">t</span>:
+<ul>
+<li>fisso <span class="math inline">\omega = \bar\omega</span>: <span class="math inline">X(t, \bar\omega) = x(t)</span>, un <strong>segnale nel tempo</strong>;</li>
+<li>fisso <span class="math inline">t = \bar t</span>: <span class="math inline">X(\bar t, \omega) = X(\omega)</span>, una <strong>variabile aleatoria</strong>;</li>
+<li>fisso entrambi: un <strong>numero</strong>.</li>
+</ul>
+</li>
+<li>Tempo continuo: <span class="math inline">X(t, \omega)</span> con <span class="math inline">t \in \mathbb{R}</span>. Tempo discreto: <span class="math inline">X(n, \omega)</span> con <span class="math inline">n \in \mathbb{Z}</span>.</li>
+<li>Due punti di vista: una collezione di variabili aleatorie indicizzate rispetto al tempo.</li>
+</ul>
+<img class="zoom" src="img/random-processes-p4-appunti-sinusoide-fase-casuale.png" alt="" loading="lazy">
+<figure class="fig"><svg viewBox="0 0 400 238" role="img" aria-label="realizzazioni di un processo aleatorio" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a14" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><line class="ax" x1="36.0" y1="118.0" x2="378.0" y2="118.0" marker-end="url(#a14)"/><line class="ax" x1="40.0" y1="180.0" x2="40.0" y2="48.0" marker-end="url(#a14)"/><path class="cv ev" d="M40.0 75.6 L42.1 77.2 L44.2 79.0 L46.2 81.0 L48.3 83.3 L50.4 85.8 L52.5 88.5 L54.5 91.4 L56.6 94.4 L58.7 97.6 L60.8 100.9 L62.8 104.3 L64.9 107.9 L67.0 111.4 L69.1 115.0 L71.1 118.7 L73.2 122.3 L75.3 125.9 L77.4 129.5 L79.4 132.9 L81.5 136.3 L83.6 139.6 L85.7 142.7 L87.7 145.7 L89.8 148.5 L91.9 151.2 L94.0 153.6 L96.0 155.8 L98.1 157.7 L100.2 159.4 L102.3 160.9 L104.3 162.1 L106.4 163.0 L108.5 163.6 L110.6 163.9 L112.6 164.0 L114.7 163.8 L116.8 163.2 L118.9 162.4 L120.9 161.4 L123.0 160.0 L125.1 158.4 L127.2 156.5 L129.2 154.4 L131.3 152.1 L133.4 149.6 L135.5 146.8 L137.5 143.9 L139.6 140.8 L141.7 137.6 L143.8 134.2 L145.8 130.8 L147.9 127.3 L150.0 123.7 L152.1 120.0 L154.2 116.4 L156.2 112.8 L158.3 109.2 L160.4 105.7 L162.5 102.2 L164.5 98.8 L166.6 95.6 L168.7 92.5 L170.8 89.6 L172.8 86.8 L174.9 84.2 L177.0 81.9 L179.1 79.7 L181.1 77.8 L183.2 76.2 L185.3 74.8 L187.4 73.7 L189.4 72.9 L191.5 72.3 L193.6 72.0 L195.7 72.0 L197.7 72.3 L199.8 72.9 L201.9 73.8 L204.0 75.0 L206.0 76.4 L208.1 78.0 L210.2 80.0 L212.3 82.1 L214.3 84.5 L216.4 87.1 L218.5 89.9 L220.6 92.9 L222.6 96.0 L224.7 99.2 L226.8 102.6 L228.9 106.1 L230.9 109.6 L233.0 113.2 L235.1 116.9 L237.2 120.5 L239.2 124.1 L241.3 127.7 L243.4 131.2 L245.5 134.6 L247.5 138.0 L249.6 141.2 L251.7 144.3 L253.8 147.2 L255.8 149.9 L257.9 152.4 L260.0 154.7 L262.1 156.8 L264.2 158.6 L266.2 160.2 L268.3 161.5 L270.4 162.5 L272.5 163.3 L274.5 163.8 L276.6 164.0 L278.7 163.9 L280.8 163.5 L282.8 162.9 L284.9 161.9 L287.0 160.7 L289.1 159.2 L291.1 157.5 L293.2 155.5 L295.3 153.3 L297.4 150.9 L299.4 148.2 L301.5 145.4 L303.6 142.4 L305.7 139.2 L307.7 135.9 L309.8 132.5 L311.9 129.0 L314.0 125.5 L316.0 121.9 L318.1 118.2 L320.2 114.6 L322.3 111.0 L324.3 107.4 L326.4 103.9 L328.5 100.5 L330.6 97.2 L332.6 94.0 L334.7 91.0 L336.8 88.1 L338.9 85.5 L340.9 83.0 L343.0 80.8 L345.1 78.7 L347.2 77.0 L349.2 75.5 L351.3 74.2 L353.4 73.2 L355.5 72.5 L357.5 72.1 L359.6 72.0 L361.7 72.2 L363.8 72.6 L365.8 73.3 L367.9 74.3 L370.0 75.6"/><path class="cv2" d="M40.0 126.2 L42.1 129.7 L44.2 133.2 L46.2 136.6 L48.3 139.9 L50.4 143.0 L52.5 146.0 L54.5 148.8 L56.6 151.4 L58.7 153.8 L60.8 155.9 L62.8 157.9 L64.9 159.6 L67.0 161.0 L69.1 162.1 L71.1 163.0 L73.2 163.6 L75.3 163.9 L77.4 164.0 L79.4 163.7 L81.5 163.2 L83.6 162.4 L85.7 161.3 L87.7 159.9 L89.8 158.3 L91.9 156.4 L94.0 154.2 L96.0 151.9 L98.1 149.3 L100.2 146.6 L102.3 143.6 L104.3 140.6 L106.4 137.3 L108.5 134.0 L110.6 130.5 L112.6 127.0 L114.7 123.4 L116.8 119.8 L118.9 116.1 L120.9 112.5 L123.0 108.9 L125.1 105.4 L127.2 101.9 L129.2 98.6 L131.3 95.3 L133.4 92.2 L135.5 89.3 L137.5 86.6 L139.6 84.0 L141.7 81.7 L143.8 79.6 L145.8 77.7 L147.9 76.1 L150.0 74.7 L152.1 73.6 L154.2 72.8 L156.2 72.3 L158.3 72.0 L160.4 72.1 L162.5 72.4 L164.5 73.0 L166.6 73.9 L168.7 75.1 L170.8 76.5 L172.8 78.2 L174.9 80.1 L177.0 82.3 L179.1 84.7 L181.1 87.3 L183.2 90.1 L185.3 93.1 L187.4 96.2 L189.4 99.5 L191.5 102.9 L193.6 106.4 L195.7 109.9 L197.7 113.5 L199.8 117.2 L201.9 120.8 L204.0 124.4 L206.0 128.0 L208.1 131.5 L210.2 134.9 L212.3 138.2 L214.3 141.4 L216.4 144.5 L218.5 147.4 L220.6 150.1 L222.6 152.6 L224.7 154.9 L226.8 156.9 L228.9 158.7 L230.9 160.3 L233.0 161.6 L235.1 162.6 L237.2 163.4 L239.2 163.8 L241.3 164.0 L243.4 163.9 L245.5 163.5 L247.5 162.8 L249.6 161.8 L251.7 160.6 L253.8 159.1 L255.8 157.3 L257.9 155.3 L260.0 153.1 L262.1 150.6 L264.2 148.0 L266.2 145.1 L268.3 142.1 L270.4 138.9 L272.5 135.6 L274.5 132.2 L276.6 128.7 L278.7 125.2 L280.8 121.6 L282.8 117.9 L284.9 114.3 L287.0 110.7 L289.1 107.1 L291.1 103.6 L293.2 100.2 L295.3 96.9 L297.4 93.8 L299.4 90.8 L301.5 87.9 L303.6 85.3 L305.7 82.8 L307.7 80.6 L309.8 78.6 L311.9 76.8 L314.0 75.3 L316.0 74.1 L318.1 73.2 L320.2 72.5 L322.3 72.1 L324.3 72.0 L326.4 72.2 L328.5 72.7 L330.6 73.4 L332.6 74.4 L334.7 75.7 L336.8 77.3 L338.9 79.1 L340.9 81.2 L343.0 83.5 L345.1 86.0 L347.2 88.7 L349.2 91.6 L351.3 94.7 L353.4 97.9 L355.5 101.2 L357.5 104.6 L359.6 108.1 L361.7 111.7 L363.8 115.3 L365.8 119.0 L367.9 122.6 L370.0 126.2"/><path class="cv3" d="M40.0 163.5 L42.1 163.9 L44.2 164.0 L46.2 163.8 L48.3 163.3 L50.4 162.5 L52.5 161.5 L54.5 160.2 L56.6 158.6 L58.7 156.7 L60.8 154.7 L62.8 152.3 L64.9 149.8 L67.0 147.1 L69.1 144.2 L71.1 141.1 L73.2 137.9 L75.3 134.6 L77.4 131.1 L79.4 127.6 L81.5 124.0 L83.6 120.4 L85.7 116.8 L87.7 113.2 L89.8 109.6 L91.9 106.0 L94.0 102.6 L96.0 99.2 L98.1 95.9 L100.2 92.8 L102.3 89.8 L104.3 87.1 L106.4 84.5 L108.5 82.1 L110.6 79.9 L112.6 78.0 L114.7 76.3 L116.8 74.9 L118.9 73.8 L120.9 72.9 L123.0 72.3 L125.1 72.0 L127.2 72.0 L129.2 72.3 L131.3 72.9 L133.4 73.7 L135.5 74.8 L137.5 76.2 L139.6 77.9 L141.7 79.8 L143.8 81.9 L145.8 84.3 L147.9 86.8 L150.0 89.6 L152.1 92.6 L154.2 95.7 L156.2 98.9 L158.3 102.3 L160.4 105.7 L162.5 109.3 L164.5 112.9 L166.6 116.5 L168.7 120.1 L170.8 123.7 L172.8 127.3 L174.9 130.9 L177.0 134.3 L179.1 137.6 L181.1 140.9 L183.2 143.9 L185.3 146.9 L187.4 149.6 L189.4 152.1 L191.5 154.5 L193.6 156.6 L195.7 158.4 L197.7 160.0 L199.8 161.4 L201.9 162.5 L204.0 163.2 L206.0 163.8 L208.1 164.0 L210.2 163.9 L212.3 163.6 L214.3 163.0 L216.4 162.0 L218.5 160.9 L220.6 159.4 L222.6 157.7 L224.7 155.7 L226.8 153.5 L228.9 151.1 L230.9 148.5 L233.0 145.7 L235.1 142.7 L237.2 139.5 L239.2 136.3 L241.3 132.9 L243.4 129.4 L245.5 125.8 L247.5 122.2 L249.6 118.6 L251.7 115.0 L253.8 111.4 L255.8 107.8 L257.9 104.3 L260.0 100.9 L262.1 97.5 L264.2 94.3 L266.2 91.3 L268.3 88.4 L270.4 85.7 L272.5 83.3 L274.5 81.0 L276.6 78.9 L278.7 77.1 L280.8 75.6 L282.8 74.3 L284.9 73.3 L287.0 72.6 L289.1 72.2 L291.1 72.0 L293.2 72.1 L295.3 72.5 L297.4 73.3 L299.4 74.2 L301.5 75.5 L303.6 77.0 L305.7 78.8 L307.7 80.8 L309.8 83.1 L311.9 85.5 L314.0 88.2 L316.0 91.1 L318.1 94.1 L320.2 97.3 L322.3 100.6 L324.3 104.0 L326.4 107.5 L328.5 111.1 L330.6 114.7 L332.6 118.3 L334.7 121.9 L336.8 125.5 L338.9 129.1 L340.9 132.6 L343.0 136.0 L345.1 139.3 L347.2 142.4 L349.2 145.4 L351.3 148.3 L353.4 150.9 L355.5 153.3 L357.5 155.6 L359.6 157.5 L361.7 159.3 L363.8 160.7 L365.8 162.0 L367.9 162.9 L370.0 163.5"/><path class="cv4" d="M40.0 136.4 L42.1 133.1 L44.2 129.6 L46.2 126.0 L48.3 122.4 L50.4 118.8 L52.5 115.2 L54.5 111.5 L56.6 108.0 L58.7 104.5 L60.8 101.0 L62.8 97.7 L64.9 94.5 L67.0 91.5 L69.1 88.6 L71.1 85.9 L73.2 83.4 L75.3 81.1 L77.4 79.0 L79.4 77.2 L81.5 75.7 L83.6 74.4 L85.7 73.4 L87.7 72.6 L89.8 72.2 L91.9 72.0 L94.0 72.1 L96.0 72.5 L98.1 73.2 L100.2 74.2 L102.3 75.4 L104.3 76.9 L106.4 78.7 L108.5 80.7 L110.6 82.9 L112.6 85.4 L114.7 88.1 L116.8 90.9 L118.9 93.9 L120.9 97.1 L123.0 100.4 L125.1 103.8 L127.2 107.3 L129.2 110.9 L131.3 114.5 L133.4 118.1 L135.5 121.7 L137.5 125.4 L139.6 128.9 L141.7 132.4 L143.8 135.8 L145.8 139.1 L147.9 142.3 L150.0 145.3 L152.1 148.1 L154.2 150.8 L156.2 153.2 L158.3 155.4 L160.4 157.4 L162.5 159.2 L164.5 160.7 L166.6 161.9 L168.7 162.8 L170.8 163.5 L172.8 163.9 L174.9 164.0 L177.0 163.8 L179.1 163.3 L181.1 162.6 L183.2 161.5 L185.3 160.2 L187.4 158.7 L189.4 156.8 L191.5 154.8 L193.6 152.5 L195.7 150.0 L197.7 147.2 L199.8 144.4 L201.9 141.3 L204.0 138.1 L206.0 134.8 L208.1 131.3 L210.2 127.8 L212.3 124.2 L214.3 120.6 L216.4 117.0 L218.5 113.3 L220.6 109.7 L222.6 106.2 L224.7 102.7 L226.8 99.3 L228.9 96.1 L230.9 93.0 L233.0 90.0 L235.1 87.2 L237.2 84.6 L239.2 82.2 L241.3 80.0 L243.4 78.1 L245.5 76.4 L247.5 75.0 L249.6 73.8 L251.7 73.0 L253.8 72.4 L255.8 72.1 L257.9 72.0 L260.0 72.3 L262.1 72.8 L264.2 73.7 L266.2 74.8 L268.3 76.1 L270.4 77.8 L272.5 79.7 L274.5 81.8 L276.6 84.1 L278.7 86.7 L280.8 89.5 L282.8 92.4 L284.9 95.5 L287.0 98.7 L289.1 102.1 L291.1 105.5 L293.2 109.1 L295.3 112.7 L297.4 116.3 L299.4 119.9 L301.5 123.6 L303.6 127.1 L305.7 130.7 L307.7 134.1 L309.8 137.5 L311.9 140.7 L314.0 143.8 L316.0 146.7 L318.1 149.5 L320.2 152.0 L322.3 154.4 L324.3 156.5 L326.4 158.3 L328.5 160.0 L330.6 161.3 L332.6 162.4 L334.7 163.2 L336.8 163.7 L338.9 164.0 L340.9 163.9 L343.0 163.6 L345.1 163.0 L347.2 162.1 L349.2 160.9 L351.3 159.5 L353.4 157.8 L355.5 155.8 L357.5 153.6 L359.6 151.2 L361.7 148.6 L363.8 145.8 L365.8 142.8 L367.9 139.7 L370.0 136.4"/><line class="gd" x1="109.3" y1="182.0" x2="109.3" y2="50.0"/><circle class="pt cv" cx="109.3" cy="163.8" r="3.5"/><circle class="pt cv2" cx="109.3" cy="132.6" r="3.5"/><circle class="pt cv3" cx="109.3" cy="81.2" r="3.5"/><circle class="pt cv4" cx="109.3" cy="81.5" r="3.5"/><text class="ts" x="109.3" y="196.0" text-anchor="middle">t<tspan dy="3" font-size="0.72em">1</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="378.0" y="133.0" text-anchor="end">t</text><text class="ts" x="46.0" y="46.0" text-anchor="start">X(t; ω)</text><text class="ts a1" x="264.0" y="14.0" text-anchor="end">ω<tspan dy="3" font-size="0.72em">1</tspan><tspan dy="-3">​</tspan></text><text class="ts a2" x="298.0" y="14.0" text-anchor="end">ω<tspan dy="3" font-size="0.72em">2</tspan><tspan dy="-3">​</tspan></text><text class="ts a3" x="332.0" y="14.0" text-anchor="end">ω<tspan dy="3" font-size="0.72em">3</tspan><tspan dy="-3">​</tspan></text><text class="ts a4" x="366.0" y="14.0" text-anchor="end">ω<tspan dy="3" font-size="0.72em">4</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="40.0" y="208.0" text-anchor="start">t = t<tspan dy="3" font-size="0.72em">1</tspan><tspan dy="-3">​</tspan> fisso: i 4 punti sono valori di una variabile aleatoria</text><text class="ts" x="40.0" y="226.0" text-anchor="start">ω fisso (es. ω<tspan dy="3" font-size="0.72em">1</tspan><tspan dy="-3">​</tspan>, curva spessa): una funzione del tempo</text></svg><figcaption>🧩 Processo <span class="math inline">X(t;\omega)=\cos(2\pi t+\Theta)</span> con fase casuale: ogni <span class="math inline">\omega_k</span> è una forma d'onda (una <strong>realizzazione</strong>); fissando <span class="math inline">t_1</span> i valori sulla verticale sono i campioni di una variabile aleatoria.</figcaption></figure>
+<h4 id="definizione-di-processo-stocastico-1-2">Definizione di processo stocastico (1/2)</h4>
+<ul>
+<li>Un processo <span class="math inline">X(t, \omega)</span> si può vedere come una <strong>collezione di segnali nel tempo</strong> (dette <em>realizzazioni</em> o <em>sample functions</em>), corrispondenti ai diversi esiti di un esperimento aleatorio.
+<ul>
+<li>A ogni esito <span class="math inline">\omega = \omega_i</span> nello spazio di probabilità <span class="math inline">(\Omega, \mathcal{S}, P)</span> corrisponde un segnale deterministico <span class="math inline">X(t, \omega_i) \equiv x_i(t)</span> (descrizione analoga a quella delle variabili aleatorie).</li>
+<li>Fissato un istante <span class="math inline">t_0</span>, la funzione <span class="math inline">X(t_0, \omega)</span> è una <strong>variabile aleatoria</strong>.</li>
+<li>Per ogni <span class="math inline">t_0</span> e ogni <span class="math inline">\omega_i \in \Omega</span>, <span class="math inline">X(t_0, \omega_i)</span> è un <strong>numero</strong>.</li>
+</ul>
+</li>
+<li>In alternativa, un processo è una <strong>collezione di variabili aleatorie indicizzate nel tempo</strong>.
+<ul>
+<li>Se l'insieme degli indici è <span class="math inline">\mathbb{R}</span>: processo <strong>a tempo continuo</strong>.</li>
+<li>Se è <span class="math inline">\mathbb{Z}</span>: processo <strong>a tempo discreto</strong>, cioè una successione di variabili aleatorie <span class="math inline">\{X_i\}_{i=-\infty}^{+\infty}</span>.</li>
+<li>Questo punto di vista è adatto allo sviluppo matematico della teoria.</li>
+</ul>
+</li>
+<li>Per semplicità si omette <span class="math inline">\omega</span> e si scrive <span class="math inline">X(t)</span> (o <span class="math inline">x(t)</span> se non c'è ambiguità).</li>
+</ul>
+<h4 id="definizione-di-processo-stocastico-2-2">Definizione di processo stocastico (2/2)</h4>
+<ul>
+<li>In una variabile aleatoria l'esito di un esperimento è associato a un <strong>numero</strong>. In un processo stocastico è associato a una <strong>forma d'onda</strong>, funzione del tempo.</li>
+</ul>
+<img class="zoom" src="img/random-processes-p7-realizzazioni.png" alt="" loading="lazy">
+<p><em>Lo spazio campione <span class="math inline">S</span> con gli esiti <span class="math inline">s_1, s_2, \dots, s_n</span>; ogni esito dà una forma d'onda <span class="math inline">x_1(t), \dots, x_n(t)</span> su <span class="math inline">(-T, +T)</span>. Una verticale in <span class="math inline">t_k</span> taglia le forme d'onda nei valori <span class="math inline">x_1(t_k), \dots, x_n(t_k)</span>, cioè i valori della variabile aleatoria <span class="math inline">X(t_k)</span>.</em></p>
+<h3 id="caratterizzazione-statistica-completa">Caratterizzazione statistica completa</h3>
+<h4 id="cdf-del-primo-e-del-secondo-ordine">CDF del primo e del secondo ordine</h4>
+<ul>
+<li><span class="math inline">X(t)</span>: processo a tempo continuo e ampiezza continua. Per <span class="math inline">t = t_1</span>, <span class="math inline">X(t_1)</span> è una variabile aleatoria, con CDF <span class="math inline">F_{X(t_1)}(x) \triangleq P(\{X(t_1) \le x\})</span> per ogni <span class="math inline">x</span> e ogni <span class="math inline">t_1</span>. Se la si conosce, si ha la <strong>CDF del primo ordine</strong>.</li>
+<li>Campionando in due istanti, <span class="math inline">X(t_1)</span> e <span class="math inline">X(t_2)</span> sono una coppia di variabili aleatorie con CDF congiunta <span class="math inline">F_{X(t_1)X(t_2)}(x_1, x_2) = P(\{X(t_1) \le x_1, X(t_2) \le x_2\})</span>. Se la si conosce per ogni <span class="math inline">t_1, t_2</span>, si ha la <strong>CDF del secondo ordine</strong>.</li>
+<li>Nota: negli appunti compare <span class="math inline">\forall t_1 \in \mathbb{Z}</span>, da leggere <span class="math inline">t_1 \in \mathbb{R}</span> (tempo continuo).</li>
+</ul>
+<img class="zoom" src="img/random-processes-p8-appunti-cdf-primo-secondo-ordine.png" alt="" loading="lazy">
+<h4 id="distribuzioni-congiunte-dei-campioni-temporali-1">Distribuzioni congiunte dei campioni temporali (1/2)</h4>
+<ul>
+<li>La descrizione statistica di un processo si basa sulla CDF (o, equivalentemente, sulla pdf) di <strong>vettori</strong> di campioni del segnale aleatorio.</li>
+<li><span class="math inline">X(t_1), \dots, X(t_k)</span> sono le variabili aleatorie ottenute campionando <span class="math inline">X(t)</span> negli istanti <span class="math inline">t_1, \dots, t_k</span>. Per <span class="math inline">(x_1, \dots, x_k) \in \mathbb{R}^k</span>, la <strong>CDF congiunta</strong> è</li>
+</ul>
+<div class="math block">F_{X(t_1),\dots,X(t_k)}(x_1, \dots, x_k) \triangleq P[X(t_1) \le x_1, \dots, X(t_k) \le x_k] \tag{1}</div><p>e la <strong>pdf congiunta</strong> è</p>
+<div class="math block">f_{X(t_1),\dots,X(t_k)}(x_1, \dots, x_k) \triangleq \frac{\partial^k}{\partial x_1\,\partial x_2 \cdots \partial x_k}\,F_{X(t_1),\dots,X(t_k)}(x_1, \dots, x_k) \tag{2}</div><ul>
+<li>Se si conosce la CDF congiunta (1), o la pdf (2), per <strong>qualunque scelta</strong> degli istanti <span class="math inline">t_1, \dots, t_k</span>, si dice che si conosce la <strong>caratterizzazione statistica di ordine <span class="math inline">k</span></strong> del processo.</li>
+<li>Nota a mano: integrando rispetto a una variabile si ottiene la pdf del primo ordine, <span class="math inline">\int_{-\infty}^{+\infty} f_{X(t_1)X(t_2)}(x_1, x_2)\,dx_2 = f_{X(t_1)}(x_1)</span>.</li>
+<li>Refusi della slide: nella (2) la derivata è scritta <span class="math inline">\partial^n</span> (corretta a mano in <span class="math inline">\partial^k</span>); il rimando è alla «CDF congiunta (36)» invece che alla (1).</li>
+</ul>
+<img class="zoom" src="img/random-processes-p9-marginalizzazione.png" alt="" loading="lazy">
+<h4 id="il-processo-di-bernoulli-df-del-primo-e-del-seco">Il processo di Bernoulli: DF del primo e del secondo ordine</h4>
+<ul>
+<li>Per processi aleatori discreti a tempo discreto si usa la <strong>DF</strong> (distribuzione di probabilità).</li>
+<li><strong>Primo ordine:</strong> <span class="math inline">p_{X(n)}(x) \triangleq P(X(n) = x) = p^{x}\,q^{1-x}</span>, con <span class="math inline">x \in \{0, 1\}</span>.</li>
+<li><strong>Secondo ordine:</strong> <span class="math inline">p_{X(n_1)X(n_2)}(x_1, x_2) \triangleq P(\{X(n_1) = x_1, X(n_2) = x_2\}) = p^{w(\mathbf{x})}\,q^{2 - w(\mathbf{x})}</span>, dove <span class="math inline">\mathbf{x} = (x_1, x_2)</span> e <span class="math inline">w(\mathbf{x})</span> è il <strong>numero di 1 contenuti nel vettore</strong>, supponendo che i lanci siano statisticamente indipendenti.</li>
+</ul>
+<img class="zoom" src="img/random-processes-p10-appunti-processo-bernoulli.png" alt="" loading="lazy">
+<h4 id="distribuzioni-congiunte-dei-campioni-temporali-2">Distribuzioni congiunte dei campioni temporali (2/2)</h4>
+<ul>
+<li>Un processo è <strong>completamente caratterizzato</strong> se la CDF congiunta di ordine <span class="math inline">k</span> (o la pdf) è nota per ogni <span class="math inline">k \in \mathbb{N}</span> e ogni scelta degli istanti <span class="math inline">t_1, \dots, t_k</span>.</li>
+<li>La collezione di CDF e pdf deve essere <strong>coerente</strong>: quelle di ordine inferiore si ottengono come <strong>marginali</strong> di quelle di ordine superiore.</li>
+<li>Finora l'ampiezza di <span class="math inline">X(t)</span> è stata supposta continua. Se è <strong>discreta</strong>, conviene usare la distribuzione di probabilità (DF). Esempio: il processo di Bernoulli.</li>
+<li>La caratterizzazione completa è difficile da ottenere in molti casi pratici ⇒ si usa la <strong>caratterizzazione statistica parziale</strong>.</li>
+</ul>
+<h3 id="caratterizzazione-statistica-parziale">Caratterizzazione statistica parziale</h3>
+<h4 id="media-di-un-processo">Media di un processo</h4>
+<ul>
+<li>Per un processo reale <span class="math inline">X(t)</span>, la <strong>media</strong> è il valore atteso della variabile aleatoria ottenuta campionando il processo in <span class="math inline">t</span>:</li>
+</ul>
+<div class="math block">\mu_X(t) \triangleq E[X(t)] = \int_{-\infty}^{+\infty} x\,f_{X(t)}(x)\,dx \tag{3}</div><p>con <span class="math inline">f_{X(t)}(x)</span> pdf del primo ordine. In generale <span class="math inline">\mu_X(t)</span> è funzione del tempo.</p>
+<h4 id="funzione-di-correlazione">Funzione di correlazione</h4>
+<ul>
+<li>La <strong>funzione di autocorrelazione</strong> (acf) è il valore atteso del prodotto di due variabili aleatorie, <span class="math inline">X(t_1)</span> e <span class="math inline">X(t_2)</span>:</li>
+</ul>
+<div class="math block">R_{XX}(t_1, t_2) \triangleq E[X(t_1)X(t_2)] = \int_{-\infty}^{+\infty}\!\!\int_{-\infty}^{+\infty} x_1 x_2\,f_{X(t_1),X(t_2)}(x_1, x_2)\,dx_1\,dx_2 \tag{4}</div><p>con <span class="math inline">f_{X(t_1),X(t_2)}</span> pdf del secondo ordine. In generale dipende da <span class="math inline">t_1</span> e <span class="math inline">t_2</span> separatamente.</p>
+<h4 id="funzione-di-covarianza">Funzione di covarianza</h4>
+<ul>
+<li>La <strong>autocovarianza</strong> è</li>
+</ul>
+<div class="math block">
+\begin{aligned}
+C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\} \\
+&amp;= \iint [x_1 - \mu_X(t_1)][x_2 - \mu_X(t_2)]\,f_{X(t_1),X(t_2)}(x_1, x_2)\,dx_1\,dx_2 \\
+&amp;= R_{XX}(t_1, t_2) - \mu_X(t_1)\,\mu_X(t_2)
+\end{aligned} \tag{5}
+</div><ul>
+<li>Se media e acf sono note, si ricava l'autocovarianza. In generale dipende da <span class="math inline">t_1</span> e <span class="math inline">t_2</span> separatamente.</li>
+</ul>
+<h3 id="processi-stazionari">Processi stazionari</h3>
+<h4 id="processi-stazionari-1-3">Processi stazionari (1/3)</h4>
+<ul>
+<li>In generale la caratterizzazione statistica di un processo cambia nel tempo. Se le proprietà statistiche non sono influenzate, in qualche misura, dalla scelta dell'origine dei tempi, il processo si dice <strong>stazionario in qualche senso</strong>. Si definiscono diverse forme di stazionarietà.</li>
+<li>Sia <span class="math inline">X(t)</span> un processo iniziato in <span class="math inline">t = -\infty</span>, campionato in <span class="math inline">t_1, \dots, t_k</span>, con CDF di ordine <span class="math inline">k</span> <span class="math inline">F_{X(t_1),\dots,X(t_k)}(x_1, \dots, x_k)</span>.</li>
+<li>Si traslano tutti gli istanti di campionamento di una quantità fissa <span class="math inline">\tau</span> (traslazione temporale): le variabili <span class="math inline">X(t_1 + \tau), \dots, X(t_k + \tau)</span> hanno CDF <span class="math inline">F_{X(t_1+\tau),\dots,X(t_k+\tau)}(x_1, \dots, x_k)</span>.</li>
+</ul>
+<h4 id="processi-stazionari-2-3">Processi stazionari (2/3)</h4>
+<ul>
+<li><span class="math inline">X(t)</span> è <strong>stazionario di ordine <span class="math inline">k</span></strong> se</li>
+</ul>
+<div class="math block">F_{X(t_1+\tau),\dots,X(t_k+\tau)}(x_1, \dots, x_k) = F_{X(t_1),\dots,X(t_k)}(x_1, \dots, x_k) \tag{6}</div><p>per ogni traslazione <span class="math inline">\tau</span> e ogni scelta di <span class="math inline">t_1, \dots, t_k</span>.</p>
+<ul>
+<li><span class="math inline">X(t)</span> è <strong>stazionario in senso stretto</strong> (SSS) se la (6) vale per ogni <span class="math inline">k \in \mathbb{N}</span>: è la forma più forte. Spesso bastano forme più deboli.</li>
+<li><strong>Stazionario del primo ordine</strong>: la (6) vale per <span class="math inline">k = 1</span>. Con <span class="math inline">\tau = -t</span> si ha <span class="math inline">F_{X(t)}(x) = F_{X(t+\tau)}(x) = F_{X(0)}(x)</span> per ogni <span class="math inline">t \in \mathbb{R}</span> ⇒ la distribuzione del primo ordine <strong>non dipende dal tempo</strong>.</li>
+<li>Per un processo stazionario del primo ordine la media è costante:</li>
+</ul>
+<div class="math block">\mu_X(t) = \int_{-\infty}^{+\infty} x\,f_{X(t)}(x)\,dx = \int_{-\infty}^{+\infty} x\,f_{X(0)}(x)\,dx \equiv \mu_X, \quad \forall t \in \mathbb{R}</div><h4 id="processi-stazionari-3-3">Processi stazionari (3/3)</h4>
+<ul>
+<li><strong>Stazionario del secondo ordine</strong>: la (6) vale per <span class="math inline">k = 2</span>. Con <span class="math inline">\tau = -t_2</span>:</li>
+</ul>
+<div class="math block">F_{X(t_1),X(t_2)}(x_1, x_2) = F_{X(t_1+\tau),X(t_2+\tau)}(x_1, x_2) = F_{X(t_1-t_2),X(0)}(x_1, x_2)</div><p>La distribuzione del secondo ordine dipende <strong>solo dalla differenza</strong> tra gli istanti di campionamento, non dagli istanti particolari.</p>
+<ul>
+<li>Per un processo stazionario del secondo ordine, <span class="math inline">f_{X(t_1),X(t_2)}(x_1, x_2)</span> dipende solo da <span class="math inline">t_1 - t_2</span> e quindi anche</li>
+</ul>
+<div class="math block">R_{XX}(t_1, t_2) \equiv R_{XX}(t_1 - t_2), \quad \forall (t_1, t_2) \in \mathbb{R}^2</div><ul>
+<li>Se un processo è stazionario di ordine <span class="math inline">k</span>, lo è anche di ordine <span class="math inline">k-1</span>, <span class="math inline">k-2</span>, e così via (il viceversa non vale in generale).</li>
+</ul>
+<h4 id="processi-stazionari-in-senso-lato">Processi stazionari in senso lato</h4>
+<ul>
+<li>Un'altra classe importante è quella dei processi <strong>stazionari in senso lato</strong> (WSS, <em>wide-sense stationary</em>, o debolmente stazionari). <span class="math inline">X(t)</span> è WSS se valgono due condizioni:
+<ol>
+<li>la <strong>media</strong> è costante per ogni <span class="math inline">t</span>;</li>
+<li>la <strong>acf</strong> dipende solo dalla differenza tra due istanti di campionamento.</li>
+</ol>
+</li>
+<li>Stazionarietà in senso stretto ⇒ stazionarietà in senso lato.</li>
+</ul>
+<figure class="fig"><svg viewBox="0 0 400 152" role="img" aria-label="tipi di stazionarietà" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a17" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><rect class="bx bx1" x="10.0" y="52.0" width="104.0" height="46.0" rx="4"/><text class="tx" x="62.0" y="70.0" text-anchor="middle">SSS</text><text class="tx" x="62.0" y="84.0" text-anchor="middle">(ogni ordine k)</text><rect class="bx" x="160.0" y="12.0" width="104.0" height="40.0" rx="4"/><text class="tx" x="212.0" y="28.0" text-anchor="middle">ordine k</text><text class="tx" x="212.0" y="42.0" text-anchor="middle">poi k−1, …, 1</text><line class="ln" x1="114.0" y1="66.0" x2="160.0" y2="38.0" marker-end="url(#a17)"/><rect class="bx bx2" x="160.0" y="98.0" width="230.0" height="44.0" rx="4"/><text class="tx" x="275.0" y="116.0" text-anchor="middle">WSS (senso lato)</text><text class="tx" x="275.0" y="130.0" text-anchor="middle">media costante + acf(τ)</text><line class="ln" x1="114.0" y1="84.0" x2="160.0" y2="112.0" marker-end="url(#a17)"/><text class="ts a2" x="300.0" y="36.0" text-anchor="start">il viceversa non vale</text></svg><figcaption>🧩 La stazionarietà stretta (SSS) implica quella di ogni ordine e quella in senso lato (WSS: media costante e acf che dipende solo dal ritardo). Non vale il viceversa.</figcaption></figure>
+<h3 id="funzione-di-autocorrelazione-dei-processi-wss">Funzione di autocorrelazione dei processi WSS</h3>
+<h4 id="proprieta-della-acf-1-2">Proprietà della acf (1/2)</h4>
+<ul>
+<li>Per un processo WSS la acf si può scrivere come <strong>lag-acf</strong>:</li>
+</ul>
+<div class="math block">R_{XX}(\tau) \triangleq E[X(t)\,X(t - \tau)], \quad \forall \tau \in \mathbb{R} \tag{7}</div><p>dove <span class="math inline">\tau</span> è il <strong>lag</strong>, l'intervallo tra i campioni in <span class="math inline">t_1 = t</span> e <span class="math inline">t_2 = t_1 - \tau</span>.</p>
+<ul>
+<li>Proprietà:
+<ol>
+<li>il valore quadratico medio si ottiene ponendo <span class="math inline">\tau = 0</span>: <span class="math inline">R_{XX}(0) = E[X^2(t)]</span>;</li>
+<li><span class="math inline">R_{XX}(\tau)</span> è una funzione <strong>pari</strong>: <span class="math inline">R_{XX}(-\tau) = R_{XX}(\tau)</span>;</li>
+<li><span class="math inline">R_{XX}(\tau)</span> ha il massimo in modulo in <span class="math inline">\tau = 0</span>: <span class="math inline">\lvert R_{XX}(\tau)\rvert \le R_{XX}(0)</span>.</li>
+</ol>
+</li>
+<li>Acf <strong>normalizzata</strong>:</li>
+</ul>
+<div class="math block">\rho_{XX}(\tau) \triangleq \frac{R_{XX}(\tau)}{R_{XX}(0)} \tag{8}</div><p>con valori in <span class="math inline">[-1, 1]</span>, cioè <span class="math inline">\lvert\rho_{XX}(\tau)\rvert \le 1</span>.</p>
+<h4 id="significato-fisico-della-auto-correlation-functi">Significato fisico della Auto Correlation Function (acf) (1/2)</h4>
+<ul>
+<li><span class="math inline">R_{XX}(\tau)</span> descrive l'interdipendenza di due variabili aleatorie ottenute campionando <span class="math inline">X(t)</span> a <span class="math inline">\tau</span> secondi di distanza.</li>
+<li>Più rapidamente <span class="math inline">X(t)</span> cambia nel tempo, più rapidamente <span class="math inline">R_{XX}(\tau)</span> decresce dal massimo <span class="math inline">R_{XX}(0)</span> al crescere di <span class="math inline">\tau</span>.</li>
+<li>Questo comportamento si caratterizza con un <strong>tempo di decorrelazione</strong> <span class="math inline">\tau_{dec}</span>: per <span class="math inline">\tau &gt; \tau_{dec}</span>, il modulo di <span class="math inline">R_{XX}(\tau)</span> resta sotto un valore prescritto.</li>
+</ul>
+<h4 id="significato-fisico-della-acf-2-2">Significato fisico della acf (2/2)</h4>
+<img class="zoom" src="img/random-processes-p21-autocorrelazione-lento-veloce.png" alt="" loading="lazy">
+<p><em>Acf di processi che fluttuano lentamente e rapidamente: nel primo caso la acf decresce lentamente da <span class="math inline">R_{XX}(0)</span> (tempo di decorrelazione lungo), nel secondo rapidamente.</em></p>
+<figure class="fig"><svg viewBox="0 0 400 236" role="img" aria-label="acf di un processo lento e di uno veloce" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a15" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><text class="tx tb" x="8.0" y="20.0" text-anchor="start">processo lento</text><line class="ax" x1="10.0" y1="66.0" x2="200.0" y2="66.0" marker-end="url(#a15)"/><path class="cv" d="M10.0 88.5 L11.0 86.1 L11.9 83.6 L12.9 81.0 L13.8 78.4 L14.8 75.7 L15.7 73.2 L16.7 70.6 L17.6 68.2 L18.6 65.8 L19.5 63.6 L20.5 61.5 L21.5 59.6 L22.4 57.9 L23.4 56.3 L24.3 55.0 L25.3 53.9 L26.2 53.0 L27.2 52.4 L28.1 52.0 L29.1 51.9 L30.1 52.1 L31.0 52.5 L32.0 53.1 L32.9 54.0 L33.9 55.0 L34.8 56.3 L35.8 57.7 L36.7 59.3 L37.7 61.0 L38.6 62.8 L39.6 64.7 L40.6 66.5 L41.5 68.3 L42.5 70.1 L43.4 71.8 L44.4 73.3 L45.3 74.7 L46.3 75.9 L47.2 76.9 L48.2 77.7 L49.1 78.3 L50.1 78.6 L51.1 78.8 L52.0 78.7 L53.0 78.4 L53.9 78.0 L54.9 77.3 L55.8 76.6 L56.8 75.7 L57.7 74.8 L58.7 73.8 L59.6 72.7 L60.6 71.7 L61.6 70.7 L62.5 69.8 L63.5 68.9 L64.4 68.1 L65.4 67.3 L66.3 66.7 L67.3 66.2 L68.2 65.8 L69.2 65.5 L70.2 65.3 L71.1 65.2 L72.1 65.2 L73.0 65.2 L74.0 65.4 L74.9 65.5 L75.9 65.8 L76.8 66.0 L77.8 66.3 L78.7 66.6 L79.7 66.9 L80.7 67.2 L81.6 67.4 L82.6 67.7 L83.5 67.9 L84.5 68.0 L85.4 68.2 L86.4 68.3 L87.3 68.3 L88.3 68.4 L89.2 68.3 L90.2 68.3 L91.2 68.2 L92.1 68.1 L93.1 67.9 L94.0 67.7 L95.0 67.5 L95.9 67.3 L96.9 67.1 L97.8 66.9 L98.8 66.7 L99.7 66.5 L100.7 66.3 L101.7 66.2 L102.6 66.1 L103.6 66.0 L104.5 65.9 L105.5 65.9 L106.4 66.0 L107.4 66.1 L108.3 66.2 L109.3 66.4 L110.3 66.7 L111.2 67.0 L112.2 67.4 L113.1 67.8 L114.1 68.3 L115.0 68.8 L116.0 69.4 L116.9 70.0 L117.9 70.6 L118.8 71.3 L119.8 72.0 L120.8 72.7 L121.7 73.5 L122.7 74.2 L123.6 75.0 L124.6 75.7 L125.5 76.4 L126.5 77.1 L127.4 77.8 L128.4 78.4 L129.3 78.9 L130.3 79.4 L131.3 79.8 L132.2 80.0 L133.2 80.2 L134.1 80.3 L135.1 80.2 L136.0 80.0 L137.0 79.6 L137.9 79.0 L138.9 78.3 L139.8 77.5 L140.8 76.4 L141.8 75.2 L142.7 73.8 L143.7 72.2 L144.6 70.5 L145.6 68.6 L146.5 66.7 L147.5 64.6 L148.4 62.4 L149.4 60.1 L150.4 57.9 L151.3 55.6 L152.3 53.3 L153.2 51.0 L154.2 48.8 L155.1 46.7 L156.1 44.7 L157.0 42.8 L158.0 41.0 L158.9 39.4 L159.9 38.0 L160.9 36.7 L161.8 35.6 L162.8 34.6 L163.7 33.8 L164.7 33.1 L165.6 32.6 L166.6 32.2 L167.5 31.9 L168.5 31.6 L169.4 31.4 L170.4 31.2 L171.4 31.0 L172.3 30.8 L173.3 30.6 L174.2 30.3 L175.2 30.0 L176.1 29.5 L177.1 28.9 L178.0 28.3 L179.0 27.5 L179.9 26.7 L180.9 25.7 L181.9 24.7 L182.8 23.6 L183.8 22.4 L184.7 21.2 L185.7 20.0 L186.6 18.8 L187.6 17.6 L188.5 16.5 L189.5 15.4 L190.5 14.5 L191.4 13.7 L192.4 13.0 L193.3 12.4 L194.3 12.1 L195.2 11.9 L196.2 11.8 L197.1 12.0 L198.1 12.3 L199.0 12.7 L200.0 13.3"/><text class="ts" x="198.0" y="80.0" text-anchor="end">t</text><line class="ax" x1="240.0" y1="88.0" x2="382.0" y2="88.0" marker-end="url(#a15)"/><line class="ax" x1="300.0" y1="92.0" x2="300.0" y2="26.0" marker-end="url(#a15)"/><path class="cv2" d="M242.0 84.5 L242.7 84.3 L243.5 84.0 L244.2 83.7 L244.9 83.4 L245.6 83.1 L246.4 82.8 L247.1 82.4 L247.8 82.1 L248.6 81.7 L249.3 81.3 L250.0 80.9 L250.8 80.4 L251.5 80.0 L252.2 79.5 L252.9 79.0 L253.7 78.5 L254.4 77.9 L255.1 77.4 L255.9 76.8 L256.6 76.2 L257.3 75.6 L258.1 74.9 L258.8 74.2 L259.5 73.5 L260.2 72.8 L261.0 72.1 L261.7 71.3 L262.4 70.5 L263.2 69.7 L263.9 68.9 L264.6 68.1 L265.3 67.2 L266.1 66.3 L266.8 65.5 L267.5 64.5 L268.3 63.6 L269.0 62.7 L269.7 61.7 L270.5 60.8 L271.2 59.8 L271.9 58.8 L272.6 57.8 L273.4 56.8 L274.1 55.8 L274.8 54.8 L275.6 53.8 L276.3 52.8 L277.0 51.8 L277.7 50.8 L278.5 49.8 L279.2 48.8 L279.9 47.8 L280.7 46.9 L281.4 45.9 L282.1 45.0 L282.9 44.1 L283.6 43.2 L284.3 42.3 L285.0 41.4 L285.8 40.6 L286.5 39.8 L287.2 39.1 L288.0 38.3 L288.7 37.6 L289.4 36.9 L290.2 36.3 L290.9 35.7 L291.6 35.2 L292.3 34.6 L293.1 34.2 L293.8 33.8 L294.5 33.4 L295.3 33.0 L296.0 32.7 L296.7 32.5 L297.4 32.3 L298.2 32.2 L298.9 32.1 L299.6 32.0 L300.4 32.0 L301.1 32.1 L301.8 32.2 L302.6 32.3 L303.3 32.5 L304.0 32.7 L304.7 33.0 L305.5 33.4 L306.2 33.8 L306.9 34.2 L307.7 34.6 L308.4 35.2 L309.1 35.7 L309.8 36.3 L310.6 36.9 L311.3 37.6 L312.0 38.3 L312.8 39.1 L313.5 39.8 L314.2 40.6 L315.0 41.4 L315.7 42.3 L316.4 43.2 L317.1 44.1 L317.9 45.0 L318.6 45.9 L319.3 46.9 L320.1 47.8 L320.8 48.8 L321.5 49.8 L322.3 50.8 L323.0 51.8 L323.7 52.8 L324.4 53.8 L325.2 54.8 L325.9 55.8 L326.6 56.8 L327.4 57.8 L328.1 58.8 L328.8 59.8 L329.5 60.8 L330.3 61.7 L331.0 62.7 L331.7 63.6 L332.5 64.5 L333.2 65.5 L333.9 66.3 L334.7 67.2 L335.4 68.1 L336.1 68.9 L336.8 69.7 L337.6 70.5 L338.3 71.3 L339.0 72.1 L339.8 72.8 L340.5 73.5 L341.2 74.2 L341.9 74.9 L342.7 75.6 L343.4 76.2 L344.1 76.8 L344.9 77.4 L345.6 77.9 L346.3 78.5 L347.1 79.0 L347.8 79.5 L348.5 80.0 L349.2 80.4 L350.0 80.9 L350.7 81.3 L351.4 81.7 L352.2 82.1 L352.9 82.4 L353.6 82.8 L354.4 83.1 L355.1 83.4 L355.8 83.7 L356.5 84.0 L357.3 84.3 L358.0 84.5"/><text class="ts" x="382.0" y="102.0" text-anchor="end">τ</text><text class="ts" x="306.0" y="26.0" text-anchor="start">R<tspan dy="3" font-size="0.72em">X</tspan><tspan dy="-3">​</tspan>(τ)</text><text class="tx tb" x="8.0" y="124.0" text-anchor="start">processo veloce</text><line class="ax" x1="10.0" y1="170.0" x2="200.0" y2="170.0" marker-end="url(#a15)"/><path class="cv" d="M10.0 185.2 L11.0 189.6 L11.9 191.4 L12.9 191.0 L13.8 189.3 L14.8 186.6 L15.7 181.4 L16.7 173.3 L17.6 165.8 L18.6 164.3 L19.5 170.3 L20.5 180.7 L21.5 189.5 L22.4 192.2 L23.4 187.4 L24.3 177.3 L25.3 167.4 L26.2 162.3 L27.2 162.6 L28.1 165.4 L29.1 167.6 L30.1 168.6 L31.0 169.5 L32.0 170.6 L32.9 170.9 L33.9 168.8 L34.8 164.0 L35.8 157.1 L36.7 150.2 L37.7 145.7 L38.6 145.5 L39.6 149.8 L40.6 155.9 L41.5 159.8 L42.5 158.4 L43.4 152.1 L44.4 144.2 L45.3 139.2 L46.3 139.5 L47.2 144.2 L48.2 150.3 L49.1 156.3 L50.1 163.3 L51.1 171.6 L52.0 178.2 L53.0 178.1 L53.9 169.5 L54.9 155.6 L55.8 143.0 L56.8 137.1 L57.7 139.4 L58.7 147.1 L59.6 155.8 L60.6 162.6 L61.6 166.6 L62.5 167.4 L63.5 166.8 L64.4 168.2 L65.4 174.4 L66.3 183.7 L67.3 189.7 L68.2 187.0 L69.2 176.9 L70.2 167.0 L71.1 164.9 L72.1 171.6 L73.0 180.7 L74.0 185.0 L74.9 182.7 L75.9 175.5 L76.8 165.2 L77.8 153.3 L78.7 142.2 L79.7 134.5 L80.7 131.6 L81.6 133.5 L82.6 140.4 L83.5 151.8 L84.5 165.0 L85.4 175.6 L86.4 180.4 L87.3 180.2 L88.3 178.5 L89.2 178.5 L90.2 180.1 L91.2 181.0 L92.1 179.7 L93.1 176.6 L94.0 172.3 L95.0 167.3 L95.9 162.5 L96.9 160.4 L97.8 162.3 L98.8 166.1 L99.7 167.3 L100.7 163.7 L101.7 157.0 L102.6 151.1 L103.6 148.7 L104.5 150.3 L105.5 154.7 L106.4 160.5 L107.4 166.8 L108.3 174.3 L109.3 183.7 L110.3 192.4 L111.2 195.2 L112.2 189.2 L113.1 177.3 L114.1 166.2 L115.0 159.6 L116.0 157.9 L116.9 161.6 L117.9 172.3 L118.8 188.8 L119.8 206.2 L120.8 219.1 L121.7 226.0 L122.7 228.1 L123.6 225.9 L124.6 219.4 L125.5 210.2 L126.5 200.8 L127.4 191.3 L128.4 178.9 L129.3 161.5 L130.3 141.1 L131.3 123.1 L132.2 111.8 L133.2 107.1 L134.1 105.6 L135.1 106.0 L136.0 110.5 L137.0 122.0 L137.9 139.6 L138.9 157.9 L139.8 171.0 L140.8 177.8 L141.8 181.0 L142.7 182.8 L143.7 182.5 L144.6 178.9 L145.6 173.3 L146.5 168.1 L147.5 163.4 L148.4 157.3 L149.4 150.2 L150.4 146.0 L151.3 148.8 L152.3 158.2 L153.2 168.8 L154.2 174.6 L155.1 174.3 L156.1 170.7 L157.0 167.8 L158.0 167.5 L158.9 169.1 L159.9 171.4 L160.9 173.8 L161.8 176.4 L162.8 178.0 L163.7 176.6 L164.7 171.0 L165.6 162.8 L166.6 156.0 L167.5 154.7 L168.5 160.2 L169.4 170.1 L170.4 179.4 L171.4 183.6 L172.3 182.2 L173.3 178.6 L174.2 176.9 L175.2 178.6 L176.1 182.3 L177.1 185.5 L178.0 186.8 L179.0 186.8 L179.9 187.1 L180.9 187.3 L181.9 184.7 L182.8 176.9 L183.8 165.8 L184.7 156.7 L185.7 153.6 L186.6 155.9 L187.6 159.4 L188.5 160.7 L189.5 159.3 L190.5 157.1 L191.4 157.3 L192.4 162.8 L193.3 173.6 L194.3 185.9 L195.2 193.4 L196.2 192.2 L197.1 183.1 L198.1 171.0 L199.0 161.2 L200.0 156.8"/><text class="ts" x="198.0" y="184.0" text-anchor="end">t</text><line class="ax" x1="240.0" y1="192.0" x2="382.0" y2="192.0" marker-end="url(#a15)"/><line class="ax" x1="300.0" y1="196.0" x2="300.0" y2="130.0" marker-end="url(#a15)"/><path class="cv2" d="M242.0 192.0 L242.7 192.0 L243.5 192.0 L244.2 192.0 L244.9 192.0 L245.6 192.0 L246.4 192.0 L247.1 192.0 L247.8 192.0 L248.6 192.0 L249.3 192.0 L250.0 192.0 L250.8 192.0 L251.5 192.0 L252.2 192.0 L252.9 192.0 L253.7 192.0 L254.4 192.0 L255.1 192.0 L255.9 192.0 L256.6 192.0 L257.3 192.0 L258.1 192.0 L258.8 192.0 L259.5 192.0 L260.2 192.0 L261.0 192.0 L261.7 192.0 L262.4 192.0 L263.2 192.0 L263.9 192.0 L264.6 192.0 L265.3 192.0 L266.1 192.0 L266.8 192.0 L267.5 192.0 L268.3 192.0 L269.0 192.0 L269.7 192.0 L270.5 192.0 L271.2 192.0 L271.9 192.0 L272.6 192.0 L273.4 192.0 L274.1 192.0 L274.8 192.0 L275.6 192.0 L276.3 192.0 L277.0 192.0 L277.7 192.0 L278.5 192.0 L279.2 192.0 L279.9 192.0 L280.7 192.0 L281.4 192.0 L282.1 192.0 L282.9 192.0 L283.6 192.0 L284.3 192.0 L285.0 191.9 L285.8 191.9 L286.5 191.8 L287.2 191.6 L288.0 191.2 L288.7 190.7 L289.4 190.0 L290.2 188.9 L290.9 187.3 L291.6 185.1 L292.3 182.2 L293.1 178.6 L293.8 174.1 L294.5 169.0 L295.3 163.3 L296.0 157.3 L296.7 151.4 L297.4 145.9 L298.2 141.3 L298.9 138.0 L299.6 136.2 L300.4 136.2 L301.1 138.0 L301.8 141.3 L302.6 145.9 L303.3 151.4 L304.0 157.3 L304.7 163.3 L305.5 169.0 L306.2 174.1 L306.9 178.6 L307.7 182.2 L308.4 185.1 L309.1 187.3 L309.8 188.9 L310.6 190.0 L311.3 190.7 L312.0 191.2 L312.8 191.6 L313.5 191.8 L314.2 191.9 L315.0 191.9 L315.7 192.0 L316.4 192.0 L317.1 192.0 L317.9 192.0 L318.6 192.0 L319.3 192.0 L320.1 192.0 L320.8 192.0 L321.5 192.0 L322.3 192.0 L323.0 192.0 L323.7 192.0 L324.4 192.0 L325.2 192.0 L325.9 192.0 L326.6 192.0 L327.4 192.0 L328.1 192.0 L328.8 192.0 L329.5 192.0 L330.3 192.0 L331.0 192.0 L331.7 192.0 L332.5 192.0 L333.2 192.0 L333.9 192.0 L334.7 192.0 L335.4 192.0 L336.1 192.0 L336.8 192.0 L337.6 192.0 L338.3 192.0 L339.0 192.0 L339.8 192.0 L340.5 192.0 L341.2 192.0 L341.9 192.0 L342.7 192.0 L343.4 192.0 L344.1 192.0 L344.9 192.0 L345.6 192.0 L346.3 192.0 L347.1 192.0 L347.8 192.0 L348.5 192.0 L349.2 192.0 L350.0 192.0 L350.7 192.0 L351.4 192.0 L352.2 192.0 L352.9 192.0 L353.6 192.0 L354.4 192.0 L355.1 192.0 L355.8 192.0 L356.5 192.0 L357.3 192.0 L358.0 192.0"/><text class="ts" x="382.0" y="206.0" text-anchor="end">τ</text><text class="ts" x="306.0" y="130.0" text-anchor="start">R<tspan dy="3" font-size="0.72em">X</tspan><tspan dy="-3">​</tspan>(τ)</text></svg><figcaption>🧩 Più la acf è larga, più il processo varia lentamente: campioni vicini sono correlati a lungo. Una acf stretta indica un processo che cambia rapidamente (tempo di decorrelazione breve).</figcaption></figure>
+<h3 id="funzioni-di-correlazione-incrociata">Funzioni di correlazione incrociata</h3>
+<h4 id="crosscorrelazione">Crosscorrelazione</h4>
+<ul>
+<li>Per due processi reali <span class="math inline">X(t)</span> e <span class="math inline">Y(t)</span>, con acf <span class="math inline">R_{XX}(t, \tau)</span> e <span class="math inline">R_{YY}(t, \tau)</span>, si definiscono le <strong>lag-crosscorrelazioni</strong></li>
+</ul>
+<div class="math block">R_{XY}(t, \tau) \triangleq E[X(t)\,Y(t - \tau)], \qquad R_{YX}(t, \tau) \triangleq E[Y(t)\,X(t - \tau)] \tag{9}</div><p>che dipendono dall'<strong>ordine</strong> dei due processi.</p>
+<ul>
+<li><span class="math inline">X(t)</span> e <span class="math inline">Y(t)</span> sono <strong>congiuntamente WSS</strong> se ciascuno è WSS e, in più, <span class="math inline">R_{XY}(t, \tau) \equiv R_{XY}(\tau)</span>.</li>
+<li>In generale la crosscorrelazione <strong>non è pari</strong> in <span class="math inline">\tau</span> e <strong>non ha il massimo nell'origine</strong>, ma vale <span class="math inline">R_{XY}(\tau) = R_{YX}(-\tau)</span>.</li>
+</ul>
+<h4 id="crosscovarianza">Crosscovarianza</h4>
+<ul>
+<li>Per due processi con autocovarianze <span class="math inline">C_{XX}(\tau)</span> e <span class="math inline">C_{YY}(\tau)</span>, la <strong>lag-crosscovarianza</strong> è</li>
+</ul>
+<div class="math block">C_{XY}(t, \tau) \triangleq E\{[X(t) - \mu_X(t)][Y(t - \tau) - \mu_Y(t - \tau)]\} \tag{10}</div><div class="math block">C_{YX}(t, \tau) \triangleq E\{[Y(t) - \mu_Y(t)][X(t - \tau) - \mu_X(t - \tau)]\} \tag{11}</div><p>e dipende dall'ordine dei due processi.</p>
+<ul>
+<li>A media nulla (<span class="math inline">\mu_X(t) = \mu_Y(t) = 0</span>): <span class="math inline">C_{XY}(t, \tau) = R_{XY}(t, \tau)</span> e <span class="math inline">C_{YX}(t, \tau) = R_{YX}(t, \tau)</span>.</li>
+<li>Se sono congiuntamente WSS, <span class="math inline">C_{XY}(t, \tau) = C_{XY}(\tau)</span>.</li>
+</ul>
+<h4 id="processi-indipendenti-incoerenti-incorrelati">Processi indipendenti, incoerenti, incorrelati</h4>
+<ul>
+<li><strong>Indipendenti</strong>: gli insiemi <span class="math inline">\{X(t_1), \dots, X(t_k)\}</span> e <span class="math inline">\{Y(t&#x27;_1), \dots, Y(t&#x27;_j)\}</span> sono indipendenti per ogni <span class="math inline">k, j \in \mathbb{N}</span> e per ogni scelta di <span class="math inline">t_1, \dots, t_k</span> e <span class="math inline">t&#x27;_1, \dots, t&#x27;_j</span>.</li>
+<li><strong>Incoerenti</strong>: <span class="math inline">R_{XY}(\tau) = 0</span> per ogni <span class="math inline">\tau \in \mathbb{R}</span>.</li>
+<li><strong>Incorrelati</strong>: <span class="math inline">C_{XY}(\tau) = 0</span> per ogni <span class="math inline">\tau \in \mathbb{R}</span>.</li>
+<li>Si può dimostrare che se <span class="math inline">X(t)</span> e <span class="math inline">Y(t)</span> sono indipendenti, allora sono incorrelati. Se <span class="math inline">\mu_X = \mu_Y = 0</span>, incoerenza e incorrelazione sono equivalenti.</li>
+</ul>
+<figure class="fig"><svg viewBox="0 0 400 196" role="img" aria-label="indipendenti, incorrelati, incoerenti" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a16" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><rect class="bx bx1" x="10.0" y="20.0" width="124.0" height="40.0" rx="4"/><text class="tx" x="72.0" y="37.0" text-anchor="middle">Indipendenti</text><text class="tx" x="72.0" y="51.0" text-anchor="middle">(tutti i campioni)</text><rect class="bx" x="200.0" y="20.0" width="150.0" height="40.0" rx="4"/><text class="tx" x="275.0" y="37.0" text-anchor="middle">Incorrelati</text><text class="tx" x="275.0" y="51.0" text-anchor="middle">C<tspan dy="3" font-size="0.72em">XY</tspan><tspan dy="-3">​</tspan>(τ) = 0 ∀τ</text><line class="ln" x1="134.0" y1="40.0" x2="200.0" y2="40.0" marker-end="url(#a16)"/><text class="tx" x="167.0" y="32.0" text-anchor="middle">⇒</text><rect class="bx" x="200.0" y="120.0" width="150.0" height="40.0" rx="4"/><text class="tx" x="275.0" y="137.0" text-anchor="middle">Incoerenti</text><text class="tx" x="275.0" y="151.0" text-anchor="middle">R<tspan dy="3" font-size="0.72em">XY</tspan><tspan dy="-3">​</tspan>(τ) = 0 ∀τ</text><line class="ln" x1="275.0" y1="62.0" x2="275.0" y2="118.0" marker-end="url(#a16)" marker-start="url(#a16)"/><text class="ts a2" x="281.0" y="94.0" text-anchor="start">se μ<tspan dy="3" font-size="0.72em">X</tspan><tspan dy="-3">​</tspan> = μ<tspan dy="3" font-size="0.72em">Y</tspan><tspan dy="-3">​</tspan> = 0</text><path class="gd" d="M200.0 52.0 L170.0 52.0 L170.0 118.0 L134.0 118.0 L72.0 118.0 L72.0 62.0" marker-end="url(#a16)"/><text class="ts a2" x="110.0" y="172.0" text-anchor="middle">solo per processi</text><text class="ts a2" x="110.0" y="184.0" text-anchor="middle">gaussiani (congiunti)</text></svg><figcaption>🧩 Indipendenti ⇒ incorrelati (sempre). Con medie nulle incorrelazione e incoerenza coincidono. Il verso opposto, incorrelati ⇒ indipendenti, vale per i processi gaussiani.</figcaption></figure>
+<h3 id="processi-complessi">Processi complessi</h3>
+<h4 id="processi-stocastici-complessi">Processi stocastici complessi</h4>
+<ul>
+<li>Un processo complesso si rappresenta come <span class="math inline">Z(t) = X(t) + jY(t)</span>. La caratterizzazione statistica <strong>completa</strong> si ottiene dalla caratterizzazione congiunta di parte reale <span class="math inline">X(t)</span> e parte immaginaria <span class="math inline">Y(t)</span>.</li>
+<li>Per la caratterizzazione <strong>parziale</strong>:</li>
+</ul>
+<div class="math block">\mu_Z(t) \triangleq E[Z(t)] = E[X(t) + jY(t)] = \mu_X(t) + j\mu_Y(t) \tag{12}</div><div class="math block">R_{ZZ}(t_1, t_2) \triangleq E[Z(t_1)\,Z^\ast(t_2)] \quad \text{ovvero} \quad R_{ZZ}(t, \tau) \triangleq E[Z(t)\,Z^\ast(t - \tau)] \tag{13}</div><p>con <span class="math inline">Z^\ast</span> il complesso coniugato di <span class="math inline">Z</span>.</p>
+<ul>
+<li>A rigore servirebbe un altro momento del secondo ordine, la <strong>acf coniugata</strong> <span class="math inline">R_{ZZ^\ast}(t_1, t_2) \triangleq E[Z(t_1)\,Z(t_2)]</span>, che però è nulla per la maggior parte dei processi.</li>
+</ul>
+<h3 id="trasmissione-di-un-processo-attraverso-un-filtro">Trasmissione di un processo attraverso un filtro LTI</h3>
+<h4 id="trasmissione-di-un-processo-wss-attraverso-un-fi">Trasmissione di un processo WSS attraverso un filtro LTI</h4>
+<ul>
+<li><span class="math inline">X(t)</span> è l'ingresso di un filtro lineare tempo-invariante (LTI) deterministico, con risposta impulsiva <span class="math inline">h(t)</span>; <span class="math inline">Y(t)</span> è l'uscita stocastica:</li>
+</ul>
+<div class="math block">Y(t) = \int_{-\infty}^{+\infty} h(\tau_1)\,X(t - \tau_1)\,d\tau_1</div><ul>
+<li>In generale è difficile ricavare la distribuzione di <span class="math inline">Y(t)</span>, anche se si conosce quella di <span class="math inline">X(t)</span>. Spesso basta calcolare media e acf di <span class="math inline">Y(t)</span> in funzione di quelle di <span class="math inline">X(t)</span>, supponendo <span class="math inline">X(t)</span> WSS.</li>
+</ul>
+<img class="zoom" src="img/random-processes-p26-filtro-lti.png" alt="" loading="lazy">
+<h4 id="media-dell-uscita-1-2">Media dell'uscita (1/2)</h4>
+<ul>
+<li><span class="math inline">\mu_Y(t) = E[Y(t)] = E\Big[\int h(\tau_1)\,X(t - \tau_1)\,d\tau_1\Big]</span> (14).</li>
+<li>Se <span class="math inline">E[X(t)]</span> è finito per ogni <span class="math inline">t</span> e il filtro è stabile, si scambiano valore atteso e integrale:</li>
+</ul>
+<div class="math block">\mu_Y(t) = \int_{-\infty}^{+\infty} h(\tau_1)\,E[X(t - \tau_1)]\,d\tau_1 = \int h(\tau_1)\,\mu_X(t - \tau_1)\,d\tau_1 = \mu_X(t) \ast h(t) \tag{15}</div><p>La media dell'uscita è la <strong>convoluzione</strong> tra la media dell'ingresso e la risposta impulsiva.</p>
+<h4 id="media-dell-uscita-2-2">Media dell'uscita (2/2)</h4>
+<ul>
+<li>Con ingresso WSS, <span class="math inline">\mu_X(t) \equiv \mu_X</span>:</li>
+</ul>
+<div class="math block">\mu_Y(t) \equiv \mu_Y = \mu_X \int_{-\infty}^{+\infty} h(\tau_1)\,d\tau_1 = \mu_X\,H(0) \tag{16}</div><p><span class="math inline">H(0)</span> è la risposta del sistema a frequenza zero.</p>
+<ul>
+<li>La media dell'uscita di un filtro LTI con ingresso WSS è la media dell'ingresso moltiplicata per la risposta a frequenza zero del filtro.</li>
+</ul>
+<h4 id="funzioni-di-correlazione-delle-uscite-di-un-sist">Funzioni di correlazione delle uscite di un sistema LTI (1/3)</h4>
+<ul>
+<li>Si calcola la crosscorrelazione delle due uscite <span class="math inline">Y_1(t)</span> e <span class="math inline">Y_2(t)</span> di un sistema LTI, <span class="math inline">R_{Y_1Y_2}(t_1, t_2) = E[Y_1(t_1)\,Y_2(t_2)]</span>.</li>
+<li>Con la relazione ingresso-uscita e scambiando l'ordine di integrazione (se possibile):</li>
+</ul>
+<div class="math block">R_{Y_1Y_2}(t_1, t_2) = E\Big[\int h_1(\tau_1)X_1(t_1 - \tau_1)\,d\tau_1\int h_2(\tau_2)X_2(t_2 - \tau_2)\,d\tau_2\Big] \tag{17}</div><div class="math block">= \iint h_1(\tau_1)\,h_2(\tau_2)\,R_{X_1X_2}(t_1 - \tau_1, t_2 - \tau_2)\,d\tau_1\,d\tau_2 \tag{18}</div><img class="zoom" src="img/random-processes-p29-due-sistemi-lti.png" alt="" loading="lazy">
+<h4 id="funzioni-di-correlazione-delle-uscite-di-un-sist-2">Funzioni di correlazione delle uscite di un sistema LTI (2/3)</h4>
+<ul>
+<li>Se <span class="math inline">X_1(t)</span> e <span class="math inline">X_2(t)</span> sono congiuntamente WSS, la crosscorrelazione dipende solo dalla differenza tra <span class="math inline">t_1 - \tau_1</span> e <span class="math inline">t_2 - \tau_2</span>. Ponendo <span class="math inline">\tau = t_1 - t_2</span> nella (18):</li>
+</ul>
+<div class="math block">R_{Y_1Y_2}(\tau) = \iint h_1(\tau_1)\,h_2(\tau_2)\,R_{X_1X_2}(\tau - \tau_1 + \tau_2)\,d\tau_1\,d\tau_2 \tag{19}</div><div class="math block">= R_{X_1X_2}(\tau) \ast h_1(\tau) \ast h_2(-\tau) = R_{X_1X_2}(\tau) \ast r_{h_1h_2}(\tau) \tag{20}</div><p>che dipende solo dal lag <span class="math inline">\tau</span>. (<span class="math inline">r_{h_1h_2}(\tau) = h_1(\tau) \ast h_2(-\tau)</span>.)</p>
+<ul>
+<li>Se i due ingressi sono <strong>incoerenti</strong>, lo sono anche le uscite: l'elaborazione LTI <strong>preserva l'incoerenza</strong> (la slide scrive «saves incoherence»).</li>
+</ul>
+<h4 id="funzioni-di-correlazione-delle-uscite-di-un-sist-3">Funzioni di correlazione delle uscite di un sistema LTI (3/3)</h4>
+<ul>
+<li>Particolarizzando la (18) a <span class="math inline">h_1 = h_2 = h</span> e <span class="math inline">X_1 = X_2 = X</span>:</li>
+</ul>
+<div class="math block">R_{YY}(t_1, t_2) = \iint h(\tau_1)\,h(\tau_2)\,R_{XX}(t_1 - \tau_1, t_2 - \tau_2)\,d\tau_1\,d\tau_2</div><ul>
+<li>Se <span class="math inline">X(t)</span> è WSS: <span class="math inline">R_{YY}(\tau) = R_{XX}(\tau) \ast h(\tau) \ast h(-\tau) = R_{XX}(\tau) \ast r_{hh}(\tau)</span>.</li>
+<li><strong>Se l'ingresso di un sistema LTI stabile è WSS, anche l'uscita è WSS.</strong></li>
+<li>Dalle (18) e (20) si ricavano anche <span class="math inline">R_{YX}(\tau)</span> e <span class="math inline">R_{XY}(\tau)</span>: ponendo <span class="math inline">Y_1 = Y</span>, <span class="math inline">Y_2 = X</span>, <span class="math inline">h_1 = h</span>, <span class="math inline">h_2 = \delta</span> si ha <span class="math inline">R_{YX}(\tau) = R_{XX}(\tau) \ast h(\tau)</span>. Analogamente <span class="math inline">R_{XY}(\tau) = R_{XX}(\tau) \ast h(-\tau)</span>.</li>
+</ul>
+<h3 id="densita-spettrale-di-potenza">Densità spettrale di potenza</h3>
+<h4 id="densita-spettrale-di-potenza-psd">Densità spettrale di potenza (PSD)</h4>
+<ul>
+<li>La <strong>PSD</strong> di <span class="math inline">X(t)</span> è</li>
+</ul>
+<div class="math block">S_{XX}(f) \triangleq \lim_{T \to +\infty} \frac{1}{2T}\,E\big[\lvert X_T(f)\rvert^2\big]</div><p>dove <span class="math inline">X_T(f)</span> è la trasformata di Fourier della versione finestrata <span class="math inline">X_T(t) = X(t)\,\text{rect}[t/(2T)]</span>.</p>
+<ul>
+<li>Si può dimostrare che la PSD di un processo WSS è la <strong>trasformata di Fourier della sua acf</strong> <span class="math inline">R_{XX}(\tau)</span>: è la <strong>relazione di Wiener-Khinchin</strong>.</li>
+<li>Il valore quadratico medio, cioè la potenza <span class="math inline">P_X</span> del processo WSS:</li>
+</ul>
+<div class="math block">E[X^2(t)] = R_{XX}(0) = \int_{-\infty}^{+\infty} S_{XX}(f)\,df = P_X \tag{21}</div><h4 id="psd-e-sistemi-lti">PSD e sistemi LTI</h4>
+<ul>
+<li>Sia <span class="math inline">S_{YY}(f)</span> la PSD dell'uscita <span class="math inline">Y(t)</span> di un filtro con risposta in frequenza <span class="math inline">H(f)</span> e ingresso WSS <span class="math inline">X(t)</span>. Dalla relazione di Wiener-Khinchin e da <span class="math inline">R_{YY}(\tau) = R_{XX}(\tau) \ast h(\tau) \ast h(-\tau)</span>:</li>
+</ul>
+<div class="math block">S_{YY}(f) = S_{XX}(f)\,\lvert H(f)\rvert^2 \tag{22}</div><ul>
+<li>La PSD dell'uscita è la PSD dell'ingresso moltiplicata per il modulo quadro della risposta in frequenza del filtro.</li>
+</ul>
+<figure class="fig"><svg viewBox="0 0 400 206" role="img" aria-label="processo attraverso un filtro LTI" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a18" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><text class="tx a1" x="22.0" y="40.0" text-anchor="middle">X(t)</text><line class="ln" x1="40.0" y1="36.0" x2="120.0" y2="36.0" marker-end="url(#a18)"/><rect class="bx bx1" x="120.0" y="14.0" width="160.0" height="44.0" rx="4"/><text class="tx" x="200.0" y="32.0" text-anchor="middle">filtro LTI</text><text class="tx" x="200.0" y="46.0" text-anchor="middle">h(t) ⟷ H(f)</text><line class="ln" x1="280.0" y1="36.0" x2="360.0" y2="36.0" marker-end="url(#a18)"/><text class="tx a2" x="380.0" y="40.0" text-anchor="middle">Y(t)</text><text class="ts" x="14.0" y="100.0" text-anchor="start">media</text><text class="tx" x="130.0" y="100.0" text-anchor="start">μ<tspan dy="3" font-size="0.72em">Y</tspan><tspan dy="-3">​</tspan> = μ<tspan dy="3" font-size="0.72em">X</tspan><tspan dy="-3">​</tspan> · H(0)</text><text class="ts" x="14.0" y="132.0" text-anchor="start">autocorrelazione</text><text class="tx" x="130.0" y="132.0" text-anchor="start">R<tspan dy="3" font-size="0.72em">YY</tspan><tspan dy="-3">​</tspan>(τ) = R<tspan dy="3" font-size="0.72em">XX</tspan><tspan dy="-3">​</tspan>(τ) ∗ h(τ) ∗ h(−τ)</text><text class="ts" x="14.0" y="164.0" text-anchor="start">PSD</text><text class="tx" x="130.0" y="164.0" text-anchor="start">S<tspan dy="3" font-size="0.72em">YY</tspan><tspan dy="-3">​</tspan>(f) = S<tspan dy="3" font-size="0.72em">XX</tspan><tspan dy="-3">​</tspan>(f) · |H(f)|²</text><text class="ts" x="14.0" y="196.0" text-anchor="start">WSS</text><text class="tx" x="130.0" y="196.0" text-anchor="start">ingresso WSS ⇒ uscita WSS</text></svg><figcaption>🧩 Un filtro LTI deterministico non cambia la natura del processo: riscala la media per <span class="math inline">H(0)</span>, la PSD per <span class="math inline">\lvert H(f)\rvert^2</span> e «sfuma» la acf con <span class="math inline">r_{hh}=h(\tau)\ast h(-\tau)</span>.</figcaption></figure>
+<h4 id="significato-fisico-della-psd">Significato fisico della PSD</h4>
+<ul>
+<li>Si fa passare il processo WSS <span class="math inline">X(t)</span> in un <strong>filtro ideale a banda stretta</strong>, con <span class="math inline">\lvert H(f)\rvert</span> centrato in <span class="math inline">f_c</span> e banda <span class="math inline">\Delta f</span>.</li>
+<li>Dalla (22), se <span class="math inline">\Delta f</span> è sufficientemente piccola rispetto a <span class="math inline">f_c</span> e <span class="math inline">S_{XX}(f)</span> è continua, la potenza <span class="math inline">\Delta P_X</span> delle componenti di <span class="math inline">X(t)</span> nell'intervallo di lunghezza <span class="math inline">2\Delta f</span> è</li>
+</ul>
+<div class="math block">\Delta P_X \approx (2\,\Delta f)\,S_{XX}(f), \quad \text{con } f_c \equiv f</div><ul>
+<li><span class="math inline">S_{XX}(f)</span> si misura in <strong>watt per hertz</strong> (W/Hz).</li>
+</ul>
+<img class="zoom" src="img/random-processes-p35-filtro-banda-stretta.png" alt="" loading="lazy">
+<p><em>Risposta in modulo del filtro ideale a banda stretta: vale 1 in due finestre di larghezza <span class="math inline">\Delta f</span> centrate in <span class="math inline">\pm f_c</span>.</em></p>
+<figure class="fig"><svg viewBox="0 0 400 196" role="img" aria-label="significato fisico della PSD" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a19" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><path class="cv" d="M25.0 146.6 L27.5 146.3 L30.0 145.9 L32.6 145.5 L35.1 145.1 L37.6 144.6 L40.1 144.1 L42.6 143.6 L45.1 143.0 L47.7 142.4 L50.2 141.7 L52.7 141.0 L55.2 140.2 L57.7 139.4 L60.3 138.5 L62.8 137.6 L65.3 136.6 L67.8 135.6 L70.3 134.5 L72.8 133.3 L75.4 132.1 L77.9 130.8 L80.4 129.5 L82.9 128.1 L85.4 126.6 L87.9 125.1 L90.5 123.5 L93.0 121.9 L95.5 120.2 L98.0 118.4 L100.5 116.6 L103.1 114.7 L105.6 112.8 L108.1 110.8 L110.6 108.7 L113.1 106.7 L115.6 104.5 L118.2 102.4 L120.7 100.2 L123.2 98.0 L125.7 95.7 L128.2 93.5 L130.8 91.2 L133.3 88.9 L135.8 86.7 L138.3 84.4 L140.8 82.2 L143.3 79.9 L145.9 77.7 L148.4 75.6 L150.9 73.4 L153.4 71.4 L155.9 69.4 L158.5 67.4 L161.0 65.5 L163.5 63.7 L166.0 62.0 L168.5 60.4 L171.0 58.9 L173.6 57.5 L176.1 56.1 L178.6 54.9 L181.1 53.9 L183.6 52.9 L186.2 52.1 L188.7 51.4 L191.2 50.9 L193.7 50.4 L196.2 50.2 L198.7 50.0 L201.3 50.0 L203.8 50.2 L206.3 50.4 L208.8 50.9 L211.3 51.4 L213.8 52.1 L216.4 52.9 L218.9 53.9 L221.4 54.9 L223.9 56.1 L226.4 57.5 L229.0 58.9 L231.5 60.4 L234.0 62.0 L236.5 63.7 L239.0 65.5 L241.5 67.4 L244.1 69.4 L246.6 71.4 L249.1 73.4 L251.6 75.6 L254.1 77.7 L256.7 79.9 L259.2 82.2 L261.7 84.4 L264.2 86.7 L266.7 88.9 L269.2 91.2 L271.8 93.5 L274.3 95.7 L276.8 98.0 L279.3 100.2 L281.8 102.4 L284.4 104.5 L286.9 106.7 L289.4 108.7 L291.9 110.8 L294.4 112.8 L296.9 114.7 L299.5 116.6 L302.0 118.4 L304.5 120.2 L307.0 121.9 L309.5 123.5 L312.1 125.1 L314.6 126.6 L317.1 128.1 L319.6 129.5 L322.1 130.8 L324.6 132.1 L327.2 133.3 L329.7 134.5 L332.2 135.6 L334.7 136.6 L337.2 137.6 L339.7 138.5 L342.3 139.4 L344.8 140.2 L347.3 141.0 L349.8 141.7 L352.3 142.4 L354.9 143.0 L357.4 143.6 L359.9 144.1 L362.4 144.6 L364.9 145.1 L367.4 145.5 L370.0 145.9 L372.5 146.3 L375.0 146.6"/><path class="fl2" d="M116.0 150.0 L116.0 104.2 L118.5 102.1 L121.1 99.8 L123.6 97.6 L126.2 95.3 L128.7 93.0 L131.3 90.7 L133.8 88.5 L136.4 86.2 L138.9 83.9 L141.5 81.6 L144.0 79.4 L144.0 150.0 Z"/><rect class="ban" x="116.0" y="32.0" width="28.0" height="118.0" rx="0"/><path class="fl2" d="M256.0 150.0 L256.0 79.4 L258.5 81.6 L261.1 83.9 L263.6 86.2 L266.2 88.5 L268.7 90.7 L271.3 93.0 L273.8 95.3 L276.4 97.6 L278.9 99.8 L281.5 102.1 L284.0 104.2 L284.0 150.0 Z"/><rect class="ban" x="256.0" y="32.0" width="28.0" height="118.0" rx="0"/><line class="ax" x1="16.0" y1="150.0" x2="392.0" y2="150.0" marker-end="url(#a19)"/><text class="ts" x="394.0" y="165.0" text-anchor="end">f</text><line class="ax" x1="200.0" y1="153.0" x2="200.0" y2="38.0" marker-end="url(#a19)"/><text class="ts" x="208.0" y="34.0" text-anchor="start">S<tspan dy="3" font-size="0.72em">XX</tspan><tspan dy="-3">​</tspan>(f)</text><text class="ts" x="270.0" y="165.0" text-anchor="middle">f<tspan dy="3" font-size="0.72em">0</tspan><tspan dy="-3">​</tspan></text><text class="ts" x="130.0" y="165.0" text-anchor="middle">−f<tspan dy="3" font-size="0.72em">0</tspan><tspan dy="-3">​</tspan></text><line class="ar2" x1="256.0" y1="174.0" x2="284.0" y2="174.0" marker-end="url(#a19)" marker-start="url(#a19)"/><text class="ts a2" x="270.0" y="188.0" text-anchor="middle">Δf</text><text class="ts" x="392.0" y="28.0" text-anchor="end">filtro ideale |H| = 1 nelle</text><text class="ts" x="392.0" y="42.0" text-anchor="end">due bande strette</text><text class="tx a2" x="392.0" y="60.0" text-anchor="end">ΔP ≈ 2 Δf · S<tspan dy="3" font-size="0.72em">XX</tspan><tspan dy="-3">​</tspan>(f<tspan dy="3" font-size="0.72em">0</tspan><tspan dy="-3">​</tspan>)</text></svg><figcaption>🧩 Se un filtro ideale a banda stretta lascia passare solo due finestre larghe <span class="math inline">\Delta f</span> attorno a <span class="math inline">\pm f_0</span>, la potenza in uscita è l'area della PSD in quelle finestre: <span class="math inline">S_{XX}(f_0)</span> è la potenza per unità di frequenza.</figcaption></figure>
+<h4 id="proprieta-della-psd">Proprietà della PSD</h4>
+<ol>
+<li>Il valore a frequenza zero di un processo WSS è l'area sotto la acf: <span class="math inline">S_{XX}(0) = \int_{-\infty}^{+\infty} R_{XX}(\tau)\,d\tau</span> (23).</li>
+<li>Il valore quadratico medio è l'area sotto la PSD: <span class="math inline">E[X^2(t)] = \int_{-\infty}^{+\infty} S_{XX}(f)\,df = R_{XX}(0)</span> (24).</li>
+<li>La PSD è non negativa: <span class="math inline">S_{XX}(f) \ge 0</span>, per ogni <span class="math inline">f \in \mathbb{R}</span>.</li>
+<li>La PSD di un processo WSS <strong>reale</strong> è una funzione pari: <span class="math inline">S_{XX}(-f) = S_{XX}(f)</span>.</li>
+<li>La PSD opportunamente normalizzata ha le proprietà di una pdf:</li>
+</ol>
+<div class="math block">p_{XX}(f) \triangleq \frac{S_{XX}(f)}{\int_{-\infty}^{+\infty} S_{XX}(f)\,df} \tag{25}</div><p>con <span class="math inline">p_{XX}(f) \ge 0</span> per ogni <span class="math inline">f</span> e area totale unitaria.</p>
+<ul>
+<li><strong>Esempio: calcolare la PSD di un segnale modulato linearmente.</strong> La slide non svolge l'esempio. Ipotesi usate qui: <span class="math inline">X(t) = \sum_n b[n]\,p(t - nT - D)</span>, con simboli a media nulla, incorrelati e di varianza <span class="math inline">\sigma_b^2</span>, e ritardo <span class="math inline">D</span> uniforme in <span class="math inline">[0, T)</span> indipendente dai simboli. Allora <span class="math inline">R_{XX}(\tau) = \frac{\sigma_b^2}{T}\,r_{pp}(\tau)</span>, il processo è WSS e</li>
+</ul>
+<div class="math block">S_{XX}(f) = \frac{\sigma_b^2}{T}\,\lvert P(f)\rvert^2</div><p>Con l'impulso rettangolare di durata <span class="math inline">T</span> e altezza 1 si ottiene <span class="math inline">S_{XX}(f) = \sigma_b^2\,T\,\text{sinc}^2(fT)</span>.</p>
+<h4 id="densita-spettrali-mutue-versione-aggiornata">Densità spettrali mutue (versione aggiornata)</h4>
+<ul>
+<li>La <strong>cross-spectral density</strong> caratterizza le relazioni tra due processi nel dominio della frequenza:</li>
+</ul>
+<div class="math block">S_{XY}(f) \triangleq \lim_{T \to +\infty} \frac{1}{2T}\,E\big[X_T(f)\,Y_T^\ast(f)\big]</div><p>con <span class="math inline">X_T(f)</span> e <span class="math inline">Y_T(f)</span> trasformate di Fourier delle versioni finestrate di <span class="math inline">X(t)</span> e <span class="math inline">Y(t)</span>.</p>
+<ul>
+<li>Per due processi <strong>congiuntamente WSS</strong>, la cross-spectral density è la trasformata di Fourier della loro crosscorrelazione:</li>
+</ul>
+<div class="math block">S_{XY}(f) = \int_{-\infty}^{+\infty} R_{XY}(\tau)\,e^{-j2\pi f\tau}\,d\tau \tag{26}</div><ul>
+<li>A differenza della PSD, <span class="math inline">S_{XY}(f)</span> non è necessariamente reale né non negativa.</li>
+<li>Per processi <strong>complessi</strong> la relazione <span class="math inline">R_{XY}(\tau) = R_{YX}(-\tau)</span> si generalizza a <span class="math inline">R_{XY}(\tau) = R_{YX}^\ast(-\tau)</span>, e quindi</li>
+</ul>
+<div class="math block">S_{XY}(f) = S_{YX}^\ast(f)</div><p>(nella versione precedente della slide, per processi reali: <span class="math inline">S_{XY}(f) = S_{YX}(-f) = S_{YX}^\ast(f)</span>).</p>
+<h4 id="somma-di-due-processi-wss">Somma di due processi WSS</h4>
+<ul>
+<li><span class="math inline">X(t)</span> e <span class="math inline">Y(t)</span> hanno media nulla e <span class="math inline">Z(t) = X(t) + Y(t)</span>. Si cerca la PSD di <span class="math inline">Z(t)</span>.</li>
+<li>L'acf di <span class="math inline">Z(t)</span>:</li>
+</ul>
+<div class="math block">R_{ZZ}(t_1, t_2) = E\{[X(t_1) + Y(t_1)][X(t_2) + Y(t_2)]\} = R_{XX} + R_{XY} + R_{YX} + R_{YY} \tag{27}</div><ul>
+<li>Con <span class="math inline">\tau = t_1 - t_2</span> e stazionarietà congiunta:</li>
+</ul>
+<div class="math block">R_{ZZ}(\tau) = R_{XX}(\tau) + R_{XY}(\tau) + R_{YX}(\tau) + R_{YY}(\tau) \tag{28}</div><ul>
+<li>Trasformando: <span class="math inline">S_{ZZ}(f) = S_{XX}(f) + S_{XY}(f) + S_{YX}(f) + S_{YY}(f)</span> (29).</li>
+<li>Se <span class="math inline">X(t)</span> e <span class="math inline">Y(t)</span> sono WSS <strong>incoerenti</strong>, <span class="math inline">R_{XY}(\tau) = R_{YX}(\tau) = 0</span> per ogni <span class="math inline">\tau</span>, quindi <span class="math inline">S_{XY} = S_{YX} = 0</span> e</li>
+</ul>
+<div class="math block">S_{ZZ}(f) = S_{XX}(f) + S_{YY}(f) \tag{30}</div><ul>
+<li>La PSD della somma di processi WSS incoerenti (o, equivalentemente, a media nulla e incorrelati) è la <strong>somma delle PSD</strong>.</li>
+</ul>
+<h3 id="il-processo-gaussiano">Il processo gaussiano</h3>
+<h4 id="il-processo-gaussiano-1-3">Il processo gaussiano (1/3)</h4>
+<ul>
+<li>Il processo gaussiano è il più frequente nello studio dei sistemi di comunicazione, per applicabilità pratica e trattabilità matematica.</li>
+<li>Si campiona <span class="math inline">X(t)</span> in <span class="math inline">t_1, \dots, t_n</span>. Se il processo è gaussiano, le variabili <span class="math inline">X(t_1), \dots, X(t_n)</span> sono <strong>congiuntamente gaussiane</strong> per ogni <span class="math inline">n</span>, con pdf di ordine <span class="math inline">n</span> completamente determinata dalle <strong>medie</strong> e dalle <strong>covarianze</strong>:</li>
+</ul>
+<div class="math block">\mu_X(t_i) \triangleq E[X(t_i)], \quad i \in \{1, \dots, n\} \tag{31}</div><div class="math block">C_{XX}(t_k, t_i) \triangleq E\{[X(t_k) - \mu_X(t_k)][X(t_i) - \mu_X(t_i)]\}, \quad k, i \in \{1, \dots, n\} \tag{32}</div><ul>
+<li>Sia <span class="math inline">\mathbf{X} \triangleq [X(t_1), \dots, X(t_n)]^T</span> il vettore aleatorio e <span class="math inline">\mathbf{x} \triangleq [x_1, \dots, x_n]^T</span> un suo valore (<span class="math inline">^T</span> indica la trasposizione).</li>
+</ul>
+<h4 id="il-processo-gaussiano-2-3">Il processo gaussiano (2/3)</h4>
+<ul>
+<li>Il vettore <span class="math inline">\mathbf{X}</span> ha <strong>distribuzione gaussiana multivariata</strong>:</li>
+</ul>
+<div class="math block">f_{\mathbf{X}}(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^n \det(\boldsymbol{\Sigma})}}\;e^{-\frac12(\mathbf{x} - \boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(\mathbf{x} - \boldsymbol{\mu})} \tag{33}</div><p>dove <span class="math inline">\boldsymbol{\mu} \triangleq [\mu_X(t_1), \dots, \mu_X(t_n)]^T</span> è il vettore delle medie, <span class="math inline">\boldsymbol{\Sigma}</span> la <strong>matrice di covarianza</strong> con elemento <span class="math inline">\{\boldsymbol{\Sigma}\}_{k,i} = C_{XX}(t_k, t_i)</span>, e <span class="math inline">\boldsymbol{\Sigma}^{-1}</span> la sua inversa.</p>
+<ul>
+<li><span class="math inline">\boldsymbol{\Sigma}</span> è <strong>simmetrica</strong> (<span class="math inline">\boldsymbol{\Sigma} = \boldsymbol{\Sigma}^T</span>) e <strong>semidefinita positiva</strong> (<span class="math inline">\mathbf{u}^T\boldsymbol{\Sigma}\,\mathbf{u} \ge 0</span> per ogni <span class="math inline">\mathbf{u} \in \mathbb{R}^n</span>). Per un processo gaussiano non degenere è <strong>definita positiva</strong> (<span class="math inline">\mathbf{u}^T\boldsymbol{\Sigma}\,\mathbf{u} &gt; 0</span> per ogni <span class="math inline">\mathbf{u} \ne \mathbf{0}</span>), quindi invertibile.</li>
+</ul>
+<h4 id="il-processo-gaussiano-3-3">Il processo gaussiano (3/3)</h4>
+<ul>
+<li>I processi prodotti da fenomeni fisici sono spesso tali che un modello gaussiano è appropriato; questo è confermato dagli esperimenti.</li>
+<li>Il <strong>teorema del limite centrale</strong> ne fornisce una giustificazione matematica.</li>
+<li>La frequenza con cui un modello gaussiano è adatto e la facilità di trattazione rendono il processo gaussiano molto importante nello studio dei sistemi di comunicazione.</li>
+</ul>
+<h4 id="proprieta-dei-processi-gaussiani">Proprietà dei processi gaussiani</h4>
+<ul>
+<li>Se un processo gaussiano è applicato a un <strong>filtro lineare stabile</strong>, il processo in uscita è anch'esso gaussiano.</li>
+<li>Se un processo gaussiano è WSS, allora è anche <strong>strettamente stazionario</strong>.</li>
+<li>Se le variabili <span class="math inline">X(t_1), \dots, X(t_n)</span> sono <strong>incorrelate</strong>, cioè <span class="math inline">C_{XX}(t_k, t_i) = 0</span> per <span class="math inline">k \ne i</span>, allora sono <strong>statisticamente indipendenti</strong>.
+<ul>
+<li>L'incorrelazione vuol dire che la matrice di covarianza è diagonale, <span class="math inline">\boldsymbol{\Sigma} = \text{diag}(\sigma_1^2, \dots, \sigma_n^2)</span>, con <span class="math inline">\sigma_i^2</span> varianza di <span class="math inline">X(t_i)</span> ⇒ la pdf (33) si semplifica in</li>
+</ul>
+</li>
+</ul>
+<div class="math block">f_{\mathbf{X}}(\mathbf{x}) = \prod_{i=1}^{n} f_{X(t_i)}(x_i) \tag{34}</div><ul>
+<li>La pdf congiunta è il prodotto delle pdf delle singole variabili.</li>
+</ul>
+<h3 id="processi-a-tempo-discreto">Processi a tempo discreto</h3>
+<h4 id="processi-aleatori-a-tempo-discreto-1-2-versione-">Processi aleatori a tempo discreto (1/2) (versione aggiornata)</h4>
+<ul>
+<li>Finora si sono considerati processi a tempo continuo, <span class="math inline">X(t; \omega)</span> con <span class="math inline">t \in \mathbb{R}</span>. Se la variabile temporale appartiene a <span class="math inline">\mathbb{Z}</span>, il processo è <strong>a tempo discreto</strong> e si indica con <span class="math inline">X(n; \omega)</span>.</li>
+<li>Un processo a tempo discreto è una <strong>successione di variabili aleatorie</strong> <span class="math inline">\{X(n)\}_{n \in \mathbb{Z}}</span> (con <span class="math inline">\omega</span> omesso). Per <span class="math inline">n \in \{0, 1, \dots, N-1\}</span> si può rappresentare con un <strong>vettore aleatorio</strong>.</li>
+<li>CDF, pdf e DF si definiscono come nel caso a tempo continuo, sostituendo <span class="math inline">t</span> con <span class="math inline">n</span>.</li>
+<li><strong>Media e crosscorrelazione</strong>:</li>
+</ul>
+<div class="math block">\mu_X(n) \triangleq E[X(n)] \tag{35}</div><div class="math block">R_{XY}(n, k) \triangleq E[X(n)\,Y^\ast(k)] \tag{36}</div><p>(nella versione precedente la (35) e la (36) erano scritte come integrali con le pdf, e la (36) senza il coniugato).</p>
+<h4 id="processi-aleatori-a-tempo-discreto-2-2-versione-">Processi aleatori a tempo discreto (2/2) (versione aggiornata)</h4>
+<ul>
+<li>La <strong>crosscovarianza</strong> di due processi a tempo discreto:</li>
+</ul>
+<div class="math block">C_{XY}(n, k) \triangleq E\{[X(n) - \mu_X(n)][Y(k) - \mu_Y(k)]^\ast\} = R_{XY}(n, k) - \mu_X(n)\,\mu_Y^\ast(k) \tag{37}</div><ul>
+<li>Con <span class="math inline">X(n) \equiv Y(n)</span> nelle (36) e (37) si ottengono le definizioni usuali di autocorrelazione e autocovarianza.</li>
+<li>Per due processi a tempo discreto congiuntamente WSS, la <strong>cross-spectral density</strong> è</li>
+</ul>
+<div class="math block">S_{XY}(\nu) \triangleq \lim_{N \to +\infty} \frac{1}{2N+1}\,E\big[X_N(\nu)\,Y_N^\ast(\nu)\big]</div><p>dove, per <span class="math inline">Z \in \{X, Y\}</span>, <span class="math inline">Z_N(\nu) \triangleq \sum_{n=-N}^{N} Z(n)\,e^{-j2\pi\nu n}</span> è la trasformata di Fourier a tempo discreto (DTFT) del processo troncato <span class="math inline">Z(n)</span>.</p>
+<ul>
+<li>Con <span class="math inline">X(n) \equiv Y(n)</span> si ottiene la <strong>PSD</strong> di un processo a tempo discreto:</li>
+</ul>
+<div class="math block">S_{XX}(\nu) \triangleq \lim_{N \to +\infty} \frac{1}{2N+1}\,E\big[\lvert X_N(\nu)\rvert^2\big]</div><ul>
+<li>Per il teorema di Wiener-Khinchin, la PSD di un processo WSS a tempo discreto è la DTFT della sua acf:</li>
+</ul>
+<div class="math block">S_{XX}(\nu) = \sum_{m=-\infty}^{+\infty} R_{XX}(m)\,e^{-j2\pi\nu m}</div><hr />
+
+</section>
+<section id="approfondimenti"><h2 class="ps">Spiegazioni e dimostrazioni passo-passo</h2>
+<p class="nota">Apri una voce per leggere la spiegazione in parole semplici e le dimostrazioni svolte riga per riga (🧩 = passaggio ricostruito da me).</p>
+<details class="conc"><summary><span class="n">Processo aleatorio (processo stocastico)</span></summary><div class="cb"><h4 id="processo-aleatorio-spiegazione">Spiegazione</h4>
+<h4 id="processo-aleatorio-esempio-della-slide-un-rettangolo-di-segno-casua">Esempio della slide: un rettangolo di segno casuale</h4>
+<p><span class="math inline">\Omega = \{0, 1\}</span> con <span class="math inline">P(\{\omega = 1\}) \triangleq p</span> e <span class="math inline">P(\{\omega = 0\}) \triangleq q = 1 - p</span>. Il segnale aleatorio è
+<div class="math inline">X(t, \omega) = \begin{cases} A\,\text{rect}\Big(\dfrac{t - 0.5T}{T}\Big), &amp; \omega = 0 \\[2mm] -A\,\text{rect}\Big(\dfrac{t - 0.5T}{T}\Big), &amp; \omega = 1 \end{cases}</div></p>
+<img class="zoom" src="img/random-processes-p2-esempio-rect.png" alt="" loading="lazy">
+<p><em>le due realizzazioni. <span class="math inline">x(t, \omega = 0)</span> vale <span class="math inline">A</span> per <span class="math inline">0 &lt; t &lt; T</span>; <span class="math inline">x(t, \omega = 1)</span> vale <span class="math inline">-A</span> nello stesso intervallo. Fuori da <span class="math inline">(0, T)</span> entrambe valgono 0.</em></p>
+<blockquote class="co mia"><p>🧩 Le due facce sull'esempio (lettura mia):</p>
+<ul>
+<li><strong>come forme d'onda</strong>: ci sono due sole realizzazioni possibili, i due rettangoli della figura;</li>
+<li><strong>fissato un istante <span class="math inline">t_0 \in (0, T)</span></strong>: <span class="math inline">X(t_0)</span> è una variabile aleatoria <strong>discreta</strong> che vale <span class="math inline">A</span> con probabilità <span class="math inline">q</span> e <span class="math inline">-A</span> con probabilità <span class="math inline">p</span>, del tipo di Bernoulli a meno di una trasformazione affine;</li>
+<li><strong>fissato <span class="math inline">t_0</span> fuori da <span class="math inline">(0, T)</span></strong>: <span class="math inline">X(t_0) = 0</span> con certezza.</li>
+</ul>
+<p>Media, autocorrelazione e covarianza di questo processo sono calcolate in momenti di un processo: la media dipende da <span class="math inline">t</span>.</p>
+</blockquote>
+<h4 id="processo-aleatorio-esempio-degli-appunti-sinusoide-a-fase-casuale">Esempio degli appunti: sinusoide a fase casuale</h4>
+<div class="math block">X(t) = A\cos(2\pi f_0 t + \Theta), \qquad \Theta \sim \mathcal{U}(0, 2\pi)</div><ul>
+<li><span class="math inline">A</span> [V] e <span class="math inline">f_0</span> [Hz] sono <strong>deterministiche</strong>;</li>
+<li>l'unica cosa aleatoria è la fase <span class="math inline">\Theta</span> [rad], uniforme in <span class="math inline">(0, 2\pi)</span>: <span class="math inline">f_\Theta(\vartheta) = \frac{1}{2\pi}</span> per <span class="math inline">0 \le \vartheta \le 2\pi</span> e zero altrove. È il rettangolo disegnato negli appunti (uniforme);</li>
+<li>nota: è un «segnale aleatorio ad ampiezza continua».</li>
+</ul>
+<img class="zoom" src="img/random-processes-p4-appunti-sinusoide-fase-casuale.png" alt="" loading="lazy">
+<p><em>Appunti a mano: il processo, la pdf uniforme di <span class="math inline">\Theta</span> (altezza <span class="math inline">1/(2\pi)</span> tra 0 e <span class="math inline">2\pi</span>), le tre particolarizzazioni di <span class="math inline">X(t, \omega)</span> viste sopra e, a destra, i «due punti di vista».</em></p>
+<blockquote class="co mia"><p>🧩 Le tre particolarizzazioni sull'esempio (lettura mia):</p>
+<ul>
+<li><strong>fisso l'esito</strong>, cioè un valore <span class="math inline">\bar\vartheta</span> della fase: <span class="math inline">x(t) = A\cos(2\pi f_0 t + \bar\vartheta)</span> è un normale coseno deterministico. Le realizzazioni sono tutti i coseni di ampiezza <span class="math inline">A</span> e frequenza <span class="math inline">f_0</span>, ciascuno spostato di una fase diversa;</li>
+<li><strong>fisso l'istante <span class="math inline">\bar t</span></strong>: <span class="math inline">X(\bar t) = A\cos(2\pi f_0 \bar t + \Theta)</span> è una variabile aleatoria, funzione della v.a. <span class="math inline">\Theta</span>, con valori in <span class="math inline">[-A, A]</span>;</li>
+<li><strong>fisso entrambi</strong>: <span class="math inline">A\cos(2\pi f_0\bar t + \bar\vartheta)</span> è un numero.</li>
+</ul>
+<p>Perché &quot;ad ampiezza continua&quot;: <span class="math inline">\Theta</span> assume un continuo di valori, quindi anche <span class="math inline">X(\bar t)</span> assume con continuità tutti i valori tra <span class="math inline">-A</span> e <span class="math inline">A</span>. Nel rettangolo, invece, <span class="math inline">X(t_0)</span> vale solo <span class="math inline">\pm A</span> (o 0): ampiezza discreta.</p>
+<p>Media e autocorrelazione di questo processo sono calcolate in momenti di un processo. A differenza del rettangolo, il processo è WSS (stazionarieta).</p>
+</blockquote>
+<h4 id="processo-aleatorio-il-quadro-generale-esiti-realizzazioni-variabili">Il quadro generale: esiti, realizzazioni, variabili aleatorie</h4>
+<img class="zoom" src="img/random-processes-p7-realizzazioni.png" alt="" loading="lazy">
+<p><em>Lo spazio campione <span class="math inline">S</span> contiene gli esiti <span class="math inline">s_1, s_2, \dots, s_n</span>. Ogni esito, cioè ogni prova dell'esperimento, produce una forma d'onda <span class="math inline">x_1(t), x_2(t), \dots, x_n(t)</span> sull'intervallo <span class="math inline">(-T, +T)</span>. Una linea verticale all'istante <span class="math inline">t_k</span> taglia tutte le forme d'onda nei valori <span class="math inline">x_1(t_k), x_2(t_k), \dots, x_n(t_k)</span>: al variare dell'esito, sono i valori della variabile aleatoria <span class="math inline">X(t_k)</span>.</em></p>
+<img class="zoom" src="img/grafico-rp-realizzazioni.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio. Processo gaussiano a media nulla con autocorrelazione <span class="math inline">e^{-|\tau|/\tau_c}</span>, <span class="math inline">\tau_c = 0.5</span>. A sinistra cinque realizzazioni: fissato <span class="math inline">t_0 = 6</span>, ognuna dà un numero (punto arancio). A destra i valori <span class="math inline">X(t_0)</span> di 5000 realizzazioni: il loro istogramma riproduce la pdf gaussiana <span class="math inline">\mathcal{N}(0, 1)</span>. È la variabile aleatoria che si ottiene fissando il tempo.</em></p>
+<h4 id="processo-aleatorio-caratterizzazione-statistica-completa">Caratterizzazione statistica completa</h4>
+<ul>
+<li>La descrizione statistica di un processo si basa sulla CDF (o, in modo equivalente, sulla pdf) di <strong>vettori di campioni</strong> del segnale aleatorio.</li>
+<li><span class="math inline">X(t_1), \dots, X(t_k)</span> sono le variabili aleatorie ottenute campionando <span class="math inline">X(t)</span> negli istanti <span class="math inline">t_1, \dots, t_k</span>. La loro CDF congiunta è la (1) e la pdf congiunta la (2).</li>
+<li>Se si conosce la (1), o la (2), per <strong>qualunque scelta</strong> degli istanti <span class="math inline">t_1, \dots, t_k</span>, si conosce la <strong>caratterizzazione statistica di ordine <span class="math inline">k</span></strong>.</li>
+<li>Il processo è <strong>completamente caratterizzato</strong> se si conosce la CDF (o pdf) congiunta di ordine <span class="math inline">k</span> per <strong>ogni</strong> <span class="math inline">k \in \mathbb{N}</span> e ogni scelta degli istanti.</li>
+<li>CDF e pdf devono essere <strong>coerenti</strong>: quelle di ordine più basso si ottengono come marginali di quelle di ordine più alto (derivazione sopra).</li>
+<li>Finora si è supposta l'ampiezza <strong>continua</strong>. Se l'ampiezza di <span class="math inline">X(t)</span> è <strong>discreta</strong> conviene usare la distribuzione di probabilità (DF, vedi variabile aleatoria), per esempio nel processo di Bernoulli (sezione sotto).</li>
+<li>La caratterizzazione completa è difficile da ottenere in molti casi pratici. Ci si accontenta allora di una <strong>caratterizzazione parziale</strong>, cioè media e autocorrelazione: momenti di un processo.</li>
+</ul>
+<blockquote class="co mia"><p>🧩 Perché &quot;difficile&quot;: servono infinite funzioni (tutte le pdf di ogni ordine <span class="math inline">k</span>, per ogni scelta di istanti), mentre media e autocorrelazione sono solo due funzioni, di una e di due variabili.</p>
+</blockquote>
+<p><strong>Primo e secondo ordine negli appunti</strong>. Gli appunti costruiscono la (1) partendo da <span class="math inline">k = 1</span> e <span class="math inline">k = 2</span>, per un processo «a tempo continuo e ampiezza continua»:</p>
+<ul>
+<li>fissato <span class="math inline">t = t_1</span>, <span class="math inline">X(t_1)</span> è una variabile aleatoria, con CDF <span class="math inline">F_{X(t_1)}(x) \triangleq P(\{X(t_1) \le x\})</span> per ogni <span class="math inline">x \in \mathcal{X}</span>. Se la si conosce per ogni <span class="math inline">t_1</span> («se lo sappiamo»), si ha la <strong>CDF del primo ordine</strong>;</li>
+<li>campionando in due istanti, <span class="math inline">X(t_1)</span> e <span class="math inline">X(t_2)</span> sono una coppia di variabili aleatorie e se ne può definire la CDF congiunta, <span class="math inline">F_{X(t_1)X(t_2)}(x_1, x_2) = P(\{X(t_1) \le x_1, X(t_2) \le x_2\})</span> per ogni <span class="math inline">(x_1, x_2) \in \mathcal{X}\times\mathcal{X}</span>. Se si «giunge a conoscerla» per ogni coppia <span class="math inline">t_1, t_2</span>, si conosce la <strong>CDF del secondo ordine</strong>.</li>
+</ul>
+<blockquote class="co mia"><p>🧩 <span class="math inline">\mathcal{X}</span> è l'insieme dei valori che il processo può assumere: con ampiezza continua, <span class="math inline">\mathbb{R}</span> o un suo intervallo. &quot;Per ogni <span class="math inline">t_1</span>&quot; è la parte importante: la CDF di <span class="math inline">X(t_1)</span> descrive un solo istante, mentre la CDF del primo ordine è l'intera famiglia di CDF, una per istante. È quindi una funzione sia di <span class="math inline">x</span> sia di <span class="math inline">t_1</span>.</p>
+</blockquote>
+<blockquote class="co avv"><p>⚠️ Negli appunti c'è scritto <span class="math inline">\forall t_1 \in \mathbb{Z}</span>, ma il processo è a tempo continuo: va letto <span class="math inline">t_1 \in \mathbb{R}</span>.</p>
+</blockquote>
+<img class="zoom" src="img/random-processes-p8-appunti-cdf-primo-secondo-ordine.png" alt="" loading="lazy">
+<p><em>Appunti a mano: CDF del primo ordine, con la nota in verde «se lo sappiamo → ottengo la CDF del primo ordine» sotto <span class="math inline">\forall t_1</span>, e CDF congiunta del secondo ordine.</em></p>
+<p><strong>Dalla pdf del secondo ordine a quella del primo</strong>: «integrando rispetto a una variabile»
+<div class="math inline">\int_{-\infty}^{+\infty} f_{X(t_1)X(t_2)}(x_1, x_2)\,dx_2 = f_{X(t_1)}(x_1)</div>
+«ottengo la pdf di primo ordine». È la riga della pdf nella derivazione della coerenza, sopra. Sotto c'è una seconda nota, che leggo «non si dice marginalizzazione».</p>
+<blockquote class="co dub"><p>❓ Nota non chiara: l'operazione scritta negli appunti è proprio quella che la slide descrive con le «marginali», e che in coppie di variabili aleatorie si chiama marginalizzazione. Forse la nota va letta in un altro modo (per esempio «ciò si dice marginalizzazione»). Da verificare sugli appunti.</p>
+</blockquote>
+<img class="zoom" src="img/random-processes-p9-marginalizzazione.png" alt="" loading="lazy">
+<p><em>con le note a mano: la correzione <span class="math inline">\partial^n \to \partial^k</span> nella (2) e, sotto, l'integrale che dalla pdf congiunta di <span class="math inline">X(t_1), X(t_2)</span> dà la pdf di <span class="math inline">X(t_1)</span>.</em></p>
+<h4 id="processo-aleatorio-ampiezza-discreta-la-df-del-processo-di-bernoull">Ampiezza discreta: la DF del processo di Bernoulli</h4>
+<p>La slide dice che con ampiezza discreta conviene usare la DF e cita come esempio il processo di Bernoulli. Gli appunti lo scrivono: «per processi aleatori discreti a tempo discreto utilizzo la DF».</p>
+<ul>
+<li><strong>DF del primo ordine:</strong> <span class="math inline">p_{X(n)}(x) \triangleq P(X(n) = x) = p^x\,q^{1-x}</span>, con <span class="math inline">x \in \{0, 1\}</span>.</li>
+<li><strong>DF del secondo ordine:</strong> <span class="math inline">p_{X(n_1)X(n_2)}(x_1, x_2) \triangleq P(\{X(n_1) = x_1, X(n_2) = x_2\}) = p^{w(\mathbf{x})}\,q^{2 - w(\mathbf{x})}</span>. Qui <span class="math inline">\mathbf{x} = (x_1, x_2)</span> e <span class="math inline">w(\mathbf{x})</span> è il «numero di 1 contenuti nel vettore». L'ultima uguaglianza vale «supponendo che i lanci siano statisticamente indipendenti».</li>
+</ul>
+<p>Passaggi e tabella dei quattro casi nella derivazione sopra.</p>
+<blockquote class="co mia"><p>🧩 Cosa modella: una sequenza di lanci di una moneta, uno per istante <span class="math inline">n</span>. <span class="math inline">X(n) = 1</span> se il lancio <span class="math inline">n</span>-esimo dà &quot;successo&quot; (probabilità <span class="math inline">p</span>), 0 altrimenti. Fissato <span class="math inline">n</span>, <span class="math inline">X(n)</span> è una v.a. di Bernoulli: il processo è una successione di v.a. di Bernoulli indipendenti. Ha <strong>ampiezza discreta</strong> (solo 0 e 1) e <strong>tempo discreto</strong>, per questo si usa la DF invece di CDF e pdf.</p>
+</blockquote>
+<img class="zoom" src="img/random-processes-p10-appunti-processo-bernoulli.png" alt="" loading="lazy">
+<p><em>Appunti a mano: le due DF, con le note in verde «numero di 1 contenuti nel vettore» su <span class="math inline">w(\mathbf{x})</span> e «supponendo che i lanci siano statisticamente indipendenti» sotto l'uguaglianza. Nella prima riga l'istante è scritto una volta <span class="math inline">n</span> e una volta <span class="math inline">n_1</span>: è lo stesso.</em></p>
+<h4 id="processo-aleatorio-processi-a-tempo-discreto">Processi a tempo discreto</h4>
+<ul>
+<li>Finora <span class="math inline">X(t; \omega)</span> con <span class="math inline">t \in \mathbb{R}</span>: processi <strong>a tempo continuo</strong>. Se il tempo appartiene a <span class="math inline">\mathbb{Z}</span>, il processo è <strong>a tempo discreto</strong> e si scrive <span class="math inline">X(n; \omega)</span>. Gli appunti lo anticipano: <span class="math inline">X(n, \omega)</span> con <span class="math inline">n \in \mathbb{Z}</span>. Un esempio è il processo di Bernoulli degli appunti.</li>
+<li>È una successione di variabili aleatorie <span class="math inline">\{X(n)\}_{n \in \mathbb{Z}}</span>, omettendo <span class="math inline">\omega</span>. Con <span class="math inline">n \in \{0, 1, \dots, N-1\}</span> si riduce a un <strong>vettore aleatorio</strong>.</li>
+<li>CDF, pdf e DF si definiscono come a tempo continuo, sostituendo formalmente <span class="math inline">t</span> con <span class="math inline">n</span>.</li>
+<li>Media, correlazioni e covarianze: momenti di un processo. Densità spettrale: densita spettrale di potenza.</li>
+</ul>
+<blockquote class="co conn"><p>💡 Connessione (🧩 mia): campionando un processo a tempo continuo negli istanti <span class="math inline">nT_c</span> si ottiene un processo a tempo discreto, <span class="math inline">X(n) = X(nT_c)</span>. È la versione aleatoria del campionamento di teorema del campionamento.</p>
+</blockquote>
+<h4 id="processo-aleatorio-processi-complessi">Processi complessi</h4>
+<p>Un processo complesso <span class="math inline">Z(t) = X(t) + jY(t)</span> si caratterizza completamente con la caratterizzazione <strong>congiunta</strong> delle parti reale e immaginaria. Media e autocorrelazione sono in momenti di un processo.</p>
+<blockquote class="co esame"><p>🎯 Esame: definire un processo aleatorio e spiegarne i due punti di vista (forme d'onda contro variabili aleatorie nel tempo); cosa si ottiene fissando <span class="math inline">\omega</span>, <span class="math inline">t</span> o entrambi, anche sulla sinusoide a fase casuale; caratterizzazione completa e parziale; distribuzioni di ordine <span class="math inline">k</span> e loro coerenza (marginali); DF del processo di Bernoulli.</p>
+</blockquote>
+<h4 id="processo-aleatorio-perche-importa">Perché importa</h4>
+<p>È il modello del corso per i segnali che non si possono prevedere: il rumore termico (sistema comunicazione digitale) e i segnali d'informazione. Tutte le prestazioni di un sistema di comunicazione, come probabilità d'errore e rapporto segnale-rumore, si calcolano modellando rumore e messaggio come processi aleatori.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Coerenza delle distribuzioni: quelle di ordine basso sono marginali</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia per <span class="math inline">k = 2</span> (per <span class="math inline">k</span> qualunque è identica), con le regole delle marginali di coppie di variabili aleatorie.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+F_{X(t_1)}(x_1) &amp;= P[X(t_1) \le x_1] = P[X(t_1) \le x_1,\ X(t_2) \le +\infty] &amp;&amp; \{X(t_2) \le +\infty\} \text{ è l&#x27;evento certo} \\
+&amp;= F_{X(t_1),X(t_2)}(x_1, +\infty) &amp;&amp; \text{definizione (1)} \\
+f_{X(t_1)}(x_1) &amp;= \int_{-\infty}^{+\infty} f_{X(t_1),X(t_2)}(x_1, x_2)\,dx_2 &amp;&amp; \text{marginale della pdf: integro via } x_2 \text{}
+\end{aligned}
+</div><p>&quot;Coerenti&quot; vuol dire che le famiglie di CDF (o pdf) non si possono scegliere a caso ordine per ordine: quelle di ordine più alto determinano quelle di ordine più basso.</p>
+</details>
+<details class="der"><summary>Derivazione — DF del processo di Bernoulli, primo e secondo ordine</summary>
+<blockquote class="co mia"><p>🧩 Passaggi miei. <span class="math inline">X(n) \in \{0, 1\}</span> è l'esito del lancio <span class="math inline">n</span>-esimo, <span class="math inline">P(X(n) = 1) = p</span>, <span class="math inline">q = 1 - p</span>.</p>
+</blockquote>
+<p><strong>Primo ordine.</strong> La formula <span class="math inline">p^x q^{1-x}</span> scrive i due casi in una riga sola:
+<div class="math inline">\begin{aligned}
+p_{X(n)}(1) &amp;= p^1\,q^0 = p &amp;&amp; x = 1 \text{ (successo): l'esponente di } q \text{ si annulla} \\
+p_{X(n)}(0) &amp;= p^0\,q^1 = q &amp;&amp; x = 0 \text{ (insuccesso): l'esponente di } p \text{ si annulla}
+\end{aligned}</div></p>
+<p><strong>Secondo ordine</strong>, con istanti distinti <span class="math inline">n_1 \neq n_2</span>:
+<div class="math inline">\begin{aligned}
+p_{X(n_1)X(n_2)}(x_1, x_2) &amp;= P(X(n_1) = x_1)\,P(X(n_2) = x_2) &amp;&amp; \text{«lanci statisticamente indipendenti»: la congiunta si fattorizza} \\
+&amp;= p^{x_1}q^{1-x_1}\cdot p^{x_2}q^{1-x_2} &amp;&amp; \text{DF del primo ordine per ciascun lancio} \\
+&amp;= p^{x_1 + x_2}\,q^{2 - (x_1 + x_2)} &amp;&amp; \text{stessa base: sommo gli esponenti} \\
+&amp;= p^{w(\mathbf{x})}\,q^{2 - w(\mathbf{x})} &amp;&amp; x_i \in \{0, 1\} \Rightarrow x_1 + x_2 = \text{numero di 1} = w(\mathbf{x})
+\end{aligned}</div></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th><span class="math inline">\mathbf{x} = (x_1, x_2)</span></th>
+<th><span class="math inline">w(\mathbf{x})</span></th>
+<th><span class="math inline">p_{X(n_1)X(n_2)}(x_1, x_2)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(0, 0)</td>
+<td>0</td>
+<td><span class="math inline">q^2</span></td>
+</tr>
+<tr>
+<td>(0, 1)</td>
+<td>1</td>
+<td><span class="math inline">pq</span></td>
+</tr>
+<tr>
+<td>(1, 0)</td>
+<td>1</td>
+<td><span class="math inline">pq</span></td>
+</tr>
+<tr>
+<td>(1, 1)</td>
+<td>2</td>
+<td><span class="math inline">p^2</span></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Perché serve <span class="math inline">w</span>:</strong> la probabilità di una coppia dipende solo da <strong>quanti</strong> 1 contiene, non da <strong>dove</strong> stanno: (0, 1) e (1, 0) hanno la stessa probabilità <span class="math inline">pq</span>.
+<strong>Sanity check:</strong></p>
+<ul>
+<li><span class="math inline">q^2 + 2pq + p^2 = (p + q)^2 = 1</span> ✓;</li>
+<li>sommando su <span class="math inline">x_2</span> si ritrova il primo ordine, per esempio <span class="math inline">p_{X(n_1)}(1) = pq + p^2 = p(q + p) = p</span> ✓. È la coerenza tra gli ordini della derivazione sopra, nella versione discreta: una somma al posto dell'integrale.</li>
+</ul>
+<p><strong>Ipotesi:</strong> lanci indipendenti; istanti distinti (con <span class="math inline">n_1 = n_2</span> le due v.a. sarebbero la stessa). Senza indipendenza la congiunta non si fattorizza e non basta conoscere <span class="math inline">p</span>.</p>
+<blockquote class="co mia"><p>🧩 Con <span class="math inline">k</span> lanci indipendenti lo stesso argomento dà <span class="math inline">p^{w(\mathbf{x})}\,q^{k - w(\mathbf{x})}</span> per ogni <span class="math inline">k</span>. Il processo di Bernoulli è quindi <strong>completamente caratterizzato</strong>, nel senso, da un solo numero: <span class="math inline">p</span>.</p>
+</blockquote>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Momenti di un processo aleatorio: media, correlazioni, covarianze</span></summary><div class="cb"><h4 id="momenti-di-un-processo-spiegazione">Spiegazione</h4>
+<h4 id="momenti-di-un-processo-media-autocorrelazione-autocovarianza">Media, autocorrelazione, autocovarianza</h4>
+<ul>
+<li>La <strong>media</strong> di <span class="math inline">X(t)</span> è il valore atteso della v.a. ottenuta campionando il processo in <span class="math inline">t</span>. Usa solo la pdf del <strong>primo ordine</strong> <span class="math inline">f_{X(t)}</span> e in generale è una funzione di <span class="math inline">t</span>.</li>
+<li>L'<strong>autocorrelazione</strong> è il valore atteso del prodotto di due v.a., <span class="math inline">X(t_1)</span> e <span class="math inline">X(t_2)</span>. Usa la pdf del <strong>secondo ordine</strong> e in generale dipende da <span class="math inline">t_1</span> e <span class="math inline">t_2</span> separatamente.</li>
+<li>L'<strong>autocovarianza</strong> è l'autocorrelazione dei processi &quot;centrati&quot; (media sottratta). Conoscendo media e autocorrelazione si ottiene con la (5).</li>
+</ul>
+<blockquote class="co conn"><p>💡 Connessione: per <span class="math inline">t_1 = t_2 = t</span> si ritrovano grandezze note di media e varianza. <span class="math inline">R_{XX}(t, t) = E[X^2(t)]</span> è il valore quadratico medio, e <span class="math inline">C_{XX}(t, t) = \text{Var}[X(t)]</span> la varianza del campione in <span class="math inline">t</span>.</p>
+</blockquote>
+<h4 id="momenti-di-un-processo-mutue-correlazioni-e-covarianze">Mutue correlazioni e covarianze</h4>
+<ul>
+<li>Con due processi reali <span class="math inline">X(t)</span> e <span class="math inline">Y(t)</span>, di autocorrelazioni <span class="math inline">R_{XX}(t, \tau)</span> e <span class="math inline">R_{YY}(t, \tau)</span>, si definiscono le <strong>mutue correlazioni</strong> con ritardo, eq. (9). Dipendono dall'<strong>ordine</strong> dei due processi.</li>
+<li><span class="math inline">X(t)</span> e <span class="math inline">Y(t)</span> sono <strong>congiuntamente WSS</strong> se ciascuno è WSS (stazionarieta) e in più <span class="math inline">R_{XY}(t, \tau) \equiv R_{XY}(\tau)</span>.</li>
+<li>In generale la mutua correlazione <strong>non è pari</strong> in <span class="math inline">\tau</span>, a differenza dell'autocorrelazione, e <strong>non ha il massimo nell'origine</strong>. Rispetta però <span class="math inline">R_{XY}(\tau) = R_{YX}(-\tau)</span>.</li>
+<li>Le <strong>mutue covarianze</strong> (10)–(11) dipendono anch'esse dall'ordine; con media nulla coincidono con le mutue correlazioni; per processi congiuntamente WSS dipendono solo da <span class="math inline">\tau</span>.</li>
+</ul>
+<h4 id="momenti-di-un-processo-indipendenti-incoerenti-incorrelati">Indipendenti, incoerenti, incorrelati</h4>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Proprietà</th>
+<th>Definizione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>indipendenti</strong></td>
+<td>gli insiemi <span class="math inline">\{X(t_1), \dots, X(t_k)\}</span> e <span class="math inline">\{Y(t&#x27;_1), \dots, Y(t&#x27;_j)\}</span> sono indipendenti per ogni <span class="math inline">k, j \in \mathbb{N}</span> e ogni scelta degli istanti</td>
+</tr>
+<tr>
+<td><strong>incoerenti</strong></td>
+<td><span class="math inline">R_{XY}(\tau) = 0</span> per ogni <span class="math inline">\tau \in \mathbb{R}</span></td>
+</tr>
+<tr>
+<td><strong>incorrelati</strong></td>
+<td><span class="math inline">C_{XY}(\tau) = 0</span> per ogni <span class="math inline">\tau \in \mathbb{R}</span></td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Indipendenti ⇒ incorrelati.</li>
+<li>Se <span class="math inline">\mu_X = \mu_Y = 0</span>, incoerenza e incorrelazione coincidono.</li>
+</ul>
+<blockquote class="co mia"><p>🧩 L'ordine di forza: <em>indipendenza</em> riguarda tutte le distribuzioni congiunte, <em>incorrelazione</em> solo i momenti del secondo ordine. È la stessa gerarchia tra v.a. di correlazione e covarianza. &quot;Incoerenti&quot; corrisponde a &quot;ortogonali&quot; per due v.a. (<span class="math inline">E[XY] = 0</span>).</p>
+</blockquote>
+<h4 id="momenti-di-un-processo-processi-complessi">Processi complessi</h4>
+<ul>
+<li><span class="math inline">Z(t) = X(t) + jY(t)</span>. La caratterizzazione completa di <span class="math inline">Z</span> richiede quella <strong>congiunta</strong> di parte reale e immaginaria.</li>
+<li>Caratterizzazione parziale: media (12) e autocorrelazione (13), con il <strong>coniugato</strong> sul secondo fattore. Si può scrivere come funzione di <span class="math inline">(t_1, t_2)</span> o di <span class="math inline">(t, \tau)</span>: <span class="math inline">R_{ZZ}(t, \tau) = E[Z(t)Z^\ast (t - \tau)]</span>.</li>
+<li>A rigore servirebbe anche un altro momento del secondo ordine, la <strong>autocorrelazione coniugata</strong> <span class="math inline">R_{ZZ^\ast}(t_1, t_2) = E[Z(t_1)Z(t_2)]</span>, senza coniugato. Per la maggior parte dei processi però è nulla.</li>
+</ul>
+<blockquote class="co mia"><p>🧩 Perché il coniugato (osservazione mia): con <span class="math inline">t_1 = t_2 = t</span> si ottiene <span class="math inline">E[Z(t)Z^\ast (t)] = E[|Z(t)|^2] \ge 0</span>, un numero reale che è la potenza istantanea media. Senza coniugato si otterrebbe <span class="math inline">E[Z^2(t)]</span>, che in generale è complesso e non misura la potenza. È lo stesso motivo del coniugato nel prodotto scalare <span class="math inline">\langle u, v\rangle = \int u v^\ast</span> di inviluppo complesso.</p>
+</blockquote>
+<h4 id="momenti-di-un-processo-tempo-discreto">Tempo discreto</h4>
+<div class="math block">
+\mu_X(n) \triangleq E[X(n)] = \int x\,f_{X(n)}(x)\,dx \tag{35}
+</div><div class="math block">
+R_{XY}(n, k) \triangleq E[X(n)Y(k)] = \iint x\,y\,f_{X(n),Y(k)}(x, y)\,dx\,dy \tag{36}
+</div><div class="math block">
+C_{XY}(n, k) \triangleq E\{[X(n) - \mu_X(n)][Y(k) - \mu_Y(k)]\} = R_{XY}(n, k) - \mu_X(n)\mu_Y(k) \tag{37}
+</div><p>Con <span class="math inline">X(n) \equiv Y(n)</span> nella (36) e nella (37) si ottengono autocorrelazione e autocovarianza a tempo discreto.</p>
+<blockquote class="co avv"><p>⚠️ Refuso della slide: nella (36) la pdf è scritta <span class="math inline">f_{X(n),Y(k)}(x, x)</span>; deve essere <span class="math inline">(x, y)</span>.</p>
+</blockquote>
+<blockquote class="co esame"><p>🎯 Esame: definire media, autocorrelazione e autocovarianza e ricavare la (5); mutue correlazioni e loro simmetria; differenza tra processi indipendenti, incoerenti e incorrelati; perché nell'autocorrelazione di un processo complesso c'è il coniugato.</p>
+</blockquote>
+<h4 id="momenti-di-un-processo-perche-importa">Perché importa</h4>
+<p>Media e autocorrelazione sono le grandezze con cui si lavora in pratica. Si propagano con formule semplici attraverso i filtri (processi e sistemi lti); dall'autocorrelazione si ottiene la densità spettrale di potenza (densita spettrale di potenza); per un processo gaussiano bastano da sole a dare la caratterizzazione completa (processo gaussiano).</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Eq. (5): autocovarianza da media e autocorrelazione</summary>
+<blockquote class="co mia"><p>🧩 Passaggi miei. Scrivo <span class="math inline">X_1 = X(t_1)</span>, <span class="math inline">X_2 = X(t_2)</span>, <span class="math inline">\mu_1 = \mu_X(t_1)</span>, <span class="math inline">\mu_2 = \mu_X(t_2)</span>.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+C_{XX}(t_1, t_2) &amp;= E[(X_1 - \mu_1)(X_2 - \mu_2)] &amp;&amp; \text{definizione} \\
+&amp;= E[X_1X_2] - \mu_2E[X_1] - \mu_1E[X_2] + \mu_1\mu_2 &amp;&amp; \text{sviluppo e linearità di } E \text{ (} \mu_i \text{ sono costanti)} \\
+&amp;= R_{XX}(t_1, t_2) - \mu_1\mu_2 - \mu_1\mu_2 + \mu_1\mu_2 &amp;&amp; E[X_i] = \mu_i \\
+&amp;= R_{XX}(t_1, t_2) - \mu_X(t_1)\,\mu_X(t_2)
+\end{aligned}
+</div><p>È la stessa relazione <span class="math inline">\text{Cov}(X,Y) = E[XY] - E[X]E[Y]</span> di correlazione e covarianza, applicata a due campioni dello stesso processo. Allo stesso modo si ottiene la (37) a tempo discreto.</p>
+</details>
+<details class="der"><summary>Derivazione — Simmetria delle mutue correlazioni: <span class="math inline">R_{XY}(\tau) = R_{YX}(-\tau)</span></summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+R_{YX}(t&#x27;, -\tau) &amp;= E[Y(t&#x27;)\,X(t&#x27; + \tau)] &amp;&amp; \text{definizione (9) con ritardo } -\tau \\
+&amp;= E[Y(t - \tau)\,X(t)] &amp;&amp; \text{scelgo } t&#x27; = t - \tau \\
+&amp;= E[X(t)\,Y(t - \tau)] = R_{XY}(t, \tau) &amp;&amp; \text{il prodotto commuta}
+\end{aligned}
+</div><p>Per processi <strong>congiuntamente WSS</strong> nessuna delle due dipende da <span class="math inline">t</span>, quindi <span class="math inline">R_{XY}(\tau) = R_{YX}(-\tau)</span>.
+<strong>Perché <span class="math inline">R_{XY}</span> non è pari:</strong> scambiare <span class="math inline">\tau</span> con <span class="math inline">-\tau</span> equivale a scambiare i ruoli di <span class="math inline">X</span> e <span class="math inline">Y</span>, e in generale le due funzioni sono diverse. Per lo stesso motivo non c'è garanzia di un massimo in <span class="math inline">\tau = 0</span>: il massimo sta dove i due processi &quot;si somigliano di più&quot;, che può essere un ritardo diverso da zero.</p>
+</details>
+<details class="der"><summary>Derivazione — Mutua covarianza: casi particolari</summary>
+<blockquote class="co mia"><p>🧩 Passaggi miei, con lo stesso sviluppo della (5):</p>
+</blockquote>
+<div class="math block">
+C_{XY}(t, \tau) = R_{XY}(t, \tau) - \mu_X(t)\,\mu_Y(t - \tau)
+</div><ul>
+<li><strong>media nulla</strong> (<span class="math inline">\mu_X = \mu_Y = 0</span> per ogni <span class="math inline">t</span>): <span class="math inline">C_{XY}(t, \tau) = R_{XY}(t, \tau)</span>, e allo stesso modo <span class="math inline">C_{YX} = R_{YX}</span>;</li>
+<li><strong>congiuntamente WSS</strong>: le medie sono costanti e <span class="math inline">R_{XY}</span> dipende solo da <span class="math inline">\tau</span>, quindi <span class="math inline">C_{XY}(t, \tau) = R_{XY}(\tau) - \mu_X\mu_Y = C_{XY}(\tau)</span>.</li>
+</ul>
+</details>
+<details class="der"><summary>Derivazione — Indipendenti ⇒ incorrelati; con media nulla, incoerenti ⇔ incorrelati</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia (stesso argomento di correlazione e covarianza per due v.a.)</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+R_{XY}(\tau) &amp;= E[X(t)\,Y(t - \tau)] = E[X(t)]\,E[Y(t - \tau)] = \mu_X\,\mu_Y &amp;&amp; \text{indipendenza: il valore atteso del prodotto si fattorizza} \\
+C_{XY}(\tau) &amp;= R_{XY}(\tau) - \mu_X\mu_Y = 0 &amp;&amp; \text{quindi incorrelati}
+\end{aligned}
+</div><p>Con <span class="math inline">\mu_X = \mu_Y = 0</span> vale <span class="math inline">C_{XY} = R_{XY}</span>: <span class="math inline">R_{XY} \equiv 0</span> (incoerenti) se e solo se <span class="math inline">C_{XY} \equiv 0</span> (incorrelati).
+Il viceversa, incorrelati ⇒ indipendenti, in generale <strong>non</strong> vale: vale per i processi gaussiani (processo gaussiano).</p>
+</details>
+<details class="der"><summary>Derivazione — Momenti dell'esempio</summary>
+<blockquote class="co mia"><p>🧩 Calcolo mio: la slide definisce il processo ma non ne calcola i momenti.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+\mu_X(t) &amp;= A\cdot q + (-A)\cdot p = A(1 - 2p) &amp;&amp; 0 &lt; t &lt; T:\ X(t) = A \text{ con prob. } q,\ -A \text{ con prob. } p \\
+\mu_X(t) &amp;= 0 &amp;&amp; \text{fuori da } (0, T):\ X(t) = 0 \\
+R_{XX}(t_1, t_2) &amp;= E[X(t_1)X(t_2)] = A^2 &amp;&amp; t_1, t_2 \in (0, T):\ \text{stesso } \omega, \text{ stesso segno: il prodotto è sempre } A^2 \\
+C_{XX}(t_1, t_2) &amp;= A^2 - A^2(1 - 2p)^2 = 4p(1 - p)\,A^2 = 4pq\,A^2 &amp;&amp; \text{eq. (5); } 1 - (1 - 2p)^2 = 4p - 4p^2
+\end{aligned}
+</div><p>Fuori da <span class="math inline">(0, T)^2</span> autocorrelazione e covarianza sono nulle.
+<strong>Sanity check:</strong></p>
+<ul>
+<li>con <span class="math inline">p = 0</span> o <span class="math inline">p = 1</span> il segnale è deterministico e <span class="math inline">C_{XX} = 0</span> ✓;</li>
+<li>con <span class="math inline">p = 1/2</span> la media è nulla e <span class="math inline">C_{XX} = R_{XX} = A^2</span> ✓.</li>
+</ul>
+<p><strong>Lettura:</strong> la media dipende da <span class="math inline">t</span> (vale <span class="math inline">A(1 - 2p)</span> dentro il rettangolo e 0 fuori), quindi il processo <strong>non è stazionario</strong> (stazionarieta). In generale <span class="math inline">\mu_X(t)</span> è funzione di <span class="math inline">t</span> e <span class="math inline">R_{XX}</span>, <span class="math inline">C_{XX}</span> lo sono di <span class="math inline">t_1</span> e <span class="math inline">t_2</span> separatamente, come dicono le slide.</p>
+</details>
+<details class="der"><summary>Derivazione — Momenti della sinusoide a fase casuale degli appunti</summary>
+<blockquote class="co mia"><p>🧩 Calcolo mio: gli appunti definiscono il processo ma non ne calcolano i momenti. Applico le definizioni (3) e (4). L'unica v.a. è <span class="math inline">\Theta</span>, quindi i valori attesi sono integrali su <span class="math inline">\vartheta</span> pesati con <span class="math inline">f_\Theta(\vartheta) = \frac{1}{2\pi}</span> in <span class="math inline">[0, 2\pi]</span>.</p>
+</blockquote>
+<p><strong>Media:</strong>
+<div class="math inline">\begin{aligned}
+\mu_X(t) &amp;= E[A\cos(2\pi f_0 t + \Theta)] = \int_0^{2\pi} A\cos(2\pi f_0 t + \vartheta)\,\frac{1}{2\pi}\,d\vartheta &amp;&amp; \text{valore atteso di una funzione di } \Theta \\
+&amp;= \frac{A}{2\pi}\Big[\sin(2\pi f_0 t + \vartheta)\Big]_0^{2\pi} &amp;&amp; \text{primitiva di } \cos \text{ in } \vartheta \text{ (} t \text{ è fisso)} \\
+&amp;= \frac{A}{2\pi}\big[\sin(2\pi f_0 t + 2\pi) - \sin(2\pi f_0 t)\big] = 0 &amp;&amp; \sin \text{ ha periodo } 2\pi
+\end{aligned}</div></p>
+<p><strong>Autocorrelazione</strong>, con <span class="math inline">t_1 = t</span> e <span class="math inline">t_2 = t - \tau</span> come nella convenzione del ritardo:
+<div class="math inline">\begin{aligned}
+R_{XX}(t_1, t_2) &amp;= A^2\,E\big[\cos(2\pi f_0 t_1 + \Theta)\cos(2\pi f_0 t_2 + \Theta)\big] &amp;&amp; \text{definizione (4); } A \text{ è deterministica} \\
+&amp;= \frac{A^2}{2}\,E\big[\cos(2\pi f_0 (t_1 - t_2)) + \cos(2\pi f_0 (t_1 + t_2) + 2\Theta)\big] &amp;&amp; \cos a\cos b = \tfrac12[\cos(a - b) + \cos(a + b)] \\
+&amp;= \frac{A^2}{2}\cos(2\pi f_0 (t_1 - t_2)) + \frac{A^2}{2}\,E\big[\cos(2\pi f_0 (t_1 + t_2) + 2\Theta)\big] &amp;&amp; \text{il primo termine non contiene } \Theta \\
+&amp;= \frac{A^2}{2}\cos(2\pi f_0 (t_1 - t_2)) &amp;&amp; \text{il secondo valore atteso è nullo (sotto)} \\
+&amp;= \frac{A^2}{2}\cos(2\pi f_0 \tau) &amp;&amp; t_1 - t_2 = \tau
+\end{aligned}</div>
+Il valore atteso che si annulla: con <span class="math inline">\varphi = 2\pi f_0(t_1 + t_2)</span>,
+<div class="math inline">E[\cos(\varphi + 2\Theta)] = \frac{1}{2\pi}\int_0^{2\pi}\cos(\varphi + 2\vartheta)\,d\vartheta = \frac{1}{2\pi}\Big[\frac{\sin(\varphi + 2\vartheta)}{2}\Big]_0^{2\pi} = \frac{\sin(\varphi + 4\pi) - \sin\varphi}{4\pi} = 0</div>
+Il coseno fa due periodi interi in <span class="math inline">\vartheta \in [0, 2\pi]</span> e la sua media è zero.</p>
+<p><strong>Risultato:</strong> <span class="math inline">\mu_X = 0</span> e <span class="math inline">R_{XX}(\tau) = \frac{A^2}{2}\cos(2\pi f_0\tau)</span>. Poiché la media è nulla, anche <span class="math inline">C_{XX}(\tau) = R_{XX}(\tau)</span>, eq. (5).
+<strong>Sanity check:</strong></p>
+<ul>
+<li><span class="math inline">R_{XX}(0) = \frac{A^2}{2} = E[X^2(t)]</span>: è la potenza media di una sinusoide di ampiezza <span class="math inline">A</span>, come nel caso deterministico ✓;</li>
+<li><span class="math inline">R_{XX}</span> è pari e <span class="math inline">|R_{XX}(\tau)| \le R_{XX}(0)</span>, come vogliono le proprietà di autocorrelazione processi wss ✓.</li>
+</ul>
+<p><strong>Ipotesi:</strong> fase <strong>uniforme su un intero periodo</strong>. È lei che fa sparire la dipendenza da <span class="math inline">t</span>. Se <span class="math inline">\Theta</span> fosse, per esempio, uniforme solo in <span class="math inline">(0, \pi)</span>, la stessa integrazione darebbe
+<div class="math inline">\mu_X(t) = \frac{A}{\pi}\big[\sin(2\pi f_0 t + \pi) - \sin(2\pi f_0 t)\big] = -\frac{2A}{\pi}\sin(2\pi f_0 t)</div>
+che dipende da <span class="math inline">t</span>: il processo non sarebbe più WSS.</p>
+<p><strong>Lettura:</strong> la media non dipende da <span class="math inline">t</span> e l'autocorrelazione dipende solo da <span class="math inline">\tau = t_1 - t_2</span>. Il processo è quindi <strong>WSS</strong> (stazionarieta), all'opposto del rettangolo. Ogni realizzazione è un coseno deterministico. È l'incertezza sulla fase, uguale per tutte le fasi, a rendere la statistica indipendente dall'origine dei tempi.</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Stazionarietà dei processi aleatori</span></summary><div class="cb"><h4 id="stazionarieta-spiegazione">Spiegazione</h4>
+<h4 id="stazionarieta-come-leggere-la-definizione">Come leggere la definizione</h4>
+<blockquote class="co mia"><p>🧩 Spiegazione mia</p>
+</blockquote>
+<ul>
+<li>&quot;Stazionario&quot; vuol dire che <strong>non si può capire che ore sono</strong> guardando la statistica del processo. Un blocco di campioni preso adesso e lo stesso blocco preso fra un'ora hanno la stessa distribuzione.</li>
+<li>La stazionarietà riguarda la <strong>statistica</strong>, non le realizzazioni: le forme d'onda cambiano nel tempo anche quando il processo è stazionario (grafico delle realizzazioni in processo aleatorio).</li>
+<li><strong>Esempio non stazionario:</strong> il rettangolo di segno casuale ha media <span class="math inline">A(1-2p)</span> dentro <span class="math inline">(0, T)</span> e 0 fuori (momenti di un processo): la media dipende da <span class="math inline">t</span>.</li>
+<li><strong>Esempio stazionario:</strong> il processo gaussiano con <span class="math inline">R_{XX}(\tau) = e^{-|\tau|/\tau_c}</span> dei grafici (autocorrelazione processi wss) è WSS e, essendo gaussiano, anche SSS.</li>
+<li><strong>Esempio WSS dagli appunti:</strong> la sinusoide a fase casuale <span class="math inline">A\cos(2\pi f_0 t + \Theta)</span>, <span class="math inline">\Theta \sim \mathcal{U}(0, 2\pi)</span>, ha media nulla e <span class="math inline">R_{XX}(\tau) = \frac{A^2}{2}\cos(2\pi f_0\tau)</span>: calcolo in momenti di un processo. Ogni realizzazione è un coseno deterministico, ma la statistica non dipende da <span class="math inline">t</span>.</li>
+</ul>
+<h4 id="stazionarieta-scala-delle-stazionarieta">Scala delle stazionarietà</h4>
+<div class="math block">\text{SSS} \ \Rightarrow\ \dots \ \Rightarrow\ \text{ordine } 2 \ \Rightarrow\ \text{ordine } 1</div><div class="math block">\text{ordine } 2 \ \Rightarrow\ \text{WSS} \quad (\text{se esistono i momenti})</div><p>La WSS è la forma di stazionarietà usata nel resto della lezione: autocorrelazione processi wss, densita spettrale di potenza, processi e sistemi lti.</p>
+<blockquote class="co conn"><p>💡 Connessione: il quantizzatore di Lloyd-Max suppone il segnale <strong>stazionario del primo ordine</strong> (quantizzazione non uniforme). Vuol dire che tutti i campioni <span class="math inline">x(n)</span> hanno la stessa pdf <span class="math inline">f_X</span>, e quindi un solo quantizzatore progettato su <span class="math inline">f_X</span> va bene in ogni istante.</p>
+</blockquote>
+<blockquote class="co esame"><p>🎯 Esame: definire la stazionarietà di ordine <span class="math inline">k</span>, SSS, del primo e del secondo ordine, WSS; ricavare che al primo ordine la media è costante e al secondo l'autocorrelazione dipende da <span class="math inline">t_1 - t_2</span>; mostrare SSS ⇒ WSS e perché non vale il viceversa.</p>
+</blockquote>
+<h4 id="stazionarieta-perche-importa">Perché importa</h4>
+<p>Senza stazionarietà media e autocorrelazione sono funzioni di uno o due istanti, difficili da maneggiare. Con la WSS l'autocorrelazione diventa funzione del solo ritardo <span class="math inline">\tau</span>, e si può farne la trasformata di Fourier: la densità spettrale di potenza (densita spettrale di potenza).</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Primo ordine: distribuzione e media non dipendono da <span class="math inline">t</span></summary>
+<blockquote class="co mia"><p>🧩 Passaggi esplicitati da me</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+F_{X(t_1+\tau)}(x) &amp;= F_{X(t_1)}(x) \quad \forall\,\tau, t_1 &amp;&amp; \text{(6) con } k = 1 \\
+F_{X(t)}(x) &amp;= F_{X(t - t)}(x) = F_{X(0)}(x) &amp;&amp; t_1 = t,\ \tau = -t \\
+f_{X(t)}(x) &amp;= f_{X(0)}(x) &amp;&amp; \text{derivo in } x \\
+\mu_X(t) &amp;= \int x\,f_{X(t)}(x)\,dx = \int x\,f_{X(0)}(x)\,dx \equiv \mu_X &amp;&amp; \text{la media non dipende da } t
+\end{aligned}
+</div><p>Si può confrontare ogni istante con l'istante 0: se tutti hanno la stessa distribuzione di <span class="math inline">X(0)</span>, hanno tutti la stessa distribuzione.</p>
+</details>
+<details class="der"><summary>Derivazione — Secondo ordine: conta solo la distanza tra gli istanti</summary>
+<div class="math block">
+\begin{aligned}
+F_{X(t_1),X(t_2)}(x_1, x_2) &amp;= F_{X(t_1+\tau),X(t_2+\tau)}(x_1, x_2) &amp;&amp; \text{(6) con } k = 2 \\
+&amp;= F_{X(t_1-t_2),X(0)}(x_1, x_2) &amp;&amp; \tau = -t_2 \\
+R_{XX}(t_1, t_2) &amp;= \iint x_1x_2\,f_{X(t_1-t_2),X(0)}(x_1, x_2)\,dx_1dx_2 \equiv R_{XX}(t_1 - t_2) &amp;&amp; \text{la (4) con la pdf traslata}
+\end{aligned}
+</div><p>La distribuzione del secondo ordine dipende solo dalla <strong>differenza</strong> <span class="math inline">t_1 - t_2</span>, non dagli istanti particolari in cui si campiona. Di conseguenza anche l'autocorrelazione.</p>
+</details>
+<details class="der"><summary>Derivazione — Stazionario di ordine <span class="math inline">k</span> ⇒ stazionario di ordine <span class="math inline">k-1</span></summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia, con la coerenza delle distribuzioni di processo aleatorio.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+F_{X(t_1+\tau),\dots,X(t_{k-1}+\tau)}(x_1,\dots,x_{k-1}) &amp;= F_{X(t_1+\tau),\dots,X(t_k+\tau)}(x_1,\dots,x_{k-1}, +\infty) &amp;&amp; \text{marginale} \\
+&amp;= F_{X(t_1),\dots,X(t_k)}(x_1,\dots,x_{k-1}, +\infty) &amp;&amp; \text{(6) di ordine } k \\
+&amp;= F_{X(t_1),\dots,X(t_{k-1})}(x_1,\dots,x_{k-1}) &amp;&amp; \text{marginale}
+\end{aligned}
+</div><p>È la (6) di ordine <span class="math inline">k-1</span>; ripetendo si scende a <span class="math inline">k-2</span>, e così via. Il viceversa in generale <strong>non</strong> vale: l'invarianza delle marginali non dice nulla su come i campioni dipendono tra loro.</p>
+</details>
+<details class="der"><summary>Derivazione — SSS ⇒ WSS</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia</p>
+</blockquote>
+<ul>
+<li>SSS vuol dire che la (6) vale per ogni <span class="math inline">k</span>, in particolare per <span class="math inline">k = 1</span> e <span class="math inline">k = 2</span>.</li>
+<li>Per <span class="math inline">k = 1</span>, la media è costante: prima condizione WSS.</li>
+<li>Per <span class="math inline">k = 2</span>, l'autocorrelazione dipende solo da <span class="math inline">t_1 - t_2</span>: seconda condizione WSS.</li>
+</ul>
+<p><strong>Ipotesi:</strong> media e autocorrelazione devono esistere, cioè momenti di secondo ordine finiti.
+<strong>Il viceversa</strong> in generale non vale: WSS impone condizioni solo su due momenti, non su tutte le distribuzioni. Fa eccezione il processo gaussiano, per cui WSS ⇒ SSS (processo gaussiano).</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Autocorrelazione dei processi WSS</span></summary><div class="cb"><h4 id="autocorrelazione-processi-wss-spiegazione">Spiegazione</h4>
+<h4 id="autocorrelazione-processi-wss-significato-fisico">Significato fisico</h4>
+<ul>
+<li><span class="math inline">R_{XX}(\tau)</span> descrive quanto sono <strong>legati tra loro</strong> due campioni presi a <span class="math inline">\tau</span> secondi di distanza.</li>
+<li>Più il processo <strong>cambia rapidamente</strong> nel tempo, più rapidamente <span class="math inline">R_{XX}(\tau)</span> scende dal massimo <span class="math inline">R_{XX}(0)</span> al crescere di <span class="math inline">\tau</span>.</li>
+<li>Questo comportamento si riassume nel <strong>tempo di decorrelazione</strong> <span class="math inline">\tau_{dec}</span>: per <span class="math inline">\tau &gt; \tau_{dec}</span> il modulo di <span class="math inline">R_{XX}(\tau)</span> resta sotto un valore prescritto.</li>
+</ul>
+<img class="zoom" src="img/random-processes-p21-autocorrelazione-lento-veloce.png" alt="" loading="lazy">
+<p><em>autocorrelazione di un processo che fluttua lentamente (curva larga, che scende piano) e di uno che fluttua rapidamente (curva stretta attorno a <span class="math inline">\tau = 0</span>). Entrambe hanno il massimo in <span class="math inline">\tau = 0</span> e sono pari.</em></p>
+<img class="zoom" src="img/grafico-rp-lento-veloce.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio. Due processi gaussiani WSS con la stessa potenza <span class="math inline">R_{XX}(0) = 1</span>: lento (<span class="math inline">\tau_c = 2</span>) e veloce (<span class="math inline">\tau_c = 0.1</span>).</em></p>
+<ul>
+<li><em>In alto una realizzazione di ciascuno: il veloce cambia molto di più da un istante all'altro.</em></li>
+<li><em>Al centro le autocorrelazioni <span class="math inline">e^{-|\tau|/\tau_c}</span>: quella del veloce crolla subito (<span class="math inline">\tau_{dec} \approx 0.23</span>), quella del lento dopo molto (<span class="math inline">\tau_{dec} \approx 4.61</span>).</em></li>
+<li><em>In basso le PSD, trasformate delle autocorrelazioni: il lento concentra la potenza vicino a <span class="math inline">f = 0</span>, il veloce la spalma su una banda larga. L'area è la stessa, 1.</em></li>
+</ul>
+<h4 id="autocorrelazione-processi-wss-come-si-costruisce-r-xx-tau-animazione">Come si costruisce <span class="math inline">R_{XX}(\tau)</span> (animazione)</h4>
+<img class="zoom" src="img/grafico-rp-autocorrelazione.png" alt="" loading="lazy">
+<p><em>🧩 Animazione mia della (7), con 600 realizzazioni del processo esponenziale (<span class="math inline">\tau_c = 1</span>).</em></p>
+<ul>
+<li><em>In alto: si fissa <span class="math inline">t = 6</span> e si prende il campione a <span class="math inline">t - \tau</span>, con <span class="math inline">\tau</span> che cresce da 0 a 4.</em></li>
+<li><em>In basso a sinistra: le 600 coppie <span class="math inline">(X(t), X(t-\tau))</span>. Per <span class="math inline">\tau = 0</span> stanno sulla bisettrice; al crescere di <span class="math inline">\tau</span> la nuvola si allarga fino a diventare circolare, cioè i campioni non si &quot;somigliano&quot; più.</em></li>
+<li><em>In basso a destra: la media del prodotto su tutte le realizzazioni è la stima di <span class="math inline">R_{XX}(\tau)</span>, che segue la curva teorica <span class="math inline">e^{-\tau/\tau_c}</span>.</em></li>
+</ul>
+<p><em>È la definizione (7) letta nel senso del primo punto di vista: il valore atteso è una media <strong>sull'insieme delle realizzazioni</strong>, a istanti fissati.</em></p>
+<blockquote class="co esame"><p>🎯 Esame: definire la lag-acf; dimostrare le tre proprietà (valore in 0, parità, massimo in 0); definire l'autocorrelazione normalizzata; spiegare il legame tra velocità di variazione del processo, larghezza di <span class="math inline">R_{XX}</span> e tempo di decorrelazione.</p>
+</blockquote>
+<h4 id="autocorrelazione-processi-wss-perche-importa">Perché importa</h4>
+<p>Dice quanto &quot;memoria&quot; ha un processo: per quanto tempo il suo valore attuale dà informazione su quello futuro. Attraverso la trasformata di Fourier diventa la densità spettrale di potenza (densita spettrale di potenza): un'autocorrelazione stretta corrisponde a uno spettro largo, e viceversa.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Proprietà 1: <span class="math inline">R_{XX}(0) = E[X^2(t)]</span></summary>
+<div class="math block">R_{XX}(0) = E[X(t)\,X(t - 0)] = E[X^2(t)]</div><p>È il <strong>valore quadratico medio</strong>, lo stesso per ogni <span class="math inline">t</span> perché il processo è WSS. In densita spettrale di potenza è la <strong>potenza</strong> del processo.</p>
+</details>
+<details class="der"><summary>Derivazione — Proprietà 2: <span class="math inline">R_{XX}</span> è pari</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+R_{XX}(-\tau) &amp;= E[X(t)\,X(t + \tau)] &amp;&amp; \text{(7) con ritardo } -\tau \\
+&amp;= E[X(t&#x27; - \tau)\,X(t&#x27;)] &amp;&amp; t&#x27; = t + \tau \text{: per un processo WSS il risultato non dipende dall&#x27;istante scelto} \\
+&amp;= E[X(t&#x27;)\,X(t&#x27; - \tau)] = R_{XX}(\tau) &amp;&amp; \text{il prodotto commuta}
+\end{aligned}
+</div><p><strong>In parole:</strong> &quot;il campione di adesso con quello di <span class="math inline">\tau</span> secondi fa&quot; e &quot;il campione di adesso con quello fra <span class="math inline">\tau</span> secondi&quot; sono la stessa coppia vista dall'altro lato.</p>
+</details>
+<details class="der"><summary>Derivazione — Proprietà 3: <span class="math inline">|R_{XX}(\tau)| \le R_{XX}(0)</span></summary>
+<blockquote class="co mia"><p>🧩 Due dimostrazioni mie</p>
+</blockquote>
+<p><strong>Con la disuguaglianza di Schwarz</strong> (correlazione e covarianza):
+<div class="math inline">|R_{XX}(\tau)| = |E[X(t)X(t-\tau)]| \le \sqrt{E[X^2(t)]\,E[X^2(t-\tau)]} = \sqrt{R_{XX}(0)\,R_{XX}(0)} = R_{XX}(0)</div>
+L'ultima uguaglianza usa la WSS: il valore quadratico medio è lo stesso in <span class="math inline">t</span> e in <span class="math inline">t - \tau</span>.</p>
+<p><strong>Con un quadrato non negativo:</strong>
+<div class="math inline">\begin{aligned}
+0 &amp;\le E\big[\big(X(t) \pm X(t - \tau)\big)^2\big] &amp;&amp; \text{valore atteso di un quadrato} \\
+&amp;= E[X^2(t)] \pm 2E[X(t)X(t-\tau)] + E[X^2(t-\tau)] &amp;&amp; \text{sviluppo} \\
+&amp;= 2R_{XX}(0) \pm 2R_{XX}(\tau) &amp;&amp; \text{proprietà 1 e (7)} \\
+\Rightarrow\ -R_{XX}(0) &amp;\le R_{XX}(\tau) \le R_{XX}(0) &amp;&amp; \text{segno } + \text{ e segno } -
+\end{aligned}</div></p>
+</details>
+<details class="der"><summary>Derivazione — <span class="math inline">|\rho_{XX}(\tau)| \le 1</span></summary>
+<p>Si divide la proprietà 3 per <span class="math inline">R_{XX}(0) &gt; 0</span>: <span class="math inline">|\rho_{XX}(\tau)| = |R_{XX}(\tau)|/R_{XX}(0) \le 1</span>.</p>
+<blockquote class="co mia"><p>🧩 Se il processo ha <strong>media nulla</strong>, <span class="math inline">\rho_{XX}(\tau)</span> è proprio il <strong>coefficiente di correlazione</strong> tra i campioni <span class="math inline">X(t)</span> e <span class="math inline">X(t-\tau)</span> (correlazione e covarianza): <span class="math inline">\text{Cov} = R_{XX}(\tau)</span> e <span class="math inline">\sigma^2 = R_{XX}(0)</span> per entrambi.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Tempo di decorrelazione dell'esempio esponenziale</summary>
+<blockquote class="co mia"><p>🧩 Calcolo mio per il processo dei grafici, <span class="math inline">R_{XX}(\tau) = e^{-|\tau|/\tau_c}</span> con <span class="math inline">R_{XX}(0) = 1</span> e soglia <span class="math inline">0.1\,R_{XX}(0)</span>.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+e^{-\tau_{dec}/\tau_c} &amp;= 0.1 &amp;&amp; |R_{XX}| \text{ scende sotto la soglia per } \tau &gt; \tau_{dec} \\
+\tau_{dec} &amp;= \tau_c\ln 10 \approx 2.30\,\tau_c &amp;&amp; \text{logaritmo di entrambi i membri}
+\end{aligned}
+</div><p><strong>Numeri:</strong> <span class="math inline">\tau_c = 2 \Rightarrow \tau_{dec} \approx 4.61</span>; <span class="math inline">\tau_c = 0.1 \Rightarrow \tau_{dec} \approx 0.23</span> (valori segnati nel grafico sotto).
+<strong>Sanity check:</strong> <span class="math inline">\tau_{dec}</span> è proporzionale a <span class="math inline">\tau_c</span>. Un processo con correlazione che si esaurisce 20 volte più in fretta ha un tempo di decorrelazione 20 volte più corto ✓. Il valore dipende dalla soglia scelta, che la slide lascia libera.</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Processi aleatori attraverso sistemi LTI</span></summary><div class="cb"><h4 id="processi-e-sistemi-lti-spiegazione">Spiegazione</h4>
+<blockquote class="co mia"><p>🧩 Il quadro (lettura mia):</p>
+<ul>
+<li>Un filtro deterministico non rende &quot;più aleatorio&quot; il processo: lo rimodella. La media viene moltiplicata per <span class="math inline">H(0)</span>; lo spettro di potenza per <span class="math inline">|H(f)|^2</span>, quindi il filtro esalta o attenua le componenti di potenza alle varie frequenze.</li>
+<li>Nel tempo, l'autocorrelazione dell'uscita è quella d'ingresso &quot;spalmata&quot; da <span class="math inline">r_{hh}</span>. Un filtro passa-basso stretto ha <span class="math inline">h</span> lunga, quindi <span class="math inline">r_{hh}</span> larga, quindi un'uscita più lenta: il tempo di decorrelazione aumenta (autocorrelazione processi wss).</li>
+<li>Non si conosce invece la distribuzione di <span class="math inline">Y</span>, salvo per un ingresso gaussiano: in quel caso l'uscita resta gaussiana (processo gaussiano).</li>
+</ul>
+</blockquote>
+<blockquote class="co esame"><p>🎯 Esame: ricavare <span class="math inline">\mu_Y = \mu_X H(0)</span> con le ipotesi per scambiare media e integrale; ricavare la (18) e la (20); dire perché ingresso WSS dà uscita WSS; ricavare <span class="math inline">S_{YY} = S_{XX}|H|^2</span>.</p>
+</blockquote>
+<h4 id="processi-e-sistemi-lti-perche-importa">Perché importa</h4>
+<p>Ogni blocco lineare di un sistema di comunicazione (filtri di trasmissione e ricezione, canale LTI) agisce su segnali e rumori aleatori. Queste formule dicono come cambiano media, correlazione e spettro di potenza, cioè le quantità che determinano il rapporto segnale-rumore.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Media dell'uscita, eq. (15) e (16)</summary>
+<div class="math block">
+\begin{aligned}
+\mu_Y(t) &amp;= E\Big[\int h(\tau_1)\,X(t - \tau_1)\,d\tau_1\Big] &amp;&amp; \text{definizione, eq. (14)} \\
+&amp;= \int h(\tau_1)\,E[X(t - \tau_1)]\,d\tau_1 &amp;&amp; \text{scambio } E \text{ e integrale: } E[X(t)] \text{ finita, filtro stabile} \\
+&amp;= \int h(\tau_1)\,\mu_X(t - \tau_1)\,d\tau_1 = \mu_X(t) * h(t) &amp;&amp; \text{definizione di convoluzione, eq. (15)} \\
+&amp;= \mu_X\int h(\tau_1)\,d\tau_1 &amp;&amp; \text{ingresso WSS: } \mu_X(t) \equiv \mu_X \\
+&amp;= \mu_X\,H(0) &amp;&amp; H(0) = \textstyle\int h(t)\,e^{-j2\pi\cdot 0\cdot t}dt = \int h(t)\,dt \quad \text{(16)}
+\end{aligned}
+</div><p><strong>Lettura:</strong> la media è la componente &quot;continua&quot; (a frequenza zero) del processo, e il filtro la moltiplica per il suo guadagno a frequenza zero.</p>
+</details>
+<details class="der"><summary>Derivazione — Mutua correlazione delle uscite, eq. (17)–(18)</summary>
+<p>Due sistemi LTI: <span class="math inline">X_1 \to h_1 \to Y_1</span> e <span class="math inline">X_2 \to h_2 \to Y_2</span>.</p>
+<img class="zoom" src="img/random-processes-p29-due-sistemi-lti.png" alt="" loading="lazy">
+<p><em><span class="math inline">x_1(\cdot) \to h_1(\cdot) \to y_1(\cdot)</span> e <span class="math inline">x_2(\cdot) \to h_2(\cdot) \to y_2(\cdot)</span>.</em></p>
+<div class="math block">
+\begin{aligned}
+R_{Y_1Y_2}(t_1, t_2) &amp;= E\Big[\int h_1(\tau_1)X_1(t_1 - \tau_1)\,d\tau_1\int h_2(\tau_2)X_2(t_2 - \tau_2)\,d\tau_2\Big] &amp;&amp; \text{uscite come convoluzioni, eq. (17)} \\
+&amp;= \iint h_1(\tau_1)\,h_2(\tau_2)\,E[X_1(t_1 - \tau_1)X_2(t_2 - \tau_2)]\,d\tau_1 d\tau_2 &amp;&amp; \text{prodotto di integrali = integrale doppio; scambio } E \\
+&amp;= \iint h_1(\tau_1)\,h_2(\tau_2)\,R_{X_1X_2}(t_1 - \tau_1,\ t_2 - \tau_2)\,d\tau_1 d\tau_2 &amp;&amp; \text{definizione di mutua correlazione, eq. (18)}
+\end{aligned}
+</div></details>
+<details class="der"><summary>Derivazione — Ingressi congiuntamente WSS, eq. (19)–(20)</summary>
+<div class="math block">
+\begin{aligned}
+(t_1 - \tau_1) - (t_2 - \tau_2) &amp;= \tau - \tau_1 + \tau_2 &amp;&amp; \tau = t_1 - t_2;\ \text{per ingressi congiuntamente WSS conta solo la differenza} \\
+R_{Y_1Y_2}(\tau) &amp;= \iint h_1(\tau_1)\,h_2(\tau_2)\,R_{X_1X_2}(\tau - \tau_1 + \tau_2)\,d\tau_1 d\tau_2 &amp;&amp; \text{eq. (19)}
+\end{aligned}
+</div><blockquote class="co mia"><p>🧩 Passaggi miei dalla (19) alla (20), con <span class="math inline">\tilde h_2(\tau) = h_2(-\tau)</span>:</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+\int h_2(\tau_2)\,R_{X_1X_2}(\tau - \tau_1 + \tau_2)\,d\tau_2 &amp;= \int \tilde h_2(u)\,R_{X_1X_2}\big((\tau - \tau_1) - u\big)\,du &amp;&amp; u = -\tau_2 \\
+&amp;= \big[R_{X_1X_2} * \tilde h_2\big](\tau - \tau_1) &amp;&amp; \text{definizione di convoluzione} \\
+R_{Y_1Y_2}(\tau) &amp;= \int h_1(\tau_1)\,\big[R_{X_1X_2} * \tilde h_2\big](\tau - \tau_1)\,d\tau_1 &amp;&amp; \text{integrale esterno} \\
+&amp;= R_{X_1X_2}(\tau) * h_2(-\tau) * h_1(\tau) = R_{X_1X_2}(\tau) * r_{h_1h_2}(\tau) &amp;&amp; \text{la convoluzione è commutativa e associativa}
+\end{aligned}
+</div><p>Il risultato dipende <strong>solo dal ritardo</strong> <span class="math inline">\tau</span>.</p>
+<p><strong>LTI conserva l'incoerenza</strong>: se gli ingressi sono incoerenti, <span class="math inline">R_{X_1X_2} \equiv 0</span>, allora <span class="math inline">R_{Y_1Y_2} = 0 \ast r_{h_1h_2} \equiv 0</span> e anche le uscite sono incoerenti.</p>
+</details>
+<details class="der"><summary>Derivazione — Autocorrelazione dell'uscita e mutue correlazioni ingresso-uscita</summary>
+<div class="math block">
+\begin{aligned}
+R_{YY}(t_1, t_2) &amp;= \iint h(\tau_1)\,h(\tau_2)\,R_{XX}(t_1 - \tau_1, t_2 - \tau_2)\,d\tau_1 d\tau_2 &amp;&amp; \text{(18) con } h_1 = h_2 = h,\ X_1 = X_2 = X \\
+R_{YY}(\tau) &amp;= R_{XX}(\tau) * h(\tau) * h(-\tau) = R_{XX}(\tau) * r_{hh}(\tau) &amp;&amp; \text{(20) con ingresso WSS}
+\end{aligned}
+</div><p>Per le mutue correlazioni ingresso-uscita si usa la (20), facendo passare uno dei due rami per un filtro &quot;identità&quot; <span class="math inline">\delta(t)</span>:
+<div class="math inline">\begin{aligned}
+R_{YX}(\tau) &amp;= R_{XX}(\tau) * h(\tau) * \delta(-\tau) = R_{XX}(\tau) * h(\tau) &amp;&amp; Y_1 = Y,\ Y_2 = X,\ h_1 = h,\ h_2 = \delta \\
+R_{XY}(\tau) &amp;= R_{XX}(\tau) * \delta(\tau) * h(-\tau) = R_{XX}(\tau) * h(-\tau) &amp;&amp; Y_1 = X,\ Y_2 = Y,\ h_1 = \delta,\ h_2 = h
+\end{aligned}</div>
+<strong>Sanity check</strong> (🧩): la simmetria <span class="math inline">R_{XY}(\tau) = R_{YX}(-\tau)</span> di momenti di un processo vale. Infatti <span class="math inline">R_{YX}(-\tau) = [R_{XX} \ast h](-\tau) = [R_{XX}(-\cdot) \ast h(-\cdot)](\tau) = R_{XX}(\tau) \ast h(-\tau)</span>, perché <span class="math inline">R_{XX}</span> è pari ✓.</p>
+</details>
+<details class="der"><summary>Derivazione — Ingresso WSS ⇒ uscita WSS</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia: le due condizioni della WSS (stazionarieta).</p>
+</blockquote>
+<ul>
+<li><strong>Media costante:</strong> <span class="math inline">\mu_Y = \mu_X H(0)</span>, eq. (16), non dipende da <span class="math inline">t</span>.</li>
+<li><strong>Autocorrelazione funzione del solo ritardo:</strong> <span class="math inline">R_{YY}(\tau) = R_{XX}(\tau) \ast r_{hh}(\tau)</span> dipende solo da <span class="math inline">\tau</span>.</li>
+</ul>
+</details>
+<details class="der"><summary>Derivazione — PSD dell'uscita, eq. (22)</summary>
+<div class="math block">
+\begin{aligned}
+S_{YY}(f) &amp;= \mathcal{F}\big[R_{XX}(\tau) * h(\tau) * h(-\tau)\big] &amp;&amp; \text{Wiener-Khinchin: } S_{YY} = \mathcal{F}[R_{YY}] \\
+&amp;= S_{XX}(f)\,H(f)\,H(-f) &amp;&amp; \text{convoluzioni} \to \text{prodotti; riflessione: } h(-\tau) \to H(-f) \\
+&amp;= S_{XX}(f)\,H(f)\,H^*(f) = S_{XX}(f)\,|H(f)|^2 &amp;&amp; h \text{ reale: } H(-f) = H^*(f) \text{ (simmetria hermitiana)}
+\end{aligned}
+</div><p><strong>In parole</strong>: la PSD dell'uscita è la PSD dell'ingresso moltiplicata per il <strong>modulo quadro</strong> della risposta in frequenza. La fase del filtro non conta.
+<strong>Potenza in uscita</strong> (🧩): <span class="math inline">P_Y = R_{YY}(0) = \int S_{XX}(f)\,|H(f)|^2\,df</span>, per la (21) di densita spettrale di potenza.
+<strong>Sanity check</strong> (🧩): se <span class="math inline">\mu_X \neq 0</span>, <span class="math inline">R_{XX}</span> contiene la costante <span class="math inline">\mu_X^2</span> e quindi <span class="math inline">S_{XX}</span> la riga <span class="math inline">\mu_X^2\,\delta(f)</span>. Nella (22) la riga diventa <span class="math inline">\mu_X^2|H(0)|^2\delta(f)</span>, cioè una media in uscita <span class="math inline">|\mu_Y| = |\mu_X H(0)|</span>, in accordo con la (16) ✓.</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Densità spettrale di potenza (PSD)</span></summary><div class="cb"><h4 id="densita-spettrale-di-potenza-spiegazione">Spiegazione</h4>
+<ul>
+<li>La PSD dice <strong>come la potenza del processo si distribuisce in frequenza</strong>. La sua area è la potenza totale, (21).</li>
+<li>Il <strong>significato fisico</strong> viene dal filtro a banda stretta: un filtro ideale centrato in <span class="math inline">f_c</span>, largo <span class="math inline">\Delta f</span>, lascia passare una potenza <span class="math inline">\approx 2\Delta f\,S_{XX}(f_c)</span>. Misurare la potenza all'uscita di filtri sempre più stretti è un modo di &quot;misurare&quot; la PSD.</li>
+<li>La <strong>densità spettrale mutua</strong> misura i legami <strong>in frequenza</strong> tra due processi.</li>
+</ul>
+<blockquote class="co mia"><p>🧩 Perché serve Wiener-Khinchin: la definizione con la finestra e il limite è concettuale ma scomoda da calcolare. Il teorema la riduce a una trasformata di Fourier dell'autocorrelazione, che spesso si calcola in poche righe (esempio sopra).</p>
+</blockquote>
+<blockquote class="co esame"><p>🎯 Esame: definire la PSD; enunciare e dimostrare Wiener-Khinchin; ricavare potenza e significato fisico (<span class="math inline">2\Delta f\,S_{XX}</span>); dimostrare le proprietà 1–5; densità spettrale mutua e sua simmetria; PSD della somma di processi incoerenti.</p>
+</blockquote>
+<h4 id="densita-spettrale-di-potenza-perche-importa">Perché importa</h4>
+<p>È lo strumento per descrivere segnali e rumori aleatori <strong>in frequenza</strong>: quanta potenza cade nella banda di un filtro, di un canale, di un ricevitore. Con <span class="math inline">S_{YY} = S_{XX}|H|^2</span> (processi e sistemi lti) permette di calcolare la potenza di rumore all'uscita di qualunque filtro. Dà anche la banda occupata da un segnale modulato (calcolo densita spettrale).</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Relazione di Wiener-Khinchin</summary>
+<blockquote class="co mia"><p>🧩 Dimostrazione mia, partendo dalla definizione. Processo reale e WSS.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+X_T(f) &amp;= \int_{-T}^{T} X(t)\,e^{-j2\pi ft}\,dt &amp;&amp; \text{trasformata della versione finestrata} \\
+|X_T(f)|^2 &amp;= X_T(f)\,X_T^*(f) = \int_{-T}^{T}\!\!\int_{-T}^{T} X(t_1)X(t_2)\,e^{-j2\pi f(t_1 - t_2)}\,dt_1dt_2 &amp;&amp; X \text{ reale: il coniugato cambia solo il segno dell&#x27;esponente} \\
+E\big[|X_T(f)|^2\big] &amp;= \int_{-T}^{T}\!\!\int_{-T}^{T} R_{XX}(t_1 - t_2)\,e^{-j2\pi f(t_1 - t_2)}\,dt_1dt_2 &amp;&amp; \text{scambio } E \text{ e integrali; WSS} \\
+&amp;= \int_{-2T}^{2T} (2T - |\tau|)\,R_{XX}(\tau)\,e^{-j2\pi f\tau}\,d\tau &amp;&amp; \tau = t_1 - t_2
+\end{aligned}
+</div><p>L'ultimo passaggio: nel quadrato <span class="math inline">[-T, T]^2</span> l'integrando dipende solo da <span class="math inline">\tau = t_1 - t_2</span>. I punti con un dato <span class="math inline">\tau</span> formano un segmento, e la sua proiezione su un asse è lunga <span class="math inline">2T - |\tau|</span>: questo è il &quot;peso&quot; di ogni <span class="math inline">\tau</span>.
+<div class="math inline">\begin{aligned}
+\frac{1}{2T}E\big[|X_T(f)|^2\big] &amp;= \int_{-2T}^{2T}\Big(1 - \frac{|\tau|}{2T}\Big)R_{XX}(\tau)\,e^{-j2\pi f\tau}\,d\tau &amp;&amp; \text{divido per } 2T \\
+&amp;\xrightarrow{T \to \infty} \int_{-\infty}^{+\infty} R_{XX}(\tau)\,e^{-j2\pi f\tau}\,d\tau = \mathcal{F}[R_{XX}(\tau)] &amp;&amp; \text{il peso triangolare tende a 1 per ogni } \tau
+\end{aligned}</div>
+<strong>Ipotesi:</strong> processo WSS; <span class="math inline">R_{XX}</span> assolutamente integrabile (serve per passare al limite dentro l'integrale); scambio tra valore atteso e integrali lecito.</p>
+</details>
+<details class="der"><summary>Derivazione — Eq. (21) e proprietà 1–2: potenza e valore in zero</summary>
+<div class="math block">
+\begin{aligned}
+R_{XX}(\tau) &amp;= \int S_{XX}(f)\,e^{j2\pi f\tau}\,df &amp;&amp; \text{antitrasformata (Wiener-Khinchin letta al contrario)} \\
+R_{XX}(0) &amp;= \int S_{XX}(f)\,df &amp;&amp; \tau = 0 \text{: area sotto la PSD, eq. (21) e (24)} \\
+&amp;= E[X^2(t)] = P_X &amp;&amp; \text{proprietà 1 dell&#x27;autocorrelazione} \\
+S_{XX}(0) &amp;= \int R_{XX}(\tau)\,e^{0}\,d\tau = \int R_{XX}(\tau)\,d\tau &amp;&amp; f = 0 \text{ in Wiener-Khinchin: area sotto l&#x27;autocorrelazione, eq. (23)}
+\end{aligned}
+</div></details>
+<details class="der"><summary>Derivazione — Proprietà 3: <span class="math inline">S_{XX}(f) \ge 0</span></summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia, dalla definizione: <span class="math inline">\frac{1}{2T}E[|X_T(f)|^2]</span> è il valore atteso di una quantità non negativa, diviso per <span class="math inline">2T &gt; 0</span>, quindi è <span class="math inline">\ge 0</span> per ogni <span class="math inline">T</span>; lo resta al limite. In alternativa, con il significato fisico qui sotto: se <span class="math inline">S_{XX}</span> fosse negativa attorno a qualche <span class="math inline">f</span>, un filtro stretto centrato lì misurerebbe una potenza negativa, il che è assurdo.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Proprietà 4: PSD pari per un processo reale</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+S_{XX}(-f) &amp;= \int R_{XX}(\tau)\,e^{+j2\pi f\tau}\,d\tau &amp;&amp; \text{Wiener-Khinchin in } -f \\
+&amp;= \int R_{XX}(-u)\,e^{-j2\pi fu}\,du &amp;&amp; u = -\tau \\
+&amp;= \int R_{XX}(u)\,e^{-j2\pi fu}\,du = S_{XX}(f) &amp;&amp; R_{XX} \text{ è pari (proprietà 2 dell&#x27;autocorrelazione)}
+\end{aligned}
+</div><p>Con lo stesso conto, <span class="math inline">S_{XX}^\ast (f) = S_{XX}(-f) = S_{XX}(f)</span> perché <span class="math inline">R_{XX}</span> è reale: la PSD di un processo reale è <strong>reale e pari</strong>.</p>
+</details>
+<details class="der"><summary>Derivazione — Proprietà 5: la PSD normalizzata si comporta come una pdf</summary>
+<p><span class="math inline">p_{XX}(f) \ge 0</span> per la proprietà 3, e <span class="math inline">\int p_{XX}(f)\,df = \int S_{XX}\,df\big/\int S_{XX}\,df = 1</span>.</p>
+<blockquote class="co mia"><p>🧩 Lettura mia: <span class="math inline">p_{XX}(f)</span> dice come la potenza è <strong>distribuita</strong> in frequenza, come una pdf dice come la probabilità è distribuita sui valori.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Significato fisico: <span class="math inline">\Delta P_X \approx 2\Delta f\,S_{XX}(f)</span></summary>
+<blockquote class="co mia"><p>🧩 Passaggi miei. Filtro ideale a banda stretta: <span class="math inline">|H(f)| = 1</span> in due finestre larghe <span class="math inline">\Delta f</span> centrate in <span class="math inline">\pm f_c</span>, 0 altrove.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+\Delta P_X &amp;= \int S_{XX}(f)\,|H(f)|^2\,df &amp;&amp; \text{potenza all&#x27;uscita del filtro: (22) e (21)} \\
+&amp;= \int_{f_c - \Delta f/2}^{f_c + \Delta f/2} S_{XX}(f)\,df + \int_{-f_c - \Delta f/2}^{-f_c + \Delta f/2} S_{XX}(f)\,df &amp;&amp; |H|^2 = 1 \text{ solo nelle due finestre} \\
+&amp;\approx \Delta f\,S_{XX}(f_c) + \Delta f\,S_{XX}(-f_c) &amp;&amp; \Delta f \ll f_c,\ S_{XX} \text{ continua: circa costante nella finestra} \\
+&amp;= 2\Delta f\,S_{XX}(f_c) &amp;&amp; \text{proprietà 4: } S_{XX} \text{ pari}
+\end{aligned}
+</div><p>La slide scrive il risultato come <span class="math inline">\Delta P_X \approx (2\Delta f)\,S_{XX}(f)</span> «con <span class="math inline">f_c \equiv f</span> per generalità»: la frequenza centrale del filtro può essere qualunque, e il filtro &quot;legge&quot; la PSD proprio lì.
+<strong>Unità:</strong> [W/Hz]·[Hz] = [W] ✓: per questo <span class="math inline">S_{XX}</span> è una <strong>densità</strong> di potenza per unità di frequenza.
+<strong>Il fattore 2:</strong> la banda &quot;fisica&quot; larga <span class="math inline">\Delta f</span> attorno a <span class="math inline">f_c</span> ha una gemella attorno a <span class="math inline">-f_c</span>, e la potenza reale le conta entrambe, per una larghezza totale <span class="math inline">2\Delta f</span>.</p>
+<img class="zoom" src="img/random-processes-p35-filtro-banda-stretta.png" alt="" loading="lazy">
+<p><em>modulo della risposta del filtro ideale a banda stretta: vale 1.0 in due finestre di larghezza <span class="math inline">\Delta f</span> centrate in <span class="math inline">-f_c</span> e <span class="math inline">f_c</span>, 0 altrove.</em></p>
+</details>
+<details class="der"><summary>Derivazione — Densità spettrali mutue: <span class="math inline">S_{XY}(f) = S_{YX}(-f) = S_{YX}^\ast (f)</span></summary>
+<blockquote class="co mia"><p>🧩 Passaggi miei</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+S_{XY}(f) &amp;= \int R_{XY}(\tau)\,e^{-j2\pi f\tau}\,d\tau = \int R_{YX}(-\tau)\,e^{-j2\pi f\tau}\,d\tau &amp;&amp; \text{eq. (26) e simmetria di momenti di un processo} \\
+&amp;= \int R_{YX}(u)\,e^{+j2\pi fu}\,du = S_{YX}(-f) &amp;&amp; u = -\tau \\
+&amp;= S_{YX}^*(f) &amp;&amp; R_{YX} \text{ reale: coniugare cambia solo il segno dell&#x27;esponente}
+\end{aligned}
+</div><p><span class="math inline">S_{XY}</span> <strong>non è necessariamente reale</strong>, perché <span class="math inline">R_{XY}</span> non è pari.</p>
+</details>
+<details class="der"><summary>Derivazione — PSD di una somma, eq. (27)–(30)</summary>
+<div class="math block">
+\begin{aligned}
+R_{ZZ}(t_1, t_2) &amp;= E\{[X(t_1) + Y(t_1)][X(t_2) + Y(t_2)]\} &amp;&amp; Z = X + Y,\ \text{processi a media nulla} \\
+&amp;= R_{XX}(t_1, t_2) + R_{XY}(t_1, t_2) + R_{YX}(t_1, t_2) + R_{YY}(t_1, t_2) &amp;&amp; \text{sviluppo e linearità di } E \quad \text{(27)} \\
+R_{ZZ}(\tau) &amp;= R_{XX}(\tau) + R_{XY}(\tau) + R_{YX}(\tau) + R_{YY}(\tau) &amp;&amp; \tau = t_1 - t_2,\ \text{congiuntamente WSS} \quad \text{(28)} \\
+S_{ZZ}(f) &amp;= S_{XX}(f) + S_{XY}(f) + S_{YX}(f) + S_{YY}(f) &amp;&amp; \text{trasformo, eq. (29)} \\
+S_{ZZ}(f) &amp;= S_{XX}(f) + S_{YY}(f) &amp;&amp; \text{incoerenti: } R_{XY} = R_{YX} \equiv 0 \quad \text{(30)}
+\end{aligned}
+</div><p><strong>In parole:</strong> la PSD della somma di processi WSS <strong>incoerenti</strong>, o in modo equivalente a media nulla e incorrelati, è la somma delle PSD. Le potenze si sommano solo se i processi non &quot;interferiscono&quot; tra loro.</p>
+<blockquote class="co mia"><p>🧩 Sanity check: nella (29) i due termini misti sommano a <span class="math inline">S_{XY} + S_{XY}^\ast = 2\,\text{Re}\{S_{XY}\}</span>, reale, per la simmetria appena ricavata. Anche <span class="math inline">S_{ZZ}</span> è quindi reale ✓.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Esempio — Wiener-Khinchin sull'autocorrelazione esponenziale</summary>
+<blockquote class="co mia"><p>🧩 Esempio mio: il processo dei grafici, <span class="math inline">R_{XX}(\tau) = e^{-|\tau|/\tau_c}</span> con potenza 1.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+S_{XX}(f) &amp;= \int_0^{\infty} e^{-\tau(1/\tau_c + j2\pi f)}\,d\tau + \int_0^{\infty} e^{-\tau(1/\tau_c - j2\pi f)}\,d\tau &amp;&amp; \text{spezzo in } \tau &gt; 0 \text{ e } \tau &lt; 0 \ (\tau \to -\tau) \\
+&amp;= \frac{1}{1/\tau_c + j2\pi f} + \frac{1}{1/\tau_c - j2\pi f} &amp;&amp; \textstyle\int_0^\infty e^{-a\tau}d\tau = 1/a,\ \text{Re}\,a &gt; 0 \\
+&amp;= \frac{2/\tau_c}{1/\tau_c^2 + (2\pi f)^2} = \frac{2\tau_c}{1 + (2\pi f\tau_c)^2} &amp;&amp; \text{denominatore comune; moltiplico sopra e sotto per } \tau_c^2
+\end{aligned}
+</div><p><strong>Verifiche con le proprietà:</strong></p>
+<ul>
+<li>proprietà 1: <span class="math inline">S_{XX}(0) = 2\tau_c = \int e^{-|\tau|/\tau_c}d\tau</span> ✓;</li>
+<li>proprietà 2: <span class="math inline">\int S_{XX}\,df = 2\tau_c\cdot\frac{1}{2\pi\tau_c}\cdot\pi = 1 = R_{XX}(0)</span> ✓, usando <span class="math inline">\int\frac{du}{1 + u^2} = \pi</span> con <span class="math inline">u = 2\pi f\tau_c</span>;</li>
+<li>proprietà 3 e 4: <span class="math inline">S_{XX}</span> è positiva e pari ✓.</li>
+</ul>
+<p><strong>Lettura:</strong> <span class="math inline">\tau_c</span> grande (processo lento) dà una PSD alta e stretta; <span class="math inline">\tau_c</span> piccolo (processo veloce) una PSD bassa e larga. È il grafico &quot;lento contro veloce&quot; di autocorrelazione processi wss.</p>
+</details>
+<details class="der"><summary>PSD a tempo discreto</summary>
+<div class="math block">
+S_{XY}(\nu) \triangleq \lim_{N\to+\infty}\frac{1}{2N+1}E\big[X_N(\nu)\,Y_N^*(\nu)\big] \qquad S_{XX}(\nu) \triangleq \lim_{N\to+\infty}\frac{1}{2N+1}E\big[|X_N(\nu)|^2\big]
+</div><p><span class="math inline">X_N(\nu)</span> e <span class="math inline">Y_N(\nu)</span> sono le trasformate di Fourier a tempo discreto delle versioni <strong>troncate</strong> di <span class="math inline">X(n)</span> e <span class="math inline">Y(n)</span>; la seconda si ottiene dalla prima con <span class="math inline">X(n) \equiv Y(n)</span>. Per Wiener-Khinchin, la PSD di un processo WSS a tempo discreto è la trasformata a tempo discreto della sua autocorrelazione <span class="math inline">R_{XX}(m)</span>.</p>
+<blockquote class="co mia"><p>🧩 In formula, con la convenzione <span class="math inline">X(\nu) = \sum_n x(n)\,e^{-j2\pi\nu n}</span> che la slide non scrive: <span class="math inline">S_{XX}(\nu) = \sum_{m=-\infty}^{+\infty} R_{XX}(m)\,e^{-j2\pi\nu m}</span>. Il <span class="math inline">2N + 1</span> al denominatore è il numero di campioni tra <span class="math inline">-N</span> e <span class="math inline">N</span>, l'analogo della durata <span class="math inline">2T</span>.</p>
+</blockquote>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Processo gaussiano</span></summary><div class="cb"><h4 id="processo-gaussiano-spiegazione">Spiegazione</h4>
+<h4 id="processo-gaussiano-perche-e-cosi-importante">Perché è così importante</h4>
+<ul>
+<li>I processi prodotti da fenomeni fisici sono spesso tali che un <strong>modello gaussiano</strong> è adeguato, e gli esperimenti lo confermano.</li>
+<li>Il <strong>teorema del limite centrale</strong> dà la giustificazione matematica: la somma di molti contributi indipendenti tende a una gaussiana (variabile aleatoria gaussiana).</li>
+<li>Il processo gaussiano è molto frequente nei fenomeni fisici e facile da trattare matematicamente: per questo è centrale nello studio dei sistemi di comunicazione.</li>
+</ul>
+<h4 id="processo-gaussiano-proprieta">Proprietà</h4>
+<ol>
+<li>Un processo gaussiano applicato a un <strong>filtro lineare stabile</strong> dà in uscita un processo ancora <strong>gaussiano</strong>.</li>
+<li>Un processo gaussiano <strong>WSS</strong> (debolmente stazionario) è anche <strong>stazionario in senso stretto</strong>.</li>
+<li>Se i campioni <span class="math inline">X(t_1), \dots, X(t_n)</span> sono <strong>incorrelati</strong>, cioè <span class="math inline">C_{XX}(t_k, t_i) = 0</span> per <span class="math inline">k \neq i</span>, sono anche <strong>statisticamente indipendenti</strong>. La matrice di covarianza è diagonale e la pdf congiunta è il prodotto delle pdf dei singoli campioni, eq. (34).</li>
+</ol>
+<blockquote class="co mia"><p>🧩 In sintesi: per un processo gaussiano, <strong>media e covarianza sono tutto</strong>. La caratterizzazione parziale (momenti di un processo) coincide con quella completa (processo aleatorio), ed è per questo che le proprietà 2 e 3 valgono.</p>
+</blockquote>
+<img class="zoom" src="img/grafico-rp-gaussiana-bivariata.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio (eq. (33) con <span class="math inline">n = 2</span> e (34)). Curve di livello della pdf congiunta di due campioni <span class="math inline">X(t_1)</span>, <span class="math inline">X(t_2)</span> a media nulla e varianza 1, con 400 coppie estratte.</em></p>
+<ul>
+<li><em>A sinistra <span class="math inline">\rho = 0</span>: cerchi, e la pdf è il prodotto delle marginali. Incorrelati quindi indipendenti.</em></li>
+<li><em>A destra <span class="math inline">\rho = 0.8</span>: ellissi inclinate lungo la bisettrice, cioè i due campioni tendono ad avere lo stesso segno.</em></li>
+</ul>
+<p><em>Col processo esponenziale degli altri grafici (<span class="math inline">R_{XX}(\tau) = e^{-|\tau|/\tau_c}</span>), <span class="math inline">\rho = 0.8</span> corrisponde a due campioni distanti <span class="math inline">|t_1 - t_2| = \tau_c\ln(1/0.8) \approx 0.22\,\tau_c</span>.</em></p>
+<blockquote class="co esame"><p>🎯 Esame: definire il processo gaussiano; scrivere la (33) e spiegarne i simboli; perché <span class="math inline">\boldsymbol{\Sigma}</span> è simmetrica e semidefinita positiva; dimostrare le proprietà (WSS ⇒ SSS, incorrelazione ⇒ indipendenza); perché il modello gaussiano è così usato.</p>
+</blockquote>
+<h4 id="processo-gaussiano-perche-importa">Perché importa</h4>
+<p>Il rumore termico nei ricevitori si modella come processo gaussiano (variabile aleatoria gaussiana, sistema comunicazione digitale). Il processo gaussiano ha tre vantaggi:</p>
+<ul>
+<li>resta gaussiano attraverso i filtri;</li>
+<li>è descritto completamente da media e autocorrelazione;</li>
+<li>ha campioni incorrelati che sono indipendenti.</li>
+</ul>
+<p>Per questo le prestazioni dei sistemi, come la probabilità d'errore con la funzione <span class="math inline">Q</span>, si calcolano in forma chiusa.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Con <span class="math inline">n = 1</span> si ritrova la gaussiana scalare</summary>
+<blockquote class="co mia"><p>🧩 Verifica mia</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+\boldsymbol{\Sigma} &amp;= \sigma^2,\quad \det\boldsymbol{\Sigma} = \sigma^2,\quad \boldsymbol{\Sigma}^{-1} = 1/\sigma^2 &amp;&amp; n = 1: \text{ la matrice è un numero} \\
+f_X(x) &amp;= \frac{1}{\sqrt{2\pi\sigma^2}}\,e^{-\frac{(x - \mu)^2}{2\sigma^2}} &amp;&amp; \text{sostituisco nella (33)}
+\end{aligned}
+</div><p>È la pdf gaussiana di una variabile ✓.</p>
+</details>
+<details class="der"><summary>Derivazione — Due campioni: la gaussiana bivariata</summary>
+<blockquote class="co mia"><p>🧩 Caso <span class="math inline">n = 2</span> scritto per esteso (usato nel grafico). Media nulla, varianze 1, coefficiente di correlazione <span class="math inline">\rho</span> (correlazione e covarianza).</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+\boldsymbol{\Sigma} &amp;= \begin{pmatrix} 1 &amp; \rho \\ \rho &amp; 1\end{pmatrix},\quad \det\boldsymbol{\Sigma} = 1 - \rho^2,\quad \boldsymbol{\Sigma}^{-1} = \frac{1}{1 - \rho^2}\begin{pmatrix} 1 &amp; -\rho \\ -\rho &amp; 1\end{pmatrix} &amp;&amp; \text{inversa di una } 2\times2 \\
+\mathbf{x}^T\boldsymbol{\Sigma}^{-1}\mathbf{x} &amp;= \frac{x_1^2 - 2\rho x_1x_2 + x_2^2}{1 - \rho^2} &amp;&amp; \text{forma quadratica} \\
+f(x_1, x_2) &amp;= \frac{1}{2\pi\sqrt{1 - \rho^2}}\,e^{-\frac{x_1^2 - 2\rho x_1x_2 + x_2^2}{2(1 - \rho^2)}} &amp;&amp; \text{(33) con } n = 2:\ \sqrt{(2\pi)^2} = 2\pi
+\end{aligned}
+</div><p>Le curve di livello sono ellissi; con <span class="math inline">\rho = 0</span> sono cerchi.</p>
+</details>
+<details class="der"><summary>Derivazione — <span class="math inline">\boldsymbol{\Sigma}</span> è simmetrica e semidefinita positiva</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia. Scrivo <span class="math inline">\tilde X_k = X(t_k) - \mu_{X(t_k)}</span>.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+\{\boldsymbol{\Sigma}\}_{k,i} &amp;= E[\tilde X_k\tilde X_i] = E[\tilde X_i\tilde X_k] = \{\boldsymbol{\Sigma}\}_{i,k} &amp;&amp; \text{il prodotto commuta: simmetrica} \\
+\mathbf{u}^T\boldsymbol{\Sigma}\mathbf{u} &amp;= \sum_k\sum_i u_k\,u_i\,E[\tilde X_k\tilde X_i] &amp;&amp; \text{prodotto matrice-vettore} \\
+&amp;= E\Big[\Big(\sum_k u_k\tilde X_k\Big)^2\Big] \ge 0 &amp;&amp; \text{linearità di } E;\ \text{valore atteso di un quadrato}
+\end{aligned}
+</div><p><strong>Lettura:</strong> <span class="math inline">\mathbf{u}^T\boldsymbol{\Sigma}\mathbf{u}</span> è la <strong>varianza</strong> della combinazione lineare <span class="math inline">\sum_k u_k X(t_k)</span>, e una varianza non può essere negativa. Vale 0 solo se quella combinazione è (quasi certamente) costante. Il caso <strong>non degenere</strong>, <span class="math inline">\boldsymbol{\Sigma}</span> definita positiva e quindi invertibile, è quello in cui nessuna combinazione non banale dei campioni è costante. Serve perché la (33) contiene <span class="math inline">\boldsymbol{\Sigma}^{-1}</span> e <span class="math inline">\det\boldsymbol{\Sigma}</span> al denominatore.</p>
+</details>
+<details class="der"><summary>Derivazione — Incorrelati ⇒ indipendenti, eq. (34)</summary>
+<div class="math block">
+\begin{aligned}
+\boldsymbol{\Sigma} &amp;= \text{diag}(\sigma_1^2, \dots, \sigma_n^2) &amp;&amp; C_{XX}(t_k, t_i) = 0 \text{ per } k \neq i \\
+\det\boldsymbol{\Sigma} &amp;= \prod_i \sigma_i^2,\qquad \boldsymbol{\Sigma}^{-1} = \text{diag}(1/\sigma_1^2, \dots, 1/\sigma_n^2) &amp;&amp; \text{matrice diagonale} \\
+(\mathbf{x} - \boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(\mathbf{x} - \boldsymbol{\mu}) &amp;= \sum_i \frac{(x_i - \mu_i)^2}{\sigma_i^2} &amp;&amp; \text{spariscono i termini misti} \\
+f_{\mathbf{X}}(\mathbf{x}) &amp;= \prod_i \frac{1}{\sqrt{2\pi\sigma_i^2}}\,e^{-\frac{(x_i - \mu_i)^2}{2\sigma_i^2}} = \prod_{i=1}^n f_{X(t_i)}(x_i) &amp;&amp; e^{\sum} = \prod e;\ \sqrt{(2\pi)^n\prod\sigma_i^2} = \prod\sqrt{2\pi\sigma_i^2}
+\end{aligned}
+</div><p>La pdf congiunta è il <strong>prodotto</strong> delle marginali, cioè i campioni sono <strong>indipendenti</strong> (coppie di variabili aleatorie). Per variabili qualunque, invece, incorrelazione non implica indipendenza (correlazione e covarianza).</p>
+</details>
+<details class="der"><summary>Derivazione — WSS ⇒ SSS per un processo gaussiano</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia</p>
+</blockquote>
+<ul>
+<li>La pdf di ordine <span class="math inline">n</span> (33) dipende <strong>solo</strong> da <span class="math inline">\boldsymbol{\mu}</span> e <span class="math inline">\boldsymbol{\Sigma}</span>.</li>
+<li>Se il processo è WSS, la media è costante e la covarianza dipende solo dalla differenza tra gli istanti: <span class="math inline">C_{XX}(t_k + \tau, t_i + \tau) = C_{XX}(t_k - t_i)</span>.</li>
+<li>Quindi i campioni traslati <span class="math inline">X(t_1 + \tau), \dots, X(t_n + \tau)</span> hanno gli stessi <span class="math inline">\boldsymbol{\mu}</span> e <span class="math inline">\boldsymbol{\Sigma}</span> di quelli originali, e quindi la stessa pdf. Questo per ogni <span class="math inline">n</span>: è la (6) per ogni ordine, cioè SSS (stazionarieta).</li>
+</ul>
+<p>Per un processo qualunque questo ragionamento non funziona: le distribuzioni di ordine superiore non sono determinate da media e covarianza.</p>
+</details>
+<details class="der"><summary>Derivazione — Un filtro lineare stabile conserva la gaussianità</summary>
+<blockquote class="co mia"><p>🧩 Idea della dimostrazione, non una dimostrazione completa. <span class="math inline">Y(t) = \int h(\tau)X(t - \tau)\,d\tau \approx \sum_k h(\tau_k)X(t - \tau_k)\,\Delta\tau</span>: ogni campione dell'uscita è il limite di una <strong>combinazione lineare</strong> di campioni dell'ingresso.
+📚 Fonte esterna (proprietà standard della gaussiana multivariata, per esempio nel testo di Madhow): combinazioni lineari di variabili congiuntamente gaussiane sono ancora congiuntamente gaussiane.</p>
+<p>Quindi i campioni <span class="math inline">Y(t_1), \dots, Y(t_n)</span> sono congiuntamente gaussiani. Le loro medie e covarianze si calcolano con processi e sistemi lti.</p>
+</blockquote>
+</details>
+</div></details>
+<details class="conc es"><summary><span class="n">Calcolo della densità spettrale di potenza</span></summary><div class="cb"></div></details>
+</section>
+<section id="domande"><h2 class="ps">Domande da esame</h2>
+<ul>
+<li>Definire un processo aleatorio: i due punti di vista, le realizzazioni, la variabile aleatoria a istante fissato. Applicarli alla sinusoide a fase casuale.</li>
+<li>Caratterizzazione completa e parziale; distribuzioni di ordine <span class="math inline">k</span> e loro coerenza; DF del processo di Bernoulli.</li>
+<li>Media, autocorrelazione e autocovarianza; ricavare <span class="math inline">C = R - \mu\mu</span>.</li>
+<li>Stazionarietà: ordine <span class="math inline">k</span>, SSS, primo e secondo ordine, WSS; SSS ⇒ WSS.</li>
+<li>Proprietà dell'autocorrelazione di un processo WSS, con dimostrazione; tempo di decorrelazione.</li>
+<li>Mutue correlazioni; processi indipendenti, incoerenti, incorrelati.</li>
+<li>Media e autocorrelazione dell'uscita di un filtro LTI; ingresso WSS ⇒ uscita WSS.</li>
+<li>PSD: definizione, Wiener-Khinchin (con dimostrazione), <span class="math inline">S_{YY} = S_{XX}|H|^2</span>, significato fisico, proprietà.</li>
+<li>PSD della somma di due processi; ruolo dell'incoerenza.</li>
+<li>Processo gaussiano: pdf multivariata e proprietà.</li>
+<li>PSD di un segnale modulato linearmente.</li>
+</ul>
+
+</section>
+<nav class="pn"><a href="lezione-4.html">← Lezione 4</a><a href="lezione-7.html">Lezione 7 →</a></nav>
+</main>
+<footer>Appunti personali del corso di Trasmissione dei Segnali Digitali (LM Ingegneria Informatica, UNINA). Generato dal wiki con <code>output/crea_sito.py</code>.</footer>
+<div id="lb" hidden></div><a id="su" href="#" hidden aria-label="torna su">↑</a>
+</body></html>
