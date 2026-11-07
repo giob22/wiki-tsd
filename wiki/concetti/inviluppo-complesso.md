@@ -304,10 +304,11 @@ Note a mano sulla slide 7:
 - [[equivalente-banda-base-dei-filtri]] — anche i filtri passa-banda si descrivono con il loro inviluppo complesso.
 - [[teorema-del-campionamento]] — l'inviluppo si campiona a frequenza $\ge B$ invece di $\ge 2f_c + B$.
 - [[modulazione-digitale]] — il modulatore produce l'inviluppo complesso.
+- [[processi-passa-banda]] — la stessa costruzione per i processi aleatori: $x_c$ e $x_s$ sono congiuntamente WSS e la PSD dell'inviluppo è $2S_{x_px_p}(f+f_c)\,u(f+f_c)$ ([[psd-componenti-in-quadratura]]).
 
 ## Fonti · [[Rappresentazione_Rice.pdf#page=6|p. 6]], [[Rappresentazione_Rice.pdf#page=9|p. 9]], [[Rappresentazione_Rice.pdf#page=10|10]], [[Rappresentazione_Rice.pdf#page=15|p. 15]], [[Rappresentazione_Rice.pdf#page=17|p. 17]]–[[Rappresentazione_Rice.pdf#page=19|19]], [[Rappresentazione_Rice.pdf#page=21|p. 21]], [[Rappresentazione_Rice.pdf#page=22|22]], [[Rappresentazione_Rice.pdf#page=27|p. 27]]
 
 - [[rappresentazione-complessa-banda-base]]
 - Appunti a mano: p. 6 (vantaggi della banda base), p. 18 e p. 19 (dimostrazioni di (18), (19), (20)), p. 21 (catena e energia)
 
-_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-28 — re-ingest del PDF con nuovi appunti: vantaggi della banda base (p.6), macroblocchi modulatore/demodulatore, note sulle slide 11–15; dimostrazioni di (18), (19), (20) ora da fonte (appunti p.18–19), con le mie precisazioni marcate 🧩 e i refusi degli appunti segnalati; pagine rimappate; 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_
+_Aggiornato: 2026-11-01 — collegamento ai processi passa-banda; 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-28 — re-ingest del PDF con nuovi appunti: vantaggi della banda base (p.6), macroblocchi modulatore/demodulatore, note sulle slide 11–15; dimostrazioni di (18), (19), (20) ora da fonte (appunti p.18–19), con le mie precisazioni marcate 🧩 e i refusi degli appunti segnalati; pagine rimappate; 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_

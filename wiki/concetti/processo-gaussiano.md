@@ -142,9 +142,10 @@ Per questo le prestazioni dei sistemi, come la probabilità d'errore con la funz
 - [[stazionarieta]] — WSS ⇒ SSS solo per i gaussiani.
 - [[correlazione-e-covarianza]] e [[coppie-di-variabili-aleatorie]] — incorrelazione, indipendenza, pdf congiunta come prodotto.
 - [[processi-e-sistemi-lti]] — medie e correlazioni dell'uscita gaussiana.
+- [[processi-passa-banda]] — per $x_p$ gaussiano, $x_c(t_0)$ e $x_s(t_0)$ sono incorrelate nello stesso istante, quindi indipendenti; con spettro simmetrico attorno a $f_c$ lo sono per ogni coppia di istanti ([[psd-componenti-in-quadratura]], [[rumore-in-banda-passante]]).
 
 ## Fonti · [[random_processes.pdf#page=41|p. 41]], [[random_processes.pdf#page=44|p. 44]]
 
 - [[processi-aleatori]]
 
-_Aggiornato: 2026-09-28 — creazione da ingest random_processes.pdf_
+_Aggiornato: 2026-11-01 — collegamento ai processi passa-banda; 2026-09-28 — creazione da ingest random_processes.pdf_

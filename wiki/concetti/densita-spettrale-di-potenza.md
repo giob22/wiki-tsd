@@ -187,9 +187,10 @@ $X_N(\nu)$ e $Y_N(\nu)$ sono le trasformate di Fourier a tempo discreto delle ve
 - [[momenti-di-un-processo]] — mutue correlazioni, incoerenza, simmetria $R_{XY}(\tau) = R_{YX}(-\tau)$.
 - [[segnali-banda-base-e-passa-banda]] — la stessa idea di banda, ora per segnali aleatori (e la simmetria pari della PSD corrisponde a quella hermitiana degli spettri reali).
 - [[calcolo-densita-spettrale]] — esercizio della slide 32: PSD di un segnale modulato linearmente.
+- [[psd-componenti-in-quadratura]] — PSD dell'inviluppo complesso e delle componenti in fase e quadratura di un processo passa-banda; [[rumore-in-banda-passante]] — PSD costante in banda e potenza come area.
 
 ## Fonti · [[random_processes.pdf#page=32|p. 32]], [[random_processes.pdf#page=34|p. 34]], [[random_processes.pdf#page=40|p. 40]], [[random_processes.pdf#page=46|p. 46]]
 
 - [[processi-aleatori]]
 
-_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-28 — creazione da ingest random_processes.pdf_
+_Aggiornato: 2026-11-01 — collegamento ai processi passa-banda; 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-28 — creazione da ingest random_processes.pdf_

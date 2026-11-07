@@ -23,12 +23,14 @@ Elenco lezioni → [[lezioni]]
 | Conversione A/D e D/A (codifica di sorgente) | [[conversione-ad-da]], [[teorema-del-campionamento]], [[aliasing]], [[interpolazione]], [[quantizzazione-uniforme]], [[snr-di-quantizzazione]], [[quantizzazione-non-uniforme]], [[companding]] | completo per la fonte |
 | **Tema 1** — Rappresentazione complessa in banda base | [[modulazione-digitale]], [[segnali-banda-base-e-passa-banda]], [[segnale-analitico]], [[inviluppo-complesso]], [[upconversion-e-downconversion]], [[equivalente-banda-base-dei-filtri]] | completo per la fonte |
 | **Tema 2** — Processi aleatori | [[processo-aleatorio]], [[momenti-di-un-processo]], [[stazionarieta]], [[autocorrelazione-processi-wss]], [[processi-e-sistemi-lti]], [[densita-spettrale-di-potenza]], [[processo-gaussiano]] | completo per la fonte |
+| **Tema 1 + 2** — Rappresentazione dei processi passa-banda | [[processi-passa-banda]], [[psd-componenti-in-quadratura]], [[rumore-in-banda-passante]] | completo per la fonte |
 
 Filo logico finora:
 - Il sistema digitale ([[sistema-comunicazione-digitale]]) comincia con la conversione A/D della sorgente ([[conversione-ad-da]]), che ne fissa il bit rate $b\cdot f_c$ ([[dimensionamento-quantizzatore]]).
 - La natura statistica del canale e del rumore richiede la teoria della probabilità, già usata nella quantizzazione ([[disuguaglianza-di-chebyshev]], $\Delta^2/12$).
 - I bit vanno poi trasmessi su canali passa-banda. La rappresentazione complessa in banda base ([[inviluppo-complesso]]) permette di descrivere segnali e canali passa-banda con segnali in banda base, quindi di fare modulazione e demodulazione in digitale. Il passaggio alla portante resta ai soli upconverter e downconverter ([[upconversion-e-downconversion]]).
 - Rumore e segnali d'informazione non sono prevedibili: si modellano come processi aleatori ([[processo-aleatorio]]). Media, autocorrelazione e densità spettrale di potenza ([[densita-spettrale-di-potenza]]) dicono quanta potenza c'è e a quali frequenze, e come cambia attraverso i filtri ([[processi-e-sistemi-lti]]). Il processo gaussiano ([[processo-gaussiano]]) è il modello di riferimento per il rumore.
+- I due temi si incontrano nei **processi passa-banda**: segnali e rumore reali, aleatori e passa-banda hanno un inviluppo complesso in banda base ([[processi-passa-banda]]), le cui componenti in fase e quadratura sono congiuntamente WSS. Le loro PSD discendono da quella del processo reale ([[psd-componenti-in-quadratura]]); con spettro simmetrico attorno alla portante le componenti sono incoerenti, e per il rumore gaussiano in banda ([[rumore-in-banda-passante]]) indipendenti.
 
 ## Argomenti mancanti / da ingerire · [[Intro.pdf#page=18|p. 18]]
 
@@ -41,6 +43,6 @@ Temi principali ancora senza fonte (il tema 1 è coperto da [[rappresentazione-c
 
 ## Fonti ingerite
 
-6 — [[intro-corso]], [[elementi-teoria-probabilita]], [[campionamento-conversione-ad-da]], [[rappresentazione-complessa-banda-base]], [[processi-aleatori]], [[laboratorio-conversione-ad]] (laboratorio Matlab, non d'esame: macroblocchi in `laboratorio/`)
+7 — [[intro-corso]], [[elementi-teoria-probabilita]], [[campionamento-conversione-ad-da]], [[rappresentazione-complessa-banda-base]], [[processi-aleatori]], [[laboratorio-conversione-ad]] (laboratorio Matlab, non d'esame: macroblocchi in `laboratorio/`), [[rappresentazione-processi-passa-banda]]
 
-_Aggiornato: 2026-09-30 — ingest del laboratorio Matlab sulla conversione A/D (non d'esame); 2026-09-28 — re-ingest di Rappresentazione_Rice.pdf e random_processes.pdf nella versione con appunti a mano (dimostrazioni della docente integrate come fonte); ingest random_processes.pdf (tema 2); 2026-09-25 — ingest Rappresentazione_Rice.pdf (tema 1); 2026-09-23 — primo ingest (3 fonti)_
+_Aggiornato: 2026-11-01 — ingest di Rappresentazione_Rice_processi.pdf (processi passa-banda, Lezione 7); 2026-09-30 — ingest del laboratorio Matlab sulla conversione A/D (non d'esame); 2026-09-28 — re-ingest di Rappresentazione_Rice.pdf e random_processes.pdf nella versione con appunti a mano (dimostrazioni della docente integrate come fonte); ingest random_processes.pdf (tema 2); 2026-09-25 — ingest Rappresentazione_Rice.pdf (tema 1); 2026-09-23 — primo ingest (3 fonti)_

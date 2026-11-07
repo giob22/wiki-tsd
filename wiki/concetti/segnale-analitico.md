@@ -204,9 +204,10 @@ Il segnale analitico (8) è quindi il segnale di partenza più $j$ volte la sua 
 - [[segnali-banda-base-e-passa-banda]] — la simmetria hermitiana rende ridondante la metà negativa dello spettro.
 - [[inviluppo-complesso]] — si ottiene traslando il segnale analitico di $-f_c$: $S(f) = S_p^+(f + f_c)$.
 - [[upconversion-e-downconversion]] — la (10), $s_p = \sqrt2\,\text{Re}\{\cdot\}$, è anche il principio dell'upconversion.
+- [[processi-passa-banda]] — il processo analitico $x_p^+ = \frac{1}{\sqrt2}x_p + \frac{j}{\sqrt2}\widehat{x}_p$ per un processo WSS: filtro $H = \sqrt2\,u(f)$, PSD $2S_{x_px_p}\,u(f)$ ([[psd-componenti-in-quadratura]]).
 
 ## Fonti · [[Rappresentazione_Rice.pdf#page=11|p. 11]]–[[Rappresentazione_Rice.pdf#page=14|14]]
 
 - [[rappresentazione-complessa-banda-base]]
 
-_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-28 — re-ingest del PDF con nuovi appunti: scopo del segnale analitico, $\sqrt2$ per conservare l'energia, parte reale e immaginaria della (8), trasformata di sgn (appunti p.14, con segno sbagliato su $1/(\pi t)$), sfasamento di ∓90° ora da fonte; pagine rimappate; 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_
+_Aggiornato: 2026-11-01 — collegamento ai processi passa-banda; 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-28 — re-ingest del PDF con nuovi appunti: scopo del segnale analitico, $\sqrt2$ per conservare l'energia, parte reale e immaginaria della (8), trasformata di sgn (appunti p.14, con segno sbagliato su $1/(\pi t)$), sfasamento di ∓90° ora da fonte; pagine rimappate; 2026-09-25 — creazione da ingest Rappresentazione_Rice.pdf_

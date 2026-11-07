@@ -157,3 +157,17 @@ Filtra ultimi 10: `grep "^## " wiki/log.md | tail -10`
 - lezione 5 aggiornata con le slide 33, 40, 41 della nuova versione `raw/random_processes_v2.pdf` (la docente ha ricaricato il PDF)
 - PDF di studio delle lezioni 5 e 6 in `output/pdf/`
 - CLAUDE.md aggiornato (struttura e passo 12 dell'ingest)
+
+## [2026-10-28] approfondimento | calcolo-densita-spettrale | caso 1 (slide 32) espanso passo per passo, su richiesta
+
+## [2026-11-01] ingest | Representation of passband random processes (Rappresentazione_Rice_processi.pdf) | pagine coperte: 1-25
+- fonte: [[rappresentazione-processi-passa-banda]] (13 slide + 12 pagine di appunti a mano, nuova Lezione 7)
+- 3 concetti nuovi: [[processi-passa-banda]] (processo analitico, inviluppo e componenti I/Q di un processo; teorema sulla WSS congiunta con tutti i passaggi: media, relazioni di Hilbert (2)-(4), eq. (5)-(9), (10)-(12), perché R_xcxs(0)=0), [[psd-componenti-in-quadratura]] (eq. (13), (14), cross-PSD ricavata come 🧩, caso simmetrico e incoerenza), [[rumore-in-banda-passante]] (esempio, costruzione grafica, potenza N0·W)
+- aggiornate con un collegamento: [[inviluppo-complesso]], [[segnale-analitico]], [[processi-e-sistemi-lti]], [[densita-spettrale-di-potenza]], [[processo-gaussiano]], [[momenti-di-un-processo]]; aggiornati [[overview]], [[index]], [[lezioni]]
+- [[corso-completo]]: nuova sezione «Lezione 7» (solo slide e appunti, schematica), con 3 figure dal PDF (`processi-passabanda-p20/p24/p25-*.png` in `raw/assets/`); `output/controlla_corso.py`: nessun problema (non citata solo p. 1, il titolo)
+- revisione di copertura pagina per pagina: nulla mancante; aggiunte solo spiegazioni 🧩 (cross-PSD, seconda via per R_xcxs(0)=0 per disparità, verifica inversa che le condizioni (10) rendono x_p WSS, ruolo dei gradini nella simmetria)
+- dubbi segnalati in [[rappresentazione-processi-passa-banda]]: W è semilarghezza nella slide 2 e larghezza del lobo dalla slide 10; nota a mano di p. 4 in parte illeggibile; segno di f_c negli appunti di p. 22
+
+## [2026-11-07] aggiornamento | sito di studio dell'intercorso | frase della Lezione 7 riformulata
+- `output/crea_sito.py` e `output/sito_disegni.py`: generano il sito (HTML statico con formule KaTeX, 19 disegni SVG, tema sistema/chiaro/scuro) a partire da [[corso-completo]] e dalle pagine concetto; pubblicato nel branch orfano `gh-pages`
+- [[corso-completo]]: corrette due formule con doppio `\tag` (Lezione 4, eq. 5-6 e 11-12) che non si rendevano; riformulata la frase iniziale della Lezione 7 sul processo analitico (spiega la ridondanza dei lobi in ±f_c)

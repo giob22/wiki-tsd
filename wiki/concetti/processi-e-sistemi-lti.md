@@ -148,9 +148,10 @@ Ogni blocco lineare di un sistema di comunicazione (filtri di trasmissione e ric
 - [[stazionarieta]] — WSS in ingresso ⇒ WSS in uscita.
 - [[processo-gaussiano]] — un processo gaussiano attraverso un filtro stabile resta gaussiano.
 - [[equivalente-banda-base-dei-filtri]] — gli stessi filtri LTI, descritti in banda base.
+- [[processi-passa-banda]] — applicazione al filtro di Hilbert $H = -j\,\text{sgn}(f)$ (relazioni tra un processo e la sua trasformata di Hilbert) e al filtro $\sqrt2\,u(f)$ del processo analitico.
 
 ## Fonti · [[random_processes.pdf#page=26|p. 26]], [[random_processes.pdf#page=31|p. 31]], [[random_processes.pdf#page=33|p. 33]]
 
 - [[processi-aleatori]]
 
-_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-28 — creazione da ingest random_processes.pdf_
+_Aggiornato: 2026-11-01 — collegamento ai processi passa-banda; 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-10-14 — formule nelle tabelle: modulo scritto con \lvert \rvert e condizionamento con \mid (il \| non si leggeva bene); 2026-09-28 — creazione da ingest random_processes.pdf_

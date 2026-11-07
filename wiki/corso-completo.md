@@ -2,7 +2,7 @@
 
 Testo unico di studio del corso (LM Ingegneria Informatica, UNINA, D. Darsena; testo Madhow, *Fundamentals of Digital Communication*; esame orale). Contiene **solo ciò che sta nei PDF del corso**, nell'ordine delle slide: definizioni, formule, esempi, figure e le dimostrazioni svolte a mano dalla docente. I passaggi che le slide saltano sono ricostruiti in una riga dove servono a seguire il discorso; le derivazioni estese, i grafici aggiuntivi, gli esercizi e le animazioni stanno nelle pagine concetto, esercizio e laboratorio, richiamate in fondo a ogni lezione («Approfondimenti nel wiki»).
 
-**Come leggerlo.** Il riferimento al PDF compare solo nel titolo di ogni sezione (`p. N` apre la pagina). Le equazioni numerate (1)–(25) sono quelle delle slide della Lezione 4. Il PDF di una lezione si genera con `python output/crea_pdf.py N` (file in `output/pdf/`).
+**Come leggerlo.** Il riferimento al PDF compare solo nel titolo di ogni sezione (`p. N` apre la pagina). Le equazioni numerate sono quelle delle slide di ciascuna lezione. Il PDF di una lezione si genera con `python output/crea_pdf.py N` (file in `output/pdf/`).
 
 ## Indice
 
@@ -14,6 +14,7 @@ Testo unico di studio del corso (LM Ingegneria Informatica, UNINA, D. Darsena; t
 | 4 | [[#Lezione 4 — Rappresentazione complessa in banda base\|Rappresentazione complessa in banda base]] | Rappresentazione_Rice.pdf |
 | 5 | [[#Lezione 5 — Processi aleatori\|Processi aleatori]] | random_processes.pdf (+ random_processes_v2.pdf) |
 | 6 | [[#Lezione 6 — Laboratorio Matlab: conversione A/D e D/A (28/09)\|Laboratorio Matlab: conversione A/D e D/A]] | AD_conversion.m + figure |
+| 7 | [[#Lezione 7 — Rappresentazione dei processi passa-banda\|Rappresentazione dei processi passa-banda]] | Rappresentazione_Rice_processi.pdf |
 
 
 
@@ -791,7 +792,7 @@ con $u(\cdot)$ gradino unitario: si annullano le frequenze negative (ridondanti)
 
 $$s_p^+(t)=\mathcal F^{-1}[S_p^+(f)]=\sqrt2\,s_p(t)\ast\mathcal F^{-1}[u(f)]\tag{4}$$
 
-$$\mathcal F[u(t)]=\tfrac12\delta(f)+\frac1{j2\pi f}\triangleq U(f)\tag{5}\qquad\mathcal F[U(t)]=u(-f)\ \ (\text{dualità})\tag{6}$$
+$$\mathcal F[u(t)]=\tfrac12\delta(f)+\frac1{j2\pi f}\triangleq U(f)\quad(5)\qquad\mathcal F[U(t)]=u(-f)\ \ (\text{dualità})\quad(6)$$
 
 Dalla (5) e (6), con la proprietà di riflessione:
 
@@ -817,7 +818,7 @@ $$s_p(t)=\sqrt2\,\text{Re}\{s_p^+(t)\}\tag{10}$$
 
 Trasformata del segnale analitico:
 
-$$S_p^+(f)=\frac1{\sqrt2}S_p(f)+\frac j{\sqrt2}\mathcal F[\widehat s_p(t)]\tag{11}\qquad\widehat S_p(f)=S_p(f)\,\mathcal F\Big[\frac1{\pi t}\Big]\tag{12}$$
+$$S_p^+(f)=\frac1{\sqrt2}S_p(f)+\frac j{\sqrt2}\mathcal F[\widehat s_p(t)]\quad(11)\qquad\widehat S_p(f)=S_p(f)\,\mathcal F\Big[\frac1{\pi t}\Big]\quad(12)$$
 
 Per calcolare la (12): $\text{sgn}(t)=2u(t)-1$, quindi (appunti p. 14, con la (5))
 
@@ -1137,7 +1138,7 @@ $$\rho_{XX}(\tau) \triangleq \frac{R_{XX}(\tau)}{R_{XX}(0)} \tag{8}$$
 
   con valori in $[-1, 1]$, cioè $\lvert\rho_{XX}(\tau)\rvert \le 1$.
 
-#### Slide 15 — Significato fisico della acf (1/2) · [[random_processes.pdf#page=20|p. 20]]
+#### Slide 15 — Significato fisico della Auto Correlation Function (acf) (1/2) · [[random_processes.pdf#page=20|p. 20]]
 - $R_{XX}(\tau)$ descrive l'interdipendenza di due variabili aleatorie ottenute campionando $X(t)$ a $\tau$ secondi di distanza.
 - Più rapidamente $X(t)$ cambia nel tempo, più rapidamente $R_{XX}(\tau)$ decresce dal massimo $R_{XX}(0)$ al crescere di $\tau$.
 - Questo comportamento si caratterizza con un **tempo di decorrelazione** $\tau_{dec}$: per $\tau > \tau_{dec}$, il modulo di $R_{XX}(\tau)$ resta sotto un valore prescritto.
@@ -1597,3 +1598,188 @@ Fino a 7–8 bit le due righe coincidono e crescono di 6.0 dB/bit; poi quella de
 *Replica. Blu: SNR stampato dal codice; arancio: SNR dei soli campioni; nero tratteggiato: modello $\Delta^2/12$ (parallelo, +4.77 dB); linee orizzontali: i tetti senza quantizzazione (50.2 dB triangolo, 26.7 dB sinc).*
 
 *Approfondimenti nel wiki: [[laboratorio-conversione-ad]], [[lab-setup-e-spettro]], [[lab-campionamento]], [[lab-interpolazione]], [[lab-quantizzazione]], [[lab-snr]] (derivazioni complete e animazione dell'interpolazione).*
+
+
+## Lezione 7 — Rappresentazione dei processi passa-banda
+
+*Fonte: Rappresentazione_Rice_processi.pdf, 25 pagine (13 slide e 12 pagine di appunti a mano alle p. 3, 5, 7, 8, 9, 13, 15, 16, 18, 19, 22, 23; note a mano sopra le slide a p. 4, 11, 20). Corrispondenza: slide 1 = p. 1, 2 = p. 2, 3 = p. 4, 4 = p. 6, 5 = p. 10, 6 = p. 11, 7 = p. 12, 8 = p. 14, 9 = p. 17, 10 = p. 20, 11 = p. 21, 12 = p. 24, 13 = p. 25. Le equazioni (1)–(14) sono quelle delle slide di questa lezione.*
+
+### Processi in banda base e passa-banda
+
+#### Slide 2 e appunti — Ipotesi, definizioni e processo analitico · [[Rappresentazione_Rice_processi.pdf#page=2|p. 2]], [[Rappresentazione_Rice_processi.pdf#page=3|3]]
+- Si assumono processi stocastici **reali, WSS, a media nulla** ($\mu_x = E[x(t)] = 0$). L'ipotesi di processo reale è «non troppo restrittiva».
+- $x_b(t)$ è **in banda base** se la sua PSD è in banda base: $S_{x_bx_b}(f) = 0$ per $|f| > W > 0$.
+- $x_p(t)$ è **passa-banda** se la sua PSD è passa-banda, concentrata esclusivamente attorno alle frequenze $\pm f_c$ con $f_c \gg W$: $S_{x_px_p}(f) = 0$ per $|f \pm f_c| > W > 0$.
+- I processi passa-banda sono reali, perciò il loro spettro ha due lobi speculari in $\pm f_c$, e quello a frequenze negative ripete le stesse informazioni di quello a frequenze positive. Per descriverli senza questa ridondanza si costruisce, come nel caso deterministico, il **processo (complesso) analitico**, che contiene solo le frequenze positive:
+
+$$x_p^+(t) = \frac{1}{\sqrt2}\,x_p(t) + \frac{j}{\sqrt2}\,\widehat{x}_p(t)$$
+
+  È il segnale ottenuto considerando unicamente lo spettro a frequenze positive.
+- $\widehat{x}_p(t)$ è la **trasformata di Hilbert** del processo, ottenuta filtrando $x_p(t)$ con il filtro di Hilbert ideale di risposta impulsiva $h(t) = \dfrac{1}{\pi t}$ e risposta in frequenza $H(f) = -j\,\text{sgn}(f)$ (cioè $-j$ per $f > 0$, $+j$ per $f < 0$).
+
+### Inviluppo complesso e componenti in fase e quadratura
+
+#### Slide 3 e appunti — Definizione di inviluppo complesso · [[Rappresentazione_Rice_processi.pdf#page=4|p. 4]], [[Rappresentazione_Rice_processi.pdf#page=5|5]]
+- In modo omologo al caso deterministico, l'**inviluppo complesso** del processo $x_p(t)$ è
+
+$$x(t) = x_p^+(t)\,e^{-j2\pi f_ct} = x_c(t) + jx_s(t) \tag{1}$$
+
+  È una **traslazione in frequenza** del processo che centra la PSD nell'origine. $x_c(t)$ e $x_s(t)$ sono le componenti **in fase** e **in quadratura** di $x_p(t)$; sono entrambe processi aleatori **reali in banda base**.
+- Relazione tra il processo passa-banda e l'inviluppo:
+
+$$x_p(t) = \sqrt2\,\text{Re}\{x_p^+(t)\} = \sqrt2\,\text{Re}\{x(t)\,e^{j2\pi f_ct}\} = \sqrt2\,x_c(t)\cos(2\pi f_ct) - \sqrt2\,x_s(t)\sin(2\pi f_ct)$$
+
+- Estrazione delle componenti, da $x(t) = \big[\tfrac{1}{\sqrt2}x_p(t) + j\tfrac{1}{\sqrt2}\widehat{x}_p(t)\big]e^{-j2\pi f_ct}$ (parte reale e parte immaginaria):
+
+$$x_c(t) = \frac{1}{\sqrt2}\Big[x_p(t)\cos(2\pi f_ct) + \widehat{x}_p(t)\sin(2\pi f_ct)\Big]$$
+
+$$x_s(t) = \frac{1}{\sqrt2}\Big[-x_p(t)\sin(2\pi f_ct) + \widehat{x}_p(t)\cos(2\pi f_ct)\Big]$$
+
+- Nota a mano sulla slide: le due componenti hanno media nulla (annotazione in parte illeggibile).
+
+### Le componenti sono congiuntamente WSS
+
+#### Slide 4–6 e appunti — Teorema e dimostrazione · [[Rappresentazione_Rice_processi.pdf#page=6|p. 6]]–[[Rappresentazione_Rice_processi.pdf#page=11|11]]
+- **Teorema.** Se $x_p(t)$ è un processo passa-banda WSS a media nulla, allora le sue componenti in banda base $x_c(t)$ e $x_s(t)$ sono **processi congiuntamente WSS a media nulla**.
+- **Dimostrazione.**
+  - *Media.* $E[x_p(t)] = \mu_{x_p} = 0$ per ipotesi. Anche la trasformata di Hilbert ha media nulla: $E[\widehat{x}_p(t)] = E\big[\int x_p(t-\tau)\frac{1}{\pi\tau}\,d\tau\big] = \int E[x_p(t-\tau)]\frac{1}{\pi\tau}\,d\tau = 0$. Quindi $x_c$ e $x_s$ hanno media nulla, indipendente da $t$.
+  - *Resta da verificare* che le acf $R_{x_cx_c}(t,\tau)$ e $R_{x_sx_s}(t,\tau)$ e la crosscorrelazione $R_{x_cx_s}(t,\tau)$ dipendano solo da $\tau$.
+  - *Relazioni fondamentali tra $x_p$ e $\widehat{x}_p$*, ricordando $S_{yy}(f) = S_{xx}(f)\,|H(f)|^2$ e $R_{yy}(\tau) = R_{xx}(\tau) \ast h(\tau) \ast h(-\tau)$, con $\widehat{R}_{x_px_p}$ trasformata di Hilbert di $R_{x_px_p}$:
+
+$$S_{\widehat{x}_p\widehat{x}_p}(f) = |{-j}\,\text{sgn}(f)|^2\,S_{x_px_p}(f) = S_{x_px_p}(f) \ \Longrightarrow\ R_{\widehat{x}_p\widehat{x}_p}(\tau) = R_{x_px_p}(\tau) \tag{2}$$
+
+$$S_{\widehat{x}_px_p}(f) = -j\,\text{sgn}(f)\,S_{x_px_p}(f) \ \Longrightarrow\ R_{\widehat{x}_px_p}(\tau) = \widehat{R}_{x_px_p}(\tau) \tag{3}$$
+
+$$S_{x_p\widehat{x}_p}(f) = j\,\text{sgn}(f)\,S_{x_px_p}(f) \ \Longrightarrow\ R_{x_p\widehat{x}_p}(\tau) = -\widehat{R}_{x_px_p}(\tau) \tag{4}$$
+
+  - *Acf di $x_c$.* Con $a = 2\pi f_ct$ e $b = 2\pi f_c(t-\tau)$:
+
+$$
+\begin{aligned}
+2R_{x_cx_c}(t,\tau) &= 2E[x_c(t)\,x_c(t-\tau)] \\
+&= R_{x_px_p}(\tau)\cos a\cos b + R_{\widehat{x}_p\widehat{x}_p}(\tau)\sin a\sin b + R_{x_p\widehat{x}_p}(\tau)\cos a\sin b + R_{\widehat{x}_px_p}(\tau)\sin a\cos b
+\end{aligned} \tag{5}
+$$
+
+  - Sostituendo (2), (3), (4) in (5) (e usando le formule di Werner $\sin\alpha\cos\beta = \frac12[\sin(\alpha+\beta) + \sin(\alpha-\beta)]$, $\cos\alpha\cos\beta = \frac12[\cos(\alpha+\beta) + \cos(\alpha-\beta)]$, $\sin\alpha\sin\beta = \frac12[\cos(\alpha-\beta) - \cos(\alpha+\beta)]$):
+
+$$
+\begin{aligned}
+2R_{x_cx_c}(t,\tau) &= R_{x_px_p}(\tau)\{\cos a\cos b + \sin a\sin b\} + \widehat{R}_{x_px_p}(\tau)\{\sin a\cos b - \cos a\sin b\} \\
+&= R_{x_px_p}(\tau)\cos(2\pi f_c\tau) + \widehat{R}_{x_px_p}(\tau)\sin(2\pi f_c\tau) \triangleq 2R_{x_cx_c}(\tau)
+\end{aligned} \tag{6}
+$$
+
+  La (6) **dipende unicamente dal ritardo** $\tau$.
+  - Ripetendo gli stessi passaggi per $x_s$ e per le mutue correlazioni:
+
+$$2R_{x_sx_s}(t,\tau) = R_{x_px_p}(\tau)\cos(2\pi f_c\tau) + \widehat{R}_{x_px_p}(\tau)\sin(2\pi f_c\tau) = 2R_{x_cx_c}(\tau) \tag{7}$$
+
+$$2R_{x_cx_s}(t,\tau) = R_{x_px_p}(\tau)\sin(2\pi f_c\tau) - \widehat{R}_{x_px_p}(\tau)\cos(2\pi f_c\tau) \triangleq 2R_{x_cx_s}(\tau) \tag{8}$$
+
+$$2R_{x_sx_c}(t,\tau) = -R_{x_px_p}(\tau)\sin(2\pi f_c\tau) + \widehat{R}_{x_px_p}(\tau)\cos(2\pi f_c\tau) = -2R_{x_cx_s}(\tau) \tag{9}$$
+
+  Il teorema è dimostrato. ∎
+- **Conclusione:** un processo passa-banda WSS è tale che
+
+$$R_{x_cx_c}(\tau) = R_{x_sx_s}(\tau) \qquad R_{x_cx_s}(\tau) = -R_{x_sx_c}(\tau) \tag{10}$$
+
+- **Acf dell'inviluppo complesso** (il coniugato serve perché $x$ è complesso):
+
+$$
+\begin{aligned}
+R_{xx}(\tau) &\triangleq E[x(t)\,x^\ast(t-\tau)] \\
+&= R_{x_cx_c}(\tau) + R_{x_sx_s}(\tau) + j\big[R_{x_sx_c}(\tau) - R_{x_cx_s}(\tau)\big]
+\end{aligned} \tag{11}
+$$
+
+$$R_{xx}(\tau) = 2R_{x_cx_c}(\tau) + 2j\,R_{x_sx_c}(\tau) \tag{12}$$
+
+  dove $2R_{x_cx_c}$ è l'autocorrelazione di $x_c$ e $R_{x_sx_c}$ la mutua correlazione $x_s$, $x_c$.
+- Poiché $R_{xx}(0) = E[|x(t)|^2] = P_{x_p}$ è una quantità **reale**, risulta $R_{x_cx_s}(0) = 0 = R_{x_sx_c}(0)$ (la slide lo accompagna con la domanda «Perché?»: è la parte immaginaria di (12) per $\tau = 0$). Significa che, per ogni istante $t_0$, le variabili aleatorie a media nulla $x_c(t_0)$ e $x_s(t_0)$ sono **incorrelate** (infatti $C_{x_cx_s}(0) = R_{x_cx_s}(0) - \mu_{x_s}\mu_{x_c} = 0$). Quindi $x_c(t_0)$ e $x_s(t_0)$ sono **statisticamente indipendenti** per ogni $t_0$ se sono gaussiane.
+
+### PSD delle componenti e dell'inviluppo
+
+#### Slide 7 e appunti — PSD delle componenti in quadratura · [[Rappresentazione_Rice_processi.pdf#page=12|p. 12]], [[Rappresentazione_Rice_processi.pdf#page=13|13]]
+- Per il teorema di Wiener-Khinchin la PSD delle componenti si ottiene trasformando (6) e (7). Per la componente in fase, con $R_{x_cx_c}(\tau) = \frac12\big[R_{x_px_p}(\tau)\cos(2\pi f_c\tau) + \widehat{R}_{x_px_p}(\tau)\sin(2\pi f_c\tau)\big]$:
+
+$$
+\begin{aligned}
+S_{x_cx_c}(f) &= \frac12\bigg[\frac{S_{x_px_p}(f-f_c) + S_{x_px_p}(f+f_c)}{2} + \frac{-j\,S_{x_px_p}(f-f_c)\,\text{sgn}(f-f_c) + j\,S_{x_px_p}(f+f_c)\,\text{sgn}(f+f_c)}{2j}\bigg] \\
+&= \frac12\bigg[S_{x_px_p}(f-f_c)\,\frac{1 - \text{sgn}(f-f_c)}{2} + S_{x_px_p}(f+f_c)\,\frac{1 + \text{sgn}(f+f_c)}{2}\bigg] \\
+&= \frac12\Big[S_{x_px_p}(f-f_c)\,u(-f+f_c) + S_{x_px_p}(f+f_c)\,u(f+f_c)\Big]
+\end{aligned} \tag{13}
+$$
+
+  con $1 - \text{sgn}(f-f_c) = 2u(-f+f_c)$ e $1 + \text{sgn}(f+f_c) = 2u(f+f_c)$.
+- Poiché $R_{x_cx_c}(\tau) = R_{x_sx_s}(\tau)$, si ha $S_{x_cx_c}(f) = S_{x_sx_s}(f)$.
+- Le **cross-spectral density** di $x_c$ e $x_s$ si ottengono trasformando (8) e (9), sfruttando $R_{x_cx_s}(\tau) = -R_{x_sx_c}(\tau)$.
+
+#### Slide 8 e appunti — Osservazione importante (1/2): PSD dell'inviluppo · [[Rappresentazione_Rice_processi.pdf#page=14|p. 14]], [[Rappresentazione_Rice_processi.pdf#page=15|15]], [[Rappresentazione_Rice_processi.pdf#page=16|16]]
+- Il segnale analitico si ottiene filtrando $x_p(t)$ con $H(f) = \sqrt2\,u(f)$; ricordando che per un filtro LTI $S_{\text{out}}(f) = S_{\text{in}}(f)\,|H(f)|^2$:
+
+$$S_{x_p^+x_p^+}(f) = S_{x_px_p}(f)\,|H(f)|^2 = 2S_{x_px_p}(f)\,u(f)$$
+
+  Il segnale analitico annulla completamente le frequenze negative e **raddoppia la potenza delle frequenze positive**.
+- Da $x(t) = x_p^+(t)\,e^{-j2\pi f_ct}$:
+
+$$R_{xx}(\tau) = E[x(t)\,x^\ast(t-\tau)] = R_{x_p^+x_p^+}(\tau)\,e^{-j2\pi f_c\tau}$$
+
+  cioè dipende unicamente dal ritardo: **la moltiplicazione per un esponenziale complesso conserva la stazionarietà in senso lato (WSS)**.
+- Di conseguenza la PSD dell'inviluppo è la PSD del segnale analitico **traslata nell'origine** (spostata a sinistra di $f_c$):
+
+$$S_{xx}(f) = S_{x_p^+x_p^+}(f + f_c) = 2S_{x_px_p}(f + f_c)\,u(f + f_c) \tag{14}$$
+
+- **In conclusione**, per ottenere la PSD dell'inviluppo di un processo passa-banda si deve: (1) vedere la PSD del segnale passa-banda $S_{x_px_p}(f)$; (2) eliminare le frequenze negative con $H(f) = \sqrt2\,u(f)$ e moltiplicare per $\sqrt2$ (permette di preservare la potenza originaria del segnale), ottenendo $2S_{x_px_p}(f)\,u(f)$; (3) traslare a sinistra di $f_c$, portando la PSD del segnale analitico centrata nell'origine.
+
+#### Slide 9 e appunti — Osservazione importante (2/2): spettro simmetrico · [[Rappresentazione_Rice_processi.pdf#page=17|p. 17]], [[Rappresentazione_Rice_processi.pdf#page=18|18]], [[Rappresentazione_Rice_processi.pdf#page=19|19]]
+- Caso particolare molto frequente nei sistemi di trasmissione: la PSD del processo reale $S_{x_px_p}(f)$ è **simmetrica rispetto alla frequenza portante $f_c$**.
+- Dalla relazione (14) la PSD dell'inviluppo è una funzione **pari**: $S_{xx}(-f) = S_{xx}(f)$. Infatti $S_{xx}(-f) = 2S_{x_px_p}(-f+f_c)\,u(-f+f_c) = 2S_{x_px_p}(f+f_c)\,u(f+f_c)$, perché $S_{x_px_p}$ è pari rispetto a $f_c$.
+- Essendo $S_{xx}(f) = \mathcal{F}\{R_{xx}(\tau)\}$, per le proprietà della trasformata di Fourier l'antitrasformata di una funzione pari e reale è anch'essa pari e reale: $R_{xx}(\tau)$ è **reale e pari**, quindi $\text{Im}\{R_{xx}(\tau)\} = 0$ per ogni $\tau$.
+- Dalla (12), $R_{xx}(\tau) = 2R_{x_cx_c}(\tau) + j2R_{x_sx_c}(\tau)$, segue (con $x_p$ WSS)
+
+$$R_{x_sx_c}(\tau) = 0 \ \Rightarrow\ R_{x_cx_s}(\tau) = -R_{x_sx_c}(\tau) = 0 \qquad \forall\tau$$
+
+  Quindi $x_c(t)$ e $x_s(t)$ sono **incoerenti**. Se $x_p(t)$ ha anche media nulla, sono **incorrelate**, e **statisticamente indipendenti** supponendo $x_p$ gaussiano.
+- In questa situazione, dalla (12): $S_{xx}(f) = 2S_{x_cx_c}(f) = 2S_{x_sx_s}(f)$.
+- Mentre l'incoerenza in generale è garantita solo nel singolo istante ($\tau = 0$), quando lo spettro è simmetrico attorno a $f_c$ le due componenti $x_c(t)$ e $x_s(t)$ sono **completamente incoerenti/incorrelate** per ogni $\tau \in \mathbb{R}$.
+
+#### Slide 10 — Vista grafica · [[Rappresentazione_Rice_processi.pdf#page=20|p. 20]]
+
+![[processi-passabanda-p20-vista-grafica-psd.png|650]]
+*(a) $S_{x_px_p}(f)$: lobi di altezza $A$ in $\pm f_c$, larghezza $W$. (b) Il processo analitico $S_{x_p^+x_p^+}(f)$: si elimina lo spettro a frequenze negative e si moltiplica per 2 ($|H(f)|^2 = 2u(f)$): altezza $2A$ in $f_c$. (c) $S_{xx}(f)$: traslazione di $-f_c$, secondo la (14); è **pari**, quindi $R_{xx}(\tau)$ è reale. (d) Dividendo per 2: $S_{x_cx_c}(f) = S_{x_sx_s}(f)$, altezza $A$ su $|f| < W/2$.*
+
+- Se $S_{x_px_p}(f)$ è simmetrica attorno a $f_c$, allora $S_{xx}(f)$ è pari $\Rightarrow R_{x_sx_c}(\tau) = 0$ e $S_{xx}(f) = 2S_{x_cx_c}(f) = 2S_{x_sx_s}(f)$.
+- Note a mano sulla slide: da $R_{xx}(\tau) = 2R_{x_cx_c}(\tau) + j2R_{x_sx_c}(\tau)$ si ha $S_{xx}(f) = 2S_{x_cx_c}(f) + j2S_{x_sx_c}(f)$, e con $R_{x_sx_c} = 0$ resta $S_{xx}(f) = 2S_{x_cx_c}(f)$; $S_{xx}(f)$ è reale per definizione, $S_{xx}(f) = \lim_{T\to\infty}\frac{1}{2T}E\big[|X_T(f)|^2\big]$.
+
+### Esempio: rumore in banda passante
+
+#### Slide 11 e appunti — Rumore in banda · [[Rappresentazione_Rice_processi.pdf#page=21|p. 21]], [[Rappresentazione_Rice_processi.pdf#page=22|22]], [[Rappresentazione_Rice_processi.pdf#page=23|23]]
+- Si consideri un rumore passa-banda $w_p(t)$ con PSD costante $S_{w_pw_p}(f) = N_0/2$ su una banda $W$.
+- Un **rumore bianco gaussiano (AWGN)**, con $R_{w_pw_p}(\tau) = \frac{N_0}{2}\delta(\tau)$, ha PSD costante $N_0/2$ su tutte le frequenze $(-\infty, +\infty)$, quindi potenza media infinita. Nei sistemi reali il ricevitore **filtra** il segnale in ingresso con un filtro di banda $W$ centrato su $f_c$, ottenendo un rumore con $S(f) = N_0/2$ e banda pari a $W$.
+- Si calcolano le PSD $S_{w_cw_c}(f)$ e $S_{w_sw_s}(f)$ delle componenti in quadratura. Si vede facilmente che
+
+$$S_{w_cw_c}(f) = S_{w_sw_s}(f) = \frac{N_0}{2} \quad \text{per } |f| < \frac W2$$
+
+  Infatti $S_{ww}(f) = 2S_{w_pw_p}(f+f_c)\,u(f+f_c) = 2\cdot\frac{N_0}{2} = N_0$ per $|f| < W/2$; essendo $S_{w_pw_p}(f)$ reale e costante, e quindi pari rispetto alla banda, $S_{ww}(f) = 2S_{w_cw_c}(f)$.
+- È utile notare che la **potenza** del processo passa-banda originale è $P_{w_p} = 2W\cdot\frac{N_0}{2} = N_0W$ e **coincide con la potenza dell'inviluppo complesso**.
+- Le condizioni (10) sono di particolare importanza: le proprietà di correlazione dell'inviluppo complesso di un qualunque processo passa-banda WSS si specificano con l'acf della componente in fase e la crosscorrelazione tra le componenti in quadratura. Inoltre, la componente in fase e quella in quadratura nello stesso istante sono **incorrelate**: le componenti in quadratura di un processo gaussiano complesso nello stesso istante sono **statisticamente indipendenti**.
+- Appunti p. 23: essendo $S_{ww}(f)$ reale, $S_{w_cw_s}(f) = 0$ per ogni $f \in \mathbb{R}$: sono incoerenti, quindi incorrelate, quindi statisticamente indipendenti se $w_p$ è gaussiano.
+
+#### Slide 12–13 — Costruzione grafica di $S_{w_cw_c}(f)$ · [[Rappresentazione_Rice_processi.pdf#page=24|p. 24]], [[Rappresentazione_Rice_processi.pdf#page=25|25]]
+- Applicando la (13) a $S_{w_pw_p}(f)$: prima si trasla la PSD passa-banda di $\pm f_c$, poi si moltiplica per i gradini unitari $u(f_c - f)$ e $u(f+f_c)$.
+
+![[processi-passabanda-p24-rumore-costruzione-1.png|560]]
+*(a) $S_{w_pw_p}(f)$: due lobi di altezza $N_0/2$ e larghezza $W$ in $\pm f_c$. (b) $S_{w_pw_p}(f-f_c)$: traslata di $+f_c$ (lobi in $0$ e $2f_c$). (c) $S_{w_pw_p}(f+f_c)$: traslata di $-f_c$ (lobi in $-2f_c$ e $0$). (d) $u(f_c - f)$. (e) $u(f + f_c)$.*
+
+- Ogni gradino unitario trattiene solo il lobo che cade attorno a $f = 0$; sommando e dimezzando si ottiene $S_{w_cw_c}(f) = S_{w_sw_s}(f) = N_0/2$ per $|f| < W/2$.
+
+![[processi-passabanda-p25-rumore-costruzione-2.png|560]]
+*(f) $S_{w_pw_p}(f-f_c)\,u(f_c-f)$ e (g) $S_{w_pw_p}(f+f_c)\,u(f+f_c)$: restano i lobi in 0 (le copie in $\pm 2f_c$ sono barrate). (h) $\frac12[(f)+(g)]$ (eq. (13)): $S_{w_cw_c}(f) = S_{w_sw_s}(f)$, con i due contributi di altezza $N_0/4$ che insieme valgono $N_0/2$. (i) $S_{ww}(f) = 2S_{w_cw_c}(f)$, altezza $N_0$, ×2.*
+
+- Poiché $S_{w_pw_p}(f)$ è simmetrica attorno a $f_c$: $S_{ww}(f) = 2S_{w_cw_c}(f) = N_0$ per $|f| < W/2$, e $P_{w_p} = N_0W = P_w$.
+
+---
+
+*Approfondimenti nel wiki (derivazioni passo per passo, controlli, cross-PSD): [[processi-passa-banda]], [[psd-componenti-in-quadratura]], [[rumore-in-banda-passante]]; sul caso deterministico [[inviluppo-complesso]] e [[segnale-analitico]].*
+

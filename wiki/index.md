@@ -3,7 +3,7 @@
 ## Overview
 - [[overview]] — panoramica del corso, programma, copertura
 - [[lezioni]] — elenco lezioni con gli argomenti in ordine di PDF
-- [[corso-completo]] — il corso in un unico file schematico, lezioni 1–6 nell'ordine delle slide (solo contenuto dei PDF; PDF di studio con `output/crea_pdf.py`)
+- [[corso-completo]] — il corso in un unico file schematico, lezioni 1–7 nell'ordine delle slide (solo contenuto dei PDF; PDF di studio con `output/crea_pdf.py`)
 
 ## Concetti
 
@@ -50,6 +50,11 @@
 - [[densita-spettrale-di-potenza]] — definizione, Wiener-Khinchin, $2\Delta f\,S_{XX}$, proprietà, PSD mutue e della somma (alta)
 - [[processo-gaussiano]] — gaussiana multivariata; WSS ⇒ SSS; incorrelati ⇒ indipendenti (alta)
 
+**Processi passa-banda**
+- [[processi-passa-banda]] — processo analitico, inviluppo complesso e componenti I/Q di un processo; teorema: $x_c$, $x_s$ congiuntamente WSS; $R_{x_cx_c} = R_{x_sx_s}$, $R_{x_cx_s} = -R_{x_sx_c}$; $R_{xx} = 2R_{x_cx_c} + 2jR_{x_sx_c}$ (alta)
+- [[psd-componenti-in-quadratura]] — $S_{x_cx_c}$ (13), $S_{xx} = 2S_{x_px_p}(f+f_c)u(f+f_c)$ (14), cross-PSD, spettro simmetrico ⇒ componenti incoerenti (alta)
+- [[rumore-in-banda-passante]] — PSD $N_0/2$ in banda $W$: $S_{w_cw_c} = N_0/2$, $S_{ww} = N_0$, potenza $N_0W$; costruzione grafica (alta)
+
 ## Entità
 - [[ripetitore-rigenerativo]] — dispositivo
 - [[g711]] — standard ITU-T PCM voce
@@ -64,6 +69,7 @@
 - [[rappresentazione-complessa-banda-base]] — Rappresentazione_Rice.pdf, pp. 1–27 (19 slide + 8 pagine di appunti a mano)
 - [[processi-aleatori]] — random_processes.pdf, pp. 1–46 (41 slide + 5 pagine di appunti a mano)
 - [[laboratorio-conversione-ad]] — scripts/09_28_2006: AD_conversion.m + 3 figure (laboratorio, non d'esame)
+- [[rappresentazione-processi-passa-banda]] — Rappresentazione_Rice_processi.pdf, pp. 1–25 (13 slide + 12 pagine di appunti a mano)
 
 ## Laboratorio (non materia d'esame)
 Esperimenti Matlab per vedere la teoria all'opera; un macroblocco per pagina.
@@ -85,6 +91,7 @@ _nessun materiale ancora — lancia `prepara esame`_
 
 ## Asset
 Figure in `raw/assets/`: 3 da Intro, 7 da Probabilità, 29 da Campionamento, 11 da Rappresentazione_Rice (di cui 4 pagine di appunti a mano), 6 da random_processes (nome `file-pN-descrizione.png`).
+3 da Rappresentazione_Rice_processi (`processi-passabanda-pN-*.png`: vista grafica delle PSD, costruzione grafica del rumore in banda).
 Figure del laboratorio in `raw/assets/lab-0928-*.png` (3, copiate da `raw/scripts/09_28_2006/`).
 Grafici 🧩 del laboratorio — script `genera_grafici_laboratorio_ad.py` (replica Python di AD_conversion.m): setup e spettro, spettro del campionato, durata della convoluzione e taglio, confronto interpolatori, quantizzazione, SNR vs bit, esempio 2; animazione `grafico-lab-interpolazione.gif`.
 Grafici 🧩 dei processi aleatori — script `genera_grafici_random_processes.py`: realizzazioni e v.a. a $t_0$, processo lento contro veloce (autocorrelazione e PSD), gaussiana bivariata, animazione della costruzione di $R_{XX}(\tau)$ (`grafico-rp-autocorrelazione.gif`).

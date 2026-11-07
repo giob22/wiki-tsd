@@ -206,9 +206,10 @@ Media e autocorrelazione sono le grandezze con cui si lavora in pratica. Si prop
 - [[stazionarieta]] — WSS: media costante e autocorrelazione dipendente solo da $\tau$. La sinusoide a fase casuale degli appunti è WSS, il rettangolo della slide 2 no.
 - [[autocorrelazione-processi-wss]] — proprietà dell'autocorrelazione nel caso WSS.
 - [[inviluppo-complesso]] — processi complessi in banda base, coniugato nel prodotto scalare.
+- [[processi-passa-banda]] — l'acf dell'inviluppo complesso $R_{xx}(\tau) = E[x(t)x^\ast(t-\tau)]$ con il coniugato; incoerenza e incorrelazione delle componenti $x_c$, $x_s$ ($R_{x_cx_s}(0) = 0$).
 
 ## Fonti · [[random_processes.pdf#page=4|p. 4]], [[random_processes.pdf#page=5|5]], [[random_processes.pdf#page=12|p. 12]], [[random_processes.pdf#page=14|p. 14]], [[random_processes.pdf#page=22|p. 22]], [[random_processes.pdf#page=25|p. 25]], [[random_processes.pdf#page=45|p. 45]], [[random_processes.pdf#page=46|46]]
 
 - [[processi-aleatori]]
 
-_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-28 — re-ingest del PDF con appunti: momenti della sinusoide a fase casuale (p.4–5), processo WSS a confronto con il rettangolo. Prima, nello stesso giorno: creazione da ingest random_processes.pdf_
+_Aggiornato: 2026-11-01 — collegamento ai processi passa-banda; 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-28 — re-ingest del PDF con appunti: momenti della sinusoide a fase casuale (p.4–5), processo WSS a confronto con il rettangolo. Prima, nello stesso giorno: creazione da ingest random_processes.pdf_
