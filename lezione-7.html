@@ -20,7 +20,7 @@
 <li>Si assumono processi stocastici <strong>reali, WSS, a media nulla</strong> (<span class="math inline">\mu_x = E[x(t)] = 0</span>). L'ipotesi di processo reale è «non troppo restrittiva».</li>
 <li><span class="math inline">x_b(t)</span> è <strong>in banda base</strong> se la sua PSD è in banda base: <span class="math inline">S_{x_bx_b}(f) = 0</span> per <span class="math inline">|f| &gt; W &gt; 0</span>.</li>
 <li><span class="math inline">x_p(t)</span> è <strong>passa-banda</strong> se la sua PSD è passa-banda, concentrata esclusivamente attorno alle frequenze <span class="math inline">\pm f_c</span> con <span class="math inline">f_c \gg W</span>: <span class="math inline">S_{x_px_p}(f) = 0</span> per <span class="math inline">|f \pm f_c| &gt; W &gt; 0</span>.</li>
-<li>Interessa una rappresentazione adatta dei processi passa-banda. Come nel caso deterministico si costruisce il <strong>processo (complesso) analitico</strong>, per eliminare la ridondanza delle frequenze negative:</li>
+<li>I processi passa-banda sono reali, perciò il loro spettro ha due lobi speculari in <span class="math inline">\pm f_c</span>, e quello a frequenze negative ripete le stesse informazioni di quello a frequenze positive. Per descriverli senza questa ridondanza si costruisce, come nel caso deterministico, il <strong>processo (complesso) analitico</strong>, che contiene solo le frequenze positive:</li>
 </ul>
 <div class="math block">x_p^+(t) = \frac{1}{\sqrt2}\,x_p(t) + \frac{j}{\sqrt2}\,\widehat{x}_p(t)</div><p>È il segnale ottenuto considerando unicamente lo spettro a frequenze positive.</p>
 <ul>
