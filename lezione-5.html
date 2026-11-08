@@ -1169,7 +1169,116 @@ f_{\mathbf{X}}(\mathbf{x}) &amp;= \prod_i \frac{1}{\sqrt{2\pi\sigma_i^2}}\,e^{-\
 </blockquote>
 </details>
 </div></details>
-<details class="conc es"><summary><span class="n">Calcolo della densità spettrale di potenza</span></summary><div class="cb"></div></details>
+<details class="conc es"><summary><span class="n">Esercizio svolto · Calcolo della densità spettrale di potenza</span></summary><div class="cb"><h4 id="calcolo-densita-spettrale-metodo">Metodo</h4>
+<ol>
+<li><strong>Scrivere il modello</strong> del processo e le ipotesi statistiche (medie, correlazioni dei simboli, eventuali ritardi casuali).</li>
+<li><strong>Verificare che sia WSS</strong> (stazionarieta): media costante e <span class="math inline">R_{XX}(t, \tau)</span> indipendente da <span class="math inline">t</span>. Se non lo è, bisogna prima renderlo WSS, per esempio con un ritardo casuale, altrimenti Wiener-Khinchin così come enunciato non si applica.</li>
+<li><strong>Calcolare l'autocorrelazione</strong> <span class="math inline">R_{XX}(\tau) = E[X(t)X(t - \tau)]</span> (autocorrelazione processi wss), usando linearità del valore atteso e indipendenza tra le variabili in gioco.</li>
+<li><strong>Trasformare</strong>: <span class="math inline">S_{XX}(f) = \mathcal{F}[R_{XX}(\tau)]</span> (densita spettrale di potenza).</li>
+<li><strong>Controllare</strong> con le proprietà: <span class="math inline">S_{XX} \ge 0</span>, pari, <span class="math inline">\int S_{XX}\,df = R_{XX}(0)</span> (potenza), <span class="math inline">S_{XX}(0) = \int R_{XX}\,d\tau</span>.</li>
+</ol>
+<h4 id="calcolo-densita-spettrale-formule-usate">Formule usate</h4>
+<ul>
+<li><span class="math inline">R_{XX}(\tau) = E[X(t)X(t-\tau)]</span> — autocorrelazione processi wss</li>
+<li>Wiener-Khinchin <span class="math inline">S_{XX}(f) = \mathcal{F}[R_{XX}(\tau)]</span> e potenza <span class="math inline">P_X = R_{XX}(0) = \int S_{XX}\,df</span> — densita spettrale di potenza</li>
+<li>Modulazione lineare <span class="math inline">s(t) = \sum_n b[n]\,p(t - nT)</span> — modulazione digitale</li>
+<li>Spettro dell'impulso rettangolare <span class="math inline">P(f) = T\,\text{sinc}(fT)</span> — modulazione digitale</li>
+</ul>
+<h4 id="calcolo-densita-spettrale-casi-svolti">Casi svolti</h4>
+<h5 id="calcolo-densita-spettrale-caso-1-psd-di-un-segnale-modulato-linearmente">Caso 1 — PSD di un segnale modulato linearmente</h5>
+<p><strong>Traccia</strong>: «Example — Compute power spectral density of a linearly modulated signal.» La slide non dà lo svolgimento.</p>
+<blockquote class="co mia"><p>🧩 Svolgimento mio. Il modello viene dalla modulazione lineare della lezione precedente; le ipotesi statistiche sono mie, perché la slide non le specifica.</p>
+</blockquote>
+<p><strong>Modello:</strong>
+<div class="math inline">X(t) = \sum_{n=-\infty}^{+\infty} b[n]\,p(t - nT - D)</div></p>
+<p><strong>Ipotesi:</strong></p>
+<ul>
+<li><strong>(H1)</strong> i simboli <span class="math inline">b[n]</span> hanno media nulla, sono incorrelati e hanno la stessa varianza: <span class="math inline">E[b[n]] = 0</span> e <span class="math inline">E[b[n]\,b[m]] = \sigma_b^2\,\delta[n - m]</span>. Per esempio simboli <span class="math inline">\pm A</span> equiprobabili, con <span class="math inline">\sigma_b^2 = A^2</span>.</li>
+<li><strong>(H2)</strong> <span class="math inline">D</span> è un ritardo casuale uniforme in <span class="math inline">[0, T)</span>, indipendente dai simboli. Modella il fatto che chi osserva il segnale non conosce l'istante in cui inizia ogni simbolo.</li>
+<li><strong>(H3)</strong> <span class="math inline">p(t)</span> è un impulso reale di energia finita <span class="math inline">E_p = \int p^2(t)\,dt</span>.</li>
+</ul>
+<p><strong>Passo 0 — Cosa dice davvero «incorrelati, di varianza <span class="math inline">\sigma_b^2</span>» (H1).</strong> Due variabili sono incorrelate se la loro covarianza è nulla:</p>
+<div class="math block">
+\operatorname{Cov}(b[n], b[m]) = E[b[n]\,b[m]] - E[b[n]]\,E[b[m]] = 0 \quad (n \neq m)
+</div><p>Con <span class="math inline">E[b[n]] = 0</span> il secondo termine sparisce: <span class="math inline">E[b[n]\,b[m]] = 0</span> per <span class="math inline">n \neq m</span>. Per <span class="math inline">n = m</span> la varianza è <span class="math inline">\operatorname{Var}(b[n]) = E[b^2[n]] - E[b[n]]^2 = E[b^2[n]] = \sigma_b^2</span>. Le due righe si riassumono in</p>
+<div class="math block">
+E[b[n]\,b[m]] = \sigma_b^2\,\delta[n - m]
+</div><p>con <span class="math inline">\delta[k] = 1</span> per <span class="math inline">k = 0</span> e <span class="math inline">0</span> altrimenti. È l'unica proprietà dei simboli che serve (non serve che siano indipendenti, né <span class="math inline">\pm A</span>).</p>
+<p><strong>Passo 1 — Media.</strong>
+<div class="math inline">\mu_X(t) = \sum_n E[b[n]]\;E[p(t - nT - D)] = 0 \qquad \text{(H2): simboli e ritardo indipendenti; (H1): } E[b[n]] = 0</div></p>
+<p><strong>Passo 2 — Autocorrelazione.</strong>
+<div class="math inline">\begin{aligned}
+R_{XX}(t, \tau) &amp;= E[X(t)\,X(t - \tau)] = \sum_n\sum_m E[b[n]b[m]]\;E\big[p(t - nT - D)\,p(t - \tau - mT - D)\big] &amp;&amp; \text{sviluppo il prodotto delle somme; (H2)} \\
+&amp;= \sigma_b^2\sum_n E\big[p(t - nT - D)\,p(t - \tau - nT - D)\big] &amp;&amp; \text{(H1): restano solo i termini } m = n \\
+&amp;= \sigma_b^2\sum_n \frac1T\int_0^T p(t - nT - d)\,p(t - \tau - nT - d)\,dd &amp;&amp; D \text{ uniforme in } [0, T):\ \text{pdf } 1/T \\
+&amp;= \frac{\sigma_b^2}{T}\sum_n \int_{t-(n+1)T}^{t-nT} p(u)\,p(u - \tau)\,du &amp;&amp; u = t - nT - d \\
+&amp;= \frac{\sigma_b^2}{T}\int_{-\infty}^{+\infty} p(u)\,p(u - \tau)\,du = \frac{\sigma_b^2}{T}\,r_{pp}(\tau) &amp;&amp; \text{gli intervalli, al variare di } n, \text{ ricoprono } \mathbb{R} \text{ una volta sola}
+\end{aligned}</div>
+<strong>Passo 2, riga per riga.</strong></p>
+<p><em>(a) Prodotto di due somme.</em> Si usano due indici diversi, <span class="math inline">n</span> per <span class="math inline">X(t)</span> e <span class="math inline">m</span> per <span class="math inline">X(t-\tau)</span>, altrimenti si perdono i termini misti:</p>
+<div class="math block">
+X(t)\,X(t-\tau) = \sum_n\sum_m b[n]\,b[m]\;p(t - nT - D)\;p(t - \tau - mT - D)
+</div><p><em>(b) Valore atteso.</em> Per linearità il valore atteso entra nelle somme. I simboli sono indipendenti da <span class="math inline">D</span> (H2), quindi il valore atteso del prodotto si spezza in quello dei simboli per quello di <span class="math inline">D</span>:</p>
+<div class="math block">
+E\big[b[n]\,b[m]\;g(D)\big] = E[b[n]\,b[m]]\;E[g(D)], \qquad g(D) = p(t - nT - D)\,p(t - \tau - mT - D)
+</div><p><em>(c) Si azzerano i termini con <span class="math inline">m \neq n</span>.</em> Dal passo 0, <span class="math inline">E[b[n]\,b[m]] = \sigma_b^2\,\delta[n-m]</span>: la doppia somma diventa una somma singola, con <span class="math inline">m = n</span>.</p>
+<p><em>(d) Media su <span class="math inline">D</span>.</em> <span class="math inline">D</span> è uniforme in <span class="math inline">[0, T)</span>, con densità <span class="math inline">1/T</span> in quell'intervallo, quindi <span class="math inline">E[g(D)] = \frac1T\int_0^T g(d)\,dd</span>.</p>
+<p><em>(e) Cambio di variabile.</em> Per ogni <span class="math inline">n</span> si pone <span class="math inline">u = t - nT - d</span>. Allora <span class="math inline">t - \tau - nT - d = u - \tau</span> e <span class="math inline">dd = -du</span>. Gli estremi: <span class="math inline">d = 0 \Rightarrow u = t - nT</span>, <span class="math inline">d = T \Rightarrow u = t - (n+1)T</span>. Il segno meno si assorbe scambiando gli estremi:</p>
+<div class="math block">
+\int_0^T p(t - nT - d)\,p(t - \tau - nT - d)\,dd = \int_{t-(n+1)T}^{t-nT} p(u)\,p(u - \tau)\,du
+</div><p><em>(f) Somma su <span class="math inline">n</span>.</em> Gli intervalli <span class="math inline">[\,t-(n+1)T,\; t-nT\,)</span> sono adiacenti, di lunghezza <span class="math inline">T</span> ciascuno: per <span class="math inline">n \to +\infty</span> vanno verso <span class="math inline">-\infty</span>, per <span class="math inline">n \to -\infty</span> verso <span class="math inline">+\infty</span>. Coprono tutto <span class="math inline">\mathbb{R}</span> senza sovrapporsi, quindi la somma degli integrali è un solo integrale su <span class="math inline">\mathbb{R}</span>. Il <span class="math inline">t</span> è sparito: è questo che rende il processo WSS. La sparizione è l'effetto di <span class="math inline">D</span> (vedi la nota finale).</p>
+<p><span class="math inline">r_{pp}(\tau) = p(\tau) \ast p(-\tau)</span> è l'autocorrelazione deterministica dell'impulso (la stessa <span class="math inline">r_{hh}</span> di processi e sistemi lti). Il risultato <strong>non dipende da <span class="math inline">t</span></strong>, e la media è costante: il processo è <strong>WSS</strong>.</p>
+<p><strong>Passo 3 — PSD (Wiener-Khinchin).</strong>
+<div class="math inline">\begin{aligned}
+S_{XX}(f) &amp;= \frac{\sigma_b^2}{T}\,\mathcal{F}\big[p(\tau) * p(-\tau)\big] = \frac{\sigma_b^2}{T}\,P(f)\,P(-f) &amp;&amp; \text{convoluzione} \to \text{prodotto; riflessione} \\
+&amp;= \frac{\sigma_b^2}{T}\,|P(f)|^2 &amp;&amp; p \text{ reale: } P(-f) = P^*(f)
+\end{aligned}</div>
+<strong>Passo 3, riga per riga.</strong> <span class="math inline">r_{pp}(\tau) = \int p(u)\,p(u-\tau)\,du</span> è una convoluzione: ponendo <span class="math inline">q(x) = p(-x)</span> si ha <span class="math inline">q(\tau - u) = p(u - \tau)</span>, quindi <span class="math inline">r_{pp} = p \ast q</span>. Le due proprietà di Fourier usate sono</p>
+<div class="math block">
+\mathcal{F}[p \ast q] = P(f)\,Q(f), \qquad Q(f) = \mathcal{F}[p(-x)] = P(-f) = P^\ast(f) \ \ (p \text{ reale})
+</div><p>La seconda vale perché <span class="math inline">P(-f) = \int p(t)\,e^{+j2\pi f t}\,dt = \big(\int p(t)\,e^{-j2\pi f t}\,dt\big)^\ast</span> con <span class="math inline">p</span> reale. Il prodotto è <span class="math inline">P(f)\,P^\ast(f) = |P(f)|^2</span>. Il fattore costante <span class="math inline">\sigma_b^2/T</span> esce dalla trasformata.</p>
+<blockquote class="co formula"><p>🧮 Risultato: <span class="math inline">S_{XX}(f) = \dfrac{\sigma_b^2}{T}\,|P(f)|^2</span>. La <strong>forma</strong> dello spettro la decide l'impulso, il <strong>livello</strong> la varianza dei simboli per simbolo al secondo (<span class="math inline">1/T</span>).</p>
+</blockquote>
+<p><strong>Passo 4 — Impulso rettangolare</strong>, come nell'esempio della modulazione binaria: <span class="math inline">p(t) = \text{rect}\big((t - T/2)/T\big)</span>, altezza 1 e durata <span class="math inline">T</span>.
+<div class="math inline">\begin{aligned}
+|P(f)|^2 &amp;= T^2\,\text{sinc}^2(fT) &amp;&amp; \text{impulso centrato: } T\,\text{sinc}(fT) \text{ (modulazione-digitale); il ritardo } T/2 \text{ aggiunge } e^{-j\pi fT}, \text{ di modulo 1} \\
+S_{XX}(f) &amp;= \sigma_b^2\,T\,\text{sinc}^2(fT) &amp;&amp; \text{sostituisco} \\
+R_{XX}(\tau) &amp;= \sigma_b^2\Big(1 - \frac{|\tau|}{T}\Big)\ \text{per } |\tau| &lt; T,\ 0 \text{ altrove} &amp;&amp; r_{pp}(\tau) = T - |\tau|: \text{ sovrapposizione di due rettangoli sfasati di } \tau
+\end{aligned}</div></p>
+<p><strong>Passo 4, riga per riga.</strong></p>
+<p><em>(a) Trasformata dell'impulso</em> <span class="math inline">p(t) = 1</span> per <span class="math inline">0 \le t \le T</span>, <span class="math inline">0</span> altrove:</p>
+<div class="math block">
+\begin{aligned}
+P(f) &amp;= \int_0^T e^{-j2\pi f t}\,dt = \frac{1 - e^{-j2\pi f T}}{j2\pi f} &amp;&amp; \text{integrale di un&#x27;esponenziale} \\
+&amp;= e^{-j\pi f T}\,\frac{e^{j\pi f T} - e^{-j\pi f T}}{j2\pi f} &amp;&amp; \text{raccolgo } e^{-j\pi f T} \\
+&amp;= e^{-j\pi f T}\,\frac{\sin(\pi f T)}{\pi f} = T\,\text{sinc}(fT)\,e^{-j\pi f T} &amp;&amp; \text{Eulero; } \text{sinc}(x) = \tfrac{\sin(\pi x)}{\pi x}
+\end{aligned}
+</div><p>Il modulo quadro cancella la fase: <span class="math inline">|P(f)|^2 = T^2\,\text{sinc}^2(fT)</span>, e quindi <span class="math inline">S_{XX}(f) = \frac{\sigma_b^2}{T}\,T^2\,\text{sinc}^2(fT) = \sigma_b^2\,T\,\text{sinc}^2(fT)</span>.</p>
+<p><em>(b) Autocorrelazione dell'impulso</em>: <span class="math inline">r_{pp}(\tau) = \int p(u)\,p(u-\tau)\,du</span>. Per <span class="math inline">0 \le \tau \le T</span>, <span class="math inline">p(u-\tau)</span> vale 1 su <span class="math inline">[\tau, \tau+T]</span> e <span class="math inline">p(u)</span> su <span class="math inline">[0, T]</span>: si sovrappongono su <span class="math inline">[\tau, T]</span>, lunghezza <span class="math inline">T - \tau</span>. Per <span class="math inline">\tau &lt; 0</span> si ottiene lo stesso per simmetria, e per <span class="math inline">|\tau| &gt; T</span> non c'è sovrapposizione:</p>
+<div class="math block">
+r_{pp}(\tau) = (T - |\tau|)\ \ (|\tau| &lt; T), \qquad R_{XX}(\tau) = \frac{\sigma_b^2}{T}\,(T - |\tau|) = \sigma_b^2\Big(1 - \frac{|\tau|}{T}\Big)
+</div><p><em>(c) Integrale della sinc al quadrato</em> (usato per la potenza): <span class="math inline">\int_{-\infty}^{+\infty}\text{sinc}^2(fT)\,df = \frac1T</span>, quindi <span class="math inline">\int S_{XX}\,df = \sigma_b^2\,T\cdot\frac1T = \sigma_b^2 = R_{XX}(0)</span>, come richiede la proprietà 2.</p>
+<p><strong>Verifiche:</strong></p>
+<ul>
+<li><strong>Potenza:</strong> <span class="math inline">R_{XX}(0) = \sigma_b^2</span>, cioè simboli di varianza <span class="math inline">\sigma_b^2</span> sempre &quot;accesi&quot;. E <span class="math inline">\int \sigma_b^2 T\,\text{sinc}^2(fT)\,df = \sigma_b^2 T\cdot\frac{1}{T} = \sigma_b^2</span> ✓ (proprietà 2).</li>
+<li><strong>Valore in zero:</strong> <span class="math inline">S_{XX}(0) = \sigma_b^2 T</span> = area del triangolo <span class="math inline">R_{XX}</span> (altezza <span class="math inline">\sigma_b^2</span>, base <span class="math inline">2T</span>) ✓ (proprietà 1).</li>
+<li><span class="math inline">S_{XX} \ge 0</span> e pari ✓ (proprietà 3–4).</li>
+<li><strong>Zeri</strong> in <span class="math inline">f = k/T</span>, <span class="math inline">k \neq 0</span>: il lobo principale è largo <span class="math inline">2/T</span>. Raddoppiando la velocità di simbolo <span class="math inline">1/T</span> raddoppia la banda occupata.</li>
+</ul>
+<p><strong>Risultato:</strong> <span class="math inline">S_{XX}(f) = \sigma_b^2\,T\,\text{sinc}^2(fT)</span> [W/Hz se <span class="math inline">\sigma_b^2</span> è in W]. Con simboli <span class="math inline">\pm A</span> equiprobabili: <span class="math inline">A^2 T\,\text{sinc}^2(fT)</span>.</p>
+<blockquote class="co conn"><p>💡 Connessione: la PSD decresce solo come <span class="math inline">1/f^2</span> lontano dall'origine, perché l'impulso rettangolare <strong>non è a banda limitata</strong> (modulazione digitale). È il motivo per cui la slide della lezione sulla banda base dice che le forme d'onda reali sono spesso vincolate in frequenza.</p>
+</blockquote>
+<blockquote class="co mia"><p>🧩 Perché serve il ritardo <span class="math inline">D</span>: senza <span class="math inline">D</span>, <span class="math inline">R_{XX}(t, \tau) = \sigma_b^2\sum_n p(t - nT)\,p(t - \tau - nT)</span> dipende da <span class="math inline">t</span>, in modo periodico con periodo <span class="math inline">T</span>. Il processo non sarebbe WSS e non si potrebbe applicare Wiener-Khinchin come enunciato. Mediare su <span class="math inline">D</span> uniforme equivale a mediare <span class="math inline">R_{XX}(t, \tau)</span> su un periodo in <span class="math inline">t</span>, e dà lo stesso risultato.</p>
+</blockquote>
+<h4 id="calcolo-densita-spettrale-trappole">Trappole</h4>
+<ul>
+<li><strong>Non verificare la WSS</strong>: senza ritardo casuale (o media su un periodo) l'autocorrelazione dipende da <span class="math inline">t</span>.</li>
+<li><strong><span class="math inline">|P(f)|^2</span>, non <span class="math inline">P(f)</span></strong>: la PSD è reale e non negativa, e la fase dell'impulso sparisce.</li>
+<li><strong>Il fattore <span class="math inline">1/T</span></strong>: la PSD è potenza per unità di frequenza; con simboli più frequenti c'è più energia al secondo.</li>
+<li><strong>Media nulla dei simboli (H1)</strong>: con simboli <span class="math inline">\pm A</span> <strong>non</strong> equiprobabili la media non è nulla e la derivazione non vale così com'è (<span class="math inline">E[b[n]b[m]] \neq 0</span> per <span class="math inline">n \neq m</span>).</li>
+<li><strong>Banda e primo zero</strong>: il lobo principale va da <span class="math inline">-1/T</span> a <span class="math inline">1/T</span>. Dire che &quot;la banda è <span class="math inline">1/T</span>&quot; è una convenzione, perché lo spettro non si annulla mai del tutto.</li>
+</ul>
+</div></details>
 </section>
 <section id="domande"><h2 class="ps">Domande da esame</h2>
 <ul>
