@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lezione 3 · Quantizzazione non uniforme e companding</title>
+<title>Lezione 3 · Quantizzazione: SNR, legge dei 6 dB, Lloyd-Max e companding</title>
 <meta name="color-scheme" content="light dark">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <link rel="stylesheet" href="style.css">
@@ -10,10 +10,43 @@
 <body><header class="top"><nav><a href="index.html" class="home" aria-label="indice">⌂</a><a href="lezione-3.html" aria-current="page">L3</a><a href="lezione-4.html">L4</a><a href="lezione-5.html">L5</a><a href="lezione-7.html">L7</a></nav><span class="ctl"><span class="tm" role="group" aria-label="tema"><button data-t="sistema" title="Tema del sistema" aria-label="tema del sistema"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor" stroke="none"/></svg></button><button data-t="chiaro" title="Tema chiaro" aria-label="tema chiaro"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="3" fill="currentColor"/><path d="M8 1.2v2M8 12.8v2M1.2 8h2M12.8 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4M3.2 12.8l1.4-1.4M11.4 4.6l1.4-1.4"/></svg></button><button data-t="scuro" title="Tema scuro" aria-label="tema scuro"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M13.2 9.6A5.8 5.8 0 1 1 6.4 2.8a4.6 4.6 0 0 0 6.8 6.8z" fill="currentColor"/></svg></button></span><span class="fs"><button id="fm" aria-label="testo più piccolo">A−</button><button id="fp" aria-label="testo più grande">A+</button></span></span></header>
 <main>
 <p class="crumb"><a href="index.html">Intercorso</a> · Lezione 3</p>
-<h1>Quantizzazione non uniforme e companding</h1>
-<p class="breve">Dai limiti della quantizzazione uniforme al quantizzatore ottimo di Lloyd-Max e al companding (leggi µ e A).</p>
-<details class="toc"><summary>Indice della lezione</summary><ul><li class="l3"><a href="#limiti-della-quantizzazione-uniforme">Limiti della quantizzazione uniforme</a></li><li class="l3"><a href="#quantizzazione-non-uniforme">Quantizzazione non uniforme</a></li><li class="l3"><a href="#quantizzazione-ottima-lloyd-max">Quantizzazione ottima: Lloyd-Max</a></li><li class="l3"><a href="#limiti-della-quantizzazione-ottima">Limiti della quantizzazione ottima</a></li><li class="l3"><a href="#analisi-del-companding">Analisi del companding</a></li><li class="l3"><a href="#companding-logaritmico">Companding logaritmico</a></li><li class="l3"><a href="#legge">Legge µ</a></li><li class="l3"><a href="#legge-a">Legge A</a></li><li class="l3"><a href="#prestazioni-del-companding-logaritmico">Prestazioni del companding logaritmico</a></li><li class="l3"><a href="#approfondimenti">Spiegazioni e dimostrazioni passo-passo</a></li><li class="l3"><a href="#domande">Domande da esame</a></li></ul></details>
+<h1>Quantizzazione: SNR, legge dei 6 dB, Lloyd-Max e companding</h1>
+<p class="breve">Il quantizzatore uniforme e il suo SNR (legge dei 6 dB/bit), i suoi limiti, il quantizzatore ottimo di Lloyd-Max e il companding (leggi µ e A).</p>
+<details class="toc"><summary>Indice della lezione</summary><ul><li class="l3"><a href="#relazione-ingresso-uscita-del-quantizzatore">Relazione ingresso-uscita del quantizzatore</a></li><li class="l3"><a href="#codifica-binaria">Codifica binaria</a></li><li class="l3"><a href="#errore-di-quantizzazione">Errore di quantizzazione</a></li><li class="l3"><a href="#fattore-di-carico">Fattore di carico</a></li><li class="l3"><a href="#snr-di-quantizzazione">SNR di quantizzazione</a></li><li class="l3"><a href="#progetto-di-un-quantizzatore">Progetto di un quantizzatore</a></li><li class="l3"><a href="#limiti-della-quantizzazione-uniforme">Limiti della quantizzazione uniforme</a></li><li class="l3"><a href="#quantizzazione-non-uniforme">Quantizzazione non uniforme</a></li><li class="l3"><a href="#quantizzazione-ottima-lloyd-max">Quantizzazione ottima: Lloyd-Max</a></li><li class="l3"><a href="#limiti-della-quantizzazione-ottima">Limiti della quantizzazione ottima</a></li><li class="l3"><a href="#analisi-del-companding">Analisi del companding</a></li><li class="l3"><a href="#companding-logaritmico">Companding logaritmico</a></li><li class="l3"><a href="#legge">Legge µ</a></li><li class="l3"><a href="#legge-a">Legge A</a></li><li class="l3"><a href="#prestazioni-del-companding-logaritmico">Prestazioni del companding logaritmico</a></li><li class="l3"><a href="#approfondimenti">Spiegazioni e dimostrazioni passo-passo</a></li><li class="l3"><a href="#domande">Domande da esame</a></li></ul></details>
 <section id="corso"><h2 class="ps">Il corso, slide per slide</h2>
+<h3 id="relazione-ingresso-uscita-del-quantizzatore">Relazione ingresso-uscita del quantizzatore</h3>
+<img class="zoom" src="img/campionamento-p26-quantizzatore-uniforme.png" alt="" loading="lazy">
+<p>Il quantizzatore è un sistema TD non lineare e istantaneo: <span class="math inline">x_q(n)=Q[x(n)]</span>. Il <strong>quantizzatore uniforme</strong> ha due parametri: <span class="math inline">\Delta</span> = passo di quantizzazione (larghezza degli intervalli) e <span class="math inline">M</span> = numero di intervalli/livelli di restituzione. Per un quantizzatore simmetrico: <span class="math inline">(-X_{max},X_{max})</span> è l'intervallo delle ampiezze d'ingresso e</p>
+<div class="math block">2X_{max}=M\Delta\quad(\text{dinamica del quantizzatore})</div><p>(figura: quantizzatore con <span class="math inline">M=4</span> livelli).</p>
+<h3 id="codifica-binaria">Codifica binaria</h3>
+<img class="zoom" src="img/campionamento-p27-codifica-binaria.png" alt="" loading="lazy">
+<p>Gli <span class="math inline">M</span> livelli <span class="math inline">\{q_1,\dots,q_M\}</span> sono convertiti in stringhe di bit: servono <span class="math inline">b\ge\log_2M</span> bit; di solito <span class="math inline">M=2^b</span> per semplificare la codifica binaria. Schemi di codifica: <strong>naturale</strong> (esempio), in <strong>segno e modulo</strong>, in <strong>complemento a due</strong>; la scelta dipende dall'architettura del sistema di elaborazione. Esempio: <span class="math inline">M=4\Rightarrow b=2</span> bit.</p>
+<h3 id="errore-di-quantizzazione">Errore di quantizzazione</h3>
+<img class="zoom" src="img/campionamento-p28-errore-quantizzazione.png" alt="" loading="lazy">
+<p>Per fissare criteri quantitativi di dimensionamento si definisce</p>
+<div class="math block">e(n)=x_q(n)-x(n)\quad\Rightarrow\quad x_q(n)=x(n)+e(n)</div><p>Il quantizzatore si modella come un <strong>sommatore</strong>; <span class="math inline">e(n)</span> è il <strong>rumore di quantizzazione</strong>. Due regioni di ampiezza di <span class="math inline">x(n)</span>:</p>
+<ol>
+<li><span class="math inline">\mathcal R_g\triangleq[-X_{max},X_{max}]</span> — <strong>regione granulare</strong>: <span class="math inline">\lvert e(n)\rvert\le\frac12\Delta</span>;</li>
+<li><span class="math inline">\mathcal R_s\triangleq\,]-\infty,-X_{max}[\,\cup\,]X_{max},+\infty[</span> — <strong>regione di sovraccarico</strong>: <span class="math inline">e(n)</span> non limitato.</li>
+</ol>
+<img class="zoom" src="img/campionamento-p28-caratteristica-quantizzatore.png" alt="" loading="lazy">
+<h3 id="fattore-di-carico">Fattore di carico</h3>
+<p>L'errore in sovraccarico è irreversibile: va evitato che il quantizzatore ci operi, aumentando <span class="math inline">X_{max}</span>. Ma a parità di <span class="math inline">M</span>, più <span class="math inline">X_{max}</span> → più <span class="math inline">\Delta</span> → più errore nella regione granulare. Ragionevole scegliere <span class="math inline">X_{max}</span> proporzionale al livello del segnale: <span class="math inline">x_{rms}=\sqrt{P_x}</span> (valore efficace). <strong>Fattore di carico:</strong></p>
+<div class="math block">k_c\triangleq\frac{X_{max}}{x_{rms}}</div><p>Assimilando <span class="math inline">x(n)</span> a una v.a. a media nulla e deviazione standard <span class="math inline">x_{rms}</span>, dalla disuguaglianza di Chebyshev la probabilità di sovraccarico è</p>
+<div class="math block">P_s=P(\lvert x(n)\rvert&gt;X_{max})\le\frac1{k_c^2}</div><p>Con <span class="math inline">k_c=4</span> (<em>four-sigma loading</em>): <span class="math inline">P_s\le\frac1{16}=0.0625</span> (6.25%).</p>
+<h3 id="snr-di-quantizzazione">SNR di quantizzazione</h3>
+<p>Fissato <span class="math inline">X_{max}</span> tramite <span class="math inline">k_c</span>, si misura l'accuratezza nella regione granulare con l'SNR di quantizzazione:</p>
+<div class="math block">\text{SNR}\triangleq\frac{P_x}{P_e}=\frac{\langle x^2(n)\rangle}{\langle e^2(n)\rangle},\qquad\text{SNR}_{dB}=10\log_{10}\text{SNR}</div><p><span class="math inline">\text{SNR}\gg1</span> ⇒ quantizzazione accurata; considera solo l'errore nella regione granulare. Modellando <span class="math inline">e(n)\sim U(-\Delta/2,\Delta/2)</span>: <span class="math inline">\langle e^2(n)\rangle\sim E[e^2(n)]=\Delta^2/12</span>. «Con semplici passaggi algebrici»:</p>
+<div class="math block">
+\begin{aligned}
+\text{SNR}&amp;=\frac{x_{rms}^2}{\Delta^2/12}=\frac{X_{max}^2/k_c^2}{(2X_{max}/M)^2/12}=\frac{3M^2}{k_c^2}&amp;&amp;P_x=X_{max}^2/k_c^2,\ \Delta=2X_{max}/M\\
+\text{SNR}_{dB}&amp;=10\log_{10}3+20\log_{10}2^b-20\log_{10}k_c&amp;&amp;M=2^b\\
+&amp;=6.02\,b-[k_c]_{dB}+4.77&amp;&amp;\textbf{legge dei 6 dB/bit}
+\end{aligned}
+</div><p>L'SNR migliora di 6 dB per ogni bit in più, cioè per ogni raddoppio del numero di livelli.</p>
+<h3 id="progetto-di-un-quantizzatore">Progetto di un quantizzatore</h3>
+<p>Formule di progetto: <span class="math inline">P_s\le1/k_c^2</span> e <span class="math inline">\text{SNR}_{dB}=6.02\,b-[k_c]_{dB}+4.77</span>. Al crescere di <span class="math inline">k_c</span>: <span class="math inline">P_s</span> e <span class="math inline">\text{SNR}_{dB}</span> diminuiscono. Al crescere di <span class="math inline">M=2^b</span>: <span class="math inline">\text{SNR}_{dB}</span> aumenta (migliora la qualità) ma crescono costo e memoria.</p>
+<p><em>Esempio 7.6:</em> si vuole <span class="math inline">\text{SNR}_{dB}=85</span> dB con <span class="math inline">k_c=4</span>: <span class="math inline">85=6.02\,b-12.04+4.77\Rightarrow b=\frac{85+7.27}{6.02}=15.3\Rightarrow b=16</span> bit. Audio stereo a <span class="math inline">f_c=44.1</span> kHz: <span class="math inline">16\times44.1</span> kHz <span class="math inline">=705.6</span> kbit/s per canale (L/R); 1 minuto di stereo <span class="math inline">=2\times60\times44\,100\times16=84\,672\,000</span> bit <span class="math inline">=10\,584\,000</span> byte <span class="math inline">=10\,584</span> kB <span class="math inline">\approx10.6</span> MB. Conversioni (ISO/IEC): 1 byte = 8 bit; 1 kB = 1000 byte; 1 MB = 1000 kB.</p>
 <h3 id="limiti-della-quantizzazione-uniforme">Limiti della quantizzazione uniforme</h3>
 <p>La quantizzazione uniforme è teoricamente ottima solo se <span class="math inline">x(n)</span> è uniforme in <span class="math inline">(-X_{max},X_{max})</span>. Il segnale vocale ha pdf non uniforme (valori vicini a zero più probabili), ben modellata da una <strong>distribuzione di Laplace</strong>:</p>
 <div class="math block">f_X(x)=\frac\lambda2\,e^{-\lambda\lvert x\rvert}\qquad(\lambda&gt;0)</div><p>Intuitivamente le ampiezze piccole vanno quantizzate più finemente ⇒ <strong>quantizzazione non uniforme</strong>.</p>
@@ -70,6 +103,127 @@
 </section>
 <section id="approfondimenti"><h2 class="ps">Spiegazioni e dimostrazioni passo-passo</h2>
 <p class="nota">Apri una voce per leggere la spiegazione in parole semplici e le dimostrazioni svolte riga per riga (🧩 = passaggio ricostruito da me).</p>
+<details class="conc"><summary><span class="n">Quantizzazione uniforme, errore di quantizzazione e fattore di carico</span></summary><div class="cb"><h4 id="quantizzazione-uniforme-spiegazione">Spiegazione</h4>
+<img class="zoom" src="img/campionamento-p26-quantizzatore-uniforme.png" alt="" loading="lazy">
+<h4 id="quantizzazione-uniforme-codifica-binaria">Codifica binaria</h4>
+<p>Per completare la A/D, gli <span class="math inline">M</span> livelli <span class="math inline">\{q_1,\dots,q_M\}</span> si convertono in <strong>stringhe di bit</strong>:</p>
+<ul>
+<li>servono <span class="math inline">b\ge\log_2M</span> bit per rappresentare <span class="math inline">M</span> livelli;</li>
+<li>di solito si sceglie <span class="math inline">M = 2^b</span> per semplificare la codifica binaria.</li>
+</ul>
+<p>Schemi di codifica binaria (associano stringhe di bit ai livelli):</p>
+<ul>
+<li>codifica <strong>naturale</strong> (vedi esempio);</li>
+<li>codifica in <strong>segno e modulo</strong>;</li>
+<li>codifica in <strong>complemento a due</strong>.</li>
+</ul>
+<p>La scelta dipende dall'architettura del sistema digitale di elaborazione.</p>
+<img class="zoom" src="img/campionamento-p27-codifica-binaria.png" alt="" loading="lazy">
+<p><em>Esempio: <span class="math inline">M = 4 \Rightarrow b = 2</span> bit; codifica naturale dal livello più basso al più alto: 00, 01, 10, 11</em></p>
+<h4 id="quantizzazione-uniforme-modello-additivo">Modello additivo</h4>
+<p>Obiettivo della slide: fissare <strong>criteri quantitativi</strong> per dimensionare un quantizzatore. Scrivere <span class="math inline">x_q = x+e</span> trasforma il quantizzatore (non lineare) in un <strong>sommatore</strong> con un &quot;rumore&quot; <span class="math inline">e(n)</span>: il <strong>rumore di quantizzazione</strong>. È il modello che permette di parlare di SNR (snr di quantizzazione).</p>
+<img class="zoom" src="img/campionamento-p28-errore-quantizzazione.png" alt="" loading="lazy">
+<p><em>A destra: modello a sommatore <span class="math inline">x(n) + e(n) = x_q(n)</span> e caratteristica <span class="math inline">Q(x)</span> a gradini tra <span class="math inline">q_1</span> e <span class="math inline">q_M</span>. Nella regione granulare <span class="math inline">\mathcal{R}_g = [-X_{max}, X_{max}]</span> i gradini seguono la bisettrice; nelle regioni di sovraccarico <span class="math inline">\mathcal{R}_s</span> l'uscita resta ferma a <span class="math inline">q_1</span> o <span class="math inline">q_M</span></em></p>
+<h4 id="quantizzazione-uniforme-trade-off-su-x-max">Trade-off su <span class="math inline">X_{max}</span></h4>
+<ul>
+<li>L'errore di quantizzazione è <strong>irreversibile</strong>, quindi bisogna evitare che il quantizzatore lavori nella regione di sovraccarico, e per questo si vorrebbe <strong>aumentare <span class="math inline">X_{max}</span></strong>.</li>
+<li>Ma a parità di <span class="math inline">M</span>, aumentare <span class="math inline">X_{max}</span> aumenta <span class="math inline">\Delta</span>, e quindi l'errore nella regione granulare.</li>
+<li>È ragionevole scegliere <span class="math inline">X_{max}</span> <strong>proporzionale al livello del segnale</strong>, misurato dal <strong>valore efficace</strong> <span class="math inline">x_{rms} = \sqrt{P_x}</span>. Da qui la definizione del fattore di carico <span class="math inline">k_c = X_{max}/x_{rms}</span>.</li>
+<li>Assimilando <span class="math inline">x(n)</span> a una v.a. a media nulla e deviazione standard <span class="math inline">x_{rms}</span>, la disuguaglianza di Chebyshev dà <span class="math inline">P_s\le1/k_c^2</span>.</li>
+<li>Con <span class="math inline">k_c = 4</span> (<em>four-sigma loading</em>): <span class="math inline">P_s\le1/16 = 0.0625</span> (6.25%).</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: le due regioni, perché serve <span class="math inline">k_c</span>, da dove viene il 6.25% del four-sigma loading.</p>
+</blockquote>
+<h4 id="quantizzazione-uniforme-perche-importa">Perché importa</h4>
+<p>È il secondo stadio della A/D (conversione ad da) e l'unico <strong>irreversibile</strong>. <span class="math inline">b</span> fissa sia la qualità (SNR) sia il bit rate (<span class="math inline">b\cdot f_c</span>).</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — <span class="math inline">|e(n)|\le\Delta/2</span> nella regione granulare</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia
+In <span class="math inline">R_g</span> ogni <span class="math inline">x(n)</span> cade in un intervallo di larghezza <span class="math inline">\Delta</span> e il livello di restituzione ne è il <strong>punto medio</strong>. La distanza massima tra un punto dell'intervallo e il suo punto medio è metà della larghezza: <span class="math inline">|e(n)| = |x_q(n)-x(n)| \le \Delta/2</span>.
+In <span class="math inline">R_s</span> il livello resta quello estremo (es. <span class="math inline">q_M = X_{max}-\Delta/2</span>) mentre <span class="math inline">x(n)</span> può crescere senza limite, quindi <span class="math inline">e(n)</span> non è limitato.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — <span class="math inline">b\ge\log_2M</span></summary>
+<p>Con <span class="math inline">b</span> bit si scrivono <span class="math inline">2^b</span> stringhe distinte. Per dare un codice diverso a ciascuno degli <span class="math inline">M</span> livelli serve <span class="math inline">2^b\ge M</span>, cioè <span class="math inline">b\ge\log_2M</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — Probabilità di sovraccarico e four-sigma loading</summary>
+<p><strong>Numeri:</strong> <span class="math inline">k_c = 4</span> → <span class="math inline">P_s\le 1/4^2 = 1/16 = 0.0625</span> (6.25%).</p>
+</details>
+<details class="der"><summary>Esempio — Quantizzatore con <span class="math inline">M = 4</span></summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia (lettura della figura)
+<div class="math inline">\begin{aligned}
+M &amp;= 4 \Rightarrow \Delta = \frac{2X_{max}}{4} = \frac{X_{max}}{2} \Rightarrow X_{max} = 2\Delta &amp;&amp; \text{dinamica} \\
+\text{soglie} &amp;: -\Delta,\ 0,\ +\Delta \quad (\text{più } \pm X_{max} = \pm 2\Delta \text{ come bordi di } R_g) \\
+\text{livelli} &amp;: q_1 = -\tfrac32\Delta,\ q_2 = -\tfrac12\Delta,\ q_3 = +\tfrac12\Delta,\ q_4 = +\tfrac32\Delta &amp;&amp; \text{punti medi} \\
+b &amp;= \log_2 4 = 2\ \text{bit} &amp;&amp; \text{codifica naturale: } 00, 01, 10, 11
+\end{aligned}</div>
+Nessun livello cade in zero: con <span class="math inline">M</span> pari e livelli ai punti medi, lo zero è una soglia di decisione, non un livello.</p>
+</blockquote>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">SNR di quantizzazione e legge dei 6 dB/bit</span></summary><div class="cb"><h4 id="snr-di-quantizzazione-spiegazione">Spiegazione</h4>
+<ul>
+<li><strong>Legge dei 6 dB/bit</strong>: l'SNR migliora di 6 dB per ogni bit in più, cioè ogni raddoppio del numero di livelli.</li>
+</ul>
+<img class="zoom" src="img/grafico-snr-vs-bit.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio della formula. Rette parallele di pendenza 6.02 dB/bit; raddoppiare <span class="math inline">k_c</span> trasla la retta verso il basso di <span class="math inline">20\log_{10}2 = 6.02</span> dB, cioè costa esattamente un bit. Il punto evidenziato è l'Esempio 7.6: con <span class="math inline">k_c = 4</span> il primo <span class="math inline">b</span> che supera 85 dB è 16 (89.1 dB).</em></p>
+<ul>
+<li><strong>Trade-off di progetto</strong>:
+<ul>
+<li><span class="math inline">k_c</span> ↑ ⇒ <span class="math inline">P_s</span> ↓ (meno sovraccarico) ma <span class="math inline">\text{SNR}_{dB}</span> ↓ (più rumore granulare);</li>
+<li><span class="math inline">M = 2^b</span> ↑ ⇒ <span class="math inline">\text{SNR}_{dB}</span> ↑ (qualità) ma anche costo e memoria ↑.</li>
+</ul>
+</li>
+<li><strong>Dipendenza dal livello del segnale</strong>: a <span class="math inline">X_{max}</span> fisso, l'SNR dipende da <span class="math inline">x_{rms}</span> tramite <span class="math inline">k_c</span>. Un segnale debole (es. un parlatore a bassa voce) ha <span class="math inline">k_c</span> grande e SNR basso. Da qui nasce il companding.</li>
+</ul>
+<h4 id="snr-di-quantizzazione-esempio-7-6">Esempio 7.6</h4>
+<blockquote class="co mia"><p>📄 Svolgimento completo in dimensionamento quantizzatore</p>
+</blockquote>
+<ul>
+<li>Si vuole <span class="math inline">\text{SNR}_{dB} = 85</span> dB con <span class="math inline">k_c = 4</span>: servono <span class="math inline">b = 16</span> bit (quantizzatore a 16 bit).</li>
+<li>Un segnale audio stereo campionato a <span class="math inline">f_c = 44.1</span> kHz e quantizzato così produce un flusso di <span class="math inline">16\times44.1\,\text{kHz} = 705.6</span> kbit/s <strong>per canale</strong> (L/R).</li>
+<li>1 minuto di audio stereo: <span class="math inline">2\times60\times44\,100\times16 = 84\,672\,000</span> bit <span class="math inline">= 10\,584\,000</span> byte <span class="math inline">= 10\,584</span> kB <span class="math inline">\approx 10.6</span> MB.</li>
+<li>Fattori di conversione (ISO/IEC): 1 byte = 8 bit; 1 kB = 1000 byte; 1 MB = 1000 kB.</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: derivare la legge dei 6 dB/bit dall'inizio (è l'unico passaggio che le slide omettono esplicitamente) ed elencarne le ipotesi.</p>
+</blockquote>
+<h4 id="snr-di-quantizzazione-perche-importa">Perché importa</h4>
+<p>Collega qualità (SNR), numero di bit e quindi bit rate (<span class="math inline">R_b = b\,f_c</span>). È il primo esempio del corso di un compromesso tra qualità e risorse.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Potenza del rumore di quantizzazione <span class="math inline">\Delta^2/12</span></summary>
+<p><strong>Si parte da:</strong> varianza dell'uniforme (variabili aleatorie notevoli): <span class="math inline">\mathcal{U}(a,b)\Rightarrow\text{Var} = (b-a)^2/12</span>
+<div class="math inline">\begin{aligned}
+E[e] &amp;= 0 &amp;&amp; \text{uniforme simmetrica intorno a } 0 \\
+E[e^2] &amp;= \text{Var}(e) + E^2[e] = \text{Var}(e) &amp;&amp; media e varianza \\
+&amp;= \frac{(\Delta/2-(-\Delta/2))^2}{12} = \frac{\Delta^2}{12} &amp;&amp; a=-\Delta/2,\ b=\Delta/2
+\end{aligned}</div></p>
+<img class="zoom" src="img/grafico-errore-quantizzazione.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio: sinusoide di ampiezza 0.9 quantizzata con <span class="math inline">b = 3</span> bit (<span class="math inline">M = 8</span>, <span class="math inline">X_{max} = 1</span>, <span class="math inline">\Delta = 0.25</span>). L'errore <span class="math inline">e(n)</span> resta sempre in <span class="math inline">[-\Delta/2, +\Delta/2]</span> (regione granulare) e salta in modo irregolare dentro questa fascia. Per questo è ragionevole modellarlo come v.a. uniforme su <span class="math inline">(-\Delta/2, \Delta/2)</span>, cioè il modello da cui viene <span class="math inline">\Delta^2/12</span>.</em></p>
+</details>
+<details class="der"><summary>Derivazione — Legge dei 6 dB/bit</summary>
+<p><strong>Si parte da:</strong> <span class="math inline">\text{SNR} = P_x/P_e</span>, <span class="math inline">P_e = \Delta^2/12</span>, <span class="math inline">\Delta = 2X_{max}/M</span> (quantizzazione uniforme), <span class="math inline">k_c = X_{max}/x_{rms}</span>, <span class="math inline">P_x = x_{rms}^2</span>
+<div class="math inline">\begin{aligned}
+\text{SNR} &amp;= \frac{P_x}{\Delta^2/12} = \frac{12\,x_{rms}^2}{\Delta^2} &amp;&amp; \text{sostituisco } P_e \\
+&amp;= \frac{12\,x_{rms}^2}{4X_{max}^2/M^2} = \frac{3M^2\,x_{rms}^2}{X_{max}^2} &amp;&amp; \Delta^2 = 4X_{max}^2/M^2 \\
+&amp;= \frac{3M^2}{k_c^2} &amp;&amp; x_{rms}^2/X_{max}^2 = 1/k_c^2 \\
+&amp;= \frac{3\cdot 2^{2b}}{k_c^2} &amp;&amp; M = 2^b \\
+\text{SNR}_{dB} &amp;= 10\log_{10}3 + 2b\cdot10\log_{10}2 - 20\log_{10}k_c &amp;&amp; \log \text{ di prodotto/rapporto/potenza} \\
+&amp;= 4.771 + 6.0206\,b - [k_c]_{dB} &amp;&amp; 10\log_{10}3 = 4.771;\ 20\log_{10}2 = 6.0206
+\end{aligned}</div>
+<strong>Risultato:</strong> <span class="math inline">\text{SNR}_{dB} \approx 6.02\,b - [k_c]_{dB} + 4.77</span> ✓ (3 cifre significative sui coefficienti).
+<strong>Sanity check:</strong> un bit in più raddoppia <span class="math inline">M</span>, quindi dimezza <span class="math inline">\Delta</span>, divide <span class="math inline">P_e</span> per 4 e aggiunge <span class="math inline">10\log_{10}4 = 6.02</span> dB ✓. Controllo dimensionale: <span class="math inline">x_{rms}^2/X_{max}^2</span> è adimensionale ✓.
+<strong>Ipotesi:</strong></p>
+<ol>
+<li>errore uniforme su <span class="math inline">(-\Delta/2,\Delta/2)</span>, ragionevole se <span class="math inline">M\gg1</span> e il segnale &quot;attraversa&quot; molti livelli;</li>
+<li>niente sovraccarico (conta solo la regione granulare);</li>
+<li>quantizzatore uniforme simmetrico.
+Se cade la 2, l'SNR reale è <strong>peggiore</strong> perché si aggiunge l'errore di sovraccarico, non limitato.</li>
+</ol>
+</details>
+<details class="der"><summary>Derivazione — Costante per il four-sigma loading</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia
+<div class="math inline">k_c = 4 \Rightarrow [k_c]_{dB} = 20\log_{10}4 = 12.04\,\text{dB} \Rightarrow \text{SNR}_{dB} = 6.02b - 12.04 + 4.77 = 6.02b - 7.27 \approx 6.02b - 7.3</div></p>
+</blockquote>
+</details>
+</div></details>
 <details class="conc"><summary><span class="n">Quantizzazione non uniforme e quantizzatore ottimo di Lloyd-Max</span></summary><div class="cb"><h4 id="quantizzazione-non-uniforme-spiegazione">Spiegazione</h4>
 <h4 id="quantizzazione-non-uniforme-perche-non-uniforme">Perché non uniforme</h4>
 <ul>
@@ -411,9 +565,81 @@ L'ampiezza è proporzionale al livello <span class="math inline">x_{j-1}</span>,
 <p><strong>Ipotesi:</strong> <span class="math inline">F</span> = µ-law (strettamente crescente e dispari); quantizzatore uniforme simmetrico con <span class="math inline">M</span> pari e livelli al centro degli intervalli; nessun sovraccarico (<span class="math inline">|x|\le X_{max}</span>).</p>
 </details>
 </div></details>
+<details class="conc es"><summary><span class="n">Esercizio svolto · Dimensionamento di un quantizzatore e bit rate</span></summary><div class="cb"><h4 id="dimensionamento-quantizzatore-metodo">Metodo</h4>
+<ol>
+<li><strong>Fissare <span class="math inline">k_c</span></strong> in base alla probabilità di sovraccarico ammessa: <span class="math inline">P_s\le1/k_c^2</span>, cioè <span class="math inline">k_c\ge1/\sqrt{P_s}</span> (disuguaglianza di chebyshev). Default: <span class="math inline">k_c = 4</span> (four-sigma loading).</li>
+<li><strong>Calcolare <span class="math inline">[k_c]_{dB} = 20\log_{10}k_c</span></strong> (rapporto di ampiezze, quindi <span class="math inline">20\log</span>).</li>
+<li><strong>Invertire la legge dei 6 dB/bit</strong> (snr di quantizzazione):
+<div class="math inline">b\ge\frac{\text{SNR}_{dB}+[k_c]_{dB}-4.77}{6.02}</div>
+e arrotondare <strong>per eccesso</strong> all'intero.</li>
+<li><strong>Verificare</strong>: ricalcolare l'SNR con il <span class="math inline">b</span> scelto, e anche con <span class="math inline">b-1</span> per controllare che non basti.</li>
+<li><strong>Bit rate</strong>: <span class="math inline">R_b = b\cdot f_c</span> per canale; per <span class="math inline">n_{ch}</span> canali, <span class="math inline">R_{tot} = n_{ch}\,b\,f_c</span>.</li>
+<li><strong>Memoria</strong>: bit <span class="math inline">= R_{tot}\cdot T</span>; poi byte (÷8), kB (÷1000), MB (÷1000) secondo ISO/IEC.</li>
+<li>Con companding: <span class="math inline">\text{SNR}_{dB}\approx6.02b+\alpha</span>, con <span class="math inline">\alpha = -9.99</span> (A-law) o <span class="math inline">-10.11</span> (µ-law) (companding).</li>
+</ol>
+<h4 id="dimensionamento-quantizzatore-formule-usate">Formule usate</h4>
+<ul>
+<li><span class="math inline">\Delta = 2X_{max}/M</span>, <span class="math inline">M = 2^b</span> — quantizzazione uniforme</li>
+<li><span class="math inline">P_s\le1/k_c^2</span> — disuguaglianza di chebyshev</li>
+<li><span class="math inline">\text{SNR}_{dB} = 6.02b-[k_c]_{dB}+4.77</span> — snr di quantizzazione</li>
+<li><span class="math inline">\text{SNR}_{dB}\approx6.02b+\alpha</span> — companding</li>
+</ul>
+<h4 id="dimensionamento-quantizzatore-casi-svolti">Casi svolti</h4>
+<h5 id="dimensionamento-quantizzatore-caso-1-four-sigma-loading">Caso 1 — Four-sigma loading</h5>
+<p><strong>Traccia</strong>: <span class="math inline">k_c = 4</span>. Probabilità di sovraccarico massima?
+<div class="math inline">P_s\le\frac{1}{k_c^2} = \frac{1}{16} = 0.0625 = 6.25\%</div>
+<strong>Sanity check:</strong> per un segnale gaussiano il valore vero è <span class="math inline">2Q(4)\approx6.3\cdot10^{-5}</span> (variabile aleatoria gaussiana); Chebyshev è molto conservativo.</p>
+<h5 id="dimensionamento-quantizzatore-caso-2-esempio-7-6-quantizzatore-audio-a-85-db">Caso 2 — Esempio 7.6: quantizzatore audio a 85 dB</h5>
+<p><strong>Traccia</strong>: si vuole <span class="math inline">\text{SNR}_{dB} = 85</span> dB con <span class="math inline">k_c = 4</span>. Quanti bit? Bit rate per audio stereo a <span class="math inline">f_c = 44.1</span> kHz? Memoria per 1 minuto?</p>
+<p><strong>Dati:</strong> <span class="math inline">\text{SNR}_{dB} = 85</span> dB, <span class="math inline">k_c = 4</span>, <span class="math inline">f_c = 44.1</span> kHz, 2 canali, <span class="math inline">T = 60</span> s.</p>
+<p><strong>Passo 1 — numero di bit</strong> (la slide dà solo «<span class="math inline">b = 16</span>»):
+<div class="math inline">\begin{aligned}
+[k_c]_{dB} &amp;= 20\log_{10}4 = 20\times0.60206 = 12.04\,\text{dB} &amp;&amp; \text{fattore di carico in dB} \\
+6.02\,b - 12.04 + 4.77 &amp;\ge 85 &amp;&amp; \text{legge dei 6 dB/bit} \\
+6.02\,b &amp;\ge 85 + 12.04 - 4.77 = 92.27 &amp;&amp; \text{isolo } b \\
+b &amp;\ge 92.27/6.02 = 15.33 &amp;&amp; \\
+b &amp;= 16 &amp;&amp; \text{arrotondo per eccesso}
+\end{aligned}</div>
+<strong>Verifica:</strong></p>
+<ul>
+<li><span class="math inline">b = 16</span>: <span class="math inline">6.02\times16-7.27 = 96.32-7.27 = 89.05</span> dB ≥ 85 ✓;</li>
+<li><span class="math inline">b = 15</span>: <span class="math inline">90.30-7.27 = 83.03</span> dB &lt; 85 ✗.</li>
+</ul>
+<p><strong>Passo 2 — bit rate per canale:</strong>
+<div class="math inline">R_b = b\cdot f_c = 16\,\text{bit/campione}\times44\,100\,\text{campioni/s} = 705\,600\,\text{bit/s} = 705.6\,\text{kbit/s}</div></p>
+<p><strong>Passo 3 — memoria per 1 minuto stereo:</strong>
+<div class="math inline">\begin{aligned}
+N_{bit} &amp;= n_{ch}\times T\times f_c\times b = 2\times60\times44\,100\times16 &amp;&amp; \text{canali} \times \text{s} \times \text{campioni/s} \times \text{bit/campione} \\
+&amp;= 2\times60 = 120;\quad 120\times44\,100 = 5\,292\,000;\quad 5\,292\,000\times16 = 84\,672\,000\,\text{bit} \\
+&amp;= 84\,672\,000/8 = 10\,584\,000\,\text{byte} &amp;&amp; 1\,\text{byte} = 8\,\text{bit} \\
+&amp;= 10\,584\,\text{kB}\approx10.6\,\text{MB} &amp;&amp; 1\,\text{kB} = 1000\,\text{byte},\ 1\,\text{MB} = 1000\,\text{kB}
+\end{aligned}</div>
+<strong>Risultato:</strong> <span class="math inline">b = 16</span> bit; 705.6 kbit/s per canale; ≈ 10.6 MB/minuto (tutti ✓ con la slide).
+<strong>Sanity check</strong> (🧩 mio): bit rate stereo totale <span class="math inline">= 2\times705.6 = 1411.2</span> kbit/s, e <span class="math inline">1411.2\,\text{kbit/s}\times60\,\text{s} = 84\,672</span> kbit ✓. È circa 10× i 128 kbit/s di un MP3, in accordo con la stima «around ten times higher» per l'audio professionale.</p>
+<h5 id="dimensionamento-quantizzatore-caso-3-costanti-alpha-del-companding">Caso 3 — Costanti <span class="math inline">\alpha</span> del companding</h5>
+<p><strong>Traccia</strong>: verificare <span class="math inline">\alpha = -9.99</span> dB (A-law, <span class="math inline">A=87.6</span>), <span class="math inline">-10.11</span> dB (µ-law, <span class="math inline">\mu=255</span>), <span class="math inline">-7.3</span> dB (uniforme, <span class="math inline">k_c=4</span>).
+<div class="math inline">\begin{aligned}
+\text{A-law: } \alpha &amp;= 4.77-20\log_{10}(1+\ln87.6) = 4.77-20\log_{10}(1+4.473) &amp;&amp; \ln87.6 = 4.4728 \\
+&amp;= 4.77-20\log_{10}5.473 = 4.77-20\times0.7382 = 4.77-14.76 = -9.99\,\text{dB} \\
+\mu\text{-law: } \alpha &amp;= 4.77-20\log_{10}\ln256 = 4.77-20\log_{10}5.545 &amp;&amp; \ln256 = 8\ln2 = 5.5452 \\
+&amp;= 4.77-20\times0.7439 = 4.77-14.88 = -10.11\,\text{dB} \\
+\text{uniforme: } \alpha &amp;= 4.77-20\log_{10}4 = 4.77-12.04 = -7.27\approx-7.3\,\text{dB}
+\end{aligned}</div>
+<strong>Risultato:</strong> tutti ✓.</p>
+<h4 id="dimensionamento-quantizzatore-trappole">Trappole</h4>
+<ul>
+<li><strong><span class="math inline">[k_c]_{dB}</span> usa <span class="math inline">20\log_{10}</span></strong>, non <span class="math inline">10\log_{10}</span>: <span class="math inline">k_c</span> è un rapporto di ampiezze.</li>
+<li><strong>Arrotondare <span class="math inline">b</span> per eccesso</strong>: 15.33 → 16, non 15.</li>
+<li>La legge dei 6 dB/bit ignora il <strong>sovraccarico</strong>: se <span class="math inline">k_c</span> è piccolo, l'SNR reale è peggiore.</li>
+<li><strong>Stereo</strong> = 2 canali; «per canale» vs «totale».</li>
+<li><strong>Unità di memoria</strong>: le slide usano i fattori ISO/IEC decimali (1 kB = 1000 byte), non 1024.</li>
+<li>Le costanti <span class="math inline">\alpha</span> del companding valgono con il segnale che impegna <strong>tutta la dinamica</strong>.</li>
+</ul>
+</div></details>
 </section>
 <section id="domande"><h2 class="ps">Domande da esame</h2>
 <ul>
+<li>Ricavare la legge dei 6 dB/bit. Dimensionare un quantizzatore per un SNR dato.</li>
 <li>Condizioni di Lloyd-Max: derivazione e significato.</li>
 <li>Perché serve la quantizzazione robusta? Derivare la legge logaritmica. µ-law vs A-law.</li>
 </ul>
