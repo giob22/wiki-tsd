@@ -397,7 +397,7 @@ def pagina_lezione(cfg, corso, out, precedente, successiva):
     corpo = con_id(corpo, usati, toc)
     conc ="\n".join(concetto_html(c, out, usati) for c in cfg["concetti"])
     for e in cfg["esercizi"]:
-        conc += "\n" + concetto_html(e, out, usati, "esercizi").replace('class="conc"', 'class="conc es"')
+        conc += "\n" + esercizio_html(e, out, usati)
     dom = domande_html(cfg, out)
     voci = []
     for liv, i, t in toc:
