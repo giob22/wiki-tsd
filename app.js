@@ -85,6 +85,60 @@
     if (t.tagName === 'IMG' && t.classList.contains('zoom')) { lb.innerHTML = '<img src="' + t.src + '" alt="">'; lb.hidden = false; }
     else if (lb && !lb.hidden) { lb.hidden = true; lb.innerHTML = ''; }
   });
+  // anteprima delle equazioni richiamate nel testo, ad esempio «(10)»
+  var eqTex = {}, eqEl = {};
+  document.querySelectorAll('.math[data-eq]').forEach(function (b) {
+    var tex = b.textContent;
+    b.dataset.eq.split(' ').forEach(function (n) { eqTex[n] = tex; eqEl[n] = b; });
+  });
+  var pop = document.createElement('div'); pop.id = 'eqpop'; pop.hidden = true; document.body.appendChild(pop);
+  var popT = null, popA = null;
+  var tocco = !(window.matchMedia && matchMedia('(hover: hover)').matches);
+  function popNascondi() { clearTimeout(popT); pop.hidden = true; popA = null; }
+  function popMostra(a) {
+    var n = a.dataset.eq;
+    if (!eqTex[n] || !window.katex) return;
+    clearTimeout(popT); popA = a;
+    pop.innerHTML = '<div class="ph"><span>Equazione (' + n + ')</span><a href="#eq-' + n + '">vai all’equazione ↓</a></div><div class="math block"></div>';
+    var m = pop.lastChild; m.dataset.ok = '1';
+    pop.hidden = false;
+    var tex = eqTex[n].replace(/\\tag\{\d+\}/g, '');
+    try { katex.render(tex, m, { displayMode: true, throwOnError: false, strict: false }); } catch (e) {}
+    fit(m);
+    var r = a.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+    var x = Math.min(Math.max(8, r.left - 16), Math.max(8, window.innerWidth - w - 8));
+    var y = r.bottom + 6;
+    if (y + h > window.innerHeight - 8 && r.top - h - 6 > 8) y = r.top - h - 6;
+    pop.style.left = x + 'px'; pop.style.top = Math.max(8, y) + 'px';
+  }
+  function flash(n) {
+    var b = eqEl[n]; if (!b) return;
+    b.classList.add('flash'); setTimeout(function () { b.classList.remove('flash'); }, 1800);
+  }
+  function flashHash() { var m = /^#eq-(\d+)$/.exec(location.hash); if (m) flash(m[1]); }
+  window.addEventListener('hashchange', flashHash); window.addEventListener('load', flashHash);
+  function eqLink(t) { return t.closest ? t.closest('a.eqref') : null; }
+  document.addEventListener('mouseover', function (e) {
+    if (tocco) return;
+    var a = eqLink(e.target);
+    if (a) { if (a === popA && !pop.hidden) { clearTimeout(popT); return; } clearTimeout(popT); popT = setTimeout(function () { popMostra(a); }, 120); }
+    else if (e.target.closest && e.target.closest('#eqpop')) clearTimeout(popT);
+  });
+  document.addEventListener('mouseout', function (e) {
+    if (tocco) return;
+    if (eqLink(e.target) || (e.target.closest && e.target.closest('#eqpop'))) { clearTimeout(popT); popT = setTimeout(popNascondi, 260); }
+  });
+  document.addEventListener('focusin', function (e) { var a = eqLink(e.target); if (a) popMostra(a); });
+  document.addEventListener('focusout', function (e) { if (eqLink(e.target)) popT = setTimeout(popNascondi, 200); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') popNascondi(); });
+  document.addEventListener('click', function (e) {
+    var a = eqLink(e.target);
+    if (a && tocco) { e.preventDefault(); if (popA === a && !pop.hidden) popNascondi(); else popMostra(a); return; }
+    if (!(e.target.closest && e.target.closest('#eqpop a'))) { if (!(e.target.closest && e.target.closest('#eqpop'))) popNascondi(); return; }
+    popNascondi();
+  });
+  window.addEventListener('scroll', function () { if (!pop.hidden) popNascondi(); }, { passive: true });
+
   var su = document.getElementById('su');
   window.addEventListener('scroll', function () { if (su) su.hidden = window.scrollY < 600; }, { passive: true });
 })();

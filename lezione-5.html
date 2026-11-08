@@ -82,11 +82,11 @@
 <li>La descrizione statistica di un processo si basa sulla CDF (o, equivalentemente, sulla pdf) di <strong>vettori</strong> di campioni del segnale aleatorio.</li>
 <li><span class="math inline">X(t_1), \dots, X(t_k)</span> sono le variabili aleatorie ottenute campionando <span class="math inline">X(t)</span> negli istanti <span class="math inline">t_1, \dots, t_k</span>. Per <span class="math inline">(x_1, \dots, x_k) \in \mathbb{R}^k</span>, la <strong>CDF congiunta</strong> è</li>
 </ul>
-<div class="math block">F_{X(t_1),\dots,X(t_k)}(x_1, \dots, x_k) \triangleq P[X(t_1) \le x_1, \dots, X(t_k) \le x_k] \tag{1}</div><p>e la <strong>pdf congiunta</strong> è</p>
-<div class="math block">f_{X(t_1),\dots,X(t_k)}(x_1, \dots, x_k) \triangleq \frac{\partial^k}{\partial x_1\,\partial x_2 \cdots \partial x_k}\,F_{X(t_1),\dots,X(t_k)}(x_1, \dots, x_k) \tag{2}</div><ul>
-<li>Se si conosce la CDF congiunta (1), o la pdf (2), per <strong>qualunque scelta</strong> degli istanti <span class="math inline">t_1, \dots, t_k</span>, si dice che si conosce la <strong>caratterizzazione statistica di ordine <span class="math inline">k</span></strong> del processo.</li>
+<span class="ea" id="eq-1"></span><div class="math block" data-eq="1">F_{X(t_1),\dots,X(t_k)}(x_1, \dots, x_k) \triangleq P[X(t_1) \le x_1, \dots, X(t_k) \le x_k] \tag{1}</div><p>e la <strong>pdf congiunta</strong> è</p>
+<span class="ea" id="eq-2"></span><div class="math block" data-eq="2">f_{X(t_1),\dots,X(t_k)}(x_1, \dots, x_k) \triangleq \frac{\partial^k}{\partial x_1\,\partial x_2 \cdots \partial x_k}\,F_{X(t_1),\dots,X(t_k)}(x_1, \dots, x_k) \tag{2}</div><ul>
+<li>Se si conosce la CDF congiunta <a class="eqref" href="#eq-1" data-eq="1">(1)</a>, o la pdf <a class="eqref" href="#eq-2" data-eq="2">(2)</a>, per <strong>qualunque scelta</strong> degli istanti <span class="math inline">t_1, \dots, t_k</span>, si dice che si conosce la <strong>caratterizzazione statistica di ordine <span class="math inline">k</span></strong> del processo.</li>
 <li>Nota a mano: integrando rispetto a una variabile si ottiene la pdf del primo ordine, <span class="math inline">\int_{-\infty}^{+\infty} f_{X(t_1)X(t_2)}(x_1, x_2)\,dx_2 = f_{X(t_1)}(x_1)</span>.</li>
-<li>Refusi della slide: nella (2) la derivata è scritta <span class="math inline">\partial^n</span> (corretta a mano in <span class="math inline">\partial^k</span>); il rimando è alla «CDF congiunta (36)» invece che alla (1).</li>
+<li>Refusi della slide: nella <a class="eqref" href="#eq-2" data-eq="2">(2)</a> la derivata è scritta <span class="math inline">\partial^n</span> (corretta a mano in <span class="math inline">\partial^k</span>); il rimando è alla «CDF congiunta <a class="eqref" href="#eq-36" data-eq="36">(36)</a>» invece che alla <a class="eqref" href="#eq-1" data-eq="1">(1)</a>.</li>
 </ul>
 <img class="zoom" src="img/random-processes-p9-marginalizzazione.png" alt="" loading="lazy">
 <h4 id="il-processo-di-bernoulli-df-del-primo-e-del-seco">Il processo di Bernoulli: DF del primo e del secondo ordine</h4>
@@ -108,17 +108,17 @@
 <ul>
 <li>Per un processo reale <span class="math inline">X(t)</span>, la <strong>media</strong> è il valore atteso della variabile aleatoria ottenuta campionando il processo in <span class="math inline">t</span>:</li>
 </ul>
-<div class="math block">\mu_X(t) \triangleq E[X(t)] = \int_{-\infty}^{+\infty} x\,f_{X(t)}(x)\,dx \tag{3}</div><p>con <span class="math inline">f_{X(t)}(x)</span> pdf del primo ordine. In generale <span class="math inline">\mu_X(t)</span> è funzione del tempo.</p>
+<span class="ea" id="eq-3"></span><div class="math block" data-eq="3">\mu_X(t) \triangleq E[X(t)] = \int_{-\infty}^{+\infty} x\,f_{X(t)}(x)\,dx \tag{3}</div><p>con <span class="math inline">f_{X(t)}(x)</span> pdf del primo ordine. In generale <span class="math inline">\mu_X(t)</span> è funzione del tempo.</p>
 <h4 id="funzione-di-correlazione">Funzione di correlazione</h4>
 <ul>
 <li>La <strong>funzione di autocorrelazione</strong> (acf) è il valore atteso del prodotto di due variabili aleatorie, <span class="math inline">X(t_1)</span> e <span class="math inline">X(t_2)</span>:</li>
 </ul>
-<div class="math block">R_{XX}(t_1, t_2) \triangleq E[X(t_1)X(t_2)] = \int_{-\infty}^{+\infty}\!\!\int_{-\infty}^{+\infty} x_1 x_2\,f_{X(t_1),X(t_2)}(x_1, x_2)\,dx_1\,dx_2 \tag{4}</div><p>con <span class="math inline">f_{X(t_1),X(t_2)}</span> pdf del secondo ordine. In generale dipende da <span class="math inline">t_1</span> e <span class="math inline">t_2</span> separatamente.</p>
+<span class="ea" id="eq-4"></span><div class="math block" data-eq="4">R_{XX}(t_1, t_2) \triangleq E[X(t_1)X(t_2)] = \int_{-\infty}^{+\infty}\!\!\int_{-\infty}^{+\infty} x_1 x_2\,f_{X(t_1),X(t_2)}(x_1, x_2)\,dx_1\,dx_2 \tag{4}</div><p>con <span class="math inline">f_{X(t_1),X(t_2)}</span> pdf del secondo ordine. In generale dipende da <span class="math inline">t_1</span> e <span class="math inline">t_2</span> separatamente.</p>
 <h4 id="funzione-di-covarianza">Funzione di covarianza</h4>
 <ul>
 <li>La <strong>autocovarianza</strong> è</li>
 </ul>
-<div class="math block">
+<span class="ea" id="eq-5"></span><div class="math block" data-eq="5">
 \begin{aligned}
 C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\} \\
 &amp;= \iint [x_1 - \mu_X(t_1)][x_2 - \mu_X(t_2)]\,f_{X(t_1),X(t_2)}(x_1, x_2)\,dx_1\,dx_2 \\
@@ -138,15 +138,15 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 <ul>
 <li><span class="math inline">X(t)</span> è <strong>stazionario di ordine <span class="math inline">k</span></strong> se</li>
 </ul>
-<div class="math block">F_{X(t_1+\tau),\dots,X(t_k+\tau)}(x_1, \dots, x_k) = F_{X(t_1),\dots,X(t_k)}(x_1, \dots, x_k) \tag{6}</div><p>per ogni traslazione <span class="math inline">\tau</span> e ogni scelta di <span class="math inline">t_1, \dots, t_k</span>.</p>
+<span class="ea" id="eq-6"></span><div class="math block" data-eq="6">F_{X(t_1+\tau),\dots,X(t_k+\tau)}(x_1, \dots, x_k) = F_{X(t_1),\dots,X(t_k)}(x_1, \dots, x_k) \tag{6}</div><p>per ogni traslazione <span class="math inline">\tau</span> e ogni scelta di <span class="math inline">t_1, \dots, t_k</span>.</p>
 <ul>
-<li><span class="math inline">X(t)</span> è <strong>stazionario in senso stretto</strong> (SSS) se la (6) vale per ogni <span class="math inline">k \in \mathbb{N}</span>: è la forma più forte. Spesso bastano forme più deboli.</li>
-<li><strong>Stazionario del primo ordine</strong>: la (6) vale per <span class="math inline">k = 1</span>. Con <span class="math inline">\tau = -t</span> si ha <span class="math inline">F_{X(t)}(x) = F_{X(t+\tau)}(x) = F_{X(0)}(x)</span> per ogni <span class="math inline">t \in \mathbb{R}</span> ⇒ la distribuzione del primo ordine <strong>non dipende dal tempo</strong>.</li>
+<li><span class="math inline">X(t)</span> è <strong>stazionario in senso stretto</strong> (SSS) se la <a class="eqref" href="#eq-6" data-eq="6">(6)</a> vale per ogni <span class="math inline">k \in \mathbb{N}</span>: è la forma più forte. Spesso bastano forme più deboli.</li>
+<li><strong>Stazionario del primo ordine</strong>: la <a class="eqref" href="#eq-6" data-eq="6">(6)</a> vale per <span class="math inline">k = 1</span>. Con <span class="math inline">\tau = -t</span> si ha <span class="math inline">F_{X(t)}(x) = F_{X(t+\tau)}(x) = F_{X(0)}(x)</span> per ogni <span class="math inline">t \in \mathbb{R}</span> ⇒ la distribuzione del primo ordine <strong>non dipende dal tempo</strong>.</li>
 <li>Per un processo stazionario del primo ordine la media è costante:</li>
 </ul>
 <div class="math block">\mu_X(t) = \int_{-\infty}^{+\infty} x\,f_{X(t)}(x)\,dx = \int_{-\infty}^{+\infty} x\,f_{X(0)}(x)\,dx \equiv \mu_X, \quad \forall t \in \mathbb{R}</div><h4 id="processi-stazionari-3-3">Processi stazionari (3/3)</h4>
 <ul>
-<li><strong>Stazionario del secondo ordine</strong>: la (6) vale per <span class="math inline">k = 2</span>. Con <span class="math inline">\tau = -t_2</span>:</li>
+<li><strong>Stazionario del secondo ordine</strong>: la <a class="eqref" href="#eq-6" data-eq="6">(6)</a> vale per <span class="math inline">k = 2</span>. Con <span class="math inline">\tau = -t_2</span>:</li>
 </ul>
 <div class="math block">F_{X(t_1),X(t_2)}(x_1, x_2) = F_{X(t_1+\tau),X(t_2+\tau)}(x_1, x_2) = F_{X(t_1-t_2),X(0)}(x_1, x_2)</div><p>La distribuzione del secondo ordine dipende <strong>solo dalla differenza</strong> tra gli istanti di campionamento, non dagli istanti particolari.</p>
 <ul>
@@ -171,7 +171,7 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 <ul>
 <li>Per un processo WSS la acf si può scrivere come <strong>lag-acf</strong>:</li>
 </ul>
-<div class="math block">R_{XX}(\tau) \triangleq E[X(t)\,X(t - \tau)], \quad \forall \tau \in \mathbb{R} \tag{7}</div><p>dove <span class="math inline">\tau</span> è il <strong>lag</strong>, l'intervallo tra i campioni in <span class="math inline">t_1 = t</span> e <span class="math inline">t_2 = t_1 - \tau</span>.</p>
+<span class="ea" id="eq-7"></span><div class="math block" data-eq="7">R_{XX}(\tau) \triangleq E[X(t)\,X(t - \tau)], \quad \forall \tau \in \mathbb{R} \tag{7}</div><p>dove <span class="math inline">\tau</span> è il <strong>lag</strong>, l'intervallo tra i campioni in <span class="math inline">t_1 = t</span> e <span class="math inline">t_2 = t_1 - \tau</span>.</p>
 <ul>
 <li>Proprietà:
 <ol>
@@ -182,7 +182,7 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 </li>
 <li>Acf <strong>normalizzata</strong>:</li>
 </ul>
-<div class="math block">\rho_{XX}(\tau) \triangleq \frac{R_{XX}(\tau)}{R_{XX}(0)} \tag{8}</div><p>con valori in <span class="math inline">[-1, 1]</span>, cioè <span class="math inline">\lvert\rho_{XX}(\tau)\rvert \le 1</span>.</p>
+<span class="ea" id="eq-8"></span><div class="math block" data-eq="8">\rho_{XX}(\tau) \triangleq \frac{R_{XX}(\tau)}{R_{XX}(0)} \tag{8}</div><p>con valori in <span class="math inline">[-1, 1]</span>, cioè <span class="math inline">\lvert\rho_{XX}(\tau)\rvert \le 1</span>.</p>
 <h4 id="significato-fisico-della-auto-correlation-functi">Significato fisico della Auto Correlation Function (acf) (1/2)</h4>
 <ul>
 <li><span class="math inline">R_{XX}(\tau)</span> descrive l'interdipendenza di due variabili aleatorie ottenute campionando <span class="math inline">X(t)</span> a <span class="math inline">\tau</span> secondi di distanza.</li>
@@ -198,7 +198,7 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 <ul>
 <li>Per due processi reali <span class="math inline">X(t)</span> e <span class="math inline">Y(t)</span>, con acf <span class="math inline">R_{XX}(t, \tau)</span> e <span class="math inline">R_{YY}(t, \tau)</span>, si definiscono le <strong>lag-crosscorrelazioni</strong></li>
 </ul>
-<div class="math block">R_{XY}(t, \tau) \triangleq E[X(t)\,Y(t - \tau)], \qquad R_{YX}(t, \tau) \triangleq E[Y(t)\,X(t - \tau)] \tag{9}</div><p>che dipendono dall'<strong>ordine</strong> dei due processi.</p>
+<span class="ea" id="eq-9"></span><div class="math block" data-eq="9">R_{XY}(t, \tau) \triangleq E[X(t)\,Y(t - \tau)], \qquad R_{YX}(t, \tau) \triangleq E[Y(t)\,X(t - \tau)] \tag{9}</div><p>che dipendono dall'<strong>ordine</strong> dei due processi.</p>
 <ul>
 <li><span class="math inline">X(t)</span> e <span class="math inline">Y(t)</span> sono <strong>congiuntamente WSS</strong> se ciascuno è WSS e, in più, <span class="math inline">R_{XY}(t, \tau) \equiv R_{XY}(\tau)</span>.</li>
 <li>In generale la crosscorrelazione <strong>non è pari</strong> in <span class="math inline">\tau</span> e <strong>non ha il massimo nell'origine</strong>, ma vale <span class="math inline">R_{XY}(\tau) = R_{YX}(-\tau)</span>.</li>
@@ -207,7 +207,7 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 <ul>
 <li>Per due processi con autocovarianze <span class="math inline">C_{XX}(\tau)</span> e <span class="math inline">C_{YY}(\tau)</span>, la <strong>lag-crosscovarianza</strong> è</li>
 </ul>
-<div class="math block">C_{XY}(t, \tau) \triangleq E\{[X(t) - \mu_X(t)][Y(t - \tau) - \mu_Y(t - \tau)]\} \tag{10}</div><div class="math block">C_{YX}(t, \tau) \triangleq E\{[Y(t) - \mu_Y(t)][X(t - \tau) - \mu_X(t - \tau)]\} \tag{11}</div><p>e dipende dall'ordine dei due processi.</p>
+<span class="ea" id="eq-10"></span><div class="math block" data-eq="10">C_{XY}(t, \tau) \triangleq E\{[X(t) - \mu_X(t)][Y(t - \tau) - \mu_Y(t - \tau)]\} \tag{10}</div><span class="ea" id="eq-11"></span><div class="math block" data-eq="11">C_{YX}(t, \tau) \triangleq E\{[Y(t) - \mu_Y(t)][X(t - \tau) - \mu_X(t - \tau)]\} \tag{11}</div><p>e dipende dall'ordine dei due processi.</p>
 <ul>
 <li>A media nulla (<span class="math inline">\mu_X(t) = \mu_Y(t) = 0</span>): <span class="math inline">C_{XY}(t, \tau) = R_{XY}(t, \tau)</span> e <span class="math inline">C_{YX}(t, \tau) = R_{YX}(t, \tau)</span>.</li>
 <li>Se sono congiuntamente WSS, <span class="math inline">C_{XY}(t, \tau) = C_{XY}(\tau)</span>.</li>
@@ -226,7 +226,7 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 <li>Un processo complesso si rappresenta come <span class="math inline">Z(t) = X(t) + jY(t)</span>. La caratterizzazione statistica <strong>completa</strong> si ottiene dalla caratterizzazione congiunta di parte reale <span class="math inline">X(t)</span> e parte immaginaria <span class="math inline">Y(t)</span>.</li>
 <li>Per la caratterizzazione <strong>parziale</strong>:</li>
 </ul>
-<div class="math block">\mu_Z(t) \triangleq E[Z(t)] = E[X(t) + jY(t)] = \mu_X(t) + j\mu_Y(t) \tag{12}</div><div class="math block">R_{ZZ}(t_1, t_2) \triangleq E[Z(t_1)\,Z^\ast(t_2)] \quad \text{ovvero} \quad R_{ZZ}(t, \tau) \triangleq E[Z(t)\,Z^\ast(t - \tau)] \tag{13}</div><p>con <span class="math inline">Z^\ast</span> il complesso coniugato di <span class="math inline">Z</span>.</p>
+<span class="ea" id="eq-12"></span><div class="math block" data-eq="12">\mu_Z(t) \triangleq E[Z(t)] = E[X(t) + jY(t)] = \mu_X(t) + j\mu_Y(t) \tag{12}</div><span class="ea" id="eq-13"></span><div class="math block" data-eq="13">R_{ZZ}(t_1, t_2) \triangleq E[Z(t_1)\,Z^\ast(t_2)] \quad \text{ovvero} \quad R_{ZZ}(t, \tau) \triangleq E[Z(t)\,Z^\ast(t - \tau)] \tag{13}</div><p>con <span class="math inline">Z^\ast</span> il complesso coniugato di <span class="math inline">Z</span>.</p>
 <ul>
 <li>A rigore servirebbe un altro momento del secondo ordine, la <strong>acf coniugata</strong> <span class="math inline">R_{ZZ^\ast}(t_1, t_2) \triangleq E[Z(t_1)\,Z(t_2)]</span>, che però è nulla per la maggior parte dei processi.</li>
 </ul>
@@ -244,12 +244,12 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 <li><span class="math inline">\mu_Y(t) = E[Y(t)] = E\Big[\int h(\tau_1)\,X(t - \tau_1)\,d\tau_1\Big]</span> (14).</li>
 <li>Se <span class="math inline">E[X(t)]</span> è finito per ogni <span class="math inline">t</span> e il filtro è stabile, si scambiano valore atteso e integrale:</li>
 </ul>
-<div class="math block">\mu_Y(t) = \int_{-\infty}^{+\infty} h(\tau_1)\,E[X(t - \tau_1)]\,d\tau_1 = \int h(\tau_1)\,\mu_X(t - \tau_1)\,d\tau_1 = \mu_X(t) \ast h(t) \tag{15}</div><p>La media dell'uscita è la <strong>convoluzione</strong> tra la media dell'ingresso e la risposta impulsiva.</p>
+<span class="ea" id="eq-15"></span><div class="math block" data-eq="15">\mu_Y(t) = \int_{-\infty}^{+\infty} h(\tau_1)\,E[X(t - \tau_1)]\,d\tau_1 = \int h(\tau_1)\,\mu_X(t - \tau_1)\,d\tau_1 = \mu_X(t) \ast h(t) \tag{15}</div><p>La media dell'uscita è la <strong>convoluzione</strong> tra la media dell'ingresso e la risposta impulsiva.</p>
 <h4 id="media-dell-uscita-2-2">Media dell'uscita (2/2)</h4>
 <ul>
 <li>Con ingresso WSS, <span class="math inline">\mu_X(t) \equiv \mu_X</span>:</li>
 </ul>
-<div class="math block">\mu_Y(t) \equiv \mu_Y = \mu_X \int_{-\infty}^{+\infty} h(\tau_1)\,d\tau_1 = \mu_X\,H(0) \tag{16}</div><p><span class="math inline">H(0)</span> è la risposta del sistema a frequenza zero.</p>
+<span class="ea" id="eq-16"></span><div class="math block" data-eq="16">\mu_Y(t) \equiv \mu_Y = \mu_X \int_{-\infty}^{+\infty} h(\tau_1)\,d\tau_1 = \mu_X\,H(0) \tag{16}</div><p><span class="math inline">H(0)</span> è la risposta del sistema a frequenza zero.</p>
 <ul>
 <li>La media dell'uscita di un filtro LTI con ingresso WSS è la media dell'ingresso moltiplicata per la risposta a frequenza zero del filtro.</li>
 </ul>
@@ -258,23 +258,23 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 <li>Si calcola la crosscorrelazione delle due uscite <span class="math inline">Y_1(t)</span> e <span class="math inline">Y_2(t)</span> di un sistema LTI, <span class="math inline">R_{Y_1Y_2}(t_1, t_2) = E[Y_1(t_1)\,Y_2(t_2)]</span>.</li>
 <li>Con la relazione ingresso-uscita e scambiando l'ordine di integrazione (se possibile):</li>
 </ul>
-<div class="math block">R_{Y_1Y_2}(t_1, t_2) = E\Big[\int h_1(\tau_1)X_1(t_1 - \tau_1)\,d\tau_1\int h_2(\tau_2)X_2(t_2 - \tau_2)\,d\tau_2\Big] \tag{17}</div><div class="math block">= \iint h_1(\tau_1)\,h_2(\tau_2)\,R_{X_1X_2}(t_1 - \tau_1, t_2 - \tau_2)\,d\tau_1\,d\tau_2 \tag{18}</div><img class="zoom" src="img/random-processes-p29-due-sistemi-lti.png" alt="" loading="lazy">
+<span class="ea" id="eq-17"></span><div class="math block" data-eq="17">R_{Y_1Y_2}(t_1, t_2) = E\Big[\int h_1(\tau_1)X_1(t_1 - \tau_1)\,d\tau_1\int h_2(\tau_2)X_2(t_2 - \tau_2)\,d\tau_2\Big] \tag{17}</div><span class="ea" id="eq-18"></span><div class="math block" data-eq="18">= \iint h_1(\tau_1)\,h_2(\tau_2)\,R_{X_1X_2}(t_1 - \tau_1, t_2 - \tau_2)\,d\tau_1\,d\tau_2 \tag{18}</div><img class="zoom" src="img/random-processes-p29-due-sistemi-lti.png" alt="" loading="lazy">
 <h4 id="funzioni-di-correlazione-delle-uscite-di-un-sist-2">Funzioni di correlazione delle uscite di un sistema LTI (2/3)</h4>
 <ul>
-<li>Se <span class="math inline">X_1(t)</span> e <span class="math inline">X_2(t)</span> sono congiuntamente WSS, la crosscorrelazione dipende solo dalla differenza tra <span class="math inline">t_1 - \tau_1</span> e <span class="math inline">t_2 - \tau_2</span>. Ponendo <span class="math inline">\tau = t_1 - t_2</span> nella (18):</li>
+<li>Se <span class="math inline">X_1(t)</span> e <span class="math inline">X_2(t)</span> sono congiuntamente WSS, la crosscorrelazione dipende solo dalla differenza tra <span class="math inline">t_1 - \tau_1</span> e <span class="math inline">t_2 - \tau_2</span>. Ponendo <span class="math inline">\tau = t_1 - t_2</span> nella <a class="eqref" href="#eq-18" data-eq="18">(18)</a>:</li>
 </ul>
-<div class="math block">R_{Y_1Y_2}(\tau) = \iint h_1(\tau_1)\,h_2(\tau_2)\,R_{X_1X_2}(\tau - \tau_1 + \tau_2)\,d\tau_1\,d\tau_2 \tag{19}</div><div class="math block">= R_{X_1X_2}(\tau) \ast h_1(\tau) \ast h_2(-\tau) = R_{X_1X_2}(\tau) \ast r_{h_1h_2}(\tau) \tag{20}</div><p>che dipende solo dal lag <span class="math inline">\tau</span>. (<span class="math inline">r_{h_1h_2}(\tau) = h_1(\tau) \ast h_2(-\tau)</span>.)</p>
+<span class="ea" id="eq-19"></span><div class="math block" data-eq="19">R_{Y_1Y_2}(\tau) = \iint h_1(\tau_1)\,h_2(\tau_2)\,R_{X_1X_2}(\tau - \tau_1 + \tau_2)\,d\tau_1\,d\tau_2 \tag{19}</div><span class="ea" id="eq-20"></span><div class="math block" data-eq="20">= R_{X_1X_2}(\tau) \ast h_1(\tau) \ast h_2(-\tau) = R_{X_1X_2}(\tau) \ast r_{h_1h_2}(\tau) \tag{20}</div><p>che dipende solo dal lag <span class="math inline">\tau</span>. (<span class="math inline">r_{h_1h_2}(\tau) = h_1(\tau) \ast h_2(-\tau)</span>.)</p>
 <ul>
 <li>Se i due ingressi sono <strong>incoerenti</strong>, lo sono anche le uscite: l'elaborazione LTI <strong>preserva l'incoerenza</strong> (la slide scrive «saves incoherence»).</li>
 </ul>
 <h4 id="funzioni-di-correlazione-delle-uscite-di-un-sist-3">Funzioni di correlazione delle uscite di un sistema LTI (3/3)</h4>
 <ul>
-<li>Particolarizzando la (18) a <span class="math inline">h_1 = h_2 = h</span> e <span class="math inline">X_1 = X_2 = X</span>:</li>
+<li>Particolarizzando la <a class="eqref" href="#eq-18" data-eq="18">(18)</a> a <span class="math inline">h_1 = h_2 = h</span> e <span class="math inline">X_1 = X_2 = X</span>:</li>
 </ul>
 <div class="math block">R_{YY}(t_1, t_2) = \iint h(\tau_1)\,h(\tau_2)\,R_{XX}(t_1 - \tau_1, t_2 - \tau_2)\,d\tau_1\,d\tau_2</div><ul>
 <li>Se <span class="math inline">X(t)</span> è WSS: <span class="math inline">R_{YY}(\tau) = R_{XX}(\tau) \ast h(\tau) \ast h(-\tau) = R_{XX}(\tau) \ast r_{hh}(\tau)</span>.</li>
 <li><strong>Se l'ingresso di un sistema LTI stabile è WSS, anche l'uscita è WSS.</strong></li>
-<li>Dalle (18) e (20) si ricavano anche <span class="math inline">R_{YX}(\tau)</span> e <span class="math inline">R_{XY}(\tau)</span>: ponendo <span class="math inline">Y_1 = Y</span>, <span class="math inline">Y_2 = X</span>, <span class="math inline">h_1 = h</span>, <span class="math inline">h_2 = \delta</span> si ha <span class="math inline">R_{YX}(\tau) = R_{XX}(\tau) \ast h(\tau)</span>. Analogamente <span class="math inline">R_{XY}(\tau) = R_{XX}(\tau) \ast h(-\tau)</span>.</li>
+<li>Dalle <a class="eqref" href="#eq-18" data-eq="18">(18)</a> e <a class="eqref" href="#eq-20" data-eq="20">(20)</a> si ricavano anche <span class="math inline">R_{YX}(\tau)</span> e <span class="math inline">R_{XY}(\tau)</span>: ponendo <span class="math inline">Y_1 = Y</span>, <span class="math inline">Y_2 = X</span>, <span class="math inline">h_1 = h</span>, <span class="math inline">h_2 = \delta</span> si ha <span class="math inline">R_{YX}(\tau) = R_{XX}(\tau) \ast h(\tau)</span>. Analogamente <span class="math inline">R_{XY}(\tau) = R_{XX}(\tau) \ast h(-\tau)</span>.</li>
 </ul>
 <h3 id="densita-spettrale-di-potenza">Densità spettrale di potenza</h3>
 <h4 id="densita-spettrale-di-potenza-psd">Densità spettrale di potenza (PSD)</h4>
@@ -286,18 +286,18 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 <li>Si può dimostrare che la PSD di un processo WSS è la <strong>trasformata di Fourier della sua acf</strong> <span class="math inline">R_{XX}(\tau)</span>: è la <strong>relazione di Wiener-Khinchin</strong>.</li>
 <li>Il valore quadratico medio, cioè la potenza <span class="math inline">P_X</span> del processo WSS:</li>
 </ul>
-<div class="math block">E[X^2(t)] = R_{XX}(0) = \int_{-\infty}^{+\infty} S_{XX}(f)\,df = P_X \tag{21}</div><h4 id="psd-e-sistemi-lti">PSD e sistemi LTI</h4>
+<span class="ea" id="eq-21"></span><div class="math block" data-eq="21">E[X^2(t)] = R_{XX}(0) = \int_{-\infty}^{+\infty} S_{XX}(f)\,df = P_X \tag{21}</div><h4 id="psd-e-sistemi-lti">PSD e sistemi LTI</h4>
 <ul>
 <li>Sia <span class="math inline">S_{YY}(f)</span> la PSD dell'uscita <span class="math inline">Y(t)</span> di un filtro con risposta in frequenza <span class="math inline">H(f)</span> e ingresso WSS <span class="math inline">X(t)</span>. Dalla relazione di Wiener-Khinchin e da <span class="math inline">R_{YY}(\tau) = R_{XX}(\tau) \ast h(\tau) \ast h(-\tau)</span>:</li>
 </ul>
-<div class="math block">S_{YY}(f) = S_{XX}(f)\,\lvert H(f)\rvert^2 \tag{22}</div><ul>
+<span class="ea" id="eq-22"></span><div class="math block" data-eq="22">S_{YY}(f) = S_{XX}(f)\,\lvert H(f)\rvert^2 \tag{22}</div><ul>
 <li>La PSD dell'uscita è la PSD dell'ingresso moltiplicata per il modulo quadro della risposta in frequenza del filtro.</li>
 </ul>
 <figure class="fig"><svg viewBox="0 0 400 206" role="img" aria-label="processo attraverso un filtro LTI" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a18" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><text class="tx a1" x="22.0" y="40.0" text-anchor="middle">X(t)</text><line class="ln" x1="40.0" y1="36.0" x2="120.0" y2="36.0" marker-end="url(#a18)"/><rect class="bx bx1" x="120.0" y="14.0" width="160.0" height="44.0" rx="4"/><text class="tx" x="200.0" y="32.0" text-anchor="middle">filtro LTI</text><text class="tx" x="200.0" y="46.0" text-anchor="middle">h(t) ⟷ H(f)</text><line class="ln" x1="280.0" y1="36.0" x2="360.0" y2="36.0" marker-end="url(#a18)"/><text class="tx a2" x="380.0" y="40.0" text-anchor="middle">Y(t)</text><text class="ts" x="14.0" y="100.0" text-anchor="start">media</text><text class="tx" x="130.0" y="100.0" text-anchor="start">μ<tspan dy="3" font-size="0.72em">Y</tspan><tspan dy="-3">​</tspan> = μ<tspan dy="3" font-size="0.72em">X</tspan><tspan dy="-3">​</tspan> · H(0)</text><text class="ts" x="14.0" y="132.0" text-anchor="start">autocorrelazione</text><text class="tx" x="130.0" y="132.0" text-anchor="start">R<tspan dy="3" font-size="0.72em">YY</tspan><tspan dy="-3">​</tspan>(τ) = R<tspan dy="3" font-size="0.72em">XX</tspan><tspan dy="-3">​</tspan>(τ) ∗ h(τ) ∗ h(−τ)</text><text class="ts" x="14.0" y="164.0" text-anchor="start">PSD</text><text class="tx" x="130.0" y="164.0" text-anchor="start">S<tspan dy="3" font-size="0.72em">YY</tspan><tspan dy="-3">​</tspan>(f) = S<tspan dy="3" font-size="0.72em">XX</tspan><tspan dy="-3">​</tspan>(f) · |H(f)|²</text><text class="ts" x="14.0" y="196.0" text-anchor="start">WSS</text><text class="tx" x="130.0" y="196.0" text-anchor="start">ingresso WSS ⇒ uscita WSS</text></svg><figcaption>🧩 Un filtro LTI deterministico non cambia la natura del processo: riscala la media per <span class="math inline">H(0)</span>, la PSD per <span class="math inline">\lvert H(f)\rvert^2</span> e «sfuma» la acf con <span class="math inline">r_{hh}=h(\tau)\ast h(-\tau)</span>.</figcaption></figure>
 <h4 id="significato-fisico-della-psd">Significato fisico della PSD</h4>
 <ul>
 <li>Si fa passare il processo WSS <span class="math inline">X(t)</span> in un <strong>filtro ideale a banda stretta</strong>, con <span class="math inline">\lvert H(f)\rvert</span> centrato in <span class="math inline">f_c</span> e banda <span class="math inline">\Delta f</span>.</li>
-<li>Dalla (22), se <span class="math inline">\Delta f</span> è sufficientemente piccola rispetto a <span class="math inline">f_c</span> e <span class="math inline">S_{XX}(f)</span> è continua, la potenza <span class="math inline">\Delta P_X</span> delle componenti di <span class="math inline">X(t)</span> nell'intervallo di lunghezza <span class="math inline">2\Delta f</span> è</li>
+<li>Dalla <a class="eqref" href="#eq-22" data-eq="22">(22)</a>, se <span class="math inline">\Delta f</span> è sufficientemente piccola rispetto a <span class="math inline">f_c</span> e <span class="math inline">S_{XX}(f)</span> è continua, la potenza <span class="math inline">\Delta P_X</span> delle componenti di <span class="math inline">X(t)</span> nell'intervallo di lunghezza <span class="math inline">2\Delta f</span> è</li>
 </ul>
 <div class="math block">\Delta P_X \approx (2\,\Delta f)\,S_{XX}(f), \quad \text{con } f_c \equiv f</div><ul>
 <li><span class="math inline">S_{XX}(f)</span> si misura in <strong>watt per hertz</strong> (W/Hz).</li>
@@ -313,7 +313,7 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 <li>La PSD di un processo WSS <strong>reale</strong> è una funzione pari: <span class="math inline">S_{XX}(-f) = S_{XX}(f)</span>.</li>
 <li>La PSD opportunamente normalizzata ha le proprietà di una pdf:</li>
 </ol>
-<div class="math block">p_{XX}(f) \triangleq \frac{S_{XX}(f)}{\int_{-\infty}^{+\infty} S_{XX}(f)\,df} \tag{25}</div><p>con <span class="math inline">p_{XX}(f) \ge 0</span> per ogni <span class="math inline">f</span> e area totale unitaria.</p>
+<span class="ea" id="eq-25"></span><div class="math block" data-eq="25">p_{XX}(f) \triangleq \frac{S_{XX}(f)}{\int_{-\infty}^{+\infty} S_{XX}(f)\,df} \tag{25}</div><p>con <span class="math inline">p_{XX}(f) \ge 0</span> per ogni <span class="math inline">f</span> e area totale unitaria.</p>
 <ul>
 <li><strong>Esempio: calcolare la PSD di un segnale modulato linearmente.</strong> La slide non svolge l'esempio. Ipotesi usate qui: <span class="math inline">X(t) = \sum_n b[n]\,p(t - nT - D)</span>, con simboli a media nulla, incorrelati e di varianza <span class="math inline">\sigma_b^2</span>, e ritardo <span class="math inline">D</span> uniforme in <span class="math inline">[0, T)</span> indipendente dai simboli. Allora <span class="math inline">R_{XX}(\tau) = \frac{\sigma_b^2}{T}\,r_{pp}(\tau)</span>, il processo è WSS e</li>
 </ul>
@@ -326,7 +326,7 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 <ul>
 <li>Per due processi <strong>congiuntamente WSS</strong>, la cross-spectral density è la trasformata di Fourier della loro crosscorrelazione:</li>
 </ul>
-<div class="math block">S_{XY}(f) = \int_{-\infty}^{+\infty} R_{XY}(\tau)\,e^{-j2\pi f\tau}\,d\tau \tag{26}</div><ul>
+<span class="ea" id="eq-26"></span><div class="math block" data-eq="26">S_{XY}(f) = \int_{-\infty}^{+\infty} R_{XY}(\tau)\,e^{-j2\pi f\tau}\,d\tau \tag{26}</div><ul>
 <li>A differenza della PSD, <span class="math inline">S_{XY}(f)</span> non è necessariamente reale né non negativa.</li>
 <li>Per processi <strong>complessi</strong> la relazione <span class="math inline">R_{XY}(\tau) = R_{YX}(-\tau)</span> si generalizza a <span class="math inline">R_{XY}(\tau) = R_{YX}^\ast(-\tau)</span>, e quindi</li>
 </ul>
@@ -336,14 +336,14 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 <li><span class="math inline">X(t)</span> e <span class="math inline">Y(t)</span> hanno media nulla e <span class="math inline">Z(t) = X(t) + Y(t)</span>. Si cerca la PSD di <span class="math inline">Z(t)</span>.</li>
 <li>L'acf di <span class="math inline">Z(t)</span>:</li>
 </ul>
-<div class="math block">R_{ZZ}(t_1, t_2) = E\{[X(t_1) + Y(t_1)][X(t_2) + Y(t_2)]\} = R_{XX} + R_{XY} + R_{YX} + R_{YY} \tag{27}</div><ul>
+<span class="ea" id="eq-27"></span><div class="math block" data-eq="27">R_{ZZ}(t_1, t_2) = E\{[X(t_1) + Y(t_1)][X(t_2) + Y(t_2)]\} = R_{XX} + R_{XY} + R_{YX} + R_{YY} \tag{27}</div><ul>
 <li>Con <span class="math inline">\tau = t_1 - t_2</span> e stazionarietà congiunta:</li>
 </ul>
-<div class="math block">R_{ZZ}(\tau) = R_{XX}(\tau) + R_{XY}(\tau) + R_{YX}(\tau) + R_{YY}(\tau) \tag{28}</div><ul>
+<span class="ea" id="eq-28"></span><div class="math block" data-eq="28">R_{ZZ}(\tau) = R_{XX}(\tau) + R_{XY}(\tau) + R_{YX}(\tau) + R_{YY}(\tau) \tag{28}</div><ul>
 <li>Trasformando: <span class="math inline">S_{ZZ}(f) = S_{XX}(f) + S_{XY}(f) + S_{YX}(f) + S_{YY}(f)</span> (29).</li>
 <li>Se <span class="math inline">X(t)</span> e <span class="math inline">Y(t)</span> sono WSS <strong>incoerenti</strong>, <span class="math inline">R_{XY}(\tau) = R_{YX}(\tau) = 0</span> per ogni <span class="math inline">\tau</span>, quindi <span class="math inline">S_{XY} = S_{YX} = 0</span> e</li>
 </ul>
-<div class="math block">S_{ZZ}(f) = S_{XX}(f) + S_{YY}(f) \tag{30}</div><ul>
+<span class="ea" id="eq-30"></span><div class="math block" data-eq="30">S_{ZZ}(f) = S_{XX}(f) + S_{YY}(f) \tag{30}</div><ul>
 <li>La PSD della somma di processi WSS incoerenti (o, equivalentemente, a media nulla e incorrelati) è la <strong>somma delle PSD</strong>.</li>
 </ul>
 <h3 id="il-processo-gaussiano">Il processo gaussiano</h3>
@@ -352,14 +352,14 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 <li>Il processo gaussiano è il più frequente nello studio dei sistemi di comunicazione, per applicabilità pratica e trattabilità matematica.</li>
 <li>Si campiona <span class="math inline">X(t)</span> in <span class="math inline">t_1, \dots, t_n</span>. Se il processo è gaussiano, le variabili <span class="math inline">X(t_1), \dots, X(t_n)</span> sono <strong>congiuntamente gaussiane</strong> per ogni <span class="math inline">n</span>, con pdf di ordine <span class="math inline">n</span> completamente determinata dalle <strong>medie</strong> e dalle <strong>covarianze</strong>:</li>
 </ul>
-<div class="math block">\mu_X(t_i) \triangleq E[X(t_i)], \quad i \in \{1, \dots, n\} \tag{31}</div><div class="math block">C_{XX}(t_k, t_i) \triangleq E\{[X(t_k) - \mu_X(t_k)][X(t_i) - \mu_X(t_i)]\}, \quad k, i \in \{1, \dots, n\} \tag{32}</div><ul>
+<span class="ea" id="eq-31"></span><div class="math block" data-eq="31">\mu_X(t_i) \triangleq E[X(t_i)], \quad i \in \{1, \dots, n\} \tag{31}</div><span class="ea" id="eq-32"></span><div class="math block" data-eq="32">C_{XX}(t_k, t_i) \triangleq E\{[X(t_k) - \mu_X(t_k)][X(t_i) - \mu_X(t_i)]\}, \quad k, i \in \{1, \dots, n\} \tag{32}</div><ul>
 <li>Sia <span class="math inline">\mathbf{X} \triangleq [X(t_1), \dots, X(t_n)]^T</span> il vettore aleatorio e <span class="math inline">\mathbf{x} \triangleq [x_1, \dots, x_n]^T</span> un suo valore (<span class="math inline">^T</span> indica la trasposizione).</li>
 </ul>
 <h4 id="il-processo-gaussiano-2-3">Il processo gaussiano (2/3)</h4>
 <ul>
 <li>Il vettore <span class="math inline">\mathbf{X}</span> ha <strong>distribuzione gaussiana multivariata</strong>:</li>
 </ul>
-<div class="math block">f_{\mathbf{X}}(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^n \det(\boldsymbol{\Sigma})}}\;e^{-\frac12(\mathbf{x} - \boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(\mathbf{x} - \boldsymbol{\mu})} \tag{33}</div><p>dove <span class="math inline">\boldsymbol{\mu} \triangleq [\mu_X(t_1), \dots, \mu_X(t_n)]^T</span> è il vettore delle medie, <span class="math inline">\boldsymbol{\Sigma}</span> la <strong>matrice di covarianza</strong> con elemento <span class="math inline">\{\boldsymbol{\Sigma}\}_{k,i} = C_{XX}(t_k, t_i)</span>, e <span class="math inline">\boldsymbol{\Sigma}^{-1}</span> la sua inversa.</p>
+<span class="ea" id="eq-33"></span><div class="math block" data-eq="33">f_{\mathbf{X}}(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^n \det(\boldsymbol{\Sigma})}}\;e^{-\frac12(\mathbf{x} - \boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(\mathbf{x} - \boldsymbol{\mu})} \tag{33}</div><p>dove <span class="math inline">\boldsymbol{\mu} \triangleq [\mu_X(t_1), \dots, \mu_X(t_n)]^T</span> è il vettore delle medie, <span class="math inline">\boldsymbol{\Sigma}</span> la <strong>matrice di covarianza</strong> con elemento <span class="math inline">\{\boldsymbol{\Sigma}\}_{k,i} = C_{XX}(t_k, t_i)</span>, e <span class="math inline">\boldsymbol{\Sigma}^{-1}</span> la sua inversa.</p>
 <ul>
 <li><span class="math inline">\boldsymbol{\Sigma}</span> è <strong>simmetrica</strong> (<span class="math inline">\boldsymbol{\Sigma} = \boldsymbol{\Sigma}^T</span>) e <strong>semidefinita positiva</strong> (<span class="math inline">\mathbf{u}^T\boldsymbol{\Sigma}\,\mathbf{u} \ge 0</span> per ogni <span class="math inline">\mathbf{u} \in \mathbb{R}^n</span>). Per un processo gaussiano non degenere è <strong>definita positiva</strong> (<span class="math inline">\mathbf{u}^T\boldsymbol{\Sigma}\,\mathbf{u} &gt; 0</span> per ogni <span class="math inline">\mathbf{u} \ne \mathbf{0}</span>), quindi invertibile.</li>
 </ul>
@@ -375,11 +375,11 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 <li>Se un processo gaussiano è WSS, allora è anche <strong>strettamente stazionario</strong>.</li>
 <li>Se le variabili <span class="math inline">X(t_1), \dots, X(t_n)</span> sono <strong>incorrelate</strong>, cioè <span class="math inline">C_{XX}(t_k, t_i) = 0</span> per <span class="math inline">k \ne i</span>, allora sono <strong>statisticamente indipendenti</strong>.
 <ul>
-<li>L'incorrelazione vuol dire che la matrice di covarianza è diagonale, <span class="math inline">\boldsymbol{\Sigma} = \text{diag}(\sigma_1^2, \dots, \sigma_n^2)</span>, con <span class="math inline">\sigma_i^2</span> varianza di <span class="math inline">X(t_i)</span> ⇒ la pdf (33) si semplifica in</li>
+<li>L'incorrelazione vuol dire che la matrice di covarianza è diagonale, <span class="math inline">\boldsymbol{\Sigma} = \text{diag}(\sigma_1^2, \dots, \sigma_n^2)</span>, con <span class="math inline">\sigma_i^2</span> varianza di <span class="math inline">X(t_i)</span> ⇒ la pdf <a class="eqref" href="#eq-33" data-eq="33">(33)</a> si semplifica in</li>
 </ul>
 </li>
 </ul>
-<div class="math block">f_{\mathbf{X}}(\mathbf{x}) = \prod_{i=1}^{n} f_{X(t_i)}(x_i) \tag{34}</div><ul>
+<span class="ea" id="eq-34"></span><div class="math block" data-eq="34">f_{\mathbf{X}}(\mathbf{x}) = \prod_{i=1}^{n} f_{X(t_i)}(x_i) \tag{34}</div><ul>
 <li>La pdf congiunta è il prodotto delle pdf delle singole variabili.</li>
 </ul>
 <h3 id="processi-a-tempo-discreto">Processi a tempo discreto</h3>
@@ -390,13 +390,13 @@ C_{XX}(t_1, t_2) &amp;\triangleq E\{[X(t_1) - \mu_X(t_1)][X(t_2) - \mu_X(t_2)]\}
 <li>CDF, pdf e DF si definiscono come nel caso a tempo continuo, sostituendo <span class="math inline">t</span> con <span class="math inline">n</span>.</li>
 <li><strong>Media e crosscorrelazione</strong>:</li>
 </ul>
-<div class="math block">\mu_X(n) \triangleq E[X(n)] \tag{35}</div><div class="math block">R_{XY}(n, k) \triangleq E[X(n)\,Y^\ast(k)] \tag{36}</div><p>(nella versione precedente la (35) e la (36) erano scritte come integrali con le pdf, e la (36) senza il coniugato).</p>
+<span class="ea" id="eq-35"></span><div class="math block" data-eq="35">\mu_X(n) \triangleq E[X(n)] \tag{35}</div><span class="ea" id="eq-36"></span><div class="math block" data-eq="36">R_{XY}(n, k) \triangleq E[X(n)\,Y^\ast(k)] \tag{36}</div><p>(nella versione precedente la <a class="eqref" href="#eq-35" data-eq="35">(35)</a> e la <a class="eqref" href="#eq-36" data-eq="36">(36)</a> erano scritte come integrali con le pdf, e la <a class="eqref" href="#eq-36" data-eq="36">(36)</a> senza il coniugato).</p>
 <h4 id="processi-aleatori-a-tempo-discreto-2-2-versione-">Processi aleatori a tempo discreto (2/2) (versione aggiornata)</h4>
 <ul>
 <li>La <strong>crosscovarianza</strong> di due processi a tempo discreto:</li>
 </ul>
-<div class="math block">C_{XY}(n, k) \triangleq E\{[X(n) - \mu_X(n)][Y(k) - \mu_Y(k)]^\ast\} = R_{XY}(n, k) - \mu_X(n)\,\mu_Y^\ast(k) \tag{37}</div><ul>
-<li>Con <span class="math inline">X(n) \equiv Y(n)</span> nelle (36) e (37) si ottengono le definizioni usuali di autocorrelazione e autocovarianza.</li>
+<span class="ea" id="eq-37"></span><div class="math block" data-eq="37">C_{XY}(n, k) \triangleq E\{[X(n) - \mu_X(n)][Y(k) - \mu_Y(k)]^\ast\} = R_{XY}(n, k) - \mu_X(n)\,\mu_Y^\ast(k) \tag{37}</div><ul>
+<li>Con <span class="math inline">X(n) \equiv Y(n)</span> nelle <a class="eqref" href="#eq-36" data-eq="36">(36)</a> e <a class="eqref" href="#eq-37" data-eq="37">(37)</a> si ottengono le definizioni usuali di autocorrelazione e autocovarianza.</li>
 <li>Per due processi a tempo discreto congiuntamente WSS, la <strong>cross-spectral density</strong> è</li>
 </ul>
 <div class="math block">S_{XY}(\nu) \triangleq \lim_{N \to +\infty} \frac{1}{2N+1}\,E\big[X_N(\nu)\,Y_N^\ast(\nu)\big]</div><p>dove, per <span class="math inline">Z \in \{X, Y\}</span>, <span class="math inline">Z_N(\nu) \triangleq \sum_{n=-N}^{N} Z(n)\,e^{-j2\pi\nu n}</span> è la trasformata di Fourier a tempo discreto (DTFT) del processo troncato <span class="math inline">Z(n)</span>.</p>

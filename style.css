@@ -31,6 +31,16 @@ pre{background:var(--code);padding:10px;overflow-x:auto;border-radius:8px;font-s
 summary .katex,h3 .katex,h4 .katex,li .katex,td .katex{white-space:normal}
 .math.inline.wide{display:block;overflow-x:auto;overflow-y:hidden;max-width:100%;margin:.2em 0}
 .katex{font-size:1.04em}
+.ea{display:block;height:0;scroll-margin-top:64px}
+a.eqref{text-decoration:none;border-bottom:1px dotted var(--a1);cursor:help;white-space:nowrap}
+a.eqref:hover,a.eqref:focus-visible{background:var(--soft);border-radius:3px}
+.math.block.flash{background:var(--soft);transition:background .4s}
+#eqpop{position:fixed;z-index:40;width:max-content;max-width:min(94vw,760px);background:var(--card);border:1px solid var(--a1);border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.28);padding:6px 12px 6px}
+#eqpop[hidden]{display:none}
+#eqpop .ph{display:flex;justify-content:space-between;gap:18px;font-size:.78em;color:var(--ink2);margin-bottom:2px}
+#eqpop .ph a{white-space:nowrap}
+#eqpop .math.block{margin:.2em 0}
+#eqpop .katex-display{margin:0}
 .katex-display{margin:.2em 0}
 .tw{overflow-x:auto;margin:.8em 0;position:relative}
 .math.block,.math.inline.wide{position:relative}
