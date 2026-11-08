@@ -174,3 +174,6 @@ Filtra ultimi 10: `grep "^## " wiki/log.md | tail -10`
 
 ## [2026-11-08] aggiornamento | sito di studio | riferimenti alle equazioni con anteprima
 - `output/crea_sito.py`: nel testo delle lezioni i richiami tipo «(10)» diventano link all'equazione numerata; al passaggio del mouse (o al tocco su telefono) compare un popup con la formula intera, rimpicciolita se serve per stare in una riga, e un link «vai all'equazione»; gli elenchi numerati «(1) … (2) …» non vengono scambiati per riferimenti
+
+## [2026-11-08] aggiornamento | sito di studio | legge dei 6 dB nell'intercorso
+- `output/crea_sito.py`: la Lezione 3 del sito parte ora dal quantizzatore uniforme (relazione ingresso-uscita, codifica binaria, errore, fattore di carico, SNR e legge dei 6 dB/bit, progetto) e include le pagine [[quantizzazione-uniforme]], [[snr-di-quantizzazione]] e l'esercizio [[dimensionamento-quantizzatore]]; aggiornati titolo, introduzione e legenda dell'indice

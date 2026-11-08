@@ -27,11 +27,12 @@ WIKI = ROOT / "wiki"
 KATEX = "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/"
 
 LEZIONI = [
-    dict(n=3, slug="lezione-3", titolo="Quantizzazione non uniforme e companding",
-         breve="Dai limiti della quantizzazione uniforme al quantizzatore ottimo di Lloyd-Max e al companding (leggi µ e A).",
-         pdf="Campionamento_AD_DA.pdf, slide 32–43", inizio="### Limiti della quantizzazione uniforme",
-         concetti=["quantizzazione-non-uniforme", "companding"], fonte="campionamento-conversione-ad-da",
-         domande_filtro=("Lloyd", "robusta", "companding"), esercizi=[]),
+    dict(n=3, slug="lezione-3", titolo="Quantizzazione: SNR, legge dei 6 dB, Lloyd-Max e companding",
+         breve="Il quantizzatore uniforme e il suo SNR (legge dei 6 dB/bit), i suoi limiti, il quantizzatore ottimo di Lloyd-Max e il companding (leggi µ e A).",
+         pdf="Campionamento_AD_DA.pdf, slide 26–43", inizio="### Relazione ingresso-uscita del quantizzatore",
+         concetti=["quantizzazione-uniforme", "snr-di-quantizzazione", "quantizzazione-non-uniforme", "companding"],
+         fonte="campionamento-conversione-ad-da",
+         domande_filtro=("quantizzatore uniforme", "6 dB", "Lloyd", "robusta", "companding"), esercizi=["dimensionamento-quantizzatore"]),
     dict(n=4, slug="lezione-4", titolo="Rappresentazione complessa in banda base",
          breve="Segnali in banda base e passa-banda, segnale analitico, inviluppo complesso, componenti I/Q, up/down-conversion, filtri.",
          pdf="Rappresentazione_Rice.pdf, slide 1–19 più appunti", inizio=None,
@@ -439,7 +440,7 @@ def pagina_indice(out):
                     f'<ul>{li}</ul></a>')
     corpo = f"""
 <h1>Trasmissione dei Segnali Digitali</h1>
-<p class="breve">Appunti per la <strong>prima prova intercorso</strong>: dalla quantizzazione non uniforme alla rappresentazione di Rice dei processi aleatori. Segue l'ordine delle lezioni.</p>
+<p class="breve">Appunti per la <strong>prima prova intercorso</strong>: dal quantizzatore uniforme (SNR e legge dei 6 dB/bit) e dalla quantizzazione non uniforme alla rappresentazione di Rice dei processi aleatori. Segue l'ordine delle lezioni.</p>
 <div class="cards">{"".join(card)}</div>
 <h2 class="ps">Come si legge</h2>
 <ul class="legenda">
@@ -447,7 +448,7 @@ def pagina_indice(out):
 <li>Le equazioni numerate sono quelle delle slide. I disegni sono costruiti dalle formule delle slide.</li>
 <li><span class="chip formula">🧮</span> formula da sapere a memoria · <span class="chip esame">🎯</span> punto da esame · <span class="chip mia">🧩</span> passaggio ricostruito da me · <span class="chip conn">💡</span> collegamento · <span class="chip avv">⚠️</span> refuso o contraddizione nella slide · <span class="chip dub">❓</span> salto non ricostruito.</li>
 <li>Tocca un'immagine per ingrandirla. I pulsanti <strong>A−</strong> e <strong>A+</strong> in alto cambiano la dimensione del testo.</li>
-<li>La Lezione 6 (laboratorio Matlab) non è materia d'esame, per questo non compare. Le Lezioni 1–2 e la prima parte della 3 (campionamento, quantizzazione uniforme) precedono l'intercorso.</li>
+<li>La Lezione 6 (laboratorio Matlab) non è materia d'esame, per questo non compare. Le Lezioni 1–2 e la prima parte della 3 (campionamento e conversione A/D) precedono l'intercorso; della quantizzazione uniforme è inclusa la parte che serve alla legge dei 6 dB/bit.</li>
 </ul>
 """
     return pagina("Trasmissione dei Segnali Digitali · Intercorso", corpo, "index")
