@@ -171,3 +171,6 @@ Filtra ultimi 10: `grep "^## " wiki/log.md | tail -10`
 ## [2026-11-07] aggiornamento | sito di studio dell'intercorso | frase della Lezione 7 riformulata
 - `output/crea_sito.py` e `output/sito_disegni.py`: generano il sito (HTML statico con formule KaTeX, 19 disegni SVG, tema sistema/chiaro/scuro) a partire da [[corso-completo]] e dalle pagine concetto; pubblicato nel branch orfano `gh-pages`
 - [[corso-completo]]: corrette due formule con doppio `\tag` (Lezione 4, eq. 5-6 e 11-12) che non si rendevano; riformulata la frase iniziale della Lezione 7 sul processo analitico (spiega la ridondanza dei lobi in ±f_c)
+
+## [2026-11-08] aggiornamento | sito di studio | riferimenti alle equazioni con anteprima
+- `output/crea_sito.py`: nel testo delle lezioni i richiami tipo «(10)» diventano link all'equazione numerata; al passaggio del mouse (o al tocco su telefono) compare un popup con la formula intera, rimpicciolita se serve per stare in una riga, e un link «vai all'equazione»; gli elenchi numerati «(1) … (2) …» non vengono scambiati per riferimenti

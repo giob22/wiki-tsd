@@ -243,6 +243,68 @@ def inserisci_figure(corpo, n):
     return "\n".join(out[:-1])
 
 
+def numera_equazioni(h, n):
+    """Ancore `eq-N` davanti alle formule numerate della lezione. Ritorna (html, numeri trovati)."""
+    trovati = {}
+
+    def f(m):
+        tex = html.unescape(m.group(1))
+        nums = list(dict.fromkeys(re.findall(r"\\tag\{(\d+)\}", tex) + re.findall(r"\\quad\((\d+)\)", tex)))
+        nuovi = []
+        for k in nums:
+            if k in trovati:
+                print(f"  attenzione: eq. ({k}) compare due volte nella Lezione {n}")
+            else:
+                trovati[k] = tex
+                nuovi.append(k)
+        if not nuovi:
+            return m.group(0)
+        ancore = "".join(f'<span class="ea" id="eq-{k}"></span>' for k in nuovi)
+        return f'{ancore}<div class="math block" data-eq="{" ".join(nuovi)}">{m.group(1)}</div>'
+    h = re.sub(r'<div class="math block">(.*?)</div>', f, h, flags=re.S)
+    return h, set(trovati)
+
+
+_NON_LINKARE = {"a", "code", "pre", "svg", "summary", "script", "button", "h1", "h2", "h3", "h4", "h5", "h6"}
+
+
+def collega_riferimenti(h, nums, n):
+    """Nel testo «(10)» diventa un link all'equazione, con anteprima al passaggio del mouse."""
+    out, prof, math = [], 0, None
+    visti = []
+    for tok in re.split(r"(<[^>]*>)", h):
+        if tok.startswith("<"):
+            mt = re.match(r"<(/?)([a-zA-Z0-9]+)", tok)
+            if mt:
+                chiude, nome = mt.group(1) == "/", mt.group(2).lower()
+                if math:
+                    if chiude and nome == math:
+                        math = None
+                elif not chiude and 'class="math' in tok:
+                    math = nome
+                elif nome in _NON_LINKARE:
+                    prof += -1 if chiude else 1
+            out.append(tok)
+        elif prof or math:
+            out.append(tok)
+        else:
+            def r(m):
+                prima, dopo = tok[:m.start()], tok[m.end():]
+                elenco = re.search(r"[:;] $", prima) and re.match(r" [a-zà-ù]", dopo)  # «; (2) eliminare…»: elenco numerato
+                if m.group(1) in nums and not elenco:
+                    visti.append(tok[max(0, m.start() - 30):m.end() + 10])
+                    return f'<a class="eqref" href="#eq-{m.group(1)}" data-eq="{m.group(1)}">({m.group(1)})</a>'
+                return m.group(0)
+            out.append(re.sub(r"\((\d{1,2})\)", r, tok))
+    if VERBOSO:
+        for v in visti:
+            print(f"   L{n} rif: …{v.strip()}…")
+    return "".join(out)
+
+
+VERBOSO = bool(__import__("os").environ.get("VERBOSO"))
+
+
 def figure_html(h):
     def f(m):
         svg, didascalia = DISEGNI[m.group(1)]
@@ -330,8 +392,10 @@ def pagina_lezione(cfg, corso, out, precedente, successiva):
     usati = set()
     toc = []
     corpo = figure_html(post_html(render_md(corpo_lezione(cfg, corso, out))))
+    corpo, numeri = numera_equazioni(corpo, cfg["n"])
+    corpo = collega_riferimenti(corpo, numeri, cfg["n"])
     corpo = con_id(corpo, usati, toc)
-    conc = "\n".join(concetto_html(c, out, usati) for c in cfg["concetti"])
+    conc ="\n".join(concetto_html(c, out, usati) for c in cfg["concetti"])
     for e in cfg["esercizi"]:
         conc += "\n" + concetto_html(e, out, usati, "esercizi").replace('class="conc"', 'class="conc es"')
     dom = domande_html(cfg, out)
@@ -456,6 +520,16 @@ pre{background:var(--code);padding:10px;overflow-x:auto;border-radius:8px;font-s
 summary .katex,h3 .katex,h4 .katex,li .katex,td .katex{white-space:normal}
 .math.inline.wide{display:block;overflow-x:auto;overflow-y:hidden;max-width:100%;margin:.2em 0}
 .katex{font-size:1.04em}
+.ea{display:block;height:0;scroll-margin-top:64px}
+a.eqref{text-decoration:none;border-bottom:1px dotted var(--a1);cursor:help;white-space:nowrap}
+a.eqref:hover,a.eqref:focus-visible{background:var(--soft);border-radius:3px}
+.math.block.flash{background:var(--soft);transition:background .4s}
+#eqpop{position:fixed;z-index:40;width:max-content;max-width:min(94vw,760px);background:var(--card);border:1px solid var(--a1);border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.28);padding:6px 12px 6px}
+#eqpop[hidden]{display:none}
+#eqpop .ph{display:flex;justify-content:space-between;gap:18px;font-size:.78em;color:var(--ink2);margin-bottom:2px}
+#eqpop .ph a{white-space:nowrap}
+#eqpop .math.block{margin:.2em 0}
+#eqpop .katex-display{margin:0}
 .katex-display{margin:.2em 0}
 .tw{overflow-x:auto;margin:.8em 0;position:relative}
 .math.block,.math.inline.wide{position:relative}
@@ -613,6 +687,60 @@ SCRIPT = r"""
     if (t.tagName === 'IMG' && t.classList.contains('zoom')) { lb.innerHTML = '<img src="' + t.src + '" alt="">'; lb.hidden = false; }
     else if (lb && !lb.hidden) { lb.hidden = true; lb.innerHTML = ''; }
   });
+  // anteprima delle equazioni richiamate nel testo, ad esempio «(10)»
+  var eqTex = {}, eqEl = {};
+  document.querySelectorAll('.math[data-eq]').forEach(function (b) {
+    var tex = b.textContent;
+    b.dataset.eq.split(' ').forEach(function (n) { eqTex[n] = tex; eqEl[n] = b; });
+  });
+  var pop = document.createElement('div'); pop.id = 'eqpop'; pop.hidden = true; document.body.appendChild(pop);
+  var popT = null, popA = null;
+  var tocco = !(window.matchMedia && matchMedia('(hover: hover)').matches);
+  function popNascondi() { clearTimeout(popT); pop.hidden = true; popA = null; }
+  function popMostra(a) {
+    var n = a.dataset.eq;
+    if (!eqTex[n] || !window.katex) return;
+    clearTimeout(popT); popA = a;
+    pop.innerHTML = '<div class="ph"><span>Equazione (' + n + ')</span><a href="#eq-' + n + '">vai all’equazione ↓</a></div><div class="math block"></div>';
+    var m = pop.lastChild; m.dataset.ok = '1';
+    pop.hidden = false;
+    var tex = eqTex[n].replace(/\\tag\{\d+\}/g, '');
+    try { katex.render(tex, m, { displayMode: true, throwOnError: false, strict: false }); } catch (e) {}
+    fit(m);
+    var r = a.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+    var x = Math.min(Math.max(8, r.left - 16), Math.max(8, window.innerWidth - w - 8));
+    var y = r.bottom + 6;
+    if (y + h > window.innerHeight - 8 && r.top - h - 6 > 8) y = r.top - h - 6;
+    pop.style.left = x + 'px'; pop.style.top = Math.max(8, y) + 'px';
+  }
+  function flash(n) {
+    var b = eqEl[n]; if (!b) return;
+    b.classList.add('flash'); setTimeout(function () { b.classList.remove('flash'); }, 1800);
+  }
+  function flashHash() { var m = /^#eq-(\d+)$/.exec(location.hash); if (m) flash(m[1]); }
+  window.addEventListener('hashchange', flashHash); window.addEventListener('load', flashHash);
+  function eqLink(t) { return t.closest ? t.closest('a.eqref') : null; }
+  document.addEventListener('mouseover', function (e) {
+    if (tocco) return;
+    var a = eqLink(e.target);
+    if (a) { if (a === popA && !pop.hidden) { clearTimeout(popT); return; } clearTimeout(popT); popT = setTimeout(function () { popMostra(a); }, 120); }
+    else if (e.target.closest && e.target.closest('#eqpop')) clearTimeout(popT);
+  });
+  document.addEventListener('mouseout', function (e) {
+    if (tocco) return;
+    if (eqLink(e.target) || (e.target.closest && e.target.closest('#eqpop'))) { clearTimeout(popT); popT = setTimeout(popNascondi, 260); }
+  });
+  document.addEventListener('focusin', function (e) { var a = eqLink(e.target); if (a) popMostra(a); });
+  document.addEventListener('focusout', function (e) { if (eqLink(e.target)) popT = setTimeout(popNascondi, 200); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') popNascondi(); });
+  document.addEventListener('click', function (e) {
+    var a = eqLink(e.target);
+    if (a && tocco) { e.preventDefault(); if (popA === a && !pop.hidden) popNascondi(); else popMostra(a); return; }
+    if (!(e.target.closest && e.target.closest('#eqpop a'))) { if (!(e.target.closest && e.target.closest('#eqpop'))) popNascondi(); return; }
+    popNascondi();
+  });
+  window.addEventListener('scroll', function () { if (!pop.hidden) popNascondi(); }, { passive: true });
+
   var su = document.getElementById('su');
   window.addEventListener('scroll', function () { if (su) su.hidden = window.scrollY < 600; }, { passive: true });
 })();
