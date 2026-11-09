@@ -415,6 +415,49 @@ def fig_fasore():
     return s.render(), "🧩 Nel piano complesso $s=s_c+js_s$ ruota con la portante: $s\\,e^{j2\\pi f_ct}$. La proiezione sull'asse reale, moltiplicata per $\\sqrt2$, è il segnale passa-banda $s_p(t)=\\sqrt2\\,s_c\\cos\\alpha-\\sqrt2\\,s_s\\sin\\alpha$."
 
 
+def fig_chi_e_chi():
+    s = Svg(400, 300, "chi è chi nell'upconverter: s_c, s_s, x_c, x_s, s_p")
+    s.t(48, 14, "banda base", "ts tb")
+    s.t(265, 14, "banda passante", "ts tb")
+    yi, yq, ys = 80, 212, 146   # ramo I, ramo Q, sommatore
+    for y, nome, col, car, c, fl, sp in ((yi, "I", "a1", "√2 cos(2πf_ct)", "cv", "fl", "c"),
+                                         (yq, "Q", "a2", "−√2 sin(2πf_ct)", "cv2", "fl2", "s")):
+        up = y == yi
+        s.t(46, y - 9, f"s_{sp}(t)", f"tx tb {col}")
+        s.line(8, y, 102, y, "ln", ar=True)
+        s.mult(112, y)
+        ycar = y - 30
+        s.t(112, ycar, car, "ts")
+        s.line(112, ycar + 4, 112, y - 10, "ln", ar=True)
+        s.t(190, y - 9, f"x_{sp}(t)" if up else f"−x_s(t)", f"tx tb {col}")
+        # spettri sotto i fili: base y+40
+        yb = y + 42
+        s.line(14, yb, 82, yb, "ax", ar=True)
+        lobo(s, 48, yb, 20, 24, "tri", c, fl)
+        s.t(48, yb + 15, f"S_{sp}(f)", f"ts {col}")
+        s.line(130, yb, 252, yb, "ax", ar=True)
+        for cx in (145, 235):
+            lobo(s, cx, yb, 18, 24, "tri", c, fl)
+        s.t(145, yb + 15, "−f_c", "ts")
+        s.t(235, yb + 15, "f_c", "ts")
+        s.t(190, yb + 15, f"X_{sp}(f)", f"ts {col}")
+    s.poly([(121, yi), (262, yi), (262, ys - 9)], "cv", ar=True)
+    s.poly([(121, yq), (262, yq), (262, ys + 9)], "cv2", ar=True)
+    s.circ(262, ys, 9)
+    s.t(262, ys + 4, "+", "ts")
+    s.line(271, ys, 392, ys, "ln", ar=True)
+    s.t(332, ys - 9, "s_p = x_c − x_s", "tx tb a3")
+    yb = ys + 50
+    s.line(278, yb, 392, yb, "ax", ar=True)
+    for cx in (303, 367):
+        lobo(s, cx, yb, 18, 24, "tri", "cv3", None)
+    s.t(335, yb + 15, "S_p(f)", "ts a3")
+    s.t(8, 288, "I = in fase (coseno)  ·  Q = in quadratura (seno)", "ts", "start")
+    return s.render(), ("🧩 **Chi è chi.** $s_c$, $s_s$ (minuscole, a sinistra) sono le componenti reali dell'inviluppo, in banda base: ciò che esce dal modulatore. "
+                        "$x_c=\\sqrt2\\,s_c\\cos(2\\pi f_ct)$ e $x_s=\\sqrt2\\,s_s\\sin(2\\pi f_ct)$ sono le stesse informazioni dopo il moltiplicatore: due forme d'onda passa-banda ortogonali (18), con lo spettro replicato in $\\pm f_c$ e scalato per $1/\\sqrt2$. "
+                        "Il sommatore le ricompone in $s_p=x_c-x_s$ (17). Il pedice $c$ indica il ramo del coseno (I), il pedice $s$ il ramo del seno (Q); $S_c$, $X_c$ sono le trasformate di $s_c$, $x_c$.")
+
+
 def fig_up_down():
     s = Svg(400, 332, "upconversion e downconversion")
     s.t(10, 16, "Upconversion (trasmissione)", "tx tb", "start")

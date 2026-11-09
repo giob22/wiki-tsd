@@ -177,3 +177,6 @@ Filtra ultimi 10: `grep "^## " wiki/log.md | tail -10`
 
 ## [2026-11-08] aggiornamento | sito di studio | legge dei 6 dB nell'intercorso
 - `output/crea_sito.py`: la Lezione 3 del sito parte ora dal quantizzatore uniforme (relazione ingresso-uscita, codifica binaria, errore, fattore di carico, SNR e legge dei 6 dB/bit, progetto) e include le pagine [[quantizzazione-uniforme]], [[snr-di-quantizzazione]] e l'esercizio [[dimensionamento-quantizzatore]]; aggiornati titolo, introduzione e legenda dell'indice
+
+## [2026-11-09] aggiornamento | sito di studio | disegno «chi è chi» nell'upconverter
+- `output/sito_disegni.py`, `output/crea_sito.py`: nuovo disegno nella Lezione 4 (sezione «Energia dell'inviluppo») che distingue $s_c$, $s_s$ (inviluppo, banda base) da $x_c$, $x_s$ (uscite dei due rami dell'upconverter, passa-banda, ortogonali) e da $s_p=x_c-x_s$, con gli spettri $S_c$, $X_c$, $S_p$; ramo I = coseno, ramo Q = seno

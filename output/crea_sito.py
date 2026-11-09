@@ -64,6 +64,7 @@ FIGURE = {
     (4, "Segnali in banda base e in banda passante"): ["spettri_bb_pb"],
     (4, "Ritorno al segnale reale e Hilbert"): ["hilbert"],
     (4, "Inviluppo complesso"): ["catena_spettri", "fasore"],
+    (4, "Energia dell'inviluppo"): ["chi_e_chi"],
     (4, "Upconversion e downconversion"): ["up_down"],
     (5, "Appunti — Sinusoide a fase casuale"): ["realizzazioni"],
     (5, "Slide 13 — Processi stazionari in senso lato"): ["stazionarieta"],
