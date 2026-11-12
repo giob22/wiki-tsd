@@ -771,6 +771,17 @@ def costruisci(out):
         print("scritto", c["slug"])
     (out / "index.html").write_text(pagina_indice(out), encoding="utf-8")
     print("scritto index, immagini:", len(COPIATE))
+    # pagine aggiuntive tenute fuori dal repository e non collegate dall'indice (facoltative)
+    extra = ROOT.parent / "extra_sito.py"
+    if extra.exists():
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("extra_sito", extra)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        (out / f"{mod.SLUG}.html").write_text(mod.pagina_sito(sys.modules[__name__]), encoding="utf-8")
+        with open(out / "app.js", "a", encoding="utf-8") as fh:
+            fh.write(mod.accesso_js())
+        print("scritta la pagina aggiuntiva")
 
 
 if __name__ == "__main__":
