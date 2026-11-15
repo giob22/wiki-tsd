@@ -55,6 +55,12 @@
 - [[psd-componenti-in-quadratura]] — $S_{x_cx_c}$ (13), $S_{xx} = 2S_{x_px_p}(f+f_c)u(f+f_c)$ (14), cross-PSD, spettro simmetrico ⇒ componenti incoerenti (alta)
 - [[rumore-in-banda-passante]] — PSD $N_0/2$ in banda $W$: $S_{w_cw_c} = N_0/2$, $S_{ww} = N_0$, potenza $N_0W$; costruzione grafica (alta)
 
+**Parametri globali e capacità**
+- [[informazione-mutua-e-capacita]] — $I(X;Y)=H(Y)-H(Y\mid X)$, $C=\max_{p(x)}I$, teorema di Shannon, $C=W\log_2(1+\gamma)$ (alta)
+- [[parametri-globali-modulazioni]] — banda di Shannon, $E_b$, $\text{SNR}=\frac{E_b}{N_0}\eta_B$, $\eta_B$, $\eta_P$, tabella PAM/PSK/QAM/ortogonali (alta)
+- [[limite-di-shannon]] — frontiera $E_b/N_0\ge(2^{\eta_B}-1)/\eta_B$, limite $-1.59$ dB, regioni limitate in banda e in potenza (alta)
+- [[link-budget]] — rumore $kT_0FW$, sensibilità, Friis, path loss massimo (media)
+
 ## Entità
 - [[ripetitore-rigenerativo]] — dispositivo
 - [[g711]] — standard ITU-T PCM voce
@@ -70,6 +76,7 @@
 - [[processi-aleatori]] — random_processes.pdf, pp. 1–46 (41 slide + 5 pagine di appunti a mano)
 - [[laboratorio-conversione-ad]] — scripts/09_28_2006: AD_conversion.m + 3 figure (laboratorio, non d'esame)
 - [[rappresentazione-processi-passa-banda]] — Rappresentazione_Rice_processi.pdf, pp. 1–25 (13 slide + 12 pagine di appunti a mano)
+- [[parametri-globali-e-capacita]] — Confronto_new.pdf, pp. 1–33 (slide con note a mano)
 
 ## Laboratorio (non materia d'esame)
 Esperimenti Matlab per vedere la teoria all'opera; un macroblocco per pagina.
@@ -85,6 +92,7 @@ Esperimenti Matlab per vedere la teoria all'opera; un macroblocco per pagina.
 - [[campionamento-e-aliasing]] — Nyquist, alias, numero di campioni (bassa)
 - [[dimensionamento-quantizzatore]] — bit, SNR, $k_c$, bit rate, companding (media)
 - [[calcolo-densita-spettrale]] — PSD con Wiener-Khinchin; segnale modulato linearmente (media)
+- [[link-budget-wlan]] — bit rate, sensibilità e portata di un collegamento WLAN (media)
 
 ## Esame
 _nessun materiale ancora — lancia `prepara esame`_
@@ -92,6 +100,7 @@ _nessun materiale ancora — lancia `prepara esame`_
 ## Asset
 Figure in `raw/assets/`: 3 da Intro, 7 da Probabilità, 29 da Campionamento, 11 da Rappresentazione_Rice (di cui 4 pagine di appunti a mano), 6 da random_processes (nome `file-pN-descrizione.png`).
 3 da Rappresentazione_Rice_processi (`processi-passabanda-pN-*.png`: vista grafica delle PSD, costruzione grafica del rumore in banda).
+1 da Confronto_new (`confronto-p23-efficienza-banda-potenza.png`: piano efficienza spettrale – $E_b/N_0$).
 Figure del laboratorio in `raw/assets/lab-0928-*.png` (3, copiate da `raw/scripts/09_28_2006/`).
 Grafici 🧩 del laboratorio — script `genera_grafici_laboratorio_ad.py` (replica Python di AD_conversion.m): setup e spettro, spettro del campionato, durata della convoluzione e taglio, confronto interpolatori, quantizzazione, SNR vs bit, esempio 2; animazione `grafico-lab-interpolazione.gif`.
 Grafici 🧩 dei processi aleatori — script `genera_grafici_random_processes.py`: realizzazioni e v.a. a $t_0$, processo lento contro veloce (autocorrelazione e PSD), gaussiana bivariata, animazione della costruzione di $R_{XX}(\tau)$ (`grafico-rp-autocorrelazione.gif`).

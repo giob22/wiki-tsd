@@ -50,6 +50,11 @@ LEZIONI = [
          pdf="Rappresentazione_Rice_processi.pdf, slide 1–13 più appunti", inizio=None,
          concetti=["processi-passa-banda", "psd-componenti-in-quadratura", "rumore-in-banda-passante"],
          fonte="rappresentazione-processi-passa-banda", domande_filtro=None, esercizi=[]),
+    dict(n=8, slug="lezione-8", titolo="Parametri globali delle modulazioni e capacità di canale",
+         breve="Informazione mutua, capacità e canale AWGN; banda di Shannon, efficienza spettrale e in potenza; frontiera di Shannon; link budget con un esempio WLAN.",
+         pdf="Confronto_new.pdf, slide 1–33", inizio=None,
+         concetti=["informazione-mutua-e-capacita", "parametri-globali-modulazioni", "limite-di-shannon", "link-budget"],
+         fonte="parametri-globali-e-capacita", domande_filtro=None, esercizi=["link-budget-wlan"]),
 ]
 
 # dove va ogni disegno: (n. lezione, inizio del titolo della sezione) -> chiavi; il disegno sta in fondo alla sezione
@@ -75,6 +80,12 @@ FIGURE = {
     (7, "Slide 8 e appunti"): ["catena_psd"],
     (7, "Slide 9 e appunti"): ["simmetria"],
     (7, "Slide 12–13"): ["rumore"],
+    (8, "Slide 4 — Informazione mutua"): ["canale"],
+    (8, "Slide 5 — Informazione mutua ed entropia"): ["entropie"],
+    (8, "Slide 9 — Interpretazione della capacità"): ["capacita"],
+    (8, "Slide 15–16 — Efficienza in potenza"): ["costellazioni_etap"],
+    (8, "Slide 21 — Frontiera di Shannon"): ["piano_shannon"],
+    (8, "Slide 31 — Path loss ammissibile"): ["bilancio_wlan"],
 }
 
 # ----------------------------------------------------------------------------------------------- immagini
@@ -441,7 +452,7 @@ def pagina_indice(out):
                     f'<ul>{li}</ul></a>')
     corpo = f"""
 <h1>Trasmissione dei Segnali Digitali</h1>
-<p class="breve">Appunti per la <strong>prima prova intercorso</strong>: dal quantizzatore uniforme (SNR e legge dei 6 dB/bit) e dalla quantizzazione non uniforme alla rappresentazione di Rice dei processi aleatori. Segue l'ordine delle lezioni.</p>
+<p class="breve">Appunti per la <strong>prima prova intercorso</strong>: dal quantizzatore uniforme (SNR e legge dei 6 dB/bit) e dalla quantizzazione non uniforme alla rappresentazione di Rice dei processi aleatori, fino ai parametri globali delle modulazioni, alla capacità di canale e al link budget. Segue l'ordine delle lezioni.</p>
 <div class="cards">{"".join(card)}</div>
 <h2 class="ps">Come si legge</h2>
 <ul class="legenda">

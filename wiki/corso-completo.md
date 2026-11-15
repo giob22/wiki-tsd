@@ -15,6 +15,7 @@ Testo unico di studio del corso (LM Ingegneria Informatica, UNINA, D. Darsena; t
 | 5 | [[#Lezione 5 — Processi aleatori\|Processi aleatori]] | random_processes.pdf (+ random_processes_v2.pdf) |
 | 6 | [[#Lezione 6 — Laboratorio Matlab: conversione A/D e D/A (28/09)\|Laboratorio Matlab: conversione A/D e D/A]] | AD_conversion.m + figure |
 | 7 | [[#Lezione 7 — Rappresentazione dei processi passa-banda\|Rappresentazione dei processi passa-banda]] | Rappresentazione_Rice_processi.pdf |
+| 8 | [[#Lezione 8 — Parametri globali delle modulazioni e capacità di canale\|Parametri globali delle modulazioni e capacità di canale]] | Confronto_new.pdf |
 
 
 
@@ -1783,3 +1784,247 @@ $$S_{w_cw_c}(f) = S_{w_sw_s}(f) = \frac{N_0}{2} \quad \text{per } |f| < \frac W2
 
 *Approfondimenti nel wiki (derivazioni passo per passo, controlli, cross-PSD): [[processi-passa-banda]], [[psd-componenti-in-quadratura]], [[rumore-in-banda-passante]]; sul caso deterministico [[inviluppo-complesso]] e [[segnale-analitico]].*
 
+
+## Lezione 8 — Parametri globali delle modulazioni e capacità di canale
+
+*Fonte: Confronto_new.pdf («Global parameters for memoryless modulation and channel capacity», a.a. 2026-27), 33 slide, slide N = p. N. Note a mano della docente a p. 8, 19, 21, 23, 25, 30. Le equazioni (1)–(6) sono quelle delle slide di questa lezione.*
+
+### Obiettivi e introduzione · [[Confronto_new.pdf#page=2|p. 2]], [[Confronto_new.pdf#page=3|3]]
+- Obiettivi: introdurre **informazione mutua** e **capacità di canale** come limiti teorici fondamentali; definire i **parametri globali** con cui si confrontano gli schemi di modulazione (efficienza spettrale, efficienza in potenza, rapporto $E_b/N_0$); confrontare le modulazioni reali con il **limite di Shannon**; mostrare come questi concetti entrano nel **link budget** di un collegamento reale.
+- La domanda di velocità sempre maggiori rende importante sapere qual è la **massima velocità di trasmissione** ottenibile su un canale.
+- La **capacità di canale** (Shannon) è la massima velocità per cui si può ottenere una probabilità d'errore piccola a piacere. È definita **senza vincoli** di complessità o di ritardo. Per il canale AWGN ha un'espressione in forma chiusa particolarmente semplice.
+
+### Informazione mutua e capacità
+
+#### Slide 4 — Informazione mutua · [[Confronto_new.pdf#page=4|p. 4]]
+- Per un canale **senza memoria** con ingresso aleatorio $X$ e uscita $Y$:
+
+$$I(X;Y)=\sum_{x,y}p(x,y)\log_2\frac{p(x,y)}{p(x)\,p(y)}$$
+
+- Misura quanta informazione l'osservazione di $Y$ fornisce su $X$. È **simmetrica**, $I(X;Y)=I(Y;X)$; se $X$ e $Y$ sono indipendenti, $I(X;Y)=0$. Si misura in **bit**.
+
+#### Slide 5 — Informazione mutua ed entropia · [[Confronto_new.pdf#page=5|p. 5]]
+- Usando $p(x,y)=p(y\mid x)\,p(x)$:
+
+$$I(X;Y)=H(Y)-H(Y\mid X)=H(X)-H(X\mid Y)$$
+
+- $H(Y)$ è l'**entropia** di $Y$, l'incertezza media su $Y$; $H(Y\mid X)$ è l'incertezza residua su $Y$ quando $X$ è noto. Analogamente $H(X)$ e $H(X\mid Y)$, incertezza residua su $X$ dopo aver osservato $Y$.
+- **Interpretazione:** l'informazione mutua è la riduzione media di incertezza ottenuta osservando l'uscita del canale.
+
+#### Slide 6 — Capacità di canale · [[Confronto_new.pdf#page=6|p. 6]]
+
+$$C=\max_{p(x)}I(X;Y)$$
+
+- Il massimo è preso rispetto alla **distribuzione dell'ingresso**. Nel caso discreto la capacità si misura in **bit/uso del canale**; per canali a tempo continuo in **bit/s**.
+- **Interpretazione operativa:** la capacità è la massima velocità teoricamente ottenibile con probabilità d'errore piccola a piacere.
+
+#### Slide 7 — Secondo teorema di Shannon · [[Confronto_new.pdf#page=7|p. 7]]
+- Sia $R_b$ il bit rate all'ingresso del canale.
+  - Se $R_b<C$, **esistono** tecniche di trasmissione che rendono la probabilità d'errore piccola a piacere.
+  - Se $R_b>C$, **non** è possibile ottenere una probabilità d'errore piccola a piacere.
+- La capacità è un limite teorico: non descrive uno schema di modulazione specifico, ma le migliori prestazioni possibili.
+
+### Capacità del canale AWGN
+
+#### Slide 8 — Capacità del canale AWGN · [[Confronto_new.pdf#page=8|p. 8]]
+- Canale AWGN: $y[i]=x[i]+n[i]$, con $n[i]$ processo gaussiano bianco. Con banda disponibile $W$, potenza media trasmessa $P$ e densità spettrale di rumore $N_0$, il rapporto segnale-rumore è
+
+$$\gamma=\frac{P}{N_0W}$$
+
+  e la capacità è
+
+$$C=W\log_2(1+\gamma)\qquad[\text{bit/s}]$$
+
+- Nota a mano (in rosso): **«questo risultato non va dimostrato»**.
+
+#### Slide 9 — Interpretazione della capacità AWGN · [[Confronto_new.pdf#page=9|p. 9]]
+- La capacità cresce **linearmente** con la banda $W$ e **logaritmicamente** con l'SNR $\gamma$.
+- Capacità per unità di banda: $\dfrac CW=\log_2(1+\gamma)$ [bit/s/Hz].
+- Per aumenti significativi di capacità è spesso più efficace aumentare la banda che aumentare soltanto la potenza.
+
+### Banda dei segnali digitali
+
+#### Slide 10 — Banda dei segnali digitali · [[Confronto_new.pdf#page=10|p. 10]]
+- Ogni schema di modulazione usa le risorse disponibili (**potenza, banda, complessità**) per ottenere una probabilità d'errore prefissata.
+- Con spettro a supporto finito la banda sarebbe la larghezza del supporto; ma per modulazioni con forme d'onda di **durata finita** la PSD si estende da $-\infty$ a $+\infty$.
+- Esistono varie definizioni di banda (es. *null-to-null*, banda che contiene una frazione prefissata della potenza). Poiché il confronto prescinde dai segnali effettivi e guarda alle caratteristiche **geometriche delle costellazioni**, conviene una definizione «astratta» di banda.
+
+#### Slide 11 — Banda di Shannon · [[Confronto_new.pdf#page=11|p. 11]]
+- La dimensionalità di un insieme di segnali di durata $T$ e banda monolatera $W$ è $N=2WT$ (prodotto tempo-banda). Si definisce la **banda di Shannon**
+
+$$W=\frac{N}{2T}$$
+
+  in Hz o, più propriamente, in **dimensioni al secondo**.
+- Esempio: un segnale M-PSK ha 2 dimensioni, quindi $W=1/T$.
+- In generale la banda del segnale è $\alpha/T$, con $\alpha$ che dipende dalla definizione di banda e dal tipo di segnale: la durata di un segnale è inversamente proporzionale alla sua occupazione di banda (teoria di Fourier).
+
+### Potenza, energia per bit ed efficienze
+
+#### Slide 12 — Potenza media ed energia per bit · [[Confronto_new.pdf#page=12|p. 12]]
+- Potenza media spesa dal modulatore:
+
+$$P=\frac ET\tag{1}$$
+
+  con $E$ energia media dei segnali del modulatore e $T=\log_2M\cdot T_b$ periodo di simbolo ($M$ cardinalità della costellazione, $T_b$ periodo di bit).
+- Ogni simbolo porta $\log_2M$ bit, quindi l'energia media spesa per trasmettere un bit è
+
+$$E_b=\frac{E}{\log_2M}\tag{2}$$
+
+- Sostituendo (2) in (1):
+
+$$P=\frac{E_b\log_2M}{T}=E_b\,R_b\tag{3}$$
+
+  con $R_b$ bit rate.
+
+#### Slide 13–14 — SNR ed efficienza spettrale · [[Confronto_new.pdf#page=13|p. 13]], [[Confronto_new.pdf#page=14|14]]
+- L'SNR è il rapporto tra potenza media del segnale e potenza media del rumore:
+
+$$\text{SNR}\triangleq\frac{P}{N_0W}=\frac{E_b}{N_0}\,\frac{R_b}{W}$$
+
+  con $W$ banda monolatera del filtro di ricezione, che limita la potenza di rumore lasciando il segnale indistorto.
+- $\eta_B\triangleq R_b/W$ è l'**efficienza spettrale** (o in banda), in bit/s/Hz: quanti bit al secondo si trasmettono in una banda $W$. L'SNR complessivo dipende dalla qualità energetica del collegamento, $E_b/N_0$, e da quanto efficientemente si usa la banda, $\eta_B$.
+- Con la banda di Shannon:
+
+$$\eta_B=\frac{2\log_2M}{N}$$
+
+  L'efficienza spettrale cresce con $M$; a parità di $M$, cresce al diminuire della dimensionalità necessaria a rappresentare i segnali.
+- Esempio: $R_b=9.6$ kbit/s e $W=4.8$ kHz danno $\eta_B=2$ bit/s/Hz.
+
+#### Slide 15–16 — Efficienza in potenza · [[Confronto_new.pdf#page=15|p. 15]], [[Confronto_new.pdf#page=16|16]]
+
+$$\eta_P\triangleq\frac{d_{min}^2}{4E_b}\tag{4}$$
+
+- $d_{min}$ è la distanza minima tra i segnali. $\eta_P$ misura quanto efficientemente l'energia disponibile viene usata per **separare geometricamente** i punti della costellazione.
+- Esempi:
+  - **OOK**: $s_0=0$, $s_1=A$; $d_{min}=A$, $E=E_b=\frac12(s_0^2+s_1^2)=\frac{A^2}{2}\Rightarrow\eta_P=\frac12$.
+  - **Antipodale**: $s_1=-A$, $s_2=A$; $d_{min}=2A$, $E=E_b=A^2\Rightarrow\eta_P=1$.
+  - **Ortogonale binaria**: $\mathbf s_1=(A,0)$, $\mathbf s_2=(0,A)$; $d_{min}=\sqrt2A$, $E=E_b=A^2\Rightarrow\eta_P=\frac12$.
+
+#### Slide 17 — Probabilità d'errore e ruolo di $\eta_P$ · [[Confronto_new.pdf#page=17|p. 17]]
+- Per SNR moderatamente grandi la probabilità d'errore di simbolo è approssimata da (vedi dispense)
+
+$$P(e)\approx\frac{\bar N_{d_{min}}}{2}\,\text{erfc}\Big(\frac{d_{min}}{2\sqrt{N_0}}\Big)\tag{5}$$
+
+  con $\bar N_{d_{min}}$ numero medio di vicini a distanza minima (*nearest neighbors approximation*). Sostituendo (4):
+
+$$P(e)\approx\frac{\bar N_{d_{min}}}{2}\,\text{erfc}\Big(\sqrt{\eta_P\frac{E_b}{N_0}}\Big)\tag{6}$$
+
+- A SNR moderatamente grande il termine dominante è l'argomento della erfc: per questo $\eta_P$ permette un confronto rapido tra modulazioni.
+
+### Confronto tra modulazioni
+
+#### Slide 18 — Parametri globali · [[Confronto_new.pdf#page=18|p. 18]]
+- Una modulazione si valuta in termini di probabilità d'errore $P(e)$, rapporto $E_b/N_0$ ed efficienza spettrale $\eta_B$. Per basse probabilità d'errore conviene ragionare su $\eta_P$ e $\eta_B$.
+- **Compromesso fondamentale:** in generale non si possono massimizzare insieme l'efficienza energetica e quella spettrale.
+
+#### Slide 19 — Compromesso energia-banda · [[Confronto_new.pdf#page=19|p. 19]]
+
+| Modulazione | $N$ | $\eta_B$ | $\eta_P$ |
+|---|---|---|---|
+| PAM | 1 | $2\log_2M$ | $\dfrac{3\log_2M}{M^2-1}$ |
+| PSK | 2 | $\log_2M$ | $\log_2M\,\sin^2\dfrac{\pi}{M}$ |
+| QAM | 2 | $\log_2M$ | $\dfrac{3\log_2M}{2(M-1)}$ |
+| Ortogonale | $M$ | $\dfrac{2\log_2M}{M}$ | $\dfrac{\log_2M}{2}$ |
+
+- Note a mano: $\eta_B$ «efficienza in banda», $\eta_P$ «efficienza in potenza»; una graffa sulle righe: «chiaro trade-off banda-potenza». (Nell'ultima riga la slide stampa $\eta_P=2\log_2M$ con un 1 scritto a mano sopra: va letto $\frac12\log_2M$, coerente con l'esempio ortogonale binario $\eta_P=\frac12$.)
+- Per modulazioni la cui dimensionalità **cresce con $M$** (ortogonali), aumentare $M$ migliora l'efficienza in potenza ma riduce quella spettrale.
+- Per modulazioni a **dimensionalità fissa** (PAM, PSK, QAM), aumentare $M$ migliora l'efficienza spettrale ma richiede un $E_b/N_0$ più alto a parità di affidabilità.
+- Poiché la dimensionalità è legata alla banda di trasmissione, il risultato è un compromesso tra **energia e banda**.
+
+### Il limite di Shannon
+
+#### Slide 20 — Dai parametri globali al limite di Shannon · [[Confronto_new.pdf#page=20|p. 20]]
+- Per il canale AWGN: $\eta_B=R_b/W$, $\gamma=P/(N_0W)$, $\gamma=\frac{E_b}{N_0}\eta_B$.
+- Dalla capacità $C=W\log_2(1+\gamma)$ e dalla condizione necessaria $R_b\le C$ segue $\eta_B\le\log_2(1+\gamma)$. Sostituendo $\gamma=\eta_BE_b/N_0$:
+
+$$\eta_B\le\log_2\Big(1+\eta_B\frac{E_b}{N_0}\Big)\qquad\Longleftrightarrow\qquad\frac{E_b}{N_0}\ge\frac{2^{\eta_B}-1}{\eta_B}$$
+
+#### Slide 21 — Frontiera di Shannon · [[Confronto_new.pdf#page=21|p. 21]]
+- La relazione $E_b/N_0\ge(2^{\eta_B}-1)/\eta_B$ definisce la **frontiera di Shannon** nel piano $(\eta_B,E_b/N_0)$: per ogni $\eta_B$ dà il minimo $E_b/N_0$ compatibile con probabilità d'errore piccola a piacere. Ogni sistema reale deve operare **sopra** questa curva.
+- Nel limite di efficienza spettrale molto bassa:
+
+$$\lim_{\eta_B\to0}\frac{2^{\eta_B}-1}{\eta_B}=\ln2\qquad\Longrightarrow\qquad\Big(\frac{E_b}{N_0}\Big)_{min}=\ln2\approx-1.59\ \text{dB}$$
+
+- Nota a mano: $\lim_{x\to0}\dfrac{a^x-1}{x}=\ln a$.
+
+#### Slide 22 — Interpretazione fisica del limite · [[Confronto_new.pdf#page=22|p. 22]]
+- Al crescere dell'efficienza spettrale $\eta_B$ cresce anche il minimo $E_b/N_0$ richiesto.
+- In un sistema **limitato in potenza** si può usare banda per ridurre l'energia richiesta per bit; in un sistema **limitato in banda** si sceglie un'efficienza spettrale più alta, al costo di una potenza richiesta maggiore.
+- Le curve BER delle modulazioni descrivono le prestazioni pratiche; la capacità di Shannon è il riferimento teorico assoluto.
+
+#### Slide 23 — Compromessi nella scelta della modulazione · [[Confronto_new.pdf#page=23|p. 23]]
+
+![[confronto-p23-efficienza-banda-potenza.png|560]]
+*Piano efficienza spettrale – $E_b/N_0$ a $P_b(e)=10^{-5}$, con $W$ banda di Shannon: curva di capacità di Shannon (asintoto verticale a $-1.6$ dB), linea orizzontale a $\eta_B=1$ che separa la regione limitata in banda (sopra) da quella limitata in potenza (sotto); punti per PAM, PSK coerente, QAM, PSK differenziale, FSK coerente e FSK incoerente, con il valore di $M$ accanto.*
+
+- Fissata la BER, ogni schema di modulazione/demodulazione è un **punto** con ascissa $E_b/N_0$ e ordinata la sua efficienza spettrale (la slide scrive $R_s/W$; è il rapporto bit rate/banda, $\eta_B$).
+- **Regione limitata in banda** ($\eta_B>1$): la banda è scarsa e va scambiata con potenza, cioè con $E_b/N_0$.
+- **Regione limitata in potenza** ($\eta_B<1$): gli schemi usano la banda in modo poco efficiente e la scambiano con una riduzione di $E_b/N_0$ a parità di BER.
+- Nota a mano: «non viene utilizzata una codifica; in caso, i punti verrebbero traslati verso sinistra».
+
+### Link budget
+
+#### Slide 24 — Elementi di un link budget · [[Confronto_new.pdf#page=24|p. 24]]
+- Il progetto di un collegamento richiede: bit rate, banda disponibile, modulazione e codifica, potenza trasmessa, distanza desiderata.
+- Procedura tipica:
+  1. dati $R_b$ e la costellazione, si ricava il symbol rate $R_s$;
+  2. si determina la banda effettiva $W$;
+  3. dalla BER obiettivo e dalla modulazione si ricava il valore richiesto di $E_b/N_0$;
+  4. si calcola $\text{SNR}_{req}=\big(\frac{E_b}{N_0}\big)_{req}\frac{R_b}{W}$;
+  5. nota la potenza di rumore, si determina la **sensibilità** del ricevitore.
+
+#### Slide 25 — Potenza di rumore e sensibilità · [[Confronto_new.pdf#page=25|p. 25]]
+- Data la cifra di rumore $F$ del ricevitore (in dB), la potenza di rumore è
+
+$$P_n=N_0W=kT_0\,10^{F/10}\,W$$
+
+- La minima potenza ricevuta necessaria è $P_{rx,min}=\text{SNR}_{req}\,P_n$: è la **sensibilità** del ricevitore, spesso espressa in dBm:
+
+$$P^{\text{dBm}}_{rx,min}=10\log_{10}\Big(\frac{P_{rx,min}}{1\ \text{mW}}\Big)$$
+
+- Note a mano: $k$ è la costante di **Boltzmann**; $10^{F/10}$ è la «figura di rumorosità»; la formula «deriva da considerazioni quantistiche»; il dBm è «normalizzato rispetto al milliwatt», $P_0=1$ mW.
+
+#### Slide 26 — Equazione di Friis e path loss · [[Confronto_new.pdf#page=26|p. 26]]
+- Per un collegamento LOS ideale la potenza ricevuta è
+
+$$P_{rx}=P_{tx}\,G_{tx}\,G_{rx}\,\frac{\lambda^2}{(4\pi R)^2}$$
+
+  con $P_{tx}$ potenza trasmessa, $G_{tx}$ e $G_{rx}$ guadagni d'antenna, $\lambda=c/f_c$ lunghezza d'onda, $R$ distanza tra trasmettitore e ricevitore.
+
+#### Slide 27 — Link budget in scala logaritmica · [[Confronto_new.pdf#page=27|p. 27]]
+- Massimo path loss ammissibile:
+
+$$L_{path,\text{dB}}=P_{tx,\text{dBm}}-P_{rx,min,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}-L_{margin,\text{dB}}$$
+
+- Imponendo $P_{rx}\ge P_{rx,min}$ si ricava la minima potenza trasmessa necessaria oppure, a potenza fissata, la massima distanza raggiungibile.
+
+### Esempio: collegamento WLAN a 5 GHz
+
+#### Slide 28–29 — Dati e bit rate · [[Confronto_new.pdf#page=28|p. 28]], [[Confronto_new.pdf#page=29|29]]
+- Dati: portante 5 GHz; banda del canale 20 MHz; modulazione QPSK; eccesso di banda $a=0.33$; cifra di rumore $F=6$ dB. Si chiedono: (1) il bit rate; (2) la sensibilità per BER $=10^{-6}$; (3) la portata con $P_{tx}=100$ mW, $G_{tx}=G_{rx}=2$ dBi, margine 20 dB.
+- Symbol rate: $R_s=\dfrac{W}{1+a}=\dfrac{20}{1.33}\approx15$ Msimboli/s. QPSK: $\log_2M=2$, quindi $R_b=R_s\log_2M=30$ Mbit/s.
+
+#### Slide 30 — Sensibilità del ricevitore · [[Confronto_new.pdf#page=30|p. 30]]
+- QPSK con codifica di Gray: $\text{BER}=Q\big(\sqrt{2E_b/N_0}\big)$. Nota a mano: $Q(x)=\frac12\text{erfc}\big(\frac{x}{\sqrt2}\big)$.
+- Per BER $=10^{-6}$ serve circa $(E_b/N_0)_{req}\approx10.2$ dB. Quindi
+
+$$\text{SNR}_{req,\text{dB}}=\Big(\frac{E_b}{N_0}\Big)_{req,\text{dB}}+10\log_{10}\frac{R_b}{W}=10.2+10\log_{10}\frac{30}{20}\approx12\ \text{dB}$$
+
+- Con potenza di rumore $-95$ dBm: $P_{rx,min,\text{dBm}}=-95+12=-83$ dBm.
+
+#### Slide 31 — Path loss ammissibile e portata · [[Confronto_new.pdf#page=31|p. 31]]
+- $P_{tx}=100$ mW $=20$ dBm. Path loss massimo: $L_{path,\text{dB}}=20-(-83)+2+2-20=87$ dB.
+- Invertendo la formula del path loss in spazio libero si ottiene una portata di circa $R\approx107$ m.
+
+#### Slide 32 — Osservazione finale sull'esempio · [[Confronto_new.pdf#page=32|p. 32]]
+- Con costellazioni più dense (16-QAM, 64-QAM) nella stessa banda: l'efficienza spettrale e il bit rate aumentano; l'$E_b/N_0$ richiesto per la stessa BER aumenta; la sensibilità peggiora; la portata diminuisce.
+- Il progetto di un collegamento nasce sempre da un compromesso tra velocità, affidabilità, banda, energia e copertura.
+
+### Messaggio conclusivo · [[Confronto_new.pdf#page=33|p. 33]]
+- I parametri globali permettono di confrontare sistemi reali in termini di efficienza energetica e spettrale.
+- La capacità di Shannon è il limite teorico fondamentale che lega bit rate, banda e SNR; il confronto con la frontiera di Shannon misura quanto una soluzione pratica è vicina all'ottimo.
+- Il link budget traduce questi requisiti teorici in potenze, sensibilità e portata di un collegamento reale.
+
+---
+
+*Approfondimenti nel wiki (derivazioni passo per passo, grafici, esempio svolto): [[informazione-mutua-e-capacita]], [[parametri-globali-modulazioni]], [[limite-di-shannon]], [[link-budget]], [[link-budget-wlan]].*

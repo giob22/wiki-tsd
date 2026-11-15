@@ -670,6 +670,224 @@ def fig_rumore():
     return s.render(), "🧩 Rumore con PSD $N_0/2$ in una banda $W$ attorno a $\\pm f_c$: l'inviluppo ha PSD $N_0$ (si tiene un solo lobo e si raddoppia) e ciascuna componente $N_0/2$. La potenza si conserva: $2W\\cdot N_0/2=N_0W$."
 
 
+# --------------------------------------------------------------------------------------------- Lezione 8
+
+def fig_canale():
+    s = Svg(400, 176, "canale senza memoria e canale AWGN")
+    s.t(10, 16, "canale senza memoria", "tx tb", "start")
+    s.t(30, 60, "X", "tx a1")
+    s.line(42, 56, 140, 56, "ln", ar=True)
+    s.rect(140, 34, 120, 44, "bx bx1")
+    s.t2(200, 52, ["canale", "p(y | x)"], dy=15)
+    s.line(260, 56, 358, 56, "ln", ar=True)
+    s.t(372, 60, "Y", "tx a2")
+    s.t(10, 112, "canale AWGN", "tx tb", "start")
+    s.t(34, 150, "x[i]", "tx a1")
+    s.line(56, 146, 191, 146, "ln", ar=True)
+    s.circ(200, 146, 9)
+    s.t(200, 150, "+", "ts")
+    s.t(200, 116, "n[i] gaussiano bianco", "ts")
+    s.line(200, 121, 200, 137, "ln", ar=True)
+    s.line(209, 146, 344, 146, "ln", ar=True)
+    s.t(370, 150, "y[i]", "tx a2")
+    return s.render(), "🧩 Il canale è descritto dalla probabilità dell'uscita dato l'ingresso, $p(y\\mid x)$. Nel canale AWGN l'uscita è l'ingresso più un rumore gaussiano bianco indipendente: $y[i]=x[i]+n[i]$."
+
+
+def fig_entropie():
+    s = Svg(400, 226, "entropie e informazione mutua")
+    for cx, c, f in ((165, "cv", "fl"), (235, "cv2", "fl2")):
+        s.circ(cx, 100, 78, f)
+        s.circ(cx, 100, 78, c)
+    s.t(110, 16, "H(X)", "tx tb a1")
+    s.t(290, 16, "H(Y)", "tx tb a2")
+    s.t(122, 104, "H(X|Y)", "tx")
+    s.t(200, 104, "I(X;Y)", "tx tb")
+    s.t(278, 104, "H(Y|X)", "tx")
+    s.t(14, 200, "incertezza residua", "ts a1", "start")
+    s.t(14, 214, "su X, visto Y", "ts a1", "start")
+    s.t(200, 200, "informazione", "ts")
+    s.t(200, 214, "trasportata", "ts")
+    s.t(386, 200, "incertezza su Y", "ts a2", "end")
+    s.t(386, 214, "dovuta al rumore", "ts a2", "end")
+    return s.render(), "🧩 Ogni cerchio è l'incertezza di una variabile. L'intersezione è l'informazione mutua: $I(X;Y)=H(X)-H(X\mid Y)=H(Y)-H(Y\mid X)$. Con variabili indipendenti i cerchi non si toccano ($I=0$); con un canale perfetto coincidono."
+
+
+def fig_capacita():
+    s = Svg(400, 220, "capacità AWGN in funzione di SNR e di banda")
+    # (a) C/W in funzione di gamma in dB
+    ox, oy, W, H = 34, 176, 150, 140
+    s.line(ox - 4, oy, ox + W + 10, oy, "ax", ar=True)
+    s.line(ox, oy + 3, ox, oy - H - 10, "ax", ar=True)
+    gx = lambda g: ox + W * (g + 10) / 40
+    cy = lambda c: oy - H * c / 10
+    pts = [(gx(g), cy(math.log2(1 + 10 ** (g / 10)))) for g in np.linspace(-10, 30, 120)]
+    s.poly(pts, "cv")
+    for g in (-10, 0, 10, 20, 30):
+        s.line(gx(g), oy - 3, gx(g), oy + 3, "ln")
+        s.t(gx(g), oy + 15, str(g), "ts")
+    for c in (5, 10):
+        s.line(ox - 3, cy(c), ox + 3, cy(c), "ln")
+        s.t(ox - 6, cy(c) + 4, str(c), "ts", "end")
+    s.t(ox + W + 10, oy + 30, "γ [dB]", "ts", "end")
+    s.t(ox + 6, oy - H - 8, "C/W [bit/s/Hz]", "ts", "start")
+    s.t(ox + W / 2, 14, "(a) log in γ", "tx tb a1")
+    # (b) C in funzione di W a P/N0 fisso
+    ox2 = 232
+    s.line(ox2 - 4, oy, ox2 + W + 10, oy, "ax", ar=True)
+    s.line(ox2, oy + 3, ox2, oy - H - 10, "ax", ar=True)
+    wx = lambda w: ox2 + W * w / 6
+    ky = lambda c: oy - H * c / 1.6
+    pts = [(wx(w), ky(w * math.log2(1 + 1 / w))) for w in np.linspace(0.01, 6, 150)]
+    s.poly(pts, "cv2")
+    s.line(ox2, ky(1 / math.log(2)), ox2 + W, ky(1 / math.log(2)), "gd")
+    s.t(ox2 + W, ky(1 / math.log(2)) - 6, "1.44 P/N_0", "ts a2", "end")
+    s.t(ox2 + W + 10, oy + 30, "W  [unità P/N_0]", "ts", "end")
+    s.t(ox2 + 6, oy - H - 8, "C", "ts", "start")
+    s.t(ox2 + W / 2, 14, "(b) satura in W", "tx tb a2")
+    return s.render(), "🧩 (a) A banda fissa la capacità cresce solo come il logaritmo dell'SNR: a SNR alto +3 dB danno +1 bit/s/Hz. (b) A potenza fissa, allargare la banda fa crescere la capacità quasi linearmente all'inizio, ma il rumore raccolto cresce con $W$ e la capacità satura a $\\frac{P}{N_0}\\log_2e\\approx1.44\\,P/N_0$."
+
+
+def fig_costellazioni_etap():
+    s = Svg(400, 190, "OOK, antipodale e ortogonale binaria")
+    k = 30
+    # OOK
+    y = 96
+    s.t(64, 18, "OOK", "tx tb")
+    s.line(16, y, 120, y, "ax", ar=True)
+    for x, lab in ((36, "0"), (36 + 2 * k, "A")):
+        s.circ(x, y, 5, "pt cv")
+        s.t(x, y + 18, lab, "ts")
+    s.line(36, y - 16, 36 + 2 * k, y - 16, "ar2", ar=True, ar0=True)
+    s.t(36 + k, y - 22, "d = A", "ts a1")
+    s.t(64, 160, "η_P = 1/2", "tx a2")
+    # antipodale
+    cx = 200
+    s.t(cx, 18, "antipodale", "tx tb")
+    s.line(cx - 60, y, cx + 60, y, "ax", ar=True)
+    s.line(cx, y - 6, cx, y + 6, "ln")
+    for x, lab in ((cx - 2 * k, "−A"), (cx + 2 * k, "A")):
+        s.circ(x, y, 5, "pt cv")
+        s.t(x, y + 18, lab, "ts")
+    s.line(cx - 2 * k, y - 16, cx + 2 * k, y - 16, "ar2", ar=True, ar0=True)
+    s.t(cx, y - 22, "d = 2A", "ts a1")
+    s.t(cx, 160, "η_P = 1", "tx a2")
+    # ortogonale
+    ox, oy = 300, 130
+    s.t(336, 18, "ortogonale", "tx tb")
+    s.line(ox - 6, oy, ox + 84, oy, "ax", ar=True)
+    s.line(ox, oy + 6, ox, oy - 90, "ax", ar=True)
+    s.circ(ox + 2 * k, oy, 5, "pt cv")
+    s.circ(ox, oy - 2 * k, 5, "pt cv")
+    s.line(ox + 2 * k, oy, ox, oy - 2 * k, "gd")
+    s.t(ox + 2 * k, oy + 16, "(A,0)", "ts")
+    s.t(ox - 4, oy - 2 * k + 4, "(0,A)", "ts", "end")
+    s.t(ox + k + 6, oy - k - 4, "d = √2 A", "ts a1", "start")
+    s.t(336, 160, "η_P = 1/2", "tx a2")
+    s.t(200, 184, "η_P = d²_min / (4 E_b): a parità di E_b, l'antipodale separa di più", "ts")
+    return s.render(), "🧩 Le tre costellazioni binarie della slide 16. L'antipodale ha $d_{min}^2=4E_b$, le altre due solo $2E_b$: per la stessa probabilità d'errore richiedono circa 3 dB in più di $E_b/N_0$."
+
+
+def _ebn0_per_ber(famiglia, M, ber=1e-5):
+    """E_b/N_0 [dB] per la BER data con l'approssimazione (6) e codifica di Gray (dove serve)."""
+    k = math.log2(M)
+    if famiglia == "PSK":
+        eta, nv = k * math.sin(math.pi / M) ** 2, (1 if M == 2 else 2)
+        f = lambda g: nv / 2 * math.erfc(math.sqrt(eta * g)) / k
+    elif famiglia == "QAM":
+        eta, nv = 3 * k / (2 * (M - 1)), 4 * (1 - 1 / math.sqrt(M))
+        f = lambda g: nv / 2 * math.erfc(math.sqrt(eta * g)) / k
+    else:  # ortogonale coerente
+        eta = k / 2
+        f = lambda g: (M - 1) / 2 * math.erfc(math.sqrt(eta * g)) * (M / 2) / (M - 1)
+    lo, hi = -5.0, 40.0
+    for _ in range(80):
+        m = (lo + hi) / 2
+        lo, hi = (m, hi) if f(10 ** (m / 10)) > ber else (lo, m)
+    return lo
+
+
+def fig_piano_shannon():
+    s = Svg(400, 290, "frontiera di Shannon e modulazioni")
+    ox, oy, W, H = 44, 248, 330, 222
+    x = lambda db: ox + W * (db + 2) / 22          # E_b/N_0 da -2 a 20 dB
+    y = lambda eta: oy - H * (math.log2(eta) + 3) / 7  # eta_B da 1/8 a 16
+    curva = [(10 * math.log10((2 ** e - 1) / e), e) for e in np.geomspace(1 / 8, 16, 120)]
+    zona = [(x(-2), y(1 / 8))] + [(x(db), y(e)) for db, e in curva if db <= 20] + [(x(20), y(16)), (x(-2), y(16))]
+    s.poly(zona, "fl2", True)
+    s.poly([(x(db), y(e)) for db, e in curva if db <= 20], "cv2")
+    s.line(ox - 4, oy, ox + W + 8, oy, "ax", ar=True)
+    s.line(x(0), oy + 3, x(0), oy - H - 8, "gd")
+    s.line(ox, oy + 3, ox, oy - H - 10, "ax", ar=True)
+    s.line(x(-1.59), oy, x(-1.59), y(1 / 8), "gd")
+    s.line(ox, y(1), ox + W, y(1), "gd")
+    for db in (0, 5, 10, 15, 20):
+        s.line(x(db), oy - 3, x(db), oy + 3, "ln")
+        s.t(x(db), oy + 15, str(db), "ts")
+    for e, lab in ((1 / 8, "1/8"), (1 / 2, "1/2"), (1, "1"), (2, "2"), (4, "4"), (8, "8"), (16, "16")):
+        s.line(ox - 3, y(e), ox + 3, y(e), "ln")
+        s.t(ox - 6, y(e) + 4, lab, "ts", "end")
+    s.t(ox + W + 8, oy + 30, "E_b/N_0 [dB]", "ts", "end")
+    s.t(ox + 6, 14, "η_B [bit/s/Hz]", "ts", "start")
+    s.t(x(-1.2), y(1 / 8) - 30, "−1.59 dB", "ts a2", "start")
+    s.t(x(1.5), y(10), "impossibile", "tx a2", "start")
+    s.t(x(1.2), y(1) - 6, "limitata in banda ↑", "ts", "start")
+    s.t(x(1.2), y(1) + 14, "limitata in potenza ↓", "ts", "start")
+    serie = (("PSK", (2, 4, 8, 16), "cv", lambda M: math.log2(M)),
+             ("QAM", (16, 64), "cv3", lambda M: math.log2(M)),
+             ("ORT", (2, 4, 8, 16), "cv4", lambda M: 2 * math.log2(M) / M))
+    for fam, Ms, cl, etab in serie:
+        pts = [(x(_ebn0_per_ber(fam, M)), y(etab(M))) for M in Ms]
+        s.poly(pts, cl + " dash")
+        for (px, py), M in zip(pts, Ms):
+            s.circ(px, py, 3.6, "pt " + cl)
+            if fam == "ORT":
+                s.t(px + 2, py + 15, str(M), "ts", "middle")
+            else:
+                s.t(px - 6, py - 5, str(M), "ts", "end")
+    lx, ly = x(13.2), y(1 / 2) - 10
+    for i, (nome, cl) in enumerate((("M-PSK", "cv"), ("M-QAM", "cv3"), ("M-FSK ortogonale", "cv4"))):
+        s.line(lx, ly + i * 16, lx + 18, ly + i * 16, cl)
+        s.t(lx + 24, ly + i * 16 + 4, nome, "ts", "start")
+    return s.render(), ("🧩 Frontiera $E_b/N_0=(2^{\\eta_B}-1)/\\eta_B$ (curva arancione): a sinistra la regione impossibile, che per $\\eta_B\\to0$ tende a $-1.59$ dB. "
+                        "I punti sono le modulazioni a BER $=10^{-5}$, calcolati da me con l'approssimazione (6) e codifica di Gray: PSK e QAM salgono e vanno a destra al crescere di $M$, le ortogonali scendono e vanno a sinistra. "
+                        "Stesso significato della figura della slide 23.")
+
+
+def fig_bilancio_wlan():
+    s = Svg(400, 300, "bilancio di potenza dell'esempio WLAN")
+    oy0, H = 24, 236
+    lv = lambda dbm: oy0 + H * (25 - dbm) / 125     # da +25 a -100 dBm
+    ax = 46
+    s.line(ax, lv(-100) + 4, ax, lv(25) - 10, "ax", ar=True)
+    for d in (20, 0, -20, -40, -60, -80, -100):
+        s.line(ax - 3, lv(d), ax + 3, lv(d), "ln")
+        s.t(ax - 6, lv(d) + 4, str(d), "ts", "end")
+    s.t(ax + 4, 12, "dBm", "ts", "start")
+    passi = [(20, "P_{tx}", "20"), (22, "+G_{tx}", "22"), (-65, "−L_{path}", "−65"), (-63, "+G_{rx}", "−63")]
+    xs = [62, 104, 146, 188]
+    prev = None
+    for (val, nome, num), x0 in zip(passi, xs):
+        if prev is not None:
+            s.line(x0, lv(prev), x0, lv(val), "cv dash")
+        s.line(x0, lv(val), x0 + 34, lv(val), "cv ev")
+        s.t(x0 + 17, lv(val) - 6, num, "ts a1")
+        s.t(x0 + 17, lv(-100) + 22, nome, "ts a1")
+        prev = val
+    s.t(138, lv(-22), "−87 dB", "ts a1", "end")
+    s.t(138, lv(-22) + 13, "di propagazione", "ts a1", "end")
+    s.line(ax, lv(-95), 392, lv(-95), "gd")
+    s.t(392, lv(-95) + 14, "rumore P_n = −95", "ts", "end")
+    s.line(ax, lv(-83), 392, lv(-83), "cv2")
+    s.t(392, lv(-83) - 5, "sensibilità −83", "ts a2", "end")
+    s.line(222, lv(-63), 300, lv(-63), "gd")
+    s.line(276, lv(-95), 276, lv(-83), "ar2", ar=True, ar0=True)
+    s.t(282, lv(-89) + 4, "SNR_{req} 12 dB", "ts", "start")
+    s.line(250, lv(-83), 250, lv(-63), "ar2", ar=True, ar0=True)
+    s.t(256, lv(-73) + 4, "margine 20 dB", "ts", "start")
+    return s.render(), ("🧩 Bilancio dell'esempio in dBm: 20 dBm trasmessi, +2 dB d'antenna, −87 dB di propagazione, +2 dB d'antenna: arrivano −63 dBm. "
+                        "Il ricevitore ha un rumore di −95 dBm e per la BER richiesta servono 12 dB sopra il rumore (sensibilità −83 dBm); i 20 dB restanti sono il margine.")
+
+
 def tutte():
     f = {k[4:]: v for k, v in globals().items() if k.startswith("fig_")}
     return {k: fn() for k, fn in f.items()}

@@ -180,3 +180,11 @@ Filtra ultimi 10: `grep "^## " wiki/log.md | tail -10`
 
 ## [2026-11-09] aggiornamento | sito di studio | disegno «chi è chi» nell'upconverter
 - `output/sito_disegni.py`, `output/crea_sito.py`: nuovo disegno nella Lezione 4 (sezione «Energia dell'inviluppo») che distingue $s_c$, $s_s$ (inviluppo, banda base) da $x_c$, $x_s$ (uscite dei due rami dell'upconverter, passa-banda, ortogonali) e da $s_p=x_c-x_s$, con gli spettri $S_c$, $X_c$, $S_p$; ramo I = coseno, ramo Q = seno
+
+## [2026-11-15] ingest | Global parameters for memoryless modulation and channel capacity (Confronto_new.pdf) | pagine coperte: 1-33
+- richiesta: recuperare in fretta una lezione saltata, con una pagina sul sito; ingest fatto senza la discussione preliminare per urgenza
+- PDF copiato in `raw/Confronto_new.pdf` (originale «Confronto new.pdf»); figura di p. 23 in `raw/assets/confronto-p23-efficienza-banda-potenza.png`
+- fonte: [[parametri-globali-e-capacita]]; concetti nuovi: [[informazione-mutua-e-capacita]], [[parametri-globali-modulazioni]] (con la derivazione 🧩 dell'intera tabella $\eta_B$/$\eta_P$), [[limite-di-shannon]], [[link-budget]]; esercizio [[link-budget-wlan]]
+- [[corso-completo]]: nuova sezione «Lezione 8» con le note a mano (p. 8 «questo risultato non va dimostrato»; p. 19, 21, 23, 25, 30); `output/controlla_corso.py`: nessun problema
+- ⚠️ segnalati: $E_b/N_0$ richiesto a BER $10^{-6}$ per QPSK è 10.5 dB, non 10.2 (slide 30); $\eta_P$ delle ortogonali stampata $2\log_2M$ (va $\frac12\log_2M$); ordinata della slide 23 scritta $R_s/W$
+- sito: Lezione 8 in `output/crea_sito.py` e 6 disegni nuovi in `output/sito_disegni.py` (canale, entropie, capacità, costellazioni binarie, piano di Shannon con le modulazioni a BER $10^{-5}$, bilancio WLAN); aggiornati [[lezioni]], [[index]], [[overview]]
