@@ -72,7 +72,7 @@ $$
 
 > 🧩 Derivazione mia, per leggere la figura. A $P_b(e)=10^{-5}$, con l'approssimazione (6) di [[parametri-globali-modulazioni]], BPSK e QPSK richiedono $E_b/N_0\approx9.6$ dB. La QPSK ha $\eta_B=2$, dove la frontiera chiede solo $1.76$ dB: restano circa **7.8 dB** di distanza dal limite. È il margine che la **codifica di canale** può recuperare; per questo la nota a mano dice che con una codifica i punti si sposterebbero verso sinistra.
 
-## Spiegazione
+## Spiegazione · appunti [[Confronto new.pdf#page=22|p. 22]]–[[Confronto new.pdf#page=25|25]]
 
 La capacità dice quanti bit/s passano in un canale con banda $W$ e SNR $\gamma$. Riscrivendo tutto con i parametri globali ($\eta_B$ e $E_b/N_0$) si ottiene una curva che vale **per qualunque modulazione**: è il confine tra ciò che si può fare e ciò che è impossibile.
 
@@ -83,6 +83,8 @@ La capacità dice quanti bit/s passano in un canale con banda $W$ e SNR $\gamma$
 - **Limitato in potenza** ($\eta_B<1$): l'energia è la risorsa scarsa e la banda è abbondante. Si usano schemi ortogonali (M-FSK) che, aumentando $M$, riducono l'$E_b/N_0$ richiesto consumando banda.
 
 **Asintoto.** Per $\eta_B\to0$ la curva tende alla verticale $E_b/N_0=-1.59$ dB: nessuna quantità di banda permette di scendere sotto.
+
+**Dagli appunti presi a lezione.** La frontiera è solo un altro modo di scrivere la condizione del secondo teorema di Shannon. Il valore di $-1.6$ dB è un **limite invalicabile**: sotto non vale più il teorema. La figura delle modulazioni viene dal libro di **Biglieri**; la distanza orizzontale tra ogni punto e la curva è il **margine di miglioramento**, che una codifica di canale permette di ridurre spostando i punti verso il limite.
 
 > 🎯 Esame: derivazione della frontiera da $R_b\le C$ (tutti i passaggi), limite $\ln2=-1.59$ dB con il limite notevole, significato delle regioni limitate in banda e in potenza, lettura del grafico della slide 23 (anche che la codifica sposta i punti verso sinistra).
 
@@ -100,4 +102,4 @@ La capacità dice quanti bit/s passano in un canale con banda $W$ e SNR $\gamma$
 
 [[parametri-globali-e-capacita]] — Confronto_new.pdf, slide 20–23.
 
-_Aggiornato: 2026-11-15 — creazione da ingest Confronto_new.pdf_
+_Aggiornato: 2026-11-15 — appunti presi a lezione dalla copia annotata Confronto new.pdf; creazione da ingest Confronto_new.pdf_

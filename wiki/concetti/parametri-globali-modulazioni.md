@@ -141,7 +141,7 @@ $$
 
 Con $M$ crescente, PAM, PSK e QAM salgono in $\eta_B$ e scendono in $\eta_P$; le ortogonali fanno l'opposto. A parità di $\eta_B$ la QAM ha l'$\eta_P$ migliore tra gli schemi bidimensionali: a $\eta_B=4$, 16-QAM ha $\eta_P=0.4$ contro $0.152$ della 16-PSK, cioè circa $10\log_{10}(0.4/0.152)\approx4.2$ dB in meno di $E_b/N_0$.
 
-## Spiegazione
+## Spiegazione · appunti [[Confronto new.pdf#page=11|p. 11]]–[[Confronto new.pdf#page=21|21]]
 
 Per confrontare modulazioni diverse servono grandezze che non dipendano dalla forma d'onda scelta. La slide 10 spiega il problema della **banda**: con impulsi di durata finita lo spettro è infinito, e ogni definizione pratica di banda (null-to-null, frazione di potenza) dà un numero diverso. Si usa allora una banda «astratta», la **banda di Shannon**: un insieme di segnali che occupa $N$ dimensioni ogni $T$ secondi richiede almeno $W=N/(2T)$ Hz, perché in banda $W$ e durata $T$ entrano $2WT$ dimensioni. La banda reale sarà $\alpha/T$ con $\alpha$ che dipende dall'impulso, ma il confronto tra costellazioni non cambia.
 
@@ -153,6 +153,13 @@ Per confrontare modulazioni diverse servono grandezze che non dipendano dalla fo
 - L'SNR lega le due cose: $\text{SNR}=\frac{E_b}{N_0}\eta_B$. A parità di SNR disponibile, chi vuole più bit/s/Hz ha meno energia per bit.
 
 **Il compromesso della tabella.** Le costellazioni a dimensionalità fissa (PAM, PSK, QAM) mettono più punti nello stesso spazio: più bit per simbolo nella stessa banda, ma i punti si avvicinano e serve più $E_b/N_0$. Le ortogonali aggiungono una dimensione per ogni segnale: i punti restano lontani (anzi $\eta_P$ cresce), ma la banda cresce con $M$.
+
+**Dagli appunti presi a lezione.**
+- Tra le risorse c'è anche la complessità: il problema non è tanto l'elaborazione quanto il **ritardo** dovuto ai dati da elaborare.
+- $N$ è la dimensionalità della costellazione (approccio geometrico) e $N/T$ il numero di dimensioni trasmesse al secondo: è ciò che la banda di Shannon conta.
+- Nell'SNR $=\frac{E_b}{N_0}\frac{R_b}{W}$ il primo fattore è il contributo dell'energia, il secondo quello dell'efficienza in banda.
+- La $W$ dell'SNR è la banda del **filtro di ricezione**: il rumore bianco (PSD piatta $N_0/2$, acf impulsiva) è un modello di comodo per i calcoli, ed è il ricevitore a limitarlo alla banda utile, come in [[rumore-in-banda-passante]].
+- Le ortogonali aggiungono una dimensione per ogni nuovo segnale: la banda cresce con $M$, quindi si usano **quando la banda è disponibile** e conta risparmiare energia.
 
 > 🎯 Esame: definizione e significato di banda di Shannon, $E_b$, $\eta_B$, $\eta_P$; perché $\eta_P$ basta a confrontare le probabilità d'errore (passaggio dalla (5) alla (6)); esempi OOK, antipodale, ortogonale; il compromesso energia-banda della tabella con il diverso comportamento delle modulazioni a dimensionalità fissa e di quelle ortogonali.
 
@@ -172,4 +179,4 @@ Questi parametri sono gli assi su cui si disegna il confronto con il limite teor
 
 [[parametri-globali-e-capacita]] — Confronto_new.pdf, slide 10–19.
 
-_Aggiornato: 2026-11-15 — creazione da ingest Confronto_new.pdf_
+_Aggiornato: 2026-11-15 — appunti presi a lezione dalla copia annotata Confronto new.pdf; creazione da ingest Confronto_new.pdf_

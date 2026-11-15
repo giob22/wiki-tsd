@@ -1,7 +1,7 @@
 ---
 tipo: fonte
 titolo: "Global parameters for memoryless modulation and channel capacity"
-file_raw: "Confronto_new.pdf"
+file_raw: "Confronto_new.pdf"  # appunti presi a lezione: "Confronto new.pdf"
 pagine: "1-33"
 data_ingest: 2026-11-15
 formato: slide-pdf
@@ -12,7 +12,7 @@ argomenti: ["informazione mutua", "capacità di canale", "capacità AWGN", "band
 
 ## Sommario · [[Confronto_new.pdf#page=1|p. 1]]–[[Confronto_new.pdf#page=33|33]]
 
-Lezione 8 del corso (33 slide in inglese, con note a mano della docente). Introduce l'**informazione mutua** e la **capacità di canale** come limiti teorici, con il secondo teorema di Shannon e la capacità del canale AWGN $C=W\log_2(1+\gamma)$, che la docente indica come risultato da **non dimostrare**. Definisce poi i **parametri globali** per confrontare le modulazioni a partire dalla sola geometria della costellazione: banda di Shannon $W=N/(2T)$, energia per bit $E_b$, SNR $=\frac{E_b}{N_0}\eta_B$, efficienza spettrale $\eta_B=2\log_2M/N$ ed efficienza in potenza $\eta_P=d_{min}^2/(4E_b)$, che governa la probabilità d'errore. Una tabella mette a confronto PAM, PSK, QAM e ortogonali e mostra il compromesso energia-banda. Da $R_b\le C$ si ricava la **frontiera di Shannon** $E_b/N_0\ge(2^{\eta_B}-1)/\eta_B$, con il minimo assoluto $\ln2=-1.59$ dB, e il grafico delle modulazioni reali nel piano efficienza spettrale – $E_b/N_0$. La lezione si chiude con il **link budget** (rumore, sensibilità, Friis, path loss) e un esempio completo di collegamento WLAN a 5 GHz.
+Lezione 8 del corso (33 slide in inglese, con note a mano della docente). Introduce l'**informazione mutua** e la **capacità di canale** come limiti teorici, con il secondo teorema di Shannon e la capacità del canale AWGN $C=W\log_2(1+\gamma)$, che la docente indica come risultato da **non dimostrare**. Definisce poi i **parametri globali** per confrontare le modulazioni a partire dalla sola geometria della costellazione: banda di Shannon $W=N/(2T)$, energia per bit $E_b$, SNR $=\frac{E_b}{N_0}\eta_B$, efficienza spettrale $\eta_B=2\log_2M/N$ ed efficienza in potenza $\eta_P=d_{min}^2/(4E_b)$, che governa la probabilità d'errore. Una tabella mette a confronto PAM, PSK, QAM e ortogonali e mostra il compromesso energia-banda. Da $R_b\le C$ si ricava la **frontiera di Shannon** $E_b/N_0\ge(2^{\eta_B}-1)/\eta_B$, con il minimo assoluto $\ln2=-1.59$ dB, e il grafico delle modulazioni reali nel piano efficienza spettrale – $E_b/N_0$. Gli appunti presi a lezione stanno nella copia annotata `Confronto new.pdf` (35 pagine, con due pagine di soli appunti: la dimostrazione di $I=H(Y)-H(Y\mid X)$ con l'entropia come media dell'autoinformazione, e lo schizzo del rumore in banda contro il rumore bianco); sono riportati slide per slide in [[corso-completo]]. La lezione si chiude con il **link budget** (rumore, sensibilità, Friis, path loss) e un esempio completo di collegamento WLAN a 5 GHz.
 
 ## Punti chiave · [[Confronto_new.pdf#page=4|p. 4]]–[[Confronto_new.pdf#page=32|32]]
 
@@ -40,6 +40,7 @@ Lezione 8 del corso (33 slide in inglese, con note a mano della docente). Introd
 - Slide 30: l'$E_b/N_0$ richiesto per BER $=10^{-6}$ con QPSK è dato come 10.2 dB; dalla formula $Q(\sqrt{2E_b/N_0})=10^{-6}$ risulta circa 10.5 dB (vedi [[link-budget-wlan]]).
 - Slide 19: nella riga delle ortogonali $\eta_P$ è stampata come $2\log_2M$ con una correzione a mano; il valore coerente con gli esempi è $\frac12\log_2M$.
 - Slide 23: l'ordinata è scritta $R_s/W$, ma nel resto della lezione è l'efficienza spettrale $\eta_B=R_b/W$.
+- Copia annotata, p. 15: «è il canale che fa da filtro, oppure bisogna aggiungerne uno al ricevitore?». La slide 13 indica il filtro di ricezione di banda $W$.
 - Slide 17 rimanda alle «lecture notes» per l'approssimazione della probabilità d'errore: le dispense sulla rivelazione non sono ancora nel wiki.
 
 ## Domande da esame
@@ -55,4 +56,4 @@ Lezione 8 del corso (33 slide in inglese, con note a mano della docente). Introd
 - Descrivere il piano efficienza spettrale – $E_b/N_0$: regioni limitate in banda e in potenza.
 - Descrivere la procedura di link budget e calcolare sensibilità e portata di un collegamento.
 
-_Aggiornato: 2026-11-15 — creazione da ingest Confronto_new.pdf_
+_Aggiornato: 2026-11-15 — integrati gli appunti presi a lezione (Confronto new.pdf); creazione da ingest Confronto_new.pdf_

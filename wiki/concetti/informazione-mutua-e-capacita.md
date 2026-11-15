@@ -76,7 +76,7 @@ usando $\log_2(1+\epsilon)\approx\epsilon\log_2e$ per $\epsilon\to0$. Da questo 
 
 **Ipotesi:** canale AWGN, potenza media $P$ fissata.
 
-## Spiegazione
+## Spiegazione · appunti [[Confronto new.pdf#page=4|p. 4]]–[[Confronto new.pdf#page=10|10]]
 
 Si parte da una domanda pratica: dato un canale rumoroso, quanto velocemente si può trasmettere senza sbagliare? Shannon risponde con un numero, la **capacità**, che non dipende dalla modulazione scelta ma solo dal canale.
 
@@ -87,6 +87,13 @@ Si parte da una domanda pratica: dato un canale rumoroso, quanto velocemente si 
 **Secondo teorema di Shannon.** La capacità ha un significato operativo: sotto $C$ esistono codici che rendono l'errore piccolo quanto si vuole, sopra no. È un teorema di esistenza: dice cosa è possibile, non come farlo.
 
 **Canale AWGN.** Con banda $W$, potenza $P$ e rumore bianco gaussiano di densità $N_0$, la capacità è $C=W\log_2(1+\gamma)$. Si legge così: la banda moltiplica (dipendenza **lineare**), l'SNR entra sotto logaritmo (dipendenza **logaritmica**). A SNR alto ogni raddoppio di potenza (+3 dB) aggiunge solo 1 bit/s/Hz.
+
+**Dagli appunti presi a lezione.**
+- Il canale è il meccanismo che associa **aleatoriamente** l'uscita $Y$ all'ingresso $X$; con il logaritmo in base 2 l'informazione si misura in bit, con il logaritmo naturale in nat.
+- L'entropia è la media dell'**autoinformazione** $\log_2\frac{1}{p(y)}$, che cresce al diminuire della probabilità: un evento raro, quando accade, porta molta informazione.
+- Il teorema di Shannon **non è costruttivo**: dice che sotto $C$ esistono tecniche con errore piccolo a piacere, ma non quale schema usare.
+- Per rendere piccola la $P(e)$ Shannon indica una strada diversa dall'aumentare la potenza: **abbassare il rate** sotto la capacità. E per aumentare $C$ conviene allargare la banda, la risorsa preziosa.
+- Nel canale AWGN $y[i]=x[i]+n[i]$ è l'uscita del demodulatore nell'$i$-esimo intervallo di simbolo: la demodulazione è fatta, manca solo la decisione.
 
 > 🧩 Un'intuizione, non richiesta all'esame: in banda $W$ si trasmettono $2W$ dimensioni al secondo (il prodotto tempo-banda $N=2WT$ di [[parametri-globali-modulazioni]]), e ciascuna dimensione porta al massimo $\frac12\log_2(1+\gamma)$ bit: $2W\cdot\frac12\log_2(1+\gamma)=W\log_2(1+\gamma)$.
 
@@ -108,4 +115,4 @@ La capacità è il **riferimento assoluto** con cui si misurano tutte le modulaz
 
 [[parametri-globali-e-capacita]] — Confronto_new.pdf, slide 3–9.
 
-_Aggiornato: 2026-11-15 — creazione da ingest Confronto_new.pdf_
+_Aggiornato: 2026-11-15 — appunti presi a lezione dalla copia annotata Confronto new.pdf; creazione da ingest Confronto_new.pdf_

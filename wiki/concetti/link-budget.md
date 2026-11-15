@@ -71,7 +71,7 @@ $$
 
 **Lettura:** in spazio libero la potenza cala con $R^2$. Raddoppiare la distanza costa $20\log_{10}2\approx6$ dB, quindi ogni 6 dB guadagnati (più potenza, antenne migliori, ricevitore più sensibile) raddoppiano la portata.
 
-## Spiegazione
+## Spiegazione · appunti [[Confronto new.pdf#page=27|p. 27]]–[[Confronto new.pdf#page=29|29]]
 
 Il link budget porta i concetti astratti della lezione (capacità, $E_b/N_0$, efficienza spettrale) nel mondo delle potenze in dBm e delle distanze in metri. La catena è:
 
@@ -80,6 +80,8 @@ Il link budget porta i concetti astratti della lezione (capacità, $E_b/N_0$, ef
 3. moltiplicando per $\eta_B=R_b/W$ si ottiene l'SNR richiesto;
 4. il rumore del ricevitore ($kT_0FW$) dice a quale potenza sta il «pavimento»: la sensibilità è l'SNR richiesto sopra quel pavimento;
 5. l'equazione di Friis dice quanta potenza si perde nella propagazione; il path loss massimo tollerabile, tolto un margine, fissa la portata.
+
+**Dagli appunti presi a lezione.** In Friis, $\frac{\lambda^2}{(4\pi R)^2}=\frac{1}{L_{path}}$ è il fattore di attenuazione. Vale per il collegamento ideale in visibilità: il canale radio è «aperto», e in un canale wireless il segnale può arrivare anche tramite riflessioni multiple. $F$ misura la rumorosità del ricevitore; $k$ è la costante di Boltzmann.
 
 **Perché in dB.** Tutte le grandezze si moltiplicano (guadagni, perdite, rapporti), quindi in scala logaritmica si sommano: il bilancio diventa una somma di voci con il loro segno. dBm vuol dire dB rispetto a 1 mW, dBi dB rispetto all'antenna isotropa.
 
@@ -102,4 +104,4 @@ Il link budget porta i concetti astratti della lezione (capacità, $E_b/N_0$, ef
 
 [[parametri-globali-e-capacita]] — Confronto_new.pdf, slide 24–27, 32–33.
 
-_Aggiornato: 2026-11-15 — creazione da ingest Confronto_new.pdf_
+_Aggiornato: 2026-11-15 — appunti presi a lezione dalla copia annotata Confronto new.pdf; creazione da ingest Confronto_new.pdf_
