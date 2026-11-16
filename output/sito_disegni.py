@@ -1205,6 +1205,394 @@ def fig_qam16_vicini():
     return s.render(), "🧩 Numero di vicini a distanza d per ogni punto."
 
 
+# --------------------------------------------------------------------------------------------- Lezione 13
+
+def fig_sync_costellazione():
+    s = Svg(400, 220, "costellazione scalata e ruotata dal canale e dall'offset")
+    cx, cy, R = 200, 112, 62
+    s.line(cx - 170, cy, cx + 170, cy, "ax", ar=True)
+    s.line(cx, cy + 100, cx, cy - 102, "ax", ar=True)
+    th = math.radians(28)
+    for a in (45, 135, 225, 315):
+        r = math.radians(a)
+        s.circ(cx + R * math.cos(r), cy - R * math.sin(r), 5, "pt cv")
+        x2, y2 = cx + 1.25 * R * math.cos(r + th), cy - 1.25 * R * math.sin(r + th)
+        s.circ(x2, y2, 5, "pt cv2")
+    r = math.radians(45)
+    pts = [(cx + 0.55 * R * math.cos(r + u), cy - 0.55 * R * math.sin(r + u)) for u in np.linspace(0, th, 20)]
+    s.poly(pts, "ar2", ar=True)
+    s.t(cx + 0.9 * R * math.cos(r + th / 2) + 4, cy - 0.62 * R * math.sin(r + th / 2) - 2, "θ", "ts a2", "start")
+    pts = [(cx + 1.55 * R * math.cos(math.radians(a)), cy - 1.55 * R * math.sin(math.radians(a))) for a in np.linspace(80, 120, 20)]
+    s.poly(pts, "ar2", ar=True)
+    s.t(cx - 30, cy - 1.62 * R - 4, "2πΔf t", "ts a2", "end")
+    s.t(20, 24, "● trasmessa", "ts a1", "start")
+    s.t(20, 40, "● ricevuta: × A, ruotata", "ts a2", "start")
+    return s.render(), "🧩 A scala, θ ruota, Δf fa girare la costellazione nel tempo."
+
+
+def fig_downconv_lo():
+    s = Svg(400, 170, "down-conversion con LO a f_c − Δf")
+    s.t(26, 89, "y_p(t)", "tx a1")
+    s.line(50, 85, 70, 85, "ln")
+    s.line(70, 40, 70, 130, "ln")
+    for y, lo, out in ((40, "√2 cos ω_{LO}t", "y_I(t)"), (130, "−√2 sin ω_{LO}t", "y_Q(t)")):
+        s.line(70, y, 120, y, "ln", ar=True)
+        s.mult(130, y)
+        s.t(130, y + (26 if y > 85 else -16), lo, "ts a2")
+        s.line(139, y, 190, y, "ln", ar=True)
+        s.rect(190, y - 14, 60, 28, "bx bx1")
+        s.t(220, y + 4, "LPF", "ts")
+        s.line(250, y, 330, y, "ln", ar=True)
+        s.t(345, y + 4, out, "tx", "start")
+    s.t(220, 92, "ω_{LO} = 2π(f_c − Δf)", "ts")
+    return s.render(), "🧩 Ogni ramo dà una miscela di v_I e v_Q ruotata di 2πΔf t."
+
+
+def fig_acq_tracking():
+    s = Svg(400, 120, "acquisizione e tracking")
+    y = 60
+    s.rect(20, y - 18, 100, 36, "bx bx1")
+    s.t(70, y + 4, "preambolo", "ts")
+    s.rect(120, y - 18, 260, 36, "bx")
+    s.t(250, y + 4, "dati", "ts")
+    s.line(20, y + 30, 120, y + 30, "ar2", ar=True, ar0=True)
+    s.t(70, y + 46, "acquisizione (training)", "ts a1")
+    s.line(120, y + 30, 380, y + 30, "ar2", ar=True, ar0=True)
+    s.t(250, y + 46, "tracking: decision-directed o blind", "ts a2")
+    s.t(200, 22, "nei sistemi a pacchetto il tracking spesso non serve", "ts")
+    return s.render(), "🧩 Stima iniziale con i simboli noti, poi aggiornamento continuo."
+
+
+def fig_famiglia_pdf():
+    s = Svg(400, 160, "famiglia di pdf parametrizzata da θ")
+    oy, k, H = 130, 40, 90
+    s.line(20, oy, 390, oy, "ax", ar=True)
+    s.line(200, oy + 4, 200, 20, "gd")
+    s.t(200, oy + 15, "0", "ts")
+    for m, cl, lab in ((-2.6, "cv", "θ_1"), (0.4, "cv2", "θ_2"), (3.0, "cv3", "θ_3")):
+        xs = np.linspace(m - 2.2, m + 2.2, 80)
+        s.poly([(200 + k * x, oy - H * math.exp(-(x - m) ** 2 / 0.6)) for x in xs], cl)
+        s.t(200 + k * m, oy + 15, lab, "ts")
+    s.line(200 + k * -2.2, oy + 2, 200 + k * -2.2, oy - 70, "ar2", ar=True)
+    s.t(200 + k * -2.2 - 4, oy - 76, "y(0) osservato", "ts a2", "end")
+    return s.render(), "🧩 Con y(0) < 0 la pdf più verosimile è quella di θ_1."
+
+
+def fig_blind_miscela():
+    s = Svg(400, 170, "verosimiglianza blind: miscela di due gaussiane")
+    oy, k, H = 140, 55, 100
+    s.line(20, oy, 390, oy, "ax", ar=True)
+    xs = np.linspace(-3.3, 3.3, 300)
+    g = lambda x, m: math.exp(-(x - m) ** 2 / 0.5)
+    s.poly([(200 + k * x, oy - H * 0.5 * g(x, -1.5)) for x in xs], "cv3")
+    s.poly([(200 + k * x, oy - H * 0.5 * g(x, 1.5)) for x in xs], "cv2")
+    s.poly([(200 + k * x, oy - H * (0.5 * g(x, -1.5) + 0.5 * g(x, 1.5))) for x in xs], "cv")
+    s.t(200 - 1.5 * k, oy + 15, "−A", "ts")
+    s.t(200 + 1.5 * k, oy + 15, "+A", "ts")
+    s.t(390, oy + 15, "y(k)", "ts", "end")
+    s.t(200 - 1.5 * k, oy - H * 0.5 - 8, "b = −1, peso ½", "ts a3")
+    s.t(200 + 1.5 * k, oy - H * 0.5 - 8, "b = +1, peso ½", "ts a2")
+    return s.render(), "🧩 Senza conoscere b(k), y(k) segue la somma pesata delle due gaussiane."
+
+
+def fig_tanh_soft():
+    s = Svg(400, 170, "decisione soffice tanh e decisione dura")
+    ox, oy, kx, ky = 200, 85, 45, 55
+    s.line(30, oy, 380, oy, "ax", ar=True)
+    s.line(ox, 160, ox, 12, "ax", ar=True)
+    xs = np.linspace(-3.6, 3.6, 200)
+    s.poly([(ox + kx * x, oy - ky * math.tanh(x)) for x in xs], "cv")
+    s.poly([(ox + kx * -3.6, oy + ky), (ox, oy + ky), (ox, oy - ky), (ox + kx * 3.6, oy - ky)], "cv2")
+    s.t(ox - 6, oy - ky + 4, "+1", "ts", "end")
+    s.t(ox + 6, oy + ky + 4, "−1", "ts", "start")
+    s.t(380, oy + 15, "A y/σ²", "ts", "end")
+    s.t(36, 22, "tanh: blind (soffice)", "ts a1", "start")
+    s.t(36, 38, "sgn: decision-directed", "ts a2", "start")
+    return s.render(), "🧩 tanh(Ay/σ²) prende il posto del simbolo b(k): a SNR alto diventa il segno."
+
+
+def fig_fase_ml():
+    s = Svg(400, 210, "stima ML della fase come argomento della correlazione")
+    ox, oy = 150, 170
+    s.line(30, oy, 380, oy, "ax", ar=True)
+    s.line(ox, 200, ox, 14, "ax", ar=True)
+    phi = math.radians(38)
+    L = 170
+    s.line(ox, oy, ox + L * math.cos(phi), oy - L * math.sin(phi), "ar2", ar=True)
+    s.t(ox + L * math.cos(phi) + 6, oy - L * math.sin(phi), "Z = ⟨y, s⟩", "tx a2", "start")
+    s.line(ox + L * math.cos(phi), oy - L * math.sin(phi), ox + L * math.cos(phi), oy, "gd")
+    s.line(ox + L * math.cos(phi), oy - L * math.sin(phi), ox, oy - L * math.sin(phi), "gd")
+    s.t(ox + L * math.cos(phi), oy + 15, "Z_c", "ts")
+    s.t(ox - 6, oy - L * math.sin(phi) + 4, "Z_s", "ts", "end")
+    pts = [(ox + 40 * math.cos(u), oy - 40 * math.sin(u)) for u in np.linspace(0, phi, 20)]
+    s.poly(pts, "cv")
+    s.t(ox + 50, oy - 12, "φ = θ̂", "ts a1", "start")
+    return s.render(), "🧩 θ̂ = φ = tan⁻¹(Z_s/Z_c): massimizza |Z| cos(φ − θ)."
+
+
+def fig_pll():
+    s = Svg(400, 180, "phase-locked loop")
+    s.t(30, 50, "y_p(t)", "tx a1")
+    s.line(55, 46, 140, 46, "ln", ar=True)
+    s.mult(150, 46)
+    s.line(159, 46, 210, 46, "ln", ar=True)
+    s.rect(210, 30, 90, 32, "bx bx1")
+    s.t(255, 50, "loop filter", "ts")
+    s.t(255, 22, "∫ dt", "ts a2")
+    s.line(300, 46, 350, 46, "ln")
+    s.line(350, 46, 350, 140, "ln", ar=True)
+    s.rect(210, 122, 140, 36, "bx bx2")
+    s.t(280, 144, "VCO: dθ̂/dt = γ c(t)", "ts")
+    s.line(210, 140, 150, 140, "ln")
+    s.line(150, 140, 150, 57, "ln", ar=True)
+    s.t(146, 104, "−sin(2πf_c t + θ̂)", "ts a2", "end")
+    s.t(358, 96, "c(t)", "ts", "start")
+    return s.render(), "🧩 Il prodotto misura l'errore di fase, il filtro lo integra, il VCO corregge."
+
+
+def fig_curva_s():
+    s = Svg(400, 170, "termine d'errore del PLL")
+    ox, oy, kx, ky = 200, 85, 50, 60
+    s.line(30, oy, 380, oy, "ax", ar=True)
+    s.line(ox, 160, ox, 12, "ax", ar=True)
+    xs = np.linspace(-math.pi, math.pi, 200)
+    s.poly([(ox + kx * x, oy - ky * math.sin(x)) for x in xs], "cv")
+    s.circ(ox, oy, 5, "pt cv2")
+    s.t(ox + kx * math.pi, oy + 15, "π", "ts")
+    s.t(ox - kx * math.pi, oy + 15, "−π", "ts")
+    s.t(380, oy - 8, "θ̂ − θ", "ts", "end")
+    s.t(ox + 8, oy + 18, "aggancio", "ts a2", "start")
+    s.t(ox + kx * 1.6, oy - ky - 6, "θ̂ scende", "ts a1")
+    s.t(ox - kx * 1.6, oy + ky + 14, "θ̂ sale", "ts a1")
+    return s.render(), "🧩 (T₀/2) sin(θ̂ − θ): segno e modulo dell'errore."
+
+
+def fig_costas():
+    s = Svg(400, 200, "Costas loop")
+    s.t(22, 104, "r(t)", "tx a1")
+    s.line(40, 100, 70, 100, "ln")
+    s.line(70, 36, 70, 164, "ln")
+    for y, lo, e in ((36, "cos", "e_1"), (164, "−sin", "e_2")):
+        s.line(70, y, 110, y, "ln", ar=True)
+        s.mult(120, y)
+        s.line(129, y, 180, y, "ln", ar=True)
+        s.rect(180, y - 13, 50, 26, "bx bx1")
+        s.t(205, y + 4, "LPF", "ts")
+        s.line(230, y, 330, y, "ln")
+        s.t(280, y - 6, e, "ts a1")
+        s.line(330, y, 330, 100 + (-9 if y < 100 else 9), "ln", ar=True)
+    s.mult(330, 100)
+    s.line(321, 100, 280, 100, "ln", ar=True)
+    s.rect(230, 88, 50, 24, "bx bx1")
+    s.t(255, 104, "loop", "ts")
+    s.line(230, 100, 190, 100, "ln", ar=True)
+    s.rect(140, 88, 50, 24, "bx bx2")
+    s.t(165, 104, "VCO", "ts")
+    s.line(140, 100, 120, 100, "ln")
+    s.line(120, 100, 120, 47, "ln", ar=True)
+    s.line(120, 100, 120, 153, "ln", ar=True)
+    s.t(126, 76, "π/2 sul ramo Q", "ts a2", "start")
+    s.t(330, 126, "e = e_1 e_2", "ts", "start")
+    return s.render(), "🧩 Il prodotto e_1 e_2 ∝ m² sin 2Δ non dipende dal segno dei simboli."
+
+
+# --------------------------------------------------------------------------------------------- Lezione 14
+
+def fig_isi_impulsi():
+    s = Svg(400, 180, "impulsi che si sovrappongono: interferenza intersimbolica")
+    oy, k, H = 110, 52, 70
+    s.line(15, oy, 392, oy, "ax", ar=True)
+    simboli = [1, -1, 1, 1]
+    cl = ["cv", "cv2", "cv3", "cv"]
+    ts = np.linspace(-1.6, 7.4, 400)
+    for n, (a, c) in enumerate(zip(simboli, cl)):
+        sp = lambda t: a * math.exp(-((t - n - 0.35) ** 2) / 0.55)  # impulso allargato dal canale
+        s.poly([(40 + k * t, oy - H * sp(t)) for t in ts], c)
+    tot = lambda t: sum(a * math.exp(-((t - n - 0.35) ** 2) / 0.55) for n, a in enumerate(simboli))
+    for n in range(4):
+        x = 40 + k * (n + 0.35)
+        s.line(x, oy + 30, x, oy - H - 10, "gd")
+        s.circ(x, oy - H * tot(n + 0.35), 4, "pt cv2")
+    s.t(40 + k * 1.35, oy + 44, "istanti di campionamento", "ts")
+    return s.render(), "🧩 Le code dei vicini si sommano al campione del simbolo che si decide."
+
+
+def fig_ber_floor():
+    s = Svg(400, 230, "perdita di SNR e BER floor")
+    ox, oy, W, H = 50, 200, 330, 180
+    x = lambda db: ox + W * db / 16
+    y = lambda p: oy - H * (-math.log10(p)) / 6
+    s.line(ox - 4, oy, ox + W + 8, oy, "ax", ar=True)
+    s.line(ox, oy + 4, ox, oy - H - 10, "ax", ar=True)
+    for e in range(1, 7):
+        s.line(ox, y(10 ** -e), ox + W, y(10 ** -e), "gd")
+        s.t(ox - 6, y(10 ** -e) + 4, f"10^{{−{e}}}", "ts", "end")
+    dbs = np.linspace(0, 16, 300)
+    ber = lambda d: 0.5 * math.erfc(math.sqrt(10 ** (d / 10)))
+    s.poly([(x(d), y(ber(d))) for d in dbs if ber(d) > 1e-6], "cv")
+    s.poly([(x(d), y(ber(d - 2))) for d in dbs if d >= 2 and ber(d - 2) > 1e-6], "cv2")
+    s.poly([(x(d), y(ber(d - 1) + 3e-4)) for d in dbs if d >= 1], "cv3")
+    for db in (0, 4, 8, 12, 16):
+        s.t(x(db), oy + 15, str(db), "ts")
+    s.t(ox + W + 8, oy + 30, "E_b/N_0 [dB]", "ts", "end")
+    s.t(x(9.8), y(2e-6), "teorica", "ts a1", "start")
+    s.t(x(12.2), y(2e-5), "perdita di SNR", "ts a2", "start")
+    s.t(x(15.8), y(3e-4) - 8, "BER floor (ISI)", "ts a3", "end")
+    return s.render(), "🧩 La perdita di SNR sposta la curva; l'ISI la ferma su un pavimento."
+
+
+def fig_sistema_bandlimitato():
+    s = Svg(400, 130, "modello del sistema su canale a banda limitata")
+    y = 60
+    blocchi = [(30, "g(t)"), (110, "h(t)"), (220, "c(t)")]
+    s.t(14, y + 4, "s(n)", "ts a1", "middle")
+    s.line(26, y, 40, y, "ln", ar=True)
+    for x0, lab in blocchi:
+        s.rect(x0 + 10, y - 16, 56, 32, "bx bx1")
+        s.t(x0 + 38, y + 4, lab, "ts")
+    s.line(96, y, 120, y, "ln", ar=True)
+    s.line(176, y, 191, y, "ln", ar=True)
+    s.circ(200, y, 9)
+    s.t(200, y + 4, "+", "ts")
+    s.line(200, y + 36, 200, y + 9, "ln", ar=True)
+    s.t(200, y + 50, "rumore", "ts")
+    s.line(209, y, 230, y, "ln", ar=True)
+    s.line(286, y, 300, y, "ln")
+    s.line(300, y, 318, y - 10, "ln")
+    s.t(312, y - 18, "kT", "ts a2")
+    s.line(320, y, 336, y, "ln", ar=True)
+    s.rect(336, y - 16, 56, 32, "bx bx2")
+    s.t(364, y + 4, "decisore", "ts")
+    s.t(150, 22, "p(t) = g ∗ h ∗ c", "tx a1")
+    return s.render(), "🧩 L'impulso che conta è la cascata dei tre filtri."
+
+
+def _rc(f, a, T=1.0):
+    f = abs(f)
+    f1, f2 = (1 - a) / (2 * T), (1 + a) / (2 * T)
+    if f <= f1:
+        return T
+    if f >= f2:
+        return 0.0
+    return T / 2 * (1 - math.sin((f - 1 / (2 * T)) * math.pi * T / a))
+
+
+def fig_nyquist_repliche():
+    s = Svg(400, 170, "repliche dello spettro che sommano a T")
+    oy, k, H = 130, 110, 80
+    s.line(15, oy, 392, oy, "ax", ar=True)
+    fs = np.linspace(-1.7, 1.7, 400)
+    for m, cl in ((-1, "cv3"), (0, "cv"), (1, "cv2")):
+        s.poly([(200 + k * f, oy - H * _rc(f - m, 0.5)) for f in fs], cl)
+    s.line(200 + k * -1.7, oy - H, 200 + k * 1.7, oy - H, "gd")
+    s.t(390, oy - H - 6, "somma = T", "ts a1", "end")
+    for f, lab in ((-1, "−1/T"), (0, "0"), (1, "1/T"), (0.5, "1/2T")):
+        s.t(200 + k * f, oy + 15, lab, "ts")
+    return s.render(), "🧩 Coseno rialzato: ogni replica riempie ciò che la vicina lascia."
+
+
+def fig_sinc_treno():
+    s = Svg(400, 180, "treno di sinc per la sequenza 1011010")
+    oy, k, H = 95, 46, 55
+    bits = [1, 0, 1, 1, 0, 1, 0]
+    s.line(15, oy, 392, oy, "ax", ar=True)
+    ts = np.linspace(-1.2, 7.2, 500)
+    tot = lambda t: sum((2 * b - 1) * float(np.sinc(t - n)) for n, b in enumerate(bits))
+    for n, b in enumerate(bits):
+        s.poly([(40 + k * t, oy - H * (2 * b - 1) * float(np.sinc(t - n))) for t in ts], "cv3")
+    s.poly([(40 + k * t, oy - H * tot(t)) for t in ts], "cv")
+    for n, b in enumerate(bits):
+        s.circ(40 + k * n, oy - H * (2 * b - 1), 4, "pt cv2")
+        s.t(40 + k * n, 168, str(b), "ts a2")
+    return s.render(), "🧩 Negli istanti kT pesa solo il proprio impulso: ISI nulla."
+
+
+def fig_coseno_rialzato():
+    s = Svg(400, 170, "spettro a coseno rialzato")
+    oy, k, H = 135, 150, 95
+    s.line(15, oy, 392, oy, "ax", ar=True)
+    fs = np.linspace(-1.2, 1.2, 400)
+    for a, cl in ((0.0, "cv"), (0.5, "cv2"), (1.0, "cv3")):
+        if a == 0:
+            pts = [(200 + k * -1.2, oy), (200 + k * -0.5, oy), (200 + k * -0.5, oy - H), (200 + k * 0.5, oy - H), (200 + k * 0.5, oy), (200 + k * 1.2, oy)]
+        else:
+            pts = [(200 + k * f, oy - H * _rc(f, a)) for f in fs]
+        s.poly(pts, cl)
+    for f, lab in ((-1, "−1/T"), (-0.5, "−1/2T"), (0.5, "1/2T"), (1, "1/T")):
+        s.t(200 + k * f, oy + 15, lab, "ts")
+    s.t(24, 22, "α = 0", "ts a1", "start")
+    s.t(24, 38, "α = 0.5", "ts a2", "start")
+    s.t(24, 54, "α = 1", "ts a3", "start")
+    return s.render(), "🧩 Banda (1 + α)/(2T); tutte valgono T/2 in 1/(2T)."
+
+
+def fig_rc_impulso():
+    s = Svg(400, 170, "impulso a coseno rialzato")
+    oy, k, H = 120, 40, 95
+    s.line(15, oy, 392, oy, "ax", ar=True)
+    ts = np.linspace(-4.5, 4.5, 500)
+
+    def p(t, a):
+        den = 1 - (2 * a * t) ** 2
+        if abs(den) < 1e-6:
+            return math.pi / 4 * float(np.sinc(1 / (2 * a)))
+        return float(np.sinc(t)) * math.cos(math.pi * a * t) / den
+
+    for a, cl in ((0.0, "cv"), (0.5, "cv2"), (1.0, "cv3")):
+        s.poly([(200 + k * t, oy - H * p(t, a)) for t in ts], cl)
+    for n in range(-4, 5):
+        s.line(200 + k * n, oy + 4, 200 + k * n, oy - 4, "ax")
+        if n:
+            s.t(200 + k * n, oy + 16, f"{n}T", "ts")
+    return s.render(), "🧩 Stessi zeri in kT; con α grande le code quasi spariscono."
+
+
+def fig_equalizzatori():
+    s = Svg(400, 170, "tipi di equalizzatori")
+    s.rect(150, 10, 100, 26, "bx bx2")
+    s.t(200, 28, "equalizzatori", "ts tb")
+    for x, lab in ((100, "lineari"), (300, "non lineari")):
+        s.line(200, 36, x, 60, "ln", ar=True)
+        s.rect(x - 50, 60, 100, 26, "bx bx1")
+        s.t(x, 78, lab, "ts")
+    for x, lab in ((60, "ZF"), (140, "MMSE")):
+        s.line(100, 86, x, 110, "ln", ar=True)
+        s.rect(x - 32, 110, 64, 26, "bx")
+        s.t(x, 128, lab, "ts")
+    for x, lab in ((255, "DFE"), (345, "MLSE")):
+        s.line(300, 86, x, 110, "ln", ar=True)
+        s.rect(x - 32, 110, 64, 26, "bx")
+        s.t(x, 128, lab, "ts")
+    s.t(100, 156, "semplici, amplificano il rumore", "ts a2")
+    s.t(300, 156, "DFE: propagazione errori · MLSE: ottima", "ts a2")
+    return s.render(), "🧩 Dal più semplice all'ottimo."
+
+
+def fig_traliccio_viterbi():
+    s = Svg(400, 200, "traliccio a due stati e sopravvissuti di Viterbi")
+    X = [50, 150, 250, 350]
+    Y = {"A": 60, "B": 150}
+    rami = [(0, "A", "A", 1), (0, "A", "B", 3),
+            (1, "A", "A", 2), (1, "A", "B", 1), (1, "B", "A", 1), (1, "B", "B", 3),
+            (2, "A", "A", 3), (2, "B", "A", 1)]
+    sopr = {(0, "A", "A"), (1, "A", "B"), (2, "B", "A"), (0, "A", "B"), (1, "A", "A")}
+    finale = {(0, "A", "A"), (1, "A", "B"), (2, "B", "A")}
+    for k, a, b, m in rami:
+        cl = "cv" if (k, a, b) in finale else ("cv2" if (k, a, b) in sopr else "gd")
+        x1, y1, x2, y2 = X[k], Y[a], X[k + 1], Y[b]
+        s.line(x1, y1, x2, y2, cl)
+        s.t((x1 + x2) / 2 + (0 if a == b else 8), (y1 + y2) / 2 - 5, str(m), "ts")
+    G = {(0, "A"): 0, (1, "A"): 1, (1, "B"): 3, (2, "A"): 3, (2, "B"): 2, (3, "A"): 3}
+    for (k, st), g in G.items():
+        s.circ(X[k], Y[st], 6, "pt cv")
+        s.t(X[k], Y[st] + 22, f"Γ={g}", "ts a1")
+    s.t(20, Y["A"] + 4, "A", "tx", "end")
+    s.t(20, Y["B"] + 4, "B", "tx", "end")
+    for k in range(4):
+        s.t(X[k], 22, f"k={k}", "ts")
+    return s.render(), "🧩 Esempio del wiki: in blu il cammino minimo A→A→B→A, metrica 3."
+
+
 def tutte():
     f = {k[4:]: v for k, v in globals().items() if k.startswith("fig_")}
     return {k: fn() for k, fn in f.items()}

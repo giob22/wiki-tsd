@@ -106,9 +106,23 @@ Integrando $|S(f)|^2$ numericamente si ottiene lo stesso valore (Parseval). Di q
 - **"Ma il segnale è continuo o no?"** No: è un vettore di $10^4$ numeri. Si comporta come continuo perché $dt = 6$ ms è 83 volte più piccolo di $T_s$. Tra un campione e l'altro ci sono 82 punti "continui" che il campionamento butterà via.
 - **"Perché la finestra è così lunga (60 s) se il trapezio dura 4 s?"** Per avere molta risoluzione in frequenza ($1/60$ Hz) e spazio per le code della sinc ([[lab-interpolazione]]). Ha però un effetto collaterale sull'SNR: [[lab-snr]].
 
+## DFT come campionamento della DTFT · [[Lezioni.pdf#page=2|p. 2]]
+
+Negli appunti sparsi del quaderno «Lezioni» sono confrontate due trasformate di una sequenza $x(m)$:
+
+$$X(\nu)=\sum_{m=-\infty}^{+\infty}x(m)\,e^{-j2\pi m\nu}\qquad\text{(trasformata a tempo discreto, } \nu \text{ frequenza discreta)}$$
+
+$$X_k=\sum_{m=0}^{N-1}x(m)\,e^{-j2\pi\frac{mk}{N}},\qquad k=0,1,\dots,N-1\qquad\text{(DFT)}$$
+
+Se $x(m)\neq0$ solo per $m=0,1,\dots,N-1$, la prima somma ha gli stessi termini della seconda, e le due coincidono per $\nu=k/N$: **la DFT è il campionamento della trasformata di Fourier a tempo discreto** sulla griglia $\nu_k=k/N$. (Negli appunti c'è anche la formula con gli indici scambiati, $X_m=\sum_{k=0}^{N-1}x_ke^{-j2\pi km/N}$.)
+
+L'ultima riga degli appunti, «per effetto di elaborazione la componente continua viene spezzata e spostata», è segnata come **da capire**.
+
+> 🧩 Spiegazione mia. La DTFT è periodica in $\nu$ con periodo 1, quindi il campione $k$ con $k>N/2$ è anche il campione alla frequenza negativa $\nu=k/N-1$. La `fft` restituisce gli indici $0,\dots,N-1$: la frequenza zero (la componente continua) sta all'indice 0 e le frequenze negative stanno in fondo al vettore. Uno spettro concentrato attorno a 0, come quello del trapezio, appare perciò **spezzato** tra l'inizio e la fine dell'asse. `fftshift` scambia le due metà del vettore e **sposta** la frequenza zero al centro: è la riga `S_dft = fftshift(fft(s))` dello script, ed è per questo che l'asse va da $-\frac{1}{2dt}$ a $+\frac{1}{2dt}$.
+
 ## Collegamento alla teoria · [[Campionamento_AD_DA.pdf#page=8|p. 8]]
 
 - La domanda di p. 8 ([[teorema-del-campionamento]]), cioè come scegliere $f_c$ per un dato segnale, parte proprio dallo spettro: qui lo si calcola per poter scegliere $f_s = 2W$.
 - Nelle slide la frequenza di campionamento si chiama $f_c$ e il periodo $T_c$; nel codice `fs` e `Ts`.
 
-_Aggiornato: 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-30 — creazione da ingest del laboratorio (AD_conversion.m)_
+_Aggiornato: 2026-11-16 — appunti sparsi di Lezioni.pdf p. 2 (DFT e DTFT); 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-09-30 — creazione da ingest del laboratorio (AD_conversion.m)_

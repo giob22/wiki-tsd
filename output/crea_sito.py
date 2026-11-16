@@ -77,6 +77,14 @@ LEZIONI = [
          breve="Informazione mutua, capacità e canale AWGN; banda di Shannon, efficienza spettrale e in potenza; frontiera di Shannon; link budget.",
          concetti=["informazione-mutua-e-capacita", "parametri-globali-modulazioni", "limite-di-shannon", "link-budget"],
          fonte="parametri-globali-e-capacita", esercizi=["link-budget-wlan"]),
+    dict(n=13, slug="lezione-13", data="09/11", titolo="Stima dei parametri per la sincronizzazione",
+         breve="Ritardo e offset dell'oscillatore, timing e portante, stima ML (ampiezza training-based e blind, fase), PLL e Costas loop.",
+         concetti=["sincronizzazione", "stima-dei-parametri", "phase-locked-loop"],
+         fonte="parameter-estimation-synchronization", esercizi=[]),
+    dict(n=14, slug="lezione-14", data="16/11", titolo="Segnalazione su canali a banda limitata",
+         breve="Interferenza intersimbolica, criterio di Nyquist, coseno rialzato, equalizzazione, MLSE e algoritmo di Viterbi.",
+         concetti=["interferenza-intersimbolica", "criterio-di-nyquist", "equalizzazione", "entità/algoritmo-di-viterbi"],
+         fonte="signaling-bandlimited-channels", esercizi=[]),
 ]
 for _c in LEZIONI:
     _c.setdefault("inizio", None)
@@ -137,6 +145,24 @@ FIGURE = {
     (12, "Slide 15–16 — Efficienza in potenza"): ["costellazioni_etap"],
     (12, "Slide 21 — Frontiera di Shannon"): ["piano_shannon"],
     (12, "Slide 31 — Path loss ammissibile"): ["bilancio_wlan"],
+    (13, "Slide 3 e appunti — Effetto di ritardo"): ["sync_costellazione"],
+    (13, "Slide 4 e appunti — Derivazione del modello (1/4)"): ["downconv_lo"],
+    (13, "Slide 8 e appunti — Compiti e fasi"): ["acq_tracking"],
+    (13, "Slide 11 e appunti — Il modello dei dati"): ["famiglia_pdf"],
+    (13, "Slide 19 e appunti — Blind approach (2/2)"): ["blind_miscela", "tanh_soft"],
+    (13, "Slide 24 — La funzione da massimizzare"): ["fase_ml"],
+    (13, "Slide 30 e appunti — La struttura del PLL"): ["pll"],
+    (13, "Slide 32 e appunti — Il termine d'errore"): ["curva_s"],
+    (13, "Slide 33 — Costas loop"): ["costas"],
+    (14, "Slide 3 e appunti — Introduzione (2/2)"): ["isi_impulsi"],
+    (14, "Slide 6–7 — Effetto dell'ISI"): ["ber_floor"],
+    (14, "Slide 9 e appunti — Modello del sistema"): ["sistema_bandlimitato"],
+    (14, "Slide 17 — Il criterio nel dominio della frequenza (2/2)"): ["nyquist_repliche"],
+    (14, "Slide 20–21 — Impulso di Nyquist ideale"): ["sinc_treno"],
+    (14, "Slide 26–27 — Raised cosine"): ["coseno_rialzato"],
+    (14, "Slide 28–29 — Raised cosine"): ["rc_impulso"],
+    (14, "Slide 33–34 — Tipi di equalizzatori"): ["equalizzatori"],
+    (14, "Slide 43–44 — I passi chiave"): ["traliccio_viterbi"],
 }
 
 # didascalie brevi (una riga) che sostituiscono quelle lunghe dei disegni

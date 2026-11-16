@@ -20,6 +20,8 @@ Testo unico di studio del corso (LM Ingegneria Informatica, UNINA, D. Darsena; t
 | 10 | [[#Lezione 10 — Prestazioni delle modulazioni binarie e della QPSK\|Prestazioni delle modulazioni binarie e della QPSK]] | Lezione 10-28.pdf |
 | 11 | [[#Lezione 11 — Union bound e approssimazione dei primi vicini\|Union bound e approssimazione dei primi vicini]] | Lezione 11-2.pdf |
 | 12 | [[#Lezione 12 — Parametri globali delle modulazioni e capacità di canale\|Parametri globali delle modulazioni e capacità di canale]] | Confronto_new.pdf |
+| 13 | [[#Lezione 13 — Stima dei parametri per la sincronizzazione\|Stima dei parametri per la sincronizzazione]] | 11-9.pdf, Synchro_Kay_example (1).pdf |
+| 14 | [[#Lezione 14 — Segnalazione su canali a banda limitata\|Segnalazione su canali a banda limitata]] | signaling_bandlimited_channel.pdf |
 
 
 
@@ -867,6 +869,18 @@ $$s_p(t)=\sqrt2\,s_c(t)\cos(2\pi f_ct)-\sqrt2\,s_s(t)\sin(2\pi f_ct)\tag{17}$$
 
 ![[rappresentazione-rice-p16-componenti-iq.png|480]]
 
+#### Appunti sparsi — Dimostrazione della (14) · [[Lezioni.pdf#page=3|p. 3]]
+
+Nel quaderno «Lezioni» sono ripassati i passaggi (3)–(9), (10), lo spettro della trasformata di Hilbert, la (17) e l'ortogonalità (18). Il passaggio in più è la dimostrazione della (14):
+
+$$s_p(t)=\sqrt2\,\text{Re}\{s_p^+(t)\}=\frac{\sqrt2}{2}\big[s_p^+(t)+(s_p^+(t))^\ast\big]$$
+
+e la trasformata del coniugato è il coniugato della trasformata riflessa, $\int(s_p^+(t))^\ast e^{-j2\pi ft}dt=\big[\int s_p^+(t)e^{+j2\pi ft}dt\big]^\ast=[S_p^+(-f)]^\ast$, quindi
+
+$$S_p(f)=\frac1{\sqrt2}\big[S_p^+(f)+(S_p^+(-f))^\ast\big]$$
+
+Poiché $S(f)=S_p^+(f+f_c)$, si ha $S_p^+(f)=S(f-f_c)$ e $S_p^+(-f)=S(-f-f_c)$: è la (14). Nella dimostrazione della (18) gli appunti annotano che i termini misti si annullano «per ipotesi di banda stretta»: la distanza tra i centri dei due spettri, $2f_c$, supera la banda $B$ (ipotesi $f_c>B$).
+
 ### Energia dell'inviluppo · [[Rappresentazione_Rice.pdf#page=17|p. 17]]–[[Rappresentazione_Rice.pdf#page=19|19]]
 
 Le forme d'onda passa-banda delle componenti I e Q, $x_c(t)=\sqrt2\,s_c(t)\cos(2\pi f_ct)$ e $x_s(t)=\sqrt2\,s_s(t)\sin(2\pi f_ct)$, sono **ortogonali**:
@@ -1022,6 +1036,10 @@ La FFT dà $S(0) = 2.986$. Solo lo 0.05% dell'energia sta oltre 1 Hz (0.85% oltr
 
 ![[lab-0928-figure1-segnale-spettro-campioni.png|520]]
 *Figura 1 del laboratorio (esempio 1). In alto il trapezio su $[-3, 3]$ s; al centro lo spettro sull'asse $\pm 83$ Hz, concentrato attorno a 0 con picco 3; in basso i 121 campioni su $[-30, 30]$ s, quasi tutti nulli.*
+
+#### Appunti sparsi — DFT e DTFT · [[Lezioni.pdf#page=2|p. 2]]
+
+Per una sequenza con $x(m)\neq0$ solo per $m=0,\dots,N-1$, la DFT $X_k=\sum_{m=0}^{N-1}x(m)e^{-j2\pi mk/N}$ coincide con la trasformata a tempo discreto $X(\nu)=\sum_mx(m)e^{-j2\pi m\nu}$ calcolata in $\nu=k/N$: la DFT è il campionamento della trasformata di Fourier a tempo discreto. Gli appunti segnano come «da capire» che, per effetto dell'elaborazione, la componente continua viene spezzata e spostata: è l'effetto di `fft` e `fftshift`, spiegato in [[lab-setup-e-spettro]].
 
 ### 1. Campionamento · [[Campionamento_AD_DA.pdf#page=11|p. 11]], [[Campionamento_AD_DA.pdf#page=12|12]], [[Campionamento_AD_DA.pdf#page=13|13]]
 
@@ -2411,3 +2429,620 @@ $$\text{SNR}_{req,\text{dB}}=\Big(\frac{E_b}{N_0}\Big)_{req,\text{dB}}+10\log_{1
 ---
 
 *Approfondimenti nel wiki (derivazioni passo per passo, grafici, esempio svolto): [[informazione-mutua-e-capacita]], [[parametri-globali-modulazioni]], [[limite-di-shannon]], [[link-budget]], [[link-budget-wlan]].*
+
+## Lezione 13 — Stima dei parametri per la sincronizzazione
+
+*Fonte: 11-9.pdf (appunti del 9/11, 2 pagine: p. 1 copertina, p. 2 appunti) e Synchro_Kay_example (1).pdf (36 pagine: le 33 slide «Parameter estimation for synchronization» più 3 pagine di appunti a lezione alle p. 4, 7, 17), entrambi in `raw/goodnotes/`. Corrispondenza: slide 1–3 = p. 1–3, slide 4–5 = p. 5–6, slide 6–14 = p. 8–16, slide 15–33 = p. 18–36. Le equazioni (1)–(15) sono quelle delle slide.*
+
+### Il problema della sincronizzazione
+
+#### Appunti — Perché serve sincronizzare · [[11-9.pdf#page=2|p. 2]]
+- Finora si è supposto che trasmettitore e ricevitore siano perfettamente sincronizzati: in pratica l'ipotesi non è sempre vera, e il ricevitore deve riuscire ad agganciarsi al segnale in ingresso.
+- Al ricevitore arriva $y_p(t)=A\,u_p(t-\tau)+n_p(t)$, dove $n_p(t)$ è la versione passa-banda del rumore termico.
+- Poiché $f_c\tau\gg1$, anche piccoli sfasamenti provocano errori non trascurabili.
+- Si suppone che l'oscillatore locale (LO) del ricevitore sia a $f_c-\Delta f$, per vedere l'effetto del non perfetto accordo tra i due oscillatori. Con il ritardo le due componenti si accoppiano: $y_I$ dipende da $v_I$ e $v_Q$ anche dopo il filtro, e non si riesce più a disaccoppiare le componenti I e Q del segnale. Il ritardo compare sia in $\theta$ sia in $\tau$.
+- L'effetto della non sincronizzazione è il termine $2\pi\Delta f\,t$, che **dipende dal tempo**.
+
+#### Slide 2 e appunti — Effetto di ritardo e offset dell'LO (1/2) · [[Synchro_Kay_example (1).pdf#page=2|p. 2]]
+- Segnale in banda base complessa: $u(t)=\sum_nb(n)\,g_{TX}(t-nT)$, con $\{b(n)\}_n$ sequenza dei simboli d'informazione, $g_{TX}(t)$ impulso di trasmissione e $T$ periodo di simbolo.
+- $u(t)$ è portato in banda passante da un LO alla frequenza portante $f_c$: $u_p(t)=\sqrt2\,\text{Re}(u(t)\,e^{j2\pi f_ct})$.
+- Il canale è modellato come un sistema **non dispersivo**, che causa solo una scalatura d'ampiezza e un ritardo (appunti: non deforma la forma d'onda, al più ne cambia ampiezza e ritardo):
+
+$$y_p(t)=A\,u_p(t-\tau)+n_p(t)$$
+
+  con $A$ e $\tau$ ampiezza e ritardo incogniti e $n_p(t)$ rumore passa-banda.
+
+#### Slide 3 e appunti — Effetto di ritardo e offset dell'LO (2/2) · [[Synchro_Kay_example (1).pdf#page=3|p. 3]], [[Synchro_Kay_example (1).pdf#page=4|4]]
+- Il segnale ritardato è
+
+$$u_p(t-\tau)=\sqrt2\,\text{Re}\big(u(t-\tau)\,e^{j2\pi f_c(t-\tau)}\big)=\sqrt2\,\text{Re}\big(u(t-\tau)\,e^{j\theta}e^{j2\pi f_ct}\big),\qquad\theta=-2\pi f_c\tau\bmod2\pi$$
+
+- La fase $\theta$ è molto sensibile al ritardo $\tau$, perché $f_c$ assume valori molto grandi ($f_c\tau\gg1$).
+- Al ricevitore $y_p(t)$ è riportato in banda base da un LO la cui frequenza in genere differisce da quella del trasmettitore. Se l'LO è a $f_c-\Delta f$, l'uscita del down-converter è l'inviluppo complesso di $y_p(t)$ rispetto a $f_c-\Delta f$:
+
+$$y(t)=A\,e^{j(2\pi\Delta ft+\theta)}\,u(t-\tau)+n(t)=A\,e^{j(2\pi\Delta ft+\theta)}\sum_nb(n)\,g_{TX}(t-nT-\tau)+n(t)\tag{1}$$
+
+  con $n(t)$ WGN complesso. Appunti: $\Delta f$ è l'offset (mismatch) di frequenza, e produce una rotazione residua.
+- Appunti p. 4: il ritardo compare due volte nella (1), in $\theta$ e nell'argomento dell'impulso. Il motivo è che il segnale trasmesso è $u_p(t)=\sqrt2\,\text{Re}\{u(t)e^{j2\pi f_ct}\}$: quando il canale ritarda il segnale, il ritardo agisce sia sull'inviluppo sia sull'esponenziale, $u_p(t-\tau)=\sqrt2\,\text{Re}\{u(t-\tau)e^{j2\pi f_c(t-\tau)}\}$.
+
+### Il modello in banda base complessa
+
+#### Slide 4 e appunti — Derivazione del modello (1/4) · [[Synchro_Kay_example (1).pdf#page=5|p. 5]]
+- Il segnale ricevuto è $y_p(t)=\sqrt2A\,\text{Re}\{u(t-\tau)e^{j(\omega_ct+\theta)}\}+n_p(t)$, con $\omega_c=2\pi f_c$ e $\theta=-2\pi f_c\tau$.
+- Si pone $v(t)\triangleq A\,u(t-\tau)e^{j\theta}=v_I(t)+jv_Q(t)$ (appunti: l'inviluppo complesso ritardato, sfasato e scalato, cioè il segnale utile che arriva al ricevitore). Sviluppando la parte reale:
+
+$$y_p(t)=\sqrt2\,[v_I(t)\cos(\omega_ct)-v_Q(t)\sin(\omega_ct)]+n_p(t)$$
+
+- Il ricevitore usa un LO a $\omega_{LO}=2\pi(f_c-\Delta f)$ con due rami in quadratura (appunti: down-conversion con un oscillatore che ha un offset $\Delta f$):
+
+$$I_{mix}(t)=\sqrt2\,y_p(t)\cos(\omega_{LO}t),\qquad Q_{mix}(t)=-\sqrt2\,y_p(t)\sin(\omega_{LO}t)$$
+
+#### Slide 5 e appunti — Derivazione del modello (2/4): ramo in fase · [[Synchro_Kay_example (1).pdf#page=6|p. 6]], [[Synchro_Kay_example (1).pdf#page=7|7]]
+- Si moltiplica $y_p$ per $\sqrt2\cos(\omega_{LO}t)$ trascurando per ora il rumore:
+
+$$I_{mix,s}(t)=2v_I(t)\cos(\omega_ct)\cos(\omega_{LO}t)-2v_Q(t)\sin(\omega_ct)\cos(\omega_{LO}t)$$
+
+- Con le formule di prostaferesi e $\varphi(t)\triangleq(\omega_c-\omega_{LO})t=2\pi\Delta f\,t$:
+
+$$I_{mix,s}(t)=v_I(t)\big[\cos\varphi(t)+\cos((\omega_c+\omega_{LO})t)\big]-v_Q(t)\big[\sin\varphi(t)+\sin((\omega_c+\omega_{LO})t)\big]$$
+
+  (appunti: il termine somma sta alla frequenza $2f_c-\Delta f$, il termine differenza è $2\pi\Delta f\,t$).
+- Il filtro passa-basso elimina i termini ad alta frequenza:
+
+$$y_I(t)=v_I(t)\cos\varphi(t)-v_Q(t)\sin\varphi(t)+n_I(t),\qquad n_I(t)=\text{LPF}\{\sqrt2\,n_p(t)\cos(\omega_{LO}t)\}$$
+
+- Appunti p. 7: $y_I$ è la componente in fase dell'inviluppo complesso del segnale ricevuto rispetto a $f_c-\Delta f$, e dipende sia dalla componente in fase sia da quella in quadratura dell'inviluppo dello stesso segnale rispetto a $f_c$. Un segnale passa-banda può avere più inviluppi complessi, a seconda della $f_c$ che si considera.
+
+#### Slide 6 — Derivazione del modello (3/4): ramo in quadratura · [[Synchro_Kay_example (1).pdf#page=8|p. 8]]
+- Si moltiplica $y_p$ per $-\sqrt2\sin(\omega_{LO}t)$, sempre senza rumore:
+
+$$Q_{mix,s}(t)=-2v_I(t)\cos(\omega_ct)\sin(\omega_{LO}t)+2v_Q(t)\sin(\omega_ct)\sin(\omega_{LO}t)=v_I(t)\big[\sin\varphi(t)-\sin((\omega_c+\omega_{LO})t)\big]+v_Q(t)\big[\cos\varphi(t)-\cos((\omega_c+\omega_{LO})t)\big]$$
+
+- Dopo il passa-basso: $y_Q(t)=v_I(t)\sin\varphi(t)+v_Q(t)\cos\varphi(t)+n_Q(t)$, con $n_Q(t)=\text{LPF}\{-\sqrt2\,n_p(t)\sin(\omega_{LO}t)\}$.
+
+#### Slide 7 e appunti — Derivazione del modello (4/4): ricombinazione · [[Synchro_Kay_example (1).pdf#page=9|p. 9]]
+- Ricombinando le uscite dei due rami si ottiene l'inviluppo complesso del segnale ricevuto:
+
+$$y(t)\triangleq y_I(t)+jy_Q(t)=[v_I(t)+jv_Q(t)]\,[\cos\varphi(t)+j\sin\varphi(t)]+n(t)=v(t)\,e^{j\varphi(t)}+n(t)$$
+
+  con $n(t)\triangleq n_I(t)+jn_Q(t)$.
+- Ricordando $v(t)=A\,u(t-\tau)e^{j\theta}$ e $\varphi(t)=2\pi\Delta ft$ si ritrova la (1): $y(t)=A\,e^{j(2\pi\Delta ft+\theta)}u(t-\tau)+n(t)$.
+
+### Sincronizzazione di tempo e di portante
+
+#### Slide 8 e appunti — Compiti e fasi · [[Synchro_Kay_example (1).pdf#page=10|p. 10]]
+- Compiti del blocco di sincronizzazione del ricevitore:
+  - **sincronizzazione di tempo** (timing) ⇒ stima di $\tau$;
+  - **sincronizzazione di portante** ⇒ stima di $\Delta f$ e $\theta$ (appunti: lo sfasamento provocato dal ritardo). Appunti: anche se $\theta$ è provocato dal ritardo, lo risolve il blocco di sincronizzazione della portante.
+- Il processo avviene di solito in due fasi:
+  - **acquisizione** dei parametri: si ottiene una stima iniziale, spesso con un blocco di simboli di training noti posti in un preambolo all'inizio della trasmissione;
+  - **inseguimento** (tracking): le stime iniziali sono aggiornate di continuo per seguire i parametri che variano lentamente nel tempo (fenomeno di **drift**).
+
+#### Slide 9 e appunti — Modalità decision-directed e blind · [[Synchro_Kay_example (1).pdf#page=11|p. 11]]
+- Nei sistemi a pacchetto, molto comuni sia su filo sia senza fili, la variazione dei parametri in un pacchetto è spesso trascurabile: la fase di tracking si può eliminare.
+- Il tracking segue l'acquisizione, e durante il tracking i simboli di training non sono più disponibili. L'algoritmo lavora allora in uno di due modi:
+  - **decision-directed** ⇒ i simboli di training sono sostituiti dalle decisioni retroazionate dal demodulatore al blocco di sincronizzazione (appunti: la sincronizzazione è guidata dalle decisioni del demodulatore, per una stima continua dei parametri);
+  - **blind** ⇒ il blocco è progettato in modo da essere insensibile ai valori specifici dei simboli trasmessi (appunti: non riceve alcuna informazione dal demodulatore e conosce solo le proprietà statistiche dei simboli; stima i parametri senza sapere quali simboli sono stati trasmessi).
+
+### Fondamenti della stima dei parametri
+
+#### Slide 10 e appunti — Il problema della stima · [[Synchro_Kay_example (1).pdf#page=12|p. 12]]
+- Il problema della stima consiste nell'estrarre i valori di parametri (qui $\tau$, $\theta$ o $\Delta f$) da un segnale a tempo continuo o, in modo equivalente, da un segnale a tempo discreto o da un insieme di dati. Molti campi diversi usano la teoria della stima.
+- Si ha l'insieme di $K$ dati (appunti: campioni del segnale ricevuto) $\{y(0),y(1),\dots,y(K-1)\}$ che dipende da un parametro incognito $\theta$; si vuole determinare $\theta$ dai dati, cioè definire uno **stimatore**
+
+$$\hat\theta=g\big(y(0),y(1),\dots,y(K-1)\big)$$
+
+  con $g(\cdot)$ una funzione.
+
+#### Slide 11 e appunti — Il modello dei dati · [[Synchro_Kay_example (1).pdf#page=13|p. 13]]
+- Il primo passo è modellare matematicamente i dati. Essendo intrinsecamente aleatori, si descrivono con la pdf $f(\mathbf y;\theta)$, $\mathbf y\triangleq[y(0),y(1),\dots,y(K-1)]$ (appunti: la pdf congiunta dei $K$ campioni, che dice quanto è probabile ottenere quei campioni).
+- $f(\mathbf y;\theta)$ è parametrizzata dal parametro incognito: si ha una **famiglia di pdf**, una diversa per ogni valore di $\theta$.
+- Esempio: con $K=1$ e $\theta$ uguale alla media,
+
+$$f(y(0);\theta)=\frac{1}{\sqrt{2\pi\sigma^2}}\exp\Big[-\frac{1}{2\sigma^2}\big(y(0)-\theta\big)^2\Big]\tag{2}$$
+
+  Figura: tre pdf gaussiane della famiglia, centrate in $\theta_1<\theta_2<\theta_3$. Se il dato osservato $y(0)$ è negativo, è ragionevole il valore $\theta=\theta_1$, quello della pdf più a sinistra.
+
+#### Slide 12 e appunti — Esempio: livello continuo nel rumore · [[Synchro_Kay_example (1).pdf#page=14|p. 14]]
+- $K$ osservazioni rumorose di un'ampiezza costante incognita $A$ (appunti: il segnale inviato è costante e uguale ad $A$, e vi si aggiunge rumore):
+
+$$y(k)=A+n(k),\qquad k=0,\dots,K-1,\qquad n(k)\ \text{i.i.d.}\sim\mathcal N(0,\sigma^2)$$
+
+- $A$ è fissa, ma le osservazioni sono aleatorie: ripetendo l'esperimento con la stessa $A$ si ottengono insiemi di dati diversi.
+- Uno stimatore semplice (appunti: il più semplice) è la **media campionaria**:
+
+$$\hat A=\frac1K\sum_{k=0}^{K-1}y(k)=A+\frac1K\sum_{k=0}^{K-1}n(k)$$
+
+  $\hat A$ è anch'essa una variabile aleatoria, con $E[\hat A]=A$ (il rumore ha media nulla) e $\text{Var}(\hat A)=\sigma^2/K$ (la varianza della somma di $K$ termini indipendenti è $K\sigma^2$, divisa per $K^2$).
+- Lo stimatore è **non polarizzato** (in media dà il valore giusto, senza errori sistematici) e **consistente** (più campioni si considerano, più la varianza si riduce: tende a zero per $K\to\infty$).
+
+#### Slide 13 e appunti — Approccio classico e approccio bayesiano · [[Synchro_Kay_example (1).pdf#page=15|p. 15]]
+- Se il parametro è **deterministico ma incognito** ⇒ **approccio classico**: non c'è modo di includere informazioni a priori su $\theta$. La stima basata sulla (2) è un esempio di stima classica.
+- Se il parametro è modellato come **variabile aleatoria** con una sua pdf ⇒ **approccio bayesiano**: il parametro da stimare è visto come una realizzazione della v.a. $\theta$.
+- Nella stima bayesiana dati e parametro sono descritti dalla pdf congiunta
+
+$$f(\mathbf y,\theta)=f(\mathbf y\mid\theta)\,f(\theta)$$
+
+  con $f(\mathbf y\mid\theta)$ pdf condizionata (la conoscenza fornita dai dati, noto $\theta$) e $f(\theta)$ pdf del parametro. La conoscenza a priori entra nella stima attraverso il modello stocastico del parametro.
+- Va notata la differenza tra $f(\mathbf y;\theta)$, una **famiglia** di pdf (approccio classico), e $f(\mathbf y\mid\theta)$, una pdf **condizionata** (approccio bayesiano).
+
+#### Slide 14 e appunti — Stima a massima verosimiglianza · [[Synchro_Kay_example (1).pdf#page=16|p. 16]], [[Synchro_Kay_example (1).pdf#page=17|17]]
+- Da qui si segue l'approccio classico e in particolare la **stima a massima verosimiglianza** (MLE): il valore di $\theta$ che massimizza la funzione di verosimiglianza $f(\mathbf y;\theta)$,
+
+$$\hat\theta=\arg\max_\theta f(\mathbf y;\theta)=\arg\max_\theta\log f(\mathbf y;\theta)$$
+
+- Quando la pdf è vista come funzione del parametro incognito, con i dati $\mathbf y$ fissati, si chiama **funzione di verosimiglianza** e si indica con $\Lambda_\theta(\mathbf y)$, come nella rivelazione.
+- Appunti p. 17: la decisione a massima verosimiglianza della rivelazione è un caso particolare della stima ML, in cui il parametro da stimare è il simbolo trasmesso e può assumere solo $M$ valori. In entrambi i casi si usa la pdf dei valori osservati vista come funzione del parametro e si sceglie il valore che la massimizza. Nella rivelazione la massimizzazione è un confronto tra $M$ valori, realizzato con un banco di correlatori; nella stima il parametro è continuo e si massimizza annullando la derivata.
+
+### Esempio: stima ML dell'ampiezza
+
+#### Slide 15 e appunti — Il modello · [[Synchro_Kay_example (1).pdf#page=18|p. 18]]
+- Si considera un segnale antipodale binario all'uscita del down-converter, con $\tau=0$ e $\Delta f=0$ (appunti: niente ritardo e niente offset di frequenza, il segnale ricevuto è solo scalato):
+
+$$y(t)=A\sum_nb(n)\,g_{TX}(t-nT)+n(t)$$
+
+- I campioni all'uscita della cascata filtro adattato $g_{TX}(T-t)$ (che massimizza il rapporto segnale-rumore, vedi la rivelazione) e campionatore a $kT$, seguita dal decisore (figura), sono
+
+$$y(k)=A\,b(k)+n(k),\qquad k=0,1,\dots,K-1$$
+
+  con $y(k)\triangleq y(kT)$, $n(k)\triangleq n(kT)\sim\mathcal N(0,\sigma^2)$, $b(k)\in\{+1,-1\}$ simboli trasmessi e $A$ ampiezza incognita da stimare.
+
+#### Slide 16 e appunti — Training-based e blind · [[Synchro_Kay_example (1).pdf#page=19|p. 19]]
+- Si vuole la stima ML di $A$ dai dati $\mathbf y=(y(0),\dots,y(K-1))$. La stima dell'ampiezza è cruciale nei ricevitori per segnali modulati in ampiezza.
+- Due casi:
+  1. i simboli $\{b(k)\}$ sono **noti** ⇒ **stima training-based** (appunti: stima basata su una sequenza di simboli noti);
+  2. i simboli sono **incogniti** e modellati come v.a. statisticamente indipendenti ⇒ **stima blind** (appunti: non si sfruttano le decisioni del demodulatore).
+- La stima ML è
+
+$$\hat A=\arg\max_A\log f(\mathbf y;A)=\arg\max_A\sum_{k=0}^{K-1}\log f(y(k);A)\tag{3}$$
+
+  (appunti: i campioni sono statisticamente indipendenti, quindi la pdf congiunta è il prodotto delle marginali e il logaritmo del prodotto è la somma dei logaritmi).
+
+#### Slide 17 e appunti — Approccio training-based · [[Synchro_Kay_example (1).pdf#page=20|p. 20]]
+- Se $b(k)$ è noto, $y(k)=A\,b(k)+n(k)$ è una v.a. gaussiana con media $A\,b(k)$ e varianza $\sigma^2$. La (3) diventa (appunti: resta l'esponente della pdf marginale, e massimizzare $-(\cdot)^2$ vuol dire minimizzarne l'argomento)
+
+$$\arg\min_A\sum_{k=0}^{K-1}\big(y(k)-A\,b(k)\big)^2$$
+
+- Derivando rispetto ad $A$ e annullando ($b^2(k)=1$):
+
+$$\hat A=\frac1K\sum_{k=0}^{K-1}y(k)\,b(k)$$
+
+- La MLE si ottiene **correlando i campioni ricevuti con la sequenza di training**. La generalizzazione a simboli complessi è lasciata al lettore (appunti: da generalizzare per segnali complessi).
+
+#### Slide 18 — Blind approach (1/2) · [[Synchro_Kay_example (1).pdf#page=21|p. 21]]
+- La stima **blind** (cieca) è la stima senza sequenza di training. I simboli $\{b(k)\}$ si modellano come v.a. statisticamente indipendenti che valgono $\pm1$ con uguale probabilità.
+- Condizionato all'evento $\{b(k)=+1\}$, il campione $y(k)=A+n(k)$ è gaussiano con media $A$ e varianza $\sigma^2$:
+
+$$f\big(y(k)\mid\{b(k)=1\};A\big)=\frac{1}{\sqrt{2\pi\sigma^2}}\,e^{-\frac{1}{2\sigma^2}(y(k)-A)^2}\tag{4}$$
+
+- Condizionato all'evento $\{b(k)=-1\}$, il campione $y(k)=-A+n(k)$ è gaussiano con media $-A$ e varianza $\sigma^2$:
+
+$$f\big(y(k)\mid\{b(k)=-1\};A\big)=\frac{1}{\sqrt{2\pi\sigma^2}}\,e^{-\frac{1}{2\sigma^2}(y(k)+A)^2}\tag{5}$$
+
+- Si richiama la **legge della probabilità totale** per le pdf: $f(x)=\sum_{i=1}^nf(x\mid A_i)\,P(A_i)$.
+
+#### Slide 19 e appunti — Blind approach (2/2) · [[Synchro_Kay_example (1).pdf#page=22|p. 22]]
+- Con la probabilità totale la funzione di verosimiglianza diventa una **miscela di due gaussiane**:
+
+$$f(y(k);A)=\tfrac12f\big(y(k)\mid\{b(k)=-1\};A\big)+\tfrac12f\big(y(k)\mid\{b(k)=1\};A\big)\tag{6}$$
+
+$$f(y(k);A)=\frac12\,\frac{1}{\sqrt{2\pi\sigma^2}}\,e^{-\frac{1}{2\sigma^2}(y(k)+A)^2}+\frac12\,\frac{1}{\sqrt{2\pi\sigma^2}}\,e^{-\frac{1}{2\sigma^2}(y(k)-A)^2}\tag{7}$$
+
+- La stima ML blind (appunti: il valore di $A$ che massimizza la funzione di verosimiglianza) è $\hat A=\arg\max_A\sum_{k=0}^{K-1}\log f(y(k);A)$ con $f(y(k);A)$ data dalla (7).
+- Annullando la derivata della funzione costo rispetto ad $A$ si mostra che la MLE soddisfa l'**equazione trascendente**
+
+$$\hat A=\frac1K\sum_{k=0}^{K-1}y(k)\,\tanh\Big(\frac{\hat A\,y(k)}{\sigma^2}\Big)$$
+
+  (scrivendo la (7) come $\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{y^2+A^2}{2\sigma^2}}\cosh\frac{Ay}{\sigma^2}$, la derivata del logaritmo è $-\frac{A}{\sigma^2}+\frac{y}{\sigma^2}\tanh\frac{Ay}{\sigma^2}$).
+
+#### Slide 20 e appunti — Conclusioni · [[Synchro_Kay_example (1).pdf#page=23|p. 23]]
+- La stima training-based usa simboli $b(k)$ noti a trasmettitore e ricevitore (simboli di training), di solito in un preambolo all'inizio della trasmissione. È detta anche **data-aided (DA)** (appunti: assistita dai dati) e si può realizzare anche in modalità decision-directed, se le decisioni fornite agli algoritmi di sincronizzazione sono abbastanza affidabili.
+- Le sequenze di training rendono robusta la stima ma comportano una **perdita di risorse** (appunti: una parte della trasmissione è occupata da segnali noti).
+- La stima blind non richiede i simboli $b(k)$ ma solo la loro statistica (informazione media) e la PSD del disturbo. È detta anche **non-data-aided (NDA)** ed è più complessa della DA.
+
+### La rivelazione M-aria come stima
+
+#### Slide 21 — Segnalazione M-aria in AWGN rivisitata · [[Synchro_Kay_example (1).pdf#page=24|p. 24]]
+- Il test tra $M$ ipotesi $H_k:\ y(t)=s_k(t)+n(t)$, $k=1,\dots,M$, è un caso particolare di stima dei parametri, con parametro $\theta_k=H_k$ che assume uno di $M$ valori possibili.
+- La funzione di verosimiglianza per la versione in banda base complessa del segnale ricevuto in AWGN (PSD totale $2\sigma^2$, cioè $\sigma^2$ per componente reale) è
+
+$$\Lambda_k(y)=\exp\Big[\frac{1}{\sigma^2}\Big(\text{Re}\big(\langle y(t),s_k(t)\rangle\big)-\frac12\lVert s_k(t)\rVert^2\Big)\Big]\tag{8}$$
+
+- La regola di decisione ML della rivelazione si interpreta come la MLE di un parametro a $M$ valori:
+
+$$\hat H_k=\arg\max_k\Lambda_k(y)=\arg\max_k\lambda_k(y)\tag{9}$$
+
+  con $\lambda_k(y)=\log\Lambda_k(y)$, realizzata con un banco di correlatori (o di filtri adattati seguiti da campionatori).
+
+### Stima ML della fase
+
+#### Slide 22 e appunti — Il modello e l'origine della fase · [[Synchro_Kay_example (1).pdf#page=25|p. 25]]
+- Si riprende il modello (1), $y(t)=A\,e^{j(2\pi\Delta ft+\theta)}u(t-\tau)+n(t)$, supponendo già fatte la sincronizzazione di tempo e la stima d'ampiezza.
+- Il termine di fase comprende il **mismatch degli LO** e l'**effetto Doppler** (appunti: $\Delta f$ produce una fase tempo-variante).
+- Il mismatch degli LO è l'effetto dell'offset di frequenza tra gli oscillatori di trasmettitore e ricevitore: è dell'ordine di 10–100 ppm rispetto alla portante $f_c$.
+- Lo spostamento Doppler nei canali radiomobili è $v f_c/c$, con $v$ velocità relativa tra trasmettitore e ricevitore e $c$ velocità della luce nel vuoto: circa 0,2 ppm per 200 km/h.
+
+#### Slide 23 e appunti — Fase costante su più simboli · [[Synchro_Kay_example (1).pdf#page=26|p. 26]]
+- Con le bande tipiche dei segnali in banda base, la variazione di fase $2\pi\Delta f\,T$ indotta in un intervallo di simbolo da mismatch e Doppler si può supporre piccola ⇒ la fase si può prendere **costante su più intervalli di simbolo** (appunti: tempo-invariante).
+- Modello: $y(t)=e^{j\theta}s(t)+n(t)$, con $\theta$ fase incognita.
+- Dalla (8), la funzione di verosimiglianza diventa
+
+$$\Lambda_\theta(y)=\exp\Big[\frac{1}{\sigma^2}\Big(\text{Re}\big(\langle y(t),s(t)\,e^{j\theta}\rangle\big)-\frac12\lVert s(t)\,e^{j\theta}\rVert^2\Big)\Big]$$
+
+#### Slide 24 — La funzione da massimizzare · [[Synchro_Kay_example (1).pdf#page=27|p. 27]]
+- $\lVert s(t)\,e^{j\theta}\rVert^2=\lVert s(t)\rVert^2$: non dipende da $\theta$.
+- Ponendo $\langle y(t),s(t)\rangle=|Z|\,e^{j\phi}=Z_c+jZ_s$:
+
+$$\text{Re}\big(\langle y(t),s(t)\,e^{j\theta}\rangle\big)=\text{Re}\big(\langle y(t),s(t)\rangle\,e^{-j\theta}\big)=|Z|\cos(\phi-\theta)$$
+
+- La stima ML di $\theta$ si ottiene massimizzando
+
+$$\Lambda_\theta(y)=\exp\Big[\frac{1}{\sigma^2}\Big(|Z|\cos(\phi-\theta)-\frac12\lVert s(t)\rVert^2\Big)\Big]\tag{10}$$
+
+#### Slide 25 e appunti — Lo stimatore e lo schema · [[Synchro_Kay_example (1).pdf#page=28|p. 28]]
+- La soluzione è
+
+$$\hat\theta=\phi=\arg\big(\langle y(t),s(t)\rangle\big)=\tan^{-1}\frac{Z_s}{Z_c}$$
+
+- Schema del blocco di stima (figura): il segnale passa-banda ricevuto $y_p(t)$ è moltiplicato per $\sqrt2\cos2\pi f_ct$ e per $-\sqrt2\sin2\pi f_ct$ e filtrato passa-basso, dando $y_c(t)$ e $y_s(t)$; ciascuno passa per i filtri adattati $s_c(-t)$ e $s_s(-t)$ campionati in $t=0$; le uscite combinate danno $Z_c$ e $Z_s$, e il blocco $\tan^{-1}(Z_s/Z_c)$ fornisce $\hat\theta_{ML}$. Le combinazioni vengono da $\langle y,s\rangle=\int(y_c+jy_s)(s_c-js_s)\,dt$: $Z_c=\langle y_c,s_c\rangle+\langle y_s,s_s\rangle$, $Z_s=\langle y_s,s_c\rangle-\langle y_c,s_s\rangle$.
+- Appunti: l'errore dovuto alla rotazione della costellazione non dipende dall'errore additivo.
+
+### Inseguimento della fase
+
+#### Slide 26 e appunti — Phase tracking · [[Synchro_Kay_example (1).pdf#page=29|p. 29]]
+- Dopo la stima si possono aggiornare i parametri per seguirne le variazioni nel tempo.
+- La maggior parte degli algoritmi di tracking massimizza rispetto a $\theta$ una funzione costo $J(\theta)$, di solito proporzionale alla log-verosimiglianza; la massimizzazione si fa con procedure iterative.
+- Un approccio diffuso (appunti: uno degli algoritmi che possono realizzare il tracking) è l'algoritmo **steepest ascent**: parte da una stima iniziale di $\theta$ e la modifica ripetutamente per far crescere $J(\theta)$, finché si spera di convergere al valore che la massimizza.
+
+#### Slide 27 e appunti — Steepest ascent e gradient descent · [[Synchro_Kay_example (1).pdf#page=30|p. 30]]
+- Partendo da un valore iniziale di $\hat\theta$, l'algoritmo (appunti: un algoritmo per minimizzare o massimizzare funzionali) ripete l'aggiornamento
+
+$$\hat\theta_{k+1}:=\hat\theta_k+\alpha\,\frac{\partial}{\partial\theta}J(\theta)\Big|_{\theta=\hat\theta_k}$$
+
+  con $:=$ operatore di assegnazione, $\alpha$ **learning rate** (passo) e $k$ indice del passo; $J$ è la funzione da massimizzare.
+- Se si deve **minimizzare** $J(\theta)$ si usa il **gradient descent** (steepest descent):
+
+$$\hat\theta_{k+1}:=\hat\theta_k-\alpha\,\frac{\partial}{\partial\theta}J(\theta)\Big|_{\theta=\hat\theta_k}$$
+
+### Il phase-locked loop
+
+#### Slide 28 e appunti — Il modello · [[Synchro_Kay_example (1).pdf#page=31|p. 31]]
+- Con questo schema si ricava la struttura classica del **phase-locked loop (PLL)** per l'inseguimento della fase della portante; per semplicità si lavora con segnali passa-banda nel dominio analogico (appunti: si usa questo framework per individuare e progettare il PLL).
+- Si considera una sinusoide non modulata e rumorosa:
+
+$$y_p(t)=\cos(2\pi f_ct+\theta(t))+n_p(t)=s_p(t)+n_p(t)$$
+
+  con $\theta(t)$ fase da inseguire e $n_p(t)$ WGN reale passa-banda di PSD $\sigma^2$. Con la convenzione passa-banda vista prima, questa sinusoide di ampiezza unitaria corrisponde all'inviluppo complesso $u(t)=e^{j\theta(t)}/\sqrt2$, e la derivazione del PLL non cambia.
+- Alla fine del $k$-esimo intervallo si ha la stima $\hat\theta_k$ e la si vuole correggere osservando il segnale nell'intervallo successivo, di durata $T_0$. La funzione di verosimiglianza (vedi la rivelazione) è
+
+$$\Lambda_\theta(y_p)=\exp\Big[\frac{1}{\sigma^2}\Big(\langle y_p(t),s_p(t)\rangle-\frac12\lVert s_p(t)\rVert^2\Big)\Big]\tag{11}$$
+
+  con $\langle x_1(t),x_2(t)\rangle=\int_{T_0}x_1(t)x_2(t)\,dt$ per segnali reali.
+
+#### Slide 29 e appunti — Funzione costo e aggiornamento · [[Synchro_Kay_example (1).pdf#page=32|p. 32]]
+- Ipotesi: $f_cT_0\gg1$ e $\theta(t)$ lentamente variabile in $[kT_0,(k+1)T_0]$. Allora l'energia del segnale è $\lVert s_p(t)\rVert^2\approx T_0/2$ (appunti: serve un'ipotesi, altrimenti l'energia dipenderebbe da $\theta(t)$; se $\theta$ varia bruscamente non c'è garanzia che ne sia indipendente).
+- Dalla (11) si costruisce la funzione costo
+
+$$J(\theta)=\langle y_p(t),s_p(t)\rangle=\int_{kT_0}^{(k+1)T_0}y_p(t)\cos(2\pi f_ct+\theta(t))\,dt$$
+
+- Applicando lo steepest ascent (la derivata di $\cos$ dà $-\sin$):
+
+$$\hat\theta_{k+1}:=\hat\theta_k-\alpha\int_{kT_0}^{(k+1)T_0}y_p(t)\sin(2\pi f_ct+\hat\theta_k)\,dt\tag{12}$$
+
+- Appunti: il PLL è la realizzazione di uno stimatore ML.
+
+#### Slide 30 e appunti — La struttura del PLL · [[Synchro_Kay_example (1).pdf#page=33|p. 33]]
+- La realizzazione pratica della (12) è la struttura PLL della figura: il segnale ricevuto $y_p(t)=\cos(2\pi f_ct+\theta)+$ rumore è moltiplicato per $-\sin(2\pi f_ct+\hat\theta)$ generato dal VCO; il prodotto passa per il **loop filter**, la cui uscita pilota il VCO.
+- Il loop filter è un filtro passa-basso che realizza l'integrale della (12) (appunti: esegue l'integrale).
+- Il **VCO** (voltage controlled oscillator) genera una portante la cui frequenza varia linearmente con l'ampiezza di un segnale di controllo.
+
+#### Slide 31 e appunti — VCO e aggancio · [[Synchro_Kay_example (1).pdf#page=34|p. 34]]
+- Il prodotto tra portante generata e segnale ricevuto, filtrato passa-basso, va al VCO, la cui frequenza istantanea cambia secondo
+
+$$\frac{d\hat\theta(t)}{dt}=\gamma\,c(t)\tag{13}$$
+
+- Se la tensione di controllo è $c(t)=0$, $\hat\theta(t)$ è costante ⇒ **stato di aggancio** (phase-locked; appunti: condizione di aggancio).
+- Per piccole variazioni di $\hat\theta(t)$, ragionevoli durante il tracking,
+
+$$\frac{d\hat\theta(t)}{dt}\approx\frac{\hat\theta(t)-\hat\theta(t-\Delta t)}{\Delta t}\tag{14}$$
+
+  che mostra che il PLL realizza una relazione come la (12).
+- Per capire il comportamento del PLL si suppone il segnale ricevuto senza rumore.
+
+#### Slide 32 e appunti — Il termine d'errore · [[Synchro_Kay_example (1).pdf#page=35|p. 35]]
+- Senza rumore, con la formula di Werner $\sin a\cos b=\frac12[\sin(a+b)+\sin(a-b)]$:
+
+$$\int_{kT_0}^{(k+1)T_0}y_p(t)\sin(2\pi f_ct+\hat\theta_k)\,dt=\frac12\int_{kT_0}^{(k+1)T_0}\big[\sin(4\pi f_ct+\hat\theta_k+\theta(t))+\sin(\hat\theta_k-\theta(t))\big]dt\approx\frac{T_0}{2}\sin(\hat\theta_k-\theta_{k+1})\tag{15}$$
+
+  (il termine a $2f_c$ ha integrale trascurabile perché $f_cT_0\gg1$; $\theta(t)\approx\theta_{k+1}$ nell'intervallo).
+- $\sin(\hat\theta_k-\theta_{k+1})$ è un buon **indicatore d'errore**: se è positivo $\hat\theta_k$ è maggiore di $\theta_{k+1}$, se è negativo è minore; il modulo dice quanto la stima precedente è lontana da $\theta_{k+1}$. Appunti: se $\hat\theta=\theta$ il PLL è agganciato.
+
+#### Slide 33 — Costas loop · [[Synchro_Kay_example (1).pdf#page=36|p. 36]]
+- Il PLL non funziona bene se il segnale d'ingresso ha rapide variazioni d'ampiezza o di fase dovute alla modulazione.
+- Per i segnali modulati in ampiezza si può usare il **Costas loop** (figura): $r(t)$ è moltiplicato per $\cos[2\pi f_ct+\phi_v(t)]$ e per $-\sin[2\pi f_ct+\phi_v(t)]$ (il secondo ottenuto dal primo con uno sfasatore $\pi/2$), ciascun prodotto passa per un LPF dando $e_1(t)$ ed $e_2(t)$; il prodotto $e(t)=e_1(t)\,e_2(t)$ va al loop filter, che produce $v(t)$ e pilota il VCO.
+
+---
+
+*Approfondimenti nel wiki (derivazioni passo per passo, sanity check, grafici): [[stima-dei-parametri]], [[sincronizzazione]], [[phase-locked-loop]].*
+
+## Lezione 14 — Segnalazione su canali a banda limitata
+
+*Fonte: signaling_bandlimited_channel.pdf (47 slide «Signaling over bandlimited channels» con appunti a lezione sulle slide 2, 3, 9, 13, 14, 18; in `raw/goodnotes/`). Il numero di pagina coincide con quello della slide. Le equazioni (1)–(16) sono quelle delle slide.*
+
+### Canali a banda limitata e interferenza intersimbolica
+
+#### Slide 2 e appunti — Introduzione (1/2) · [[signaling_bandlimited_channel.pdf#page=2|p. 2]]
+- Nella trasmissione su canale AWGN non c'è limite sulla banda del canale: $E_b/N_0$ è l'unico fattore che determina le prestazioni del ricevitore.
+- Un canale reale non è solo rumoroso: ha anche **banda finita**. Se un impulso rettangolare, che rappresenta un simbolo, attraversa un canale a banda limitata, all'uscita la sua forma è distorta.
+- Appunti (schizzo): finora il canale era un sommatore, $s(t)+n_p(t)$; adesso è un blocco **canale** seguito dal sommatore del rumore. Il canale non è solo un sommatore: ha una propria risposta impulsiva che modifica lo spettro del segnale in ingresso, e non è un sistema identico.
+
+#### Slide 3 e appunti — Introduzione (2/2) · [[signaling_bandlimited_channel.pdf#page=3|p. 3]]
+- I lobi laterali dell'impulso distorto sono una sorgente di distorsione detta **interferenza intersimbolica** (ISI), perché degrada i simboli adiacenti.
+- Differenza fondamentale tra ISI e rumore:
+  - il **rumore** è indipendente dal segnale trasmesso: il suo effetto compare all'ingresso del ricevitore appena si accende il sistema;
+  - l'**ISI dipende dal segnale**: scompare solo quando si spegne il segnale trasmesso (appunti: dipende dal segnale trasmesso, a differenza del rumore termico).
+
+#### Slide 4–5 — Effetto del rumore: perdita di SNR · [[signaling_bandlimited_channel.pdf#page=4|p. 4]], [[signaling_bandlimited_channel.pdf#page=5|5]]
+- Un sistema ha BER teorica data dalla curva continua in funzione di $E_b/N_0$; se le prestazioni seguono invece la curva tratteggiata, si ha una **perdita di SNR**, causata da perdite di segnale o da un aumento di rumore o interferenza.
+- Per BER $=10^{-5}$ la curva teorica richiede $E_b/N_0=10$ dB; quella tratteggiata 12 dB: servono **2 dB in più**. È un problema soprattutto per i sistemi limitati in potenza.
+- Figura (slide 5): BER da $1$ a $10^{-5}$ in funzione di $E_b/N_0$ da $-10$ a 12 dB; la curva tratteggiata è la continua traslata di 2 dB a destra.
+
+#### Slide 6–7 — Effetto dell'ISI: BER irriducibile · [[signaling_bandlimited_channel.pdf#page=6|p. 6]], [[signaling_bandlimited_channel.pdf#page=7|7]]
+- Se il sistema è degradato da rumore **e** ISI (curva tratteggiata della slide 7), nessun aumento di $E_b/N_0$ risolve il problema: la curva presenta un **pavimento** (BER floor, attorno a $10^{-4}$ nella figura), e aumentare $E_b/N_0$ non serve se il pavimento sta sopra la BER richiesta.
+- Il rimedio è l'**equalizzazione**: poiché l'ISI è causata dal filtraggio nel trasmettitore e nel canale, l'equalizzazione è il processo che inverte questi effetti di filtraggio non ottimi.
+
+#### Slide 8 — Modulazione lineare · [[signaling_bandlimited_channel.pdf#page=8|p. 8]]
+- Forma d'onda trasmessa in banda base complessa per modulazione lineare bidimensionale (PSK o QAM):
+
+$$u(t)=\sum_ns(n)\,g(t-nT)=\Big[\sum_ns(n)\,\delta(t-nT)\Big]\ast g(t)\tag{1}$$
+
+- $s(n)=s_1(n)+js_2(n)$, $n\in\mathbb Z$, sono i simboli complessi associati a $b=\log_2M$ bit, presi da una costellazione fissa $s(n)\in\{s_1,\dots,s_M\}$, $M=2^b$, $s_i=s_{i1}+js_{i2}$; $g(t)$ è un impulso di sagomatura fisso in banda base.
+- Symbol rate (baud rate) $1/T$, con $T=bT_b$ intervallo di simbolo e $T_b$ intervallo di bit; bit rate $R_b=b/T=(\log_2M)/T$ bit/s.
+- La PAM è il caso particolare della (1) con simboli reali (costellazione monodimensionale).
+
+#### Slide 9 e appunti — Modello del sistema · [[signaling_bandlimited_channel.pdf#page=9|p. 9]]
+- Schema: $s(n)$ (impulsi distanti $T$) → **filtro di trasmissione** $g(t)$ → $u(t)$ (impulsi sagomati) → **canale** $h(t)$, a cui si somma il **rumore** → **filtro di ricezione** $c(t)$ → campionatore a $t=kT$ → **decisore**.
+- Appunti: si fa riferimento solo agli inviluppi complessi; il canale è un sistema non trasparente; il campionatore in prima ipotesi è perfettamente sincronizzato.
+
+#### Slide 10 — Interferenza intersimbolica (1/4) · [[signaling_bandlimited_channel.pdf#page=10|p. 10]]
+- Si usa la rappresentazione in banda base complessa di segnali e filtri e si suppone sincronizzazione perfetta.
+- L'inviluppo $u(t)$ è modificato dal canale a banda limitata di risposta impulsiva $h(t)$: il segnale ricevuto in banda base è $x(t)=u(t)\ast h(t)+n(t)$, con $n(t)$ WGN.
+- In AWGN, con $h(t)=\delta(t)$, il rivelatore ottimo (simbolo per simbolo) è la cascata filtro adattato + campionatore.
+- Su canale a banda limitata si vuole un ricevitore fatto da un filtro lineare (**filtro di ricezione**) di risposta $c(t)$ seguito da un campionatore a rate $1/T$; i campioni di $y(t)$ presi ogni $T$ secondi vanno al decisore.
+
+#### Slide 11–12 — Interferenza intersimbolica (2/4)–(3/4) · [[signaling_bandlimited_channel.pdf#page=11|p. 11]], [[signaling_bandlimited_channel.pdf#page=12|12]]
+- A meno di un fattore di scala, il segnale senza rumore all'uscita del filtro di ricezione è
+
+$$y(t)=\sum_ns(n)\,p(t-nT)=\Big[\sum_ns(n)\,\delta(t-nT)\Big]\ast p(t),\qquad p(t)=g(t)\ast h(t)\ast c(t)\tag{2}$$
+
+- Nell'argomento di $p(t-nT)$ andrebbe un ritardo $t_0$ che rappresenta il ritardo di trasmissione; lo si pone a zero senza perdita di generalità.
+- L'impulso complessivo è una doppia convoluzione (3); in frequenza la convoluzione diventa prodotto:
+
+$$p(t)=g(t)\ast h(t)\ast c(t)\tag{3}\qquad\Longleftrightarrow\qquad P(f)=G(f)\,H(f)\,C(f)$$
+
+#### Slide 13 e appunti — Interferenza intersimbolica (4/4) · [[signaling_bandlimited_channel.pdf#page=13|p. 13]]
+- Campionando all'istante $t_k=kT$, $k\in\mathbb Z$ (appunti: si vuole ottenere il simbolo $k$-esimo):
+
+$$y(t_k)=\sum_{n=-\infty}^{+\infty}s(n)\,p[(k-n)T]=s(k)+\sum_{\substack{n=-\infty\\n\neq k}}^{+\infty}s(n)\,p[(k-n)T]$$
+
+  con l'impulso normalizzato, $p(0)=1$ (appunti: il primo termine sarebbe $s(k)p(0)$, e si normalizza come se si avesse un amplificatore in ricezione).
+- $s(k)$ è il contributo del simbolo $k$-esimo; la somma è l'effetto residuo di tutti gli altri simboli sulla decisione del $k$-esimo, dovuto agli impulsi prima e dopo l'istante di campionamento: è l'**ISI** (appunti: due contributi per il simbolo $k$-esimo, il secondo è il termine di ISI, che dipende dai simboli precedenti e successivi).
+- Senza ISI la somma è nulla ⇒ il modello del segnale è lo stesso del canale AWGN.
+- Appunti: con il rumore $y_k=p(0)s(k)+i(k)+n(k)$, mentre in AWGN si aveva $y_k=s_kp(0)+n(k)$. Il termine $i(k)$ è il **motivo del BER floor**: a basso $E_b/N_0$ domina il rumore, ad alto domina $i(k)$, che non diminuisce aumentando la potenza.
+
+### Progetto del segnale a ISI nulla: criterio di Nyquist
+
+#### Slide 14 e appunti — Signal design per ISI nulla (1/2) · [[signaling_bandlimited_channel.pdf#page=14|p. 14]]
+- Problema: costruire l'impulso complessivo $p(t)$ dell'intero sistema in modo che il ricevitore possa ricostruire esattamente la sequenza di dati in ingresso al trasmettitore. La segnalazione sul canale a banda limitata diventa senza distorsione: è un **problema di progetto del segnale**.
+- Gli impulsi sovrapposti si configurano in modo che all'uscita del ricevitore non interferiscano tra loro negli istanti di campionamento $t_k=kT$.
+- In tal caso la rivelazione simbolo per simbolo, ottima in AWGN, resta ottima anche sul canale a banda limitata.
+- Appunti: posso costruire $g(t)$ e $c(t)$ in modo che il contributo dell'ISI sia annullato ⇒ si ottiene il teorema di Nyquist.
+
+#### Slide 15 — Signal design per ISI nulla (2/2) · [[signaling_bandlimited_channel.pdf#page=15|p. 15]]
+- Il criterio di progetto è l'eliminazione dell'ISI dalla sequenza campionata $y(t_k)$. Il **criterio di Nyquist** richiede
+
+$$p(kT-nT)=\begin{cases}1&n=k\\0&n\neq k\end{cases}\tag{4}$$
+
+- Un impulso che soddisfa la (4) si chiama **impulso di Nyquist**. Non è unico: molte forme d'impulso soddisfano il criterio.
+
+#### Slide 16 — Il criterio nel dominio della frequenza (1/2) · [[signaling_bandlimited_channel.pdf#page=16|p. 16]]
+- Treno periodico di delta distanti $T$:
+
+$$\Delta_T(t)\triangleq\sum_{m=-\infty}^{+\infty}\delta(t-mT)\tag{5}$$
+
+- La (4) equivale a $p(t)\,\Delta_T(t)=\sum_mp(mT)\,\delta(t-mT)=\delta(t)$.
+- Trasformando entrambi i membri (la trasformata del treno di delta è $\frac1T$ per un treno di delta distanti $1/T$ in frequenza):
+
+$$R_s\sum_{k=-\infty}^{+\infty}P(f-kR_s)=1$$
+
+  con $R_s=1/T$ symbol rate in simboli/s. (La slide dice «trasformando la (16)»: si riferisce all'uguaglianza appena scritta.)
+
+#### Slide 17 — Il criterio nel dominio della frequenza (2/2) · [[signaling_bandlimited_channel.pdf#page=17|p. 17]]
+- La condizione per ISI nulla in frequenza è
+
+$$\sum_{k=-\infty}^{+\infty}P(f-kR_s)=T\tag{6}$$
+
+- **Criterio di Nyquist in frequenza**: $P(f)$ elimina l'ISI per campioni presi a intervalli $T$ se soddisfa la (6). $P(f)$ si riferisce all'intero sistema: filtro di trasmissione, canale e filtro di ricezione.
+
+#### Slide 18–19 e appunti — Impulso di Nyquist ideale (1/4)–(2/4) · [[signaling_bandlimited_channel.pdf#page=18|p. 18]], [[signaling_bandlimited_channel.pdf#page=19|19]]
+- Il modo più semplice di soddisfare la (6) è uno spettro rettangolare:
+
+$$P(f)=T\,\text{rect}\Big(\frac{f}{1/T}\Big)\tag{7}$$
+
+  La banda (monolatera) in banda base è $1/(2T)=R_s/2$: non servono frequenze oltre metà del symbol rate.
+- $W_N\triangleq1/(2T)=R_s/2$ è la **banda di Nyquist**.
+- La forma d'onda a ISI nulla è la sinc: $p(t)=\text{sinc}(2W_Nt)=\text{sinc}(t/T)$, detta **impulso di Nyquist ideale**, ideale perché la sua trasformata è nulla fuori dall'intervallo di Nyquist. Appunti: soddisfa il criterio di Nyquist con la minima occupazione di banda.
+- Figura (slide 19), modulazione binaria ($T=T_b$, $R_s=R_b$, $W\equiv W_N$): (a) risposta in ampiezza ideale, $|P(f)|=1/(2W)$ per $|f|<W$; (b) impulso $p(t)$, con zeri in $t=\pm T_b,\pm2T_b,\dots$
+
+#### Slide 20–21 — Impulso di Nyquist ideale (3/4)–(4/4) · [[signaling_bandlimited_channel.pdf#page=20|p. 20]], [[signaling_bandlimited_channel.pdf#page=21|21]]
+- $p(t)$ è la risposta impulsiva di un passa-basso ideale con ampiezza in banda passante $1/(2W_N)$ e banda $W_N$.
+- $p(t)$ ha il picco nell'origine e si annulla nei multipli interi di $T$: se $y(t)$ è campionato in $t=0,\pm T,\pm2T,\dots$, gli impulsi $s(n)\,p(t-nT)$ non interferiscono tra loro.
+- Figura (slide 21): modulazione binaria, somma di sinc per la sequenza di bit 1011010; in ogni istante di campionamento conta solo l'impulso centrato lì.
+
+#### Slide 22 — Difficoltà pratiche (1/3) · [[signaling_bandlimited_channel.pdf#page=22|p. 22]]
+- L'impulso di Nyquist ideale è economico in banda (ISI nulla con la minima banda possibile), ma ha due difficoltà pratiche:
+  - richiede $|P(f)|$ piatto da $-W_N$ a $+W_N$ e nullo altrove: è **fisicamente irrealizzabile** (non causale), perché le transizioni brusche a $\pm W_N$ violano il **criterio di Paley-Wiener**;
+  - $p(t)$ decresce come $1/|t|$ per $|t|$ grande: decadimento lento, dovuto anch'esso alla discontinuità di $P(f)$ in $\pm W_N$. Non c'è praticamente margine d'errore sugli istanti di campionamento.
+
+#### Slide 23–24 — Difficoltà pratiche (2/3)–(3/3): errore di timing · [[signaling_bandlimited_channel.pdf#page=23|p. 23]], [[signaling_bandlimited_channel.pdf#page=24|24]]
+- Si campiona in $t_k=kT+\Delta t$, con $\Delta t$ errore di timing; con $k=0$ e senza rumore:
+
+$$y(t_0)=y(\Delta t)=\sum_{n=-\infty}^{+\infty}s(n)\,p(\Delta t-nT)\tag{8}$$
+
+$$y(\Delta t)=\sum_{n=-\infty}^{+\infty}s(n)\,\text{sinc}\Big(\frac{\Delta t-nT}{T}\Big)\tag{9}$$
+
+- Separando il termine $n=0$:
+
+$$y(\Delta t)=s(0)\,\text{sinc}\Big(\frac{\Delta t}{T}\Big)+\sum_{n\neq0}s(n)\,\text{sinc}\Big(\frac{\Delta t-nT}{T}\Big)$$
+
+  Il primo termine è il simbolo desiderato, la serie è l'ISI causata da $\Delta t$. La serie **può divergere**, causando decisioni errate.
+
+### Lo spettro a coseno rialzato
+
+#### Slide 25 — Raised cosine (1/5) · [[signaling_bandlimited_channel.pdf#page=25|p. 25]]
+- Si superano le difficoltà estendendo la banda dal minimo $W_N=R_s/2=1/(2T)$ a un valore regolabile tra $W_N$ e $2W_N$.
+- Un decadimento più rapido nel tempo implica un decadimento più lento in frequenza ⇒ serve **banda in eccesso** oltre il minimo di Nyquist: si scambia banda per un progetto più robusto agli errori di timing.
+- Si impone a $P(f)$ una condizione più stringente di quella dell'impulso ideale:
+
+$$P(f)+P\Big(f-\frac1T\Big)+P\Big(f+\frac1T\Big)=T,\qquad f\in\Big(-\frac1{2T},\frac1{2T}\Big)\tag{10}$$
+
+#### Slide 26–27 — Raised cosine (2/5)–(3/5) · [[signaling_bandlimited_channel.pdf#page=26|p. 26]], [[signaling_bandlimited_channel.pdf#page=27|27]]
+- Una forma con molte proprietà desiderabili è lo **spettro a coseno rialzato**: una parte piatta e una parte di roll-off sinusoidale,
+
+$$P(f)=\begin{cases}T,&|f|\le\dfrac{1-\alpha}{2T}\\[2mm]\dfrac T2\Big[1-\sin\Big(\big(|f|-\tfrac1{2T}\big)\dfrac{\pi T}{\alpha}\Big)\Big],&\dfrac{1-\alpha}{2T}\le|f|<\dfrac{1+\alpha}{2T}\\[2mm]0,&|f|\ge\dfrac{1+\alpha}{2T}\end{cases}$$
+
+- $\alpha\in[0,1]$ è il **fattore di roll-off**: indica la banda in eccesso rispetto alla soluzione ideale $W_N=1/(2T)$. La nuova banda (monolatera) è $W_N(1+\alpha)$.
+- Antitrasformando:
+
+$$p(t)=\text{sinc}\Big(\frac tT\Big)\,\frac{\cos(\pi\alpha t/T)}{1-(2\alpha t/T)^2}$$
+
+#### Slide 28–29 — Raised cosine (4/5)–(5/5) · [[signaling_bandlimited_channel.pdf#page=28|p. 28]], [[signaling_bandlimited_channel.pdf#page=29|29]]
+- Figura (slide 28), modulazione binaria ($T=T_b$): (a) risposta in frequenza e (b) risposta impulsiva per diversi roll-off.
+- $p(t)$ è il prodotto di due fattori: $\text{sinc}(t/T)$, che garantisce gli zeri negli istanti $t=kT$, e un secondo fattore che decresce come $1/|t|^2$ per $|t|$ grande e riduce molto le code rispetto all'impulso ideale: la trasmissione diventa relativamente insensibile agli errori di campionamento.
+- Queste due proprietà sono molto utili per estrarre dal segnale ricevuto l'informazione di timing ai fini della sincronizzazione. Il prezzo è una banda maggiore di quella del canale di Nyquist ideale ($\alpha=0$).
+
+#### Slide 30 — Osservazioni: impulso a radice di Nyquist · [[signaling_bandlimited_channel.pdf#page=30|p. 30]]
+- Il criterio di Nyquist riguarda la cascata di filtro di trasmissione, canale e filtro di ricezione; ma il canale di solito non è sotto controllo.
+- In pratica si progettano trasmettitore e ricevitore in modo che $G(f)\,C(f)$ sia di Nyquist, e l'ISI introdotta dal canale si tratta a parte.
+- Scelta tipica: $G(f)$ e $C(f)$ radici quadrate (in frequenza) di un impulso di Nyquist: **impulso a radice di Nyquist** (square root Nyquist).
+
+#### Slide 31 — Efficienza di banda con ISI nulla · [[signaling_bandlimited_channel.pdf#page=31|p. 31]]
+- In assenza di ISI l'efficienza di banda è $\eta_B=R_b/W$ (bit/s/Hz): $\eta_B=2\log_2M$ per modulazione lineare monodimensionale, $\eta_B=\log_2M$ per bidimensionale (Lezione 12).
+- Noti $R_b$ ed $\eta_B$, la banda (monolatera) minima senza ISI è $W=R_b/\eta_B$; con la banda in eccesso del coseno rialzato la banda effettiva è
+
+$$W_{actual}=(1+\alpha)\,\frac{R_b}{\eta_B}$$
+
+### Equalizzazione
+
+#### Slide 32 — Problemi nel soddisfare la condizione di ISI nulla · [[signaling_bandlimited_channel.pdf#page=32|p. 32]]
+- Progettare il sistema con il criterio di Nyquist ha tre limiti pratici:
+  - la risposta $h(t)$ del canale deve essere nota al trasmettitore, per fare in modo che $g(t)\ast h(t)\ast c(t)$ sia un coseno rialzato; in molti scenari non sono disponibili stime affidabili di $h(t)$ al trasmettitore;
+  - i filtri di trasmissione e ricezione vanno progettati sulla risposta del canale, cosa irragionevole in ambienti tempo-varianti;
+  - in pratica si può rinunciare alla condizione di ISI nulla ⇒ serve un **equalizzatore** al ricevitore.
+- Si chiama **equalizzazione** qualunque tecnica di elaborazione o filtraggio progettata per eliminare o ridurre l'ISI.
+
+#### Slide 33–34 — Tipi di equalizzatori · [[signaling_bandlimited_channel.pdf#page=33|p. 33]], [[signaling_bandlimited_channel.pdf#page=34|34]]
+- L'equalizzazione si divide in **lineare** e **non lineare**.
+- Le tecniche lineari, come **zero-forcing (ZF)** e **minimum mean-square error (MMSE)**, sono le più semplici da realizzare e da capire, ma in genere soffrono di più **amplificazione del rumore**.
+- Tra le non lineari la più comune è la **decision-feedback equalization (DFE)**, abbastanza semplice e di solito efficace; su canali a basso SNR soffre di **propagazione degli errori** quando i bit sono decisi in modo errato.
+- La tecnica ottima è la **maximum likelihood sequence estimation (MLSE)**, la cui complessità cresce esponenzialmente con la memoria del canale: è impraticabile sulla maggior parte dei canali d'interesse.
+- Figura (slide 34): albero degli equalizzatori. Tipi: lineari e non lineari (DFE, MLSE). Strutture: transversal e lattice (lineari e DFE), transversal channel estimator (MLSE). Algoritmi di aggiornamento dei coefficienti: LMS, RLS, Fast RLS, Square-Root LS (strutture transversal), Gradient RLS (lattice).
+
+### Stima di sequenza a massima verosimiglianza
+
+#### Slide 35 — MLSE (1/2) · [[signaling_bandlimited_channel.pdf#page=35|p. 35]]
+- La MLSE evita l'amplificazione del rumore perché non usa un filtro equalizzatore: stima la **sequenza** dei simboli trasmessi.
+- Inviluppo trasmesso $u(t)=\sum_ns(n)\,g(t-nT)$; uscita del canale senza rumore
+
+$$y(t)=\sum_ns(n)\,q(t-nT)\tag{11}$$
+
+  con $q(t)=g(t)\ast h(t)$, risposta combinata di sagomatura e canale.
+- In pratica $q(t)$ è causale e a memoria finita: $q(t)\equiv0$ per $t\notin[0,LT]$, con $L$ memoria del canale in intervalli di simbolo.
+
+#### Slide 36 — MLSE (2/2) · [[signaling_bandlimited_channel.pdf#page=36|p. 36]]
+- Noto $q(t)$, la MLSE sceglie la sequenza di simboli che massimizza la verosimiglianza del segnale ricevuto.
+- Lavora su trasmissioni successive viste come un unico «simbolo a blocco»: per un messaggio di $K+1$ simboli di una costellazione di cardinalità $M$ bisogna scegliere tra $M^{K+1}$ messaggi. Con la forza bruta, 1000 simboli QPSK richiedono una complessità $4^{1000}$.
+- Si considera il blocco $\mathbf s=[s(0),s(1),\dots,s(K)]^T$ trasmesso per $t\in[0,KT]$.
+
+#### Slide 37 — Il criterio MLSE (1/3) · [[signaling_bandlimited_channel.pdf#page=37|p. 37]]
+- La log-verosimiglianza della sequenza $\mathbf s$ è (vedi la rivelazione)
+
+$$\lambda(y)=\text{Re}\big(\langle r(t),y(t)\rangle\big)-\frac12\lVert y(t)\rVert^2\tag{12}$$
+
+$$\lambda(y)=\text{Re}\Big(\int_{\mathcal T}r(t)\,y^\ast(t)\,dt\Big)-\frac12\int_{\mathcal T}|y(t)|^2dt\tag{13}$$
+
+  con $r(t)=y(t)+w(t)$, $w(t)$ rumore gaussiano additivo di PSD $\sigma^2$, e $y(t)=\sum_{n=0}^Ks(n)\,q(t-nT)$ forma d'onda senza rumore associata a $\mathbf s$.
+- L'intervallo d'osservazione $\mathcal T$ è abbastanza lungo da contenere per intero $q(t),q(t-T),\dots,q(t-KT)$.
+
+#### Slide 38 — Il criterio MLSE (2/3) · [[signaling_bandlimited_channel.pdf#page=38|p. 38]]
+- Sostituendo $y(t)$:
+
+$$\lambda(y)=\sum_{n=0}^K\text{Re}\Big(s^\ast(n)\int_{\mathcal T}r(t)\,q^\ast(t-nT)\,dt\Big)-\frac12\sum_{n=0}^K\sum_{m=0}^Ks(n)\,s^\ast(m)\int_{\mathcal T}q(t-nT)\,q^\ast(t-mT)\,dt\tag{14}$$
+
+- Si definiscono
+
+$$\alpha(n)\triangleq\int_{\mathcal T}r(t)\,q^\ast(t-nT)\,dt,\qquad\beta_{m,n}\triangleq\int_{\mathcal T}q(t-nT)\,q^\ast(t-mT)\,dt$$
+
+#### Slide 39 — Il criterio MLSE (3/3) · [[signaling_bandlimited_channel.pdf#page=39|p. 39]]
+- $\alpha(n)$ si ottiene passando $r(t)$ in un filtro adattato di risposta $q^\ast(-t)$ e campionandone l'uscita in $t_n=nT$.
+- $\beta_{m,n}$ dipende da $m$ e $n$ separatamente, ma con $\mathcal T$ abbastanza lungo $\beta_{m,n}=\beta_{m-n}$.
+- La regola MLSE è
+
+$$\hat{\mathbf s}=\arg\max_{\mathbf s}\Big\{\text{Re}\Big[\sum_{n=0}^Ks^\ast(n)\,\alpha(n)\Big]-\frac12\sum_{n=0}^K\sum_{m=0}^Ks(n)\,s^\ast(m)\,\beta(n-m)\Big\}$$
+
+- La complessità cresce esponenzialmente con il numero di simboli trasmessi. L'**algoritmo di Viterbi** la riduce: diventa esponenziale nella memoria del canale ma lineare nel numero (di solito molto maggiore) di simboli.
+
+#### Slide 40 — Il rivelatore di sequenza ML · [[signaling_bandlimited_channel.pdf#page=40|p. 40]]
+- Per la regola MLSE serve prima la sequenza $\alpha(n)$, uscita di un unico filtro adattato.
+- Poi bisogna massimizzare $\lambda(y)\triangleq\text{Re}\big[\sum_ns^\ast(n)\alpha(n)\big]-\frac12\sum_n\sum_ms(n)s^\ast(m)\beta(n-m)$ su tutte le sequenze: il filtro adattato è seguito da un processore, il **rivelatore di sequenza ML**, che sceglie tra le $M^{K+1}$ sequenze quella che massimizza $\lambda(y)$.
+- L'algoritmo di Viterbi fa questa scelta in modo efficiente: si applica ai problemi di massimo (o minimo) formulabili come ricerca del cammino di lunghezza massima (o minima) in un traliccio finito.
+
+### L'algoritmo di Viterbi
+
+#### Slide 41 — Algoritmo di Viterbi (1/2) · [[signaling_bandlimited_channel.pdf#page=41|p. 41]]
+- L'algoritmo di Viterbi (VA) cerca, tra i cammini che attraversano un **traliccio** (trellis) da sinistra a destra, quello di metrica massima o minima.
+- Figura: traliccio con stati $\{S_i\}_{i=1}^{N_\sigma}$, $N_\sigma=4$, e profondità $K=6$ (da $k=0$ a $k=K$).
+- A ogni ramo è associata una **metrica di ramo** (etichetta). Le metriche sono **additive**: la metrica di due rami adiacenti è la somma delle due.
+
+#### Slide 42 — Algoritmo di Viterbi (2/2) · [[signaling_bandlimited_channel.pdf#page=42|p. 42]]
+- La metrica totale di un cammino è la somma delle etichette dei suoi rami; si cerca il cammino di metrica totale massima (o minima).
+- Con $\sigma_k$ stato al tempo $k$ (valori in $\{S_i\}_{i=1}^{N_\sigma}$) e $m(\sigma_k,\sigma_{k+1})$ metrica del ramo $\sigma_k\to\sigma_{k+1}$, si massimizza (o minimizza)
+
+$$\lambda(\sigma_0,\sigma_1,\dots,\sigma_K)\triangleq\sum_{k=0}^{K-1}m(\sigma_k,\sigma_{k+1})$$
+
+  su tutte le $(\sigma_0,\dots,\sigma_K)$.
+- Forza bruta: si valutano tutti i valori possibili e si sceglie il massimo: complessità alta (esponenziale in $K$) e ritardo di decisione alto (si decide solo dopo aver calcolato tutta la sequenza, ritardo $K$).
+
+#### Slide 43–44 — I passi chiave: add, compare, select · [[signaling_bandlimited_channel.pdf#page=43|p. 43]], [[signaling_bandlimited_channel.pdf#page=44|44]]
+- Il VA riduce molto la complessità, che diventa **lineare in $K$**. Una versione detta **VA troncato** permette ritardi molto minori di $K$.
+- I passi chiave sono **Add, Compare, Select (ACS)**. Per ogni stato $\sigma_{k+1}$:
+  - **add**: somma la metrica accumulata nello stato $\sigma_k$ e la metrica del ramo;
+  - **compare**: confronta queste somme;
+  - **select**: tiene il ramo con il valore massimo (o minimo), il **sopravvissuto**, e scarta tutti gli altri rami entranti in $\sigma_{k+1}$.
+- Ogni passo ACS si ripete dallo stato iniziale a quello finale del traliccio. Figura (slide 44): esempio di applicazione, con il traliccio etichettato e i sopravvissuti passo per passo da $k=1$ a $k=6$, dove resta un solo cammino.
+
+#### Slide 45 — Il VA applicato alla MLSE (1/3) · [[signaling_bandlimited_channel.pdf#page=45|p. 45]]
+- Si riscrive $\lambda(y)$ separando i termini con l'ultimo simbolo $s(K)$:
+
+$$\lambda(y)=\text{Re}\Big[\sum_{n=0}^{K-1}s^\ast(n)\alpha(n)\Big]-\frac12\sum_{n=0}^{K-1}\sum_{m=0}^{K-1}s(n)s^\ast(m)\beta(n-m)+\text{Re}[s^\ast(K)\alpha(K)]-\text{Re}\Big[s(K)\sum_{n=0}^{K-1}s^\ast(n)\beta(K-n)\Big]+|s(K)|^2\beta(0)\tag{15}$$
+
+- Poiché $q(t)\equiv0$ per $t\notin[0,LT]$, $\beta(\ell)\neq0$ solo per $\ell\in\{-L,\dots,L\}$, e la somma su $n$ dell'ultimo termine misto si restringe a $n=K-L,\dots,K-1$ (16).
+- ⚠️ Nella (15)–(16) delle slide l'ultimo termine è $+|s(K)|^2\beta(0)$; separando il termine $n=m=K$ dalla doppia somma con il suo $-\frac12$ si ottiene $-\frac12|s(K)|^2\beta(0)$. Lo stesso vale per l'ultimo termine di $V_k$. La struttura della ricorsione non cambia.
+
+#### Slide 46–47 — Il VA applicato alla MLSE (2/3)–(3/3) · [[signaling_bandlimited_channel.pdf#page=46|p. 46]], [[signaling_bandlimited_channel.pdf#page=47|47]]
+- Si definiscono lo **stato** $\sigma_\ell\triangleq(s(\ell-1),s(\ell-2),\dots,s(\ell-L))$, $\ell=L,\dots,K$, e
+
+$$U_k(\sigma_L,\dots,\sigma_k)\triangleq\text{Re}\Big[\sum_{\ell=0}^ks^\ast(\ell)\alpha(\ell)\Big]-\frac12\sum_{\ell=0}^k\sum_{m=0}^ks(\ell)s^\ast(m)\beta(\ell-m)$$
+
+$$V_k(\sigma_{k-1},\sigma_k)\triangleq\text{Re}[s^\ast(k)\alpha(k)]-\text{Re}\Big[s(k)\sum_{m=k-L}^{k-1}s^\ast(m)\beta(k-m)\Big]+|s(k)|^2\beta(0)$$
+
+  per $k=L,\dots,K$.
+- Poiché $\lambda(y)=U_K(\sigma_L,\dots,\sigma_K)$, la (16) diventa la ricorsione $U_K=U_{K-1}(\sigma_L,\dots,\sigma_{K-1})+V_K(\sigma_{K-1},\sigma_K)$, e ripetendo
+
+$$\lambda(y)=U_L(\sigma_L)+V_{L+1}(\sigma_L,\sigma_{L+1})+V_{L+2}(\sigma_{L+1},\sigma_{L+2})+\dots+V_K(\sigma_{K-1},\sigma_K)$$
+
+- Questa scomposizione si presta al VA: ogni $\sigma_\ell$ è uno stato del traliccio e $V_{\ell+1}(\sigma_\ell,\sigma_{\ell+1})$ è la metrica (etichetta) del ramo tra $\sigma_\ell$ e $\sigma_{\ell+1}$. La MLSE diventa la ricerca del cammino di metrica massima nel traliccio.
+
+---
+
+*Approfondimenti nel wiki (derivazioni passo per passo, grafici, esempio di Viterbi svolto): [[interferenza-intersimbolica]], [[criterio-di-nyquist]], [[equalizzazione]], [[algoritmo-di-viterbi]].*

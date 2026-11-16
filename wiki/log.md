@@ -209,3 +209,17 @@ Filtra ultimi 10: `grep "^## " wiki/log.md | tail -10`
 - fonte [[appunti-lezione-2-novembre]]; [[probabilita-errore-m-aria]] (union bound, primi vicini, 16-QAM, ortogonali); Lezione 11 in [[corso-completo]]
 - da recuperare: le due figure a cui rimanda p. 3 (P(e) in funzione del contrasto di energia; vicini lontani a basso SNR)
 - restano da ingerire: 11-9.pdf, Synchro_Kay_example.pdf (e la copia (1)), signaling_bandlimited_channel.pdf, Lezioni.pdf, e le versioni GoodNotes aggiornate delle lezioni già nel wiki
+
+## [2026-11-16] ingest | Parameter estimation for synchronization (11-9.pdf, Synchro_Kay_example (1).pdf) | pagine coperte: 11-9 1-2; Synchro 1-36
+- fonte [[parameter-estimation-synchronization]]; concetti nuovi [[sincronizzazione]], [[stima-dei-parametri]], [[phase-locked-loop]]; Lezione 13 in [[corso-completo]]
+- usata la copia «(1)» (ricaricata il 15/11, con tutti gli appunti); Synchro_Kay_example.pdf è la stessa serie di slide meno annotata
+- derivazioni mie: media e varianza della media campionaria, stima training-based, equazione tanh, down-conversion con LO disaccordato, fase ML, energia T₀/2, termine d'errore del PLL, Costas loop
+
+## [2026-11-16] ingest | Signaling over bandlimited channels (signaling_bandlimited_channel.pdf) | pagine coperte: 1-47
+- fonte [[signaling-bandlimited-channels]]; concetti nuovi [[interferenza-intersimbolica]], [[criterio-di-nyquist]], [[equalizzazione]]; entità [[algoritmo-di-viterbi]]; Lezione 14 in [[corso-completo]]
+- ⚠️ (15)–(16) e $V_k$: ultimo termine $-\frac12|s(K)|^2\beta(0)$, non $+|s(K)|^2\beta(0)$; p. 16 «(16)» è un refuso
+
+## [2026-11-16] ingest | Appunti sparsi (Lezioni.pdf) | pagine coperte: 1-3
+- fonte [[appunti-sparsi-lezioni]]; DFT/DTFT in [[lab-setup-e-spettro]] (con la spiegazione del dubbio su `fftshift`) e nella Lezione 5; dimostrazione della (14) nella Lezione 4
+- non ancora re-ingerite: le versioni GoodNotes aggiornate delle Lezioni 1–4, 6, 7 (`raw/goodnotes/* (GoodNotes).pdf`) e le copie Campionamento_AD_DA (1), random_processes (1) e (1) 1
+

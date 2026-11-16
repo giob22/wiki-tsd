@@ -65,6 +65,16 @@
 - [[probabilita-errore-binaria]] — on-off, antipodale, ortogonale, $\frac12\text{erfc}(d/2\sqrt{N_0})$ (alta)
 - [[probabilita-errore-m-aria]] — QPSK, union bound, primi vicini, 16-QAM (alta)
 
+**Stima e sincronizzazione**
+- [[sincronizzazione]] — modello con ritardo e offset dell'LO, timing e portante, stima ML della fase (alta)
+- [[stima-dei-parametri]] — MLE, classico e bayesiano, stima d'ampiezza training-based e blind (tanh) (alta)
+- [[phase-locked-loop]] — steepest ascent, PLL, termine d'errore, Costas loop (alta)
+
+**Canali a banda limitata**
+- [[interferenza-intersimbolica]] — ISI, perdita di SNR e BER floor, modello con $p=g\ast h\ast c$ (alta)
+- [[criterio-di-nyquist]] — ISI nulla, sinc, coseno rialzato, radice di Nyquist, $W=(1+\alpha)R_b/\eta_B$ (alta)
+- [[equalizzazione]] — ZF, MMSE, DFE, MLSE con $\alpha(n)$ e $\beta(\ell)$ (alta)
+
 **Parametri globali e capacità**
 - [[informazione-mutua-e-capacita]] — $I(X;Y)=H(Y)-H(Y\mid X)$, $C=\max_{p(x)}I$, teorema di Shannon, $C=W\log_2(1+\gamma)$ (alta)
 - [[parametri-globali-modulazioni]] — banda di Shannon, $E_b$, $\text{SNR}=\frac{E_b}{N_0}\eta_B$, $\eta_B$, $\eta_P$, tabella PAM/PSK/QAM/ortogonali (alta)
@@ -77,6 +87,7 @@
 - [[legge-mu]] — algoritmo di compressione (µ = 255)
 - [[legge-a]] — algoritmo di compressione (A = 87.6)
 - [[algoritmo-lloyd-max]] — quantizzatore ottimo MMSE
+- [[algoritmo-di-viterbi]] — cammino ottimo in un traliccio (ACS), usato per la MLSE
 
 ## Fonti
 - [[intro-corso]] — Intro.pdf, pp. 1–21
@@ -91,6 +102,9 @@
 - [[appunti-lezione-28-ottobre]] — goodnotes/Lezione 10-28.pdf, pp. 1–4
 - [[appunti-lezione-2-novembre]] — goodnotes/Lezione 11-2.pdf, pp. 1–3
 - [[parametri-globali-e-capacita]] — Confronto_new.pdf, pp. 1–33 (slide con note a mano)
+- [[parameter-estimation-synchronization]] — goodnotes/Synchro_Kay_example (1).pdf, pp. 1–36, e goodnotes/11-9.pdf, pp. 1–2
+- [[signaling-bandlimited-channels]] — goodnotes/signaling_bandlimited_channel.pdf, pp. 1–47
+- [[appunti-sparsi-lezioni]] — goodnotes/Lezioni.pdf, pp. 1–3 (DFT, ripasso di Rice)
 
 ## Laboratorio (non materia d'esame)
 Esperimenti Matlab per vedere la teoria all'opera; un macroblocco per pagina.
@@ -120,5 +134,7 @@ Grafici 🧩 del laboratorio — script `genera_grafici_laboratorio_ad.py` (repl
 Grafici 🧩 dei processi aleatori — script `genera_grafici_random_processes.py`: realizzazioni e v.a. a $t_0$, processo lento contro veloce (autocorrelazione e PSD), gaussiana bivariata, animazione della costruzione di $R_{XX}(\tau)$ (`grafico-rp-autocorrelazione.gif`).
 Grafici 🧩 della lezione sulla banda base — script `genera_grafici_rappresentazione_rice.py`: catena degli spettri $S_p \to S_p^+ \to S$, componenti I/Q nel tempo, animazione della downconversion (`grafico-rice-downconversion.gif`).
 Grafici di funzione generati (🧩) in `output/grafici/` — script `genera_grafici_campionamento.py`: pdf di Laplace, Laplace/gauss/uniforme, Lloyd-Max M=8, SNR vs bit, errore di quantizzazione, Chebyshev vs esatto, $|H_r(f)|$ interpolatori, SNR vs livello (uniforme/µ/A), soglie equivalenti della µ-law (companding), ripiegamento della frequenza ricostruita. Animazioni GIF (🧩): `grafico-aliasing-animazione.gif` (tempo + spettro, 6 passi), `grafico-aliasing-stroboscopio.gif` (fasori).
+Grafici 🧩 delle Lezioni 13–14 — script `genera_grafici_lezioni13_14.py`: verosimiglianza blind, curva d'errore del PLL, coseno rialzato, ISI da errore di timing.
+
 Copie GoodNotes di tutti i PDF delle lezioni (versioni annotate più recenti, tranne Intercorso.pdf) in `raw/goodnotes/`: i file già presenti in `raw/` hanno il suffisso « (GoodNotes)»; la cartella `matlab/` contiene gli script del laboratorio.
 Ambiente Python per rigenerarli: venv in `C:\Users\giova\.venvs\wiki-tsd` (fuori da OneDrive e dalla repo).
