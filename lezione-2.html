@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lezione 2 · Elementi di teoria della probabilità</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="style.css">
+<script>try{var t=localStorage.getItem('tsd-tema');if(t==='chiaro')document.documentElement.setAttribute('data-theme','light');else if(t==='scuro')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="app.js"></script></head>
+<body><header class="top"><nav><a href="index.html" class="home" aria-label="indice">⌂</a><a href="lezione-1.html">L1</a><a href="lezione-2.html" aria-current="page">L2</a><a href="lezione-3.html">L3</a><a href="lezione-4.html">L4</a><a href="lezione-5.html">L5</a><a href="lezione-6.html">L6</a><a href="lezione-7.html">L7</a><a href="lezione-8.html">L8</a><a href="lezione-9.html">L9</a><a href="lezione-10.html">L10</a><a href="lezione-11.html">L11</a><a href="lezione-12.html">L12</a></nav><span class="ctl"><span class="tm" role="group" aria-label="tema"><button data-t="sistema" title="Tema del sistema" aria-label="tema del sistema"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor" stroke="none"/></svg></button><button data-t="chiaro" title="Tema chiaro" aria-label="tema chiaro"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="3" fill="currentColor"/><path d="M8 1.2v2M8 12.8v2M1.2 8h2M12.8 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4M3.2 12.8l1.4-1.4M11.4 4.6l1.4-1.4"/></svg></button><button data-t="scuro" title="Tema scuro" aria-label="tema scuro"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M13.2 9.6A5.8 5.8 0 1 1 6.4 2.8a4.6 4.6 0 0 0 6.8 6.8z" fill="currentColor"/></svg></button></span><span class="fs"><button id="fm" aria-label="testo più piccolo">A−</button><button id="fp" aria-label="testo più grande">A+</button></span></span></header>
+<main>
+<p class="crumb"><a href="index.html">Home</a> · <a href="index.html#lezioni">Lezioni</a> · Lezione 2 · 16/09</p>
+<h1>Elementi di teoria della probabilità</h1>
+<p class="breve">Spazio di probabilità, probabilità condizionale, Bayes, variabili aleatorie notevoli, gaussiana, media, varianza, coppie, correlazione.</p>
+<details class="toc"><summary>Indice della lezione</summary><ul><li class="l3"><a href="#definizioni-preliminari">Definizioni preliminari</a></li><li class="l3"><a href="#prova-e-significato-degli-eventi">Prova e significato degli eventi</a></li><li class="l3"><a href="#spazio-degli-eventi-e-probabilita">Spazio degli eventi e probabilità</a></li><li class="l3"><a href="#proprieta-elementari">Proprietà elementari</a></li><li class="l3"><a href="#probabilita-condizionale">Probabilità condizionale</a></li><li class="l3"><a href="#legge-della-probabilita-composta">Legge della probabilità composta</a></li><li class="l3"><a href="#regola-della-catena">Regola della catena</a></li><li class="l3"><a href="#indipendenza-tra-eventi">Indipendenza tra eventi</a></li><li class="l3"><a href="#teorema-della-probabilita-totale">Teorema della probabilità totale</a></li><li class="l3"><a href="#teorema-di-bayes">Teorema di Bayes</a></li><li class="l3"><a href="#variabile-aleatoria">Variabile aleatoria</a></li><li class="l3"><a href="#cdf">CDF</a></li><li class="l3"><a href="#pdf">pdf</a></li><li class="l3"><a href="#df-pmf">DF (pmf)</a></li><li class="l3"><a href="#variabili-aleatorie-notevoli">Variabili aleatorie notevoli</a></li><li class="l3"><a href="#funzione-di-una-v-a">Funzione di una v.a.</a></li><li class="l3"><a href="#media-e-momenti">Media e momenti</a></li><li class="l3"><a href="#varianza">Varianza</a></li><li class="l3"><a href="#proprieta-di-media-e-varianza">Proprietà di media e varianza</a></li><li class="l3"><a href="#coppie-di-v-a">Coppie di v.a.</a></li><li class="l3"><a href="#distribuzioni-condizionali-e-indipendenza">Distribuzioni condizionali e indipendenza</a></li><li class="l3"><a href="#caratterizzazione-sintetica-di-una-coppia">Caratterizzazione sintetica di una coppia</a></li><li class="l3"><a href="#approfondimenti">Spiegazioni e dimostrazioni passo-passo</a></li><li class="l3"><a href="#domande">Domande da esame</a></li></ul></details>
+<section id="corso"><h2 class="ps">Il corso, slide per slide</h2>
+<h3 id="definizioni-preliminari">Definizioni preliminari</h3>
+<ul>
+<li><strong>Esperimento aleatorio:</strong> procedura con un insieme ben definito di risultati, il cui esito non è prevedibile a priori (lancio di moneta o dado, estrazione di una carta, lotto, roulette). Il risultato è indicato con <span class="math inline">\omega</span>.</li>
+<li><strong>Spazio campione</strong> <span class="math inline">\Omega</span>: insieme di tutti i possibili risultati. Moneta: <span class="math inline">\Omega = \{T, C\}</span>; dado: <span class="math inline">\Omega = \{1, \dots, 6\}</span>; arrivo di un cliente a uno sportello tra le 9:00 e le 12:00: <span class="math inline">\Omega = [0, 10800]</span> s.</li>
+<li><strong>Evento:</strong> un qualunque sottoinsieme <span class="math inline">A \subseteq \Omega</span>.</li>
+</ul>
+<h3 id="prova-e-significato-degli-eventi">Prova e significato degli eventi</h3>
+<p><strong>Prova</strong> = singola ripetizione dell'esperimento, restituisce un risultato <span class="math inline">\omega\in\Omega</span>.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Si verifica</th>
+<th><span class="math inline">\iff</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">A</span></td>
+<td><span class="math inline">\omega\in A</span></td>
+</tr>
+<tr>
+<td>non <span class="math inline">A</span> (<span class="math inline">\bar A</span>, complementare)</td>
+<td><span class="math inline">\omega\notin A</span></td>
+</tr>
+<tr>
+<td><span class="math inline">A</span> o <span class="math inline">B</span></td>
+<td><span class="math inline">\omega\in A\cup B</span></td>
+</tr>
+<tr>
+<td><span class="math inline">A</span> e <span class="math inline">B</span></td>
+<td><span class="math inline">\omega\in A\cap B</span></td>
+</tr>
+</tbody>
+</table></div>
+<p>Eventi particolari: <strong>certo</strong> <span class="math inline">A=\Omega</span> (si verifica sempre); <strong>impossibile</strong> <span class="math inline">A=\varnothing</span> (mai); <strong>elementare</strong> <span class="math inline">A=\{\omega\}</span> (un solo risultato); <strong>mutuamente esclusivi</strong> <span class="math inline">A\cap B=\varnothing</span> (non possono verificarsi insieme).</p>
+<p><em>Esempio 1.4 (dado, prova <span class="math inline">\omega=4</span>):</em> <span class="math inline">A=\{\text{pari}\}</span> si verifica; <span class="math inline">B=\{\ge 3\}</span> si verifica; <span class="math inline">C=\{&lt;2\}</span> non si verifica; «<span class="math inline">A</span> e <span class="math inline">B</span>» si verifica; «<span class="math inline">A</span> o <span class="math inline">C</span>» si verifica; «<span class="math inline">A</span> e <span class="math inline">C</span>» no.</p>
+<h3 id="spazio-degli-eventi-e-probabilita">Spazio degli eventi e probabilità</h3>
+<ul>
+<li><strong>Spazio degli eventi</strong> <span class="math inline">S</span>: collezione di eventi che contiene tutti quelli di interesse (in molti casi, tutti i sottoinsiemi, compresi <span class="math inline">\Omega</span> e <span class="math inline">\varnothing</span>).</li>
+<li><strong>Probabilità:</strong> legge <span class="math inline">P: A\in S \mapsto P(A)\in[0,1]</span>, misura del «grado di incertezza» sul verificarsi di <span class="math inline">A</span>. Deve soddisfare gli <strong>assiomi di Kolmogorov</strong>:
+<ul>
+<li>I. <span class="math inline">P(A)\ge 0</span> (non negatività);</li>
+<li>II. <span class="math inline">P(\Omega)=1</span> (normalizzazione);</li>
+<li>III. per eventi mutuamente esclusivi <span class="math inline">\{A_n\}_{n=1}^{\infty}</span> (<span class="math inline">A_i\cap A_j=\varnothing</span>, <span class="math inline">\forall i\ne j</span>): <span class="math inline">P\big(\bigcup_n A_n\big)=\sum_n P(A_n)</span> (numerabile additività).</li>
+</ul>
+</li>
+<li>La tripla <span class="math inline">(\Omega, S, P)</span> è lo <strong>spazio di probabilità</strong>.</li>
+</ul>
+<h3 id="proprieta-elementari">Proprietà elementari</h3>
+<p>Dimostrabili dagli assiomi:</p>
+<ol>
+<li><span class="math inline">P(\varnothing)=0</span>;</li>
+<li><span class="math inline">A\cap B=\varnothing \Rightarrow P(A\cup B)=P(A)+P(B)</span> (finita additività);</li>
+<li><span class="math inline">P(\bar A)=1-P(A)</span>;</li>
+<li><span class="math inline">P(A\cup B)=P(A)+P(B)-P(A\cap B)</span>;</li>
+<li><span class="math inline">P(A\cup B)\le P(A)+P(B)</span> (disuguaglianza di Boole);</li>
+<li><span class="math inline">B\subseteq A\Rightarrow P(B)\le P(A)</span>;</li>
+<li><span class="math inline">P(B)\le 1</span>.</li>
+</ol>
+<h3 id="probabilita-condizionale">Probabilità condizionale</h3>
+<p>Dati <span class="math inline">A</span>, <span class="math inline">B</span> con <span class="math inline">P(B)\ne 0</span>:</p>
+<div class="math block">P(A\mid B)\triangleq\frac{P(AB)}{P(B)}\qquad\text{«probabilità di }A\text{ dato }B\text{»}</div><ul>
+<li>È un «raffinamento» di <span class="math inline">P(A)</span>: tiene conto dell'informazione che <span class="math inline">B</span> si è verificato. <em>Esempio 2.2:</em> <span class="math inline">A=\{\text{piove}\}</span>, <span class="math inline">B=\{\text{estate}\}\Rightarrow P(A\mid B)&lt;P(A)</span>; con <span class="math inline">B=\{\text{inverno}\}\Rightarrow P(A\mid B)&gt;P(A)</span>.</li>
+<li><span class="math inline">P(A\mid B)&gt;P(A)</span>: <span class="math inline">A</span> è «attratto» da <span class="math inline">B</span>; <span class="math inline">&lt;</span>: «respinto»; <span class="math inline">=</span>: «indifferente» (indipendenza).</li>
+<li><strong>Dipende dall'ordine:</strong> <span class="math inline">P(A\mid B)=P(AB)/P(B)\ne P(B\mid A)=P(BA)/P(A)</span> in generale (denominatori diversi). Es.: <span class="math inline">B\subseteq A</span> (B implica A) <span class="math inline">\Rightarrow P(A\mid B)=1</span> e <span class="math inline">P(B\mid A)\ge P(B)</span>.</li>
+<li>Fissato <span class="math inline">B\subseteq\Omega</span>, <span class="math inline">P(\cdot\mid B)</span> si interpreta come (1) una nuova legge di probabilità sullo stesso <span class="math inline">\Omega</span>, o (2) una legge sul nuovo spazio campione <span class="math inline">\Omega_B=B</span> (restrizione della legge originale a <span class="math inline">B</span>): in entrambi i casi gli assiomi di Kolmogorov sono soddisfatti.</li>
+</ul>
+<h3 id="legge-della-probabilita-composta">Legge della probabilità composta</h3>
+<div class="math block">P(AB)=P(A\mid B)\,P(B)=P(B\mid A)\,P(A)</div><p>Scompone il calcolo della probabilità congiunta in più passi. Matematicamente l'ordine è ininfluente; in pratica conviene condizionare all'evento che si verifica «prima» (logicamente o cronologicamente).</p>
+<p><em>Esempio 2.3 (due palle da una scatola con 3 bianche e 2 rosse):</em> soluzione combinatoria vs condizionale. Per due bianche: <span class="math inline">P(B_1B_2)=P(B_2\mid B_1)P(B_1)=\frac24\cdot\frac35=\frac{3}{10}</span>; combinatoria: <span class="math inline">\binom32/\binom52=3/10</span>.</p>
+<h3 id="regola-della-catena">Regola della catena</h3>
+<p><span class="math inline">P(A\mid B,C)\triangleq P(ABC)/P(BC)</span>, con <span class="math inline">P(BC)\ne0</span> (l'evento condizionante è <span class="math inline">B\cap C</span>). Applicando la probabilità composta a <span class="math inline">P(BC)</span>:</p>
+<div class="math block">P(ABC)=P(C)\,P(B\mid C)\,P(A\mid B,C)\qquad(\text{ordine logico }C\to B\to A)</div><p>Scegliendo <span class="math inline">A\to B\to C</span>: <span class="math inline">P(ABC)=P(A)P(B\mid A)P(C\mid A,B)</span>. Esistono <span class="math inline">3!=6</span> modi di scrivere <span class="math inline">P(ABC)</span>. In generale:</p>
+<div class="math block">P(A_1A_2\cdots A_n)=P(A_1)\,P(A_2\mid A_1)\,P(A_3\mid A_1,A_2)\cdots P(A_n\mid A_1,\dots,A_{n-1})</div><p>scrivibile in <span class="math inline">n!</span> modi (permutazioni degli eventi).</p>
+<h3 id="indipendenza-tra-eventi">Indipendenza tra eventi</h3>
+<ul>
+<li>La condizione di «indifferenza» <span class="math inline">P(A\mid B)=P(A)</span> si chiama <strong>indipendenza statistica</strong>: sapere che <span class="math inline">B</span> è avvenuto non dà informazione su <span class="math inline">A</span>. Implica <span class="math inline">P(B\mid A)=P(B)</span>: proprietà simmetrica.</li>
+<li><span class="math inline">A</span> e <span class="math inline">B</span> sono indipendenti se <span class="math inline">P(AB)=P(A)P(B)</span> (la congiunta si fattorizza nel prodotto delle marginali). <strong>Non confondere</strong> indipendenti con mutuamente esclusivi. <em>Esempio 2.6:</em> due lanci di moneta.</li>
+<li><strong>Tre eventi</strong> <span class="math inline">A,B,C</span> sono indipendenti se (1) vale l'indipendenza a coppie, <span class="math inline">P(AB)=P(A)P(B)</span>, <span class="math inline">P(BC)=P(B)P(C)</span>, <span class="math inline">P(AC)=P(A)P(C)</span>, <strong>e</strong> (2) <span class="math inline">P(ABC)=P(A)P(B)P(C)</span>. Non basta la sola seconda fattorizzazione. Equivale a dire che in tutte le probabilità condizionali tra tre eventi il condizionamento non opera: <span class="math inline">P(A\mid B,C)=P(A)</span>, ..., <span class="math inline">P(AB\mid C)=P(AB)</span>, ...</li>
+<li><span class="math inline">A_1,\dots,A_n</span> sono indipendenti se <span class="math inline">P\big(\bigcap_{i\in I}A_i\big)=\prod_{i\in I}P(A_i)</span> per ogni insieme <span class="math inline">I\subseteq\{1,\dots,n\}</span> di indici distinti.</li>
+</ul>
+<h3 id="teorema-della-probabilita-totale">Teorema della probabilità totale</h3>
+<img class="zoom" src="img/probabilita-p13-probabilita-totale.png" alt="" loading="lazy">
+<p>Si vuole <span class="math inline">P(B)</span> note le probabilità a priori delle cause <span class="math inline">P(A_i)</span> e le condizionali <span class="math inline">P(B\mid A_i)</span>. Con <span class="math inline">A_1,\dots,A_n</span> mutuamente esclusivi e <span class="math inline">B\subseteq\bigcup_iA_i</span>:</p>
+<div class="math block">P(B)=\sum_{i=1}^{n}P(B\mid A_i)\,P(A_i)</div><p>Le cause sono mutuamente esclusive: se si verifica l'effetto, si verifica una (e una sola) causa. Verificare logicamente <span class="math inline">B\subseteq\bigcup A_i</span> può essere complicato: più facile scegliere <span class="math inline">\bigcup A_i=\Omega</span> (partizione di <span class="math inline">\Omega</span>).</p>
+<h3 id="teorema-di-bayes">Teorema di Bayes</h3>
+<img class="zoom" src="img/probabilita-p14-bayes.png" alt="" loading="lazy">
+<p>Noto che si è verificato <span class="math inline">B</span> (effetto), si calcolano le probabilità a posteriori delle cause (<strong>inferenza bayesiana</strong>). Stesse ipotesi della probabilità totale:</p>
+<div class="math block">P(A_i\mid B)=\frac{P(B\mid A_i)P(A_i)}{\sum_{j=1}^{n}P(B\mid A_j)P(A_j)}=\frac{P(B\mid A_i)P(A_i)}{P(B)}</div><h3 id="variabile-aleatoria">Variabile aleatoria</h3>
+<p>Descrive numericamente i risultati di un esperimento aleatorio. Sia <span class="math inline">\Omega</span> lo spazio campione (discreto o continuo) con legge <span class="math inline">P(\cdot)</span>. Una <strong>variabile aleatoria (v.a.)</strong> è una funzione definita su <span class="math inline">\Omega</span> a valori in <span class="math inline">\bar{\mathbb R}=\mathbb R\cup\{-\infty,+\infty\}</span>:</p>
+<div class="math block">X:\omega\in\Omega\to X(\omega)\in\bar{\mathbb R}</div><img class="zoom" src="img/probabilita-p15-variabile-aleatoria.png" alt="" loading="lazy">
+<h3 id="cdf">CDF</h3>
+<div class="math block">F_X(x)\triangleq P(X\le x)\qquad\forall x\in\mathbb R</div><p>Proprietà:</p>
+<ol>
+<li><span class="math inline">F(+\infty)=1</span>, <span class="math inline">F(-\infty)=0</span>;</li>
+<li>monotona crescente (non strettamente): <span class="math inline">x_1&lt;x_2\Rightarrow F(x_1)\le F(x_2)</span>;</li>
+<li><span class="math inline">P(X&gt;x)=1-F(x)</span> (CDF complementare o funzione di affidabilità);</li>
+<li>continua da destra: <span class="math inline">F(x^+)=F(x)</span>;</li>
+<li><span class="math inline">P(x_1&lt;X\le x_2)=F(x_2)-F(x_1)</span>;</li>
+<li><span class="math inline">P(X=x)=F(x)-F(x^-)</span>.</li>
+</ol>
+<p><strong>Tipi di v.a.:</strong> <em>discreta</em> → CDF costante a tratti, <span class="math inline">F(x)=\sum_ip_i\,u(x-x_i)</span>; <em>continua</em> → CDF continua (quindi <span class="math inline">P(X=x)=0</span> ovunque); <em>mista</em> → CDF discontinua ma non costante a tratti.</p>
+<h3 id="pdf">pdf</h3>
+<div class="math block">f_X(x)\triangleq\frac{d}{dx}F_X(x)\qquad\forall x\in\mathbb R</div><p>Per <span class="math inline">X</span> continua la pdf non contiene impulsi; per <span class="math inline">X</span> discreta <span class="math inline">f(x)=\sum_ip_i\,\delta(x-x_i)</span> (derivata in senso generalizzato). Proprietà:</p>
+<ol>
+<li><span class="math inline">f(x)\ge0</span>;</li>
+<li><span class="math inline">F(x)=\int_{-\infty}^{x}f(y)\,dy</span>;</li>
+<li><span class="math inline">\int_{-\infty}^{+\infty}f(x)\,dx=1</span>;</li>
+<li><span class="math inline">P(x_1&lt;X\le x_2)=F(x_2)-F(x_1)=\int_{x_1}^{x_2}f(x)\,dx</span> (attenzione se la pdf ha impulsi in <span class="math inline">x_1</span> e/o <span class="math inline">x_2</span>);</li>
+<li><span class="math inline">P(x\le X\le x+\Delta x)\approx f(x)\Delta x</span>, cioè <span class="math inline">f(x)=\lim_{\Delta x\to0}\frac{P(x\le X\le x+\Delta x)}{\Delta x}</span>.</li>
+</ol>
+<h3 id="df-pmf">DF (pmf)</h3>
+<div class="math block">p_X(x)\triangleq P(X=x)\qquad\forall x\in\mathbb R</div><p>Utile solo per v.a. discrete (è nulla fuori dagli <span class="math inline">x_i</span>); detta anche funzione «massa» di probabilità. Proprietà: <span class="math inline">p(x)\ge0</span>; <span class="math inline">F(x)=\sum_{u\le x}p(u)</span>; <span class="math inline">\sum_up(u)=1</span>; <span class="math inline">P(x_1&lt;X\le x_2)=\sum_{x_1&lt;u\le x_2}p(u)</span>.</p>
+<h3 id="variabili-aleatorie-notevoli">Variabili aleatorie notevoli</h3>
+<p><strong>Bernoulli</strong> <span class="math inline">X\sim\text{Bern}(p)</span> (discreta, valori <span class="math inline">\{0,1\}</span>; simile all'indicatrice di un evento). <span class="math inline">X=1</span> con probabilità <span class="math inline">p</span> («successo»), <span class="math inline">X=0</span> con <span class="math inline">q=1-p</span> («insuccesso»), <span class="math inline">p+q=1</span>:</p>
+<div class="math block">p(x)=\begin{cases}q&amp;x=0\\p&amp;x=1\end{cases}\qquad F(x)=q\,u(x)+p\,u(x-1)\qquad f(x)=q\,\delta(x)+p\,\delta(x-1)</div><img class="zoom" src="img/probabilita-p20-bernoulli.png" alt="" loading="lazy">
+<p><strong>Binomiale</strong> <span class="math inline">X\sim B(n,p)</span> (discreta): conteggio del numero di «successi» su <span class="math inline">n</span> prove ripetute, valori <span class="math inline">\{0,\dots,n\}</span>:</p>
+<div class="math block">p(k)=P(X=k)=\binom nk p^kq^{n-k},\quad k\in\{0,\dots,n\},\ p+q=1</div><p>CDF e pdf: <span class="math inline">F(x)=\sum_{k}p(k)\,u(x-k)</span>, <span class="math inline">f(x)=\sum_kp(k)\,\delta(x-k)</span>. Normalizzazione dalla potenza di un binomio: <span class="math inline">1=(p+q)^n=\sum_{k=0}^n\binom nk p^kq^{n-k}</span>. La Bernoulli è il caso <span class="math inline">n=1</span>.</p>
+<p><strong>Uniforme</strong> <span class="math inline">X\sim U(a,b)</span> (continua), fenomeno in un intervallo limitato senza preferenza per i valori:</p>
+<div class="math block">f(x)=\begin{cases}\frac1{b-a}&amp;x\in(a,b)\\0&amp;\text{altrimenti}\end{cases}\qquad F(x)=\begin{cases}0&amp;x&lt;a\\\frac{x-a}{b-a}&amp;a\le x&lt;b\\1&amp;x\ge b\end{cases}</div><p>Esempio: un bus arriva a caso tra le 10:00 e le 10:15 <span class="math inline">\Rightarrow X\sim U(0,900)</span> s.</p>
+<img class="zoom" src="img/probabilita-p22-uniforme.png" alt="" loading="lazy">
+<p><strong>Gaussiana (normale)</strong> <span class="math inline">X\sim N(\mu,\sigma)</span> (continua), curva a campana:</p>
+<div class="math block">f(x)=\frac1{\sigma\sqrt{2\pi}}\,e^{-\frac{(x-\mu)^2}{2\sigma^2}}</div><p><span class="math inline">\mu\in\mathbb R</span> è il «baricentro», <span class="math inline">\sigma&gt;0</span> la «larghezza». Per la normalizzazione si usa <span class="math inline">\int_{-\infty}^{+\infty}e^{-x^2}dx=\sqrt\pi</span>. Descrive fenomeni che sono somma di molti contributi indipendenti (<strong>teorema centrale del limite, CLT</strong>).</p>
+<img class="zoom" src="img/probabilita-p23-gaussiana.png" alt="" loading="lazy">
+<p><strong>CDF della gaussiana</strong> — non in forma chiusa:</p>
+<div class="math block">F(x)=\frac1{\sqrt{2\pi}\sigma}\int_{-\infty}^{x}e^{-(t-\mu)^2/(2\sigma^2)}dt</div><div class="math block">\text{erf}(x)\triangleq\frac2{\sqrt\pi}\int_0^xe^{-t^2}dt,\qquad\text{erfc}(x)\triangleq\frac2{\sqrt\pi}\int_x^{+\infty}e^{-t^2}dt=1-\text{erf}(x)</div><div class="math block">F(x)=1-\tfrac12\,\text{erfc}\Big(\frac{x-\mu}{\sqrt2\,\sigma}\Big)=\tfrac12\Big[1+\text{erf}\Big(\frac{x-\mu}{\sqrt2\,\sigma}\Big)\Big]</div><p>Da cui:</p>
+<div class="math block">
+\begin{aligned}
+P(X&lt;x)&amp;=\tfrac12\Big[1+\text{erf}\Big(\tfrac{x-\mu}{\sqrt2\sigma}\Big)\Big]=\tfrac12\,\text{erfc}\Big(\tfrac{\mu-x}{\sqrt2\sigma}\Big)\\
+P(X&gt;x)&amp;=\tfrac12\,\text{erfc}\Big(\tfrac{x-\mu}{\sqrt2\sigma}\Big)\\
+P(\lvert X\rvert&lt;x)&amp;=\tfrac12\Big[\text{erf}\Big(\tfrac{x-\mu}{\sqrt2\sigma}\Big)+\text{erf}\Big(\tfrac{x+\mu}{\sqrt2\sigma}\Big)\Big]\\
+P(\lvert X\rvert&gt;x)&amp;=\tfrac12\Big[\text{erfc}\Big(\tfrac{x-\mu}{\sqrt2\sigma}\Big)+\text{erfc}\Big(\tfrac{x+\mu}{\sqrt2\sigma}\Big)\Big]
+\end{aligned}
+</div><p><strong>Q-function:</strong> <span class="math inline">Q(x)\triangleq\frac1{\sqrt{2\pi}}\int_x^{+\infty}e^{-t^2/2}dt\equiv\frac12\,\text{erfc}\big(\frac{x}{\sqrt2}\big)</span>.</p>
+<p>In Matlab: <code>erf</code>, <code>erfc</code>, <code>qfunc</code>. Esempio: CDF di <span class="math inline">N(0,1)</span> con <code>x = -3:0.1:3; y = (1/2)*(1+erf(x/sqrt(2))); plot(x,y)</code>.</p>
+<h3 id="funzione-di-una-v-a">Funzione di una v.a.</h3>
+<p><span class="math inline">Y=g(X)</span> è a sua volta una v.a.; la sua CDF segue dalla definizione, <span class="math inline">F_Y(y)=P(\omega: g(X(\omega))\le y)</span>. Se <span class="math inline">y=g(x)</span> ha un numero finito di soluzioni <span class="math inline">x_i</span> con <span class="math inline">g&#x27;(x_i)\ne0</span>:</p>
+<div class="math block">f_Y(y)=\sum_i\frac{f_X(x_i)}{\lvert g&#x27;(x_i)\rvert}</div><p><em>Esempio:</em> <span class="math inline">X\sim N(0,1)</span>, <span class="math inline">Y=aX+b</span>: <span class="math inline">g&#x27;(x)=a</span>, unica soluzione <span class="math inline">x_1=(y-b)/a</span>, quindi</p>
+<div class="math block">f_Y(y)=\frac{f_X\big(\frac{y-b}{a}\big)}{\lvert a\rvert}=\frac1{\sqrt{2\pi a^2}}\,e^{-\frac{(y-b)^2}{2a^2}}</div><p>La trasformazione affine di una gaussiana è ancora gaussiana.</p>
+<h3 id="media-e-momenti">Media e momenti</h3>
+<div class="math block">E(X)\triangleq\int_{-\infty}^{+\infty}x\,f(x)\,dx,\qquad\mu_n\triangleq E(X^n)=\int_{-\infty}^{+\infty}x^nf(x)\,dx</div><p>Per una gaussiana si prova che <span class="math inline">\mu=E(X)</span>. <strong>Teorema fondamentale della media:</strong> per <span class="math inline">Y=g(X)</span></p>
+<div class="math block">E(Y)=E[g(X)]=\int_{-\infty}^{+\infty}g(x)f(x)\,dx</div><p>Per v.a. discrete: <span class="math inline">E(X)=\sum_ip(x_i)x_i</span>, <span class="math inline">E[g(X)]=\sum_ip(x_i)g(x_i)</span>.</p>
+<h3 id="varianza">Varianza</h3>
+<p>Dal teorema fondamentale con <span class="math inline">g(X)=(X-E(X))^2</span>:</p>
+<div class="math block">\text{Var}(X)\triangleq E[(X-E(X))^2]=\sigma_X^2,\qquad\sigma_X\triangleq\sqrt{\text{Var}(X)}\ (\text{deviazione standard})</div><p>Per una gaussiana <span class="math inline">\sigma^2=\text{Var}(X)</span>. Relazione fondamentale (espandendo il quadrato e usando la linearità): <span class="math inline">\text{Var}(X)=E(X^2)-E^2(X)</span>, con <span class="math inline">E(X^2)=\int x^2f(x)\,dx</span> il <strong>valor quadratico medio</strong>.</p>
+<h3 id="proprieta-di-media-e-varianza">Proprietà di media e varianza</h3>
+<p>Media: (1) <em>linearità</em> <span class="math inline">E[a\,g(X)+b\,h(X)]=a\,E[g(X)]+b\,E[h(X)]</span>, in particolare <span class="math inline">E(aX+b)=aE(X)+b</span>; (2) <span class="math inline">g\ge0\Rightarrow E[g(X)]\ge0</span>; (3) <span class="math inline">g_1\ge g_2\Rightarrow E[g_1]\ge E[g_2]</span>; (4) <span class="math inline">a\le g\le b\Rightarrow a\le E[g(X)]\le b</span>.</p>
+<p>Varianza: <span class="math inline">\text{Var}(aX+b)=a^2\text{Var}(X)</span> (non dipende da <span class="math inline">b</span>: invarianza per traslazione), <span class="math inline">\sigma_Y=\lvert a\rvert\sigma_X</span>. <strong>V.a. centrata</strong> <span class="math inline">Y=X-\mu_X</span>: <span class="math inline">E(Y)=0</span>, <span class="math inline">\text{Var}(Y)=\text{Var}(X)</span>.</p>
+<h3 id="coppie-di-v-a">Coppie di v.a.</h3>
+<img class="zoom" src="img/probabilita-p31-coppia-va.png" alt="" loading="lazy">
+<p>Una coppia di v.a. sono due funzioni su <span class="math inline">\Omega</span>: <span class="math inline">\omega\mapsto(X(\omega),Y(\omega))\in\mathbb R\times\mathbb R</span>. Studiare <span class="math inline">X</span> e <span class="math inline">Y</span> separatamente (CDF <span class="math inline">F_X</span>, <span class="math inline">F_Y</span>) non dice nulla sulla loro relazione. Si definiscono:</p>
+<div class="math block">F_{XY}(x,y)\triangleq P(X\le x,Y\le y),\qquad f_{XY}(x,y)\triangleq\frac{\partial^2}{\partial x\,\partial y}F_{XY}(x,y)</div><p>Proprietà:</p>
+<ol>
+<li><span class="math inline">F_X(x)=F_{XY}(x,+\infty)</span> e 2. <span class="math inline">F_Y(y)=F_{XY}(+\infty,y)</span> (CDF marginali);</li>
+<li><span class="math inline">f_X(x)=\int f_{XY}(x,y)\,dy</span> e 4. <span class="math inline">f_Y(y)=\int f_{XY}(x,y)\,dx</span> (pdf marginali);</li>
+<li><span class="math inline">\iint f_{XY}\,dx\,dy=1</span>;</li>
+<li><span class="math inline">P((X,Y)\in A)=\iint_Af_{XY}\,dx\,dy</span>;</li>
+<li><span class="math inline">F_{XY}(x,y)=\int_{-\infty}^x\int_{-\infty}^yf_{XY}(u,v)\,du\,dv</span>.</li>
+</ol>
+<p>Proprietà della CDF congiunta: <span class="math inline">F(-\infty,y)=F(x,-\infty)=0</span>, <span class="math inline">F(+\infty,+\infty)=1</span>; <span class="math inline">P(x_1&lt;X\le x_2,Y\le y)=F(x_2,y)-F(x_1,y)</span> (analoga in <span class="math inline">Y</span>); e</p>
+<div class="math block">P(x_1&lt;X\le x_2,\ y_1&lt;Y\le y_2)=F(x_2,y_2)-F(x_1,y_2)-F(x_2,y_1)+F(x_1,y_1)</div><p>(regola mnemonica: <span class="math inline">+</span> per coppie «concordi», <span class="math inline">-</span> per discordi).</p>
+<h3 id="distribuzioni-condizionali-e-indipendenza">Distribuzioni condizionali e indipendenza</h3>
+<p>Come cambia la pdf marginale di <span class="math inline">Y</span> fissando <span class="math inline">\{X=x\}</span> (es.: il peso di una persona data la sua altezza):</p>
+<div class="math block">f_X(x\mid y)\triangleq\frac{f_{XY}(x,y)}{f_Y(y)},\qquad f_Y(y\mid x)\triangleq\frac{f_{XY}(x,y)}{f_X(x)},\qquad\int f_X(x\mid y)\,dx=\int f_Y(y\mid x)\,dy=1</div><p><span class="math inline">X</span> e <span class="math inline">Y</span> sono <strong>statisticamente indipendenti</strong> se <span class="math inline">f_{XY}(x,y)=f_X(x)f_Y(y)</span> (equivalente in termini di CDF congiunta o DF congiunta per v.a. discrete). Allora <span class="math inline">f_X(x\mid y)=f_X(x)</span> e <span class="math inline">f_Y(y\mid x)=f_Y(y)</span>: la condizionale coincide con la marginale.</p>
+<h3 id="caratterizzazione-sintetica-di-una-coppia">Caratterizzazione sintetica di una coppia</h3>
+<p><strong>Teorema fondamentale della media:</strong> per <span class="math inline">Z=g(X,Y)</span></p>
+<div class="math block">E(Z)=\iint g(x,y)f_{XY}(x,y)\,dx\,dy\qquad\Big(\text{discrete: }\sum_{i,j}g(x_i,y_j)\,p_{XY}(x_i,y_j)\Big)</div><p><em>Linearità:</em> <span class="math inline">E[a_1g_1+a_2g_2]=a_1E[g_1]+a_2E[g_2]</span>; in particolare <span class="math inline">E(a_1X+a_2Y)=a_1E(X)+a_2E(Y)</span>.</p>
+<div class="math block">
+\begin{aligned}
+\text{Corr}(X,Y)&amp;\triangleq E(XY)=\iint xy\,f_{XY}\,dx\,dy&amp;&amp;\text{correlazione}\\
+\text{Cov}(X,Y)&amp;\triangleq E[(X-\mu_X)(Y-\mu_Y)]&amp;&amp;\text{covarianza}\\
+\rho_{XY}&amp;\triangleq\frac{\text{Cov}(X,Y)}{\sigma_X\sigma_Y}&amp;&amp;\text{coefficiente di correlazione}
+\end{aligned}
+</div><p>Correlazione e covarianza possono avere segno qualsiasi. Con <span class="math inline">X=Y</span>: <span class="math inline">\text{Corr}(X,X)=E(X^2)</span> (valor quadratico medio), <span class="math inline">\text{Cov}(X,X)=\text{Var}(X)</span>.</p>
+<p>Proprietà:</p>
+<ol>
+<li><span class="math inline">\text{Cov}(X,Y)=E(XY)-E(X)E(Y)</span> (relazione fondamentale);</li>
+<li><span class="math inline">E[(X+Y)^2]=E(X^2)+E(Y^2)+2E(XY)</span>; se <span class="math inline">X,Y</span> <strong>ortogonali</strong> (<span class="math inline">E(XY)=0</span>): <span class="math inline">E[(X+Y)^2]=E(X^2)+E(Y^2)</span>;</li>
+<li><span class="math inline">\text{Var}(X+Y)=\text{Var}(X)+\text{Var}(Y)+2\text{Cov}(X,Y)</span>; se <strong>incorrelate</strong> (<span class="math inline">\text{Cov}=0</span>): <span class="math inline">\text{Var}(X+Y)=\text{Var}(X)+\text{Var}(Y)</span>. Per <span class="math inline">n</span> v.a.: <span class="math inline">\text{Var}\big(\sum_ic_iX_i\big)=\sum_ic_i^2\text{Var}(X_i)+\sum_i\sum_{j\ne i}c_ic_j\text{Cov}(X_i,X_j)</span>;</li>
+<li><span class="math inline">\lvert E(XY)\rvert\le\sqrt{E(X^2)}\sqrt{E(Y^2)}</span> (Schwarz), con uguaglianza se e solo se <span class="math inline">Y=a^\ast X</span> in media quadratica;</li>
+<li><span class="math inline">\lvert\text{Cov}(X,Y)\rvert\le\sigma_X\sigma_Y</span> (Schwarz), con uguaglianza se e solo se <span class="math inline">Y=a^\ast X+b^\ast</span> in media quadratica;</li>
+<li><span class="math inline">\lvert\rho_{XY}\rvert\le1</span>.</li>
+</ol>
+
+</section>
+<section id="approfondimenti"><h2 class="ps">Spiegazioni e dimostrazioni passo-passo</h2>
+<p class="nota">Apri una voce per leggere la spiegazione in parole semplici e le dimostrazioni svolte riga per riga (🧩 = passaggio ricostruito da me).</p>
+<details class="conc"><summary><span class="n">Spazio di probabilità e assiomi di Kolmogorov</span></summary><div class="cb"><h4 id="spazio-di-probabilita-spiegazione">Spiegazione</h4>
+<h4 id="spazio-di-probabilita-terminologia-sugli-eventi">Terminologia sugli eventi</h4>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Linguaggio</th>
+<th>Insiemi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>si verifica <span class="math inline">A</span></td>
+<td><span class="math inline">\omega \in A</span></td>
+</tr>
+<tr>
+<td>non si verifica <span class="math inline">A</span></td>
+<td><span class="math inline">\omega \notin A \iff \omega \in \bar A</span></td>
+</tr>
+<tr>
+<td>si verifica <span class="math inline">A</span> <strong>o</strong> <span class="math inline">B</span></td>
+<td><span class="math inline">\omega \in A \cup B</span></td>
+</tr>
+<tr>
+<td>si verifica <span class="math inline">A</span> <strong>e</strong> <span class="math inline">B</span></td>
+<td><span class="math inline">\omega \in A \cap B</span> (si scrive anche <span class="math inline">AB</span>)</td>
+</tr>
+<tr>
+<td>evento certo</td>
+<td><span class="math inline">A = \Omega</span></td>
+</tr>
+<tr>
+<td>evento impossibile</td>
+<td><span class="math inline">A = \emptyset</span></td>
+</tr>
+<tr>
+<td>evento elementare</td>
+<td><span class="math inline">A = \{\omega\}</span></td>
+</tr>
+<tr>
+<td>mutuamente esclusivi</td>
+<td><span class="math inline">A \cap B = \emptyset</span></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Esempio 1.4</strong>: dado, risultato <span class="math inline">\omega = 4</span>. Svolto in calcolo probabilita eventi.</p>
+<h4 id="spazio-di-probabilita-interpretazione">Interpretazione</h4>
+<p>La probabilità è una <em>funzione d'insieme</em>: prende eventi, non numeri. Gli assiomi sono il minimo indispensabile. Tutto il resto (proprietà 1–7, probabilita condizionale, probabilita totale e bayes) ne discende.</p>
+<h4 id="spazio-di-probabilita-perche-importa">Perché importa</h4>
+<p>È la base formale per descrivere la natura statistica della comunicazione. La probabilità d'errore di un sistema digitale sarà la probabilità di un evento del tipo {simbolo deciso ≠ simbolo trasmesso}.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><blockquote class="co mia"><p>🧩 Derivazione mia: la slide dice che le proprietà «si possono dimostrare» dagli assiomi ma non mostra i passaggi.</p>
+</blockquote>
+<details class="der"><summary>Derivazione — Proprietà 1: <span class="math inline">P(\emptyset)=0</span></summary>
+<p><strong>Si parte da:</strong> assioma III con <span class="math inline">A_1 = \Omega</span>, <span class="math inline">A_n = \emptyset</span> per <span class="math inline">n \ge 2</span> (a due a due disgiunti, perché <span class="math inline">\Omega \cap \emptyset = \emptyset</span>).
+<div class="math inline">\begin{aligned}
+P(\Omega) &amp;= P(\Omega \cup \emptyset \cup \emptyset \cup \dots) &amp;&amp; \Omega \cup \emptyset = \Omega \\
+&amp;= P(\Omega) + \sum_{n=2}^{\infty} P(\emptyset) &amp;&amp; \text{assioma III} \\
+\Rightarrow \sum_{n=2}^{\infty} P(\emptyset) &amp;= 0 &amp;&amp; \text{sottraggo } P(\Omega)=1 \text{ (finito)} \\
+\Rightarrow P(\emptyset) &amp;= 0 &amp;&amp; \text{somma di infiniti termini uguali} \ge 0 \text{ (assioma I)}
+\end{aligned}</div></p>
+</details>
+<details class="der"><summary>Derivazione — Proprietà 2 (finita additività)</summary>
+<p><strong>Si parte da:</strong> assioma III con <span class="math inline">A_1 = A</span>, <span class="math inline">A_2 = B</span>, <span class="math inline">A_n = \emptyset</span> per <span class="math inline">n \ge 3</span>.
+<div class="math inline">\begin{aligned}
+P(A \cup B) &amp;= P(A) + P(B) + \sum_{n\ge3} P(\emptyset) &amp;&amp; \text{assioma III} \\
+&amp;= P(A) + P(B) &amp;&amp; \text{proprietà 1}
+\end{aligned}</div></p>
+</details>
+<details class="der"><summary>Derivazione — Proprietà 3 (complementare)</summary>
+<div class="math block">
+\begin{aligned}
+1 = P(\Omega) &amp;= P(A \cup \bar A) &amp;&amp; \text{assioma II; } A \cup \bar A = \Omega \\
+&amp;= P(A) + P(\bar A) &amp;&amp; \text{prop. 2, perché } A \cap \bar A = \emptyset \\
+\Rightarrow P(\bar A) &amp;= 1 - P(A)
+\end{aligned}
+</div></details>
+<details class="der"><summary>Derivazione — Proprietà 4 (unione di eventi qualsiasi)</summary>
+<p><strong>Idea:</strong> scompongo in eventi disgiunti.
+<div class="math inline">\begin{aligned}
+A \cup B &amp;= A \cup (\bar A \cap B) &amp;&amp; \text{unione disgiunta} \\
+P(A \cup B) &amp;= P(A) + P(\bar A B) &amp;&amp; \text{prop. 2} \\
+B &amp;= (A \cap B) \cup (\bar A \cap B) &amp;&amp; \text{unione disgiunta} \\
+P(B) &amp;= P(AB) + P(\bar A B) \Rightarrow P(\bar A B) = P(B) - P(AB) &amp;&amp; \text{prop. 2} \\
+P(A \cup B) &amp;= P(A) + P(B) - P(AB) &amp;&amp; \text{sostituisco}
+\end{aligned}</div></p>
+</details>
+<details class="der"><summary>Derivazione — Proprietà 5 (Boole)</summary>
+<p>Dalla 4, visto che <span class="math inline">P(AB) \ge 0</span> (assioma I): <span class="math inline">P(A\cup B) = P(A)+P(B)-P(AB) \le P(A)+P(B)</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — Proprietà 6 (monotonia)</summary>
+<div class="math block">
+\begin{aligned}
+B \subseteq A \Rightarrow A &amp;= B \cup (A \cap \bar B) &amp;&amp; \text{unione disgiunta} \\
+P(A) &amp;= P(B) + P(A \bar B) &amp;&amp; \text{prop. 2} \\
+&amp;\ge P(B) &amp;&amp; P(A\bar B) \ge 0 \text{ (assioma I)}
+\end{aligned}
+</div></details>
+<details class="der"><summary>Derivazione — Proprietà 7</summary>
+<p><span class="math inline">B \subseteq \Omega</span>, quindi per la prop. 6 <span class="math inline">P(B) \le P(\Omega) = 1</span>.</p>
+<p><strong>Sanity check:</strong> tutte le proprietà danno valori in <span class="math inline">[0,1]</span>, coerenti con la definizione di <span class="math inline">P</span>.
+<strong>Ipotesi:</strong> solo gli assiomi I–III; nessuna ipotesi su <span class="math inline">\Omega</span> (discreto o continuo).</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Probabilità condizionale, probabilità composta e indipendenza</span></summary><div class="cb"><h4 id="probabilita-condizionale-spiegazione">Spiegazione</h4>
+<ul>
+<li><strong>Ordine degli eventi</strong>: matematicamente l'ordine nella probabilità composta è ininfluente, ma conviene condizionare sull'evento che si verifica <em>prima</em>, logicamente o cronologicamente. Esempio 2.3 (estrazione di due palle) → calcolo probabilita eventi.</li>
+<li><strong>Indipendenti ≠ mutuamente esclusivi</strong>.
+<blockquote class="co mia"><p>🧩 Derivazione mia: se <span class="math inline">A\cap B = \emptyset</span> con <span class="math inline">P(A),P(B)&gt;0</span>, allora <span class="math inline">P(AB) = 0 \neq P(A)P(B) &gt; 0</span>. Due eventi disgiunti a probabilità non nulla sono quindi sempre <strong>dipendenti</strong>: sapere che si è verificato <span class="math inline">A</span> esclude <span class="math inline">B</span>.</p>
+</blockquote>
+</li>
+<li>Per tre eventi indipendenti il condizionamento &quot;non opera&quot; mai: <span class="math inline">P(A|B,C)=P(A)</span>, <span class="math inline">P(AB|C) = P(AB)</span>, ecc.</li>
+<li>Esempio 2.6 (moneta lanciata due volte) → calcolo probabilita eventi.</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: la confusione tra eventi indipendenti ed eventi mutuamente esclusivi è una domanda classica.</p>
+</blockquote>
+<h4 id="probabilita-condizionale-perche-importa">Perché importa</h4>
+<p>In ricezione si ragiona sempre per condizionamento: la probabilità d'errore <em>dato</em> il simbolo trasmesso, la verosimiglianza del segnale ricevuto <em>dato</em> un'ipotesi. L'indipendenza dei simboli e del rumore rende trattabili i calcoli.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — <span class="math inline">P(\cdot|B)</span> soddisfa gli assiomi di Kolmogorov</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+\text{I: } P(A|B) &amp;= \frac{P(AB)}{P(B)} \ge 0 &amp;&amp; P(AB)\ge0,\ P(B)&gt;0 \\
+\text{II: } P(\Omega|B) &amp;= \frac{P(\Omega \cap B)}{P(B)} = \frac{P(B)}{P(B)} = 1 &amp;&amp; \Omega\cap B = B \\
+\text{III: } P\Big(\textstyle\bigcup_n A_n \Big| B\Big) &amp;= \frac{P\big(\bigcup_n (A_n \cap B)\big)}{P(B)} &amp;&amp; \text{distributività di } \cap \\
+&amp;= \sum_n \frac{P(A_n B)}{P(B)} = \sum_n P(A_n|B) &amp;&amp; A_nB \text{ disgiunti se lo sono gli } A_n
+\end{aligned}
+</div><p>Interpretazione 2: <span class="math inline">P(\cdot|B)</span> è una legge sul nuovo spazio campione <span class="math inline">\Omega_B = B</span>, cioè la restrizione della legge originale a <span class="math inline">B</span>, rinormalizzata di <span class="math inline">1/P(B)</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — Caso <span class="math inline">B \subseteq A</span></summary>
+<div class="math block">
+\begin{aligned}
+P(A|B) &amp;= \frac{P(AB)}{P(B)} = \frac{P(B)}{P(B)} = 1 &amp;&amp; B\subseteq A \Rightarrow A\cap B = B \\
+P(B|A) &amp;= \frac{P(AB)}{P(A)} = \frac{P(B)}{P(A)} \ge P(B) &amp;&amp; P(A) \le 1
+\end{aligned}
+</div><p>Da qui si vede che in generale <span class="math inline">P(A|B) \neq P(B|A)</span>: i denominatori sono diversi.</p>
+</details>
+<details class="der"><summary>Derivazione — Regola della catena per tre eventi</summary>
+<div class="math block">
+\begin{aligned}
+P(ABC) &amp;= P(A|B,C)\,P(BC) &amp;&amp; \text{definizione di } P(A|B,C) \\
+&amp;= P(A|B,C)\,P(B|C)\,P(C) &amp;&amp; \text{prob. composta su } P(BC)
+\end{aligned}
+</div><p>La successione logica è <span class="math inline">C \to B \to A</span>. Scegliendo l'ordine <span class="math inline">A\to B\to C</span> si ottiene <span class="math inline">P(ABC)=P(A)P(B|A)P(C|A,B)</span>. Le permutazioni dei 3 eventi sono <span class="math inline">3! = 6</span>, quindi ci sono 6 scritture possibili. Per <span class="math inline">n</span> eventi si procede per induzione applicando la stessa idea a <span class="math inline">P(A_1\cdots A_{n-1})</span>, e le scritture sono <span class="math inline">n!</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — L'indipendenza è simmetrica</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia
+<div class="math inline">\begin{aligned}
+P(A|B) = P(A) &amp;\Rightarrow P(AB) = P(A|B)P(B) = P(A)P(B) &amp;&amp; \text{prob. composta} \\
+&amp;\Rightarrow P(B|A) = \frac{P(AB)}{P(A)} = \frac{P(A)P(B)}{P(A)} = P(B) &amp;&amp; P(A)\neq 0
+\end{aligned}</div></p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Perché per tre eventi servono entrambe le condizioni</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia: controesempi costruiti da me, non presenti nelle slide.</p>
+</blockquote>
+<p><strong>(a) La fattorizzazione tripla non implica quella a coppie.</strong> Prendo <span class="math inline">\Omega = \{1,\dots,8\}</span> equiprobabile, <span class="math inline">A = B = \{1,2,3,4\}</span>, <span class="math inline">C = \{1,5,6,7\}</span>:
+<div class="math inline">\begin{aligned}
+P(ABC) &amp;= P(\{1\}) = 1/8 = \tfrac12\cdot\tfrac12\cdot\tfrac12 = P(A)P(B)P(C) &amp;&amp; \text{(2) vale} \\
+P(AB) &amp;= P(A) = 1/2 \neq 1/4 = P(A)P(B) &amp;&amp; \text{(1) non vale}
+\end{aligned}</div></p>
+<p><strong>(b) L'indipendenza a coppie non implica quella tripla.</strong> Lancio due monete; <span class="math inline">A</span> = {testa al 1° lancio}, <span class="math inline">B</span> = {testa al 2°}, <span class="math inline">C</span> = {i due lanci danno lo stesso risultato}. Ogni evento ha probabilità <span class="math inline">1/2</span> e ogni coppia ha intersezione di probabilità <span class="math inline">1/4</span> (es. <span class="math inline">AC</span> = {TT}), quindi (1) vale. Però <span class="math inline">ABC</span> = {TT} e <span class="math inline">P(ABC) = 1/4 \neq 1/8</span>.</p>
+<p><strong>Ipotesi:</strong> equiprobabilità dei risultati elementari in entrambi i controesempi.</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Teorema della probabilità totale e teorema di Bayes</span></summary><div class="cb"><h4 id="probabilita-totale-e-bayes-spiegazione">Spiegazione</h4>
+<img class="zoom" src="img/probabilita-p13-probabilita-totale.png" alt="" loading="lazy">
+<p>Lettura &quot;logica&quot; delle ipotesi:</p>
+<ul>
+<li>le cause sono <strong>mutuamente esclusive</strong>;</li>
+<li>se si verifica l'effetto, si è verificata <strong>una (e una sola)</strong> delle cause.</li>
+</ul>
+<p>Verificare <span class="math inline">B \subseteq \bigcup_i A_i</span> può essere complicato. Conviene scegliere gli <span class="math inline">A_i</span> come <strong>partizione</strong> di <span class="math inline">\Omega</span> (<span class="math inline">\bigcup_i A_i = \Omega</span>): la condizione vale allora per ogni <span class="math inline">B</span>.</p>
+<blockquote class="co esame"><p>🎯 Esame: saper enunciare le ipotesi, dire perché servono (senza esclusività si conterebbero due volte le intersezioni) e dare la lettura cause/effetto.</p>
+</blockquote>
+<h4 id="probabilita-totale-e-bayes-perche-importa">Perché importa</h4>
+<p>Bayes è la base della <strong>decisione</strong> in ricezione, che la fonte cita come compito del demodulatore. Le cause sono i simboli trasmessi e l'effetto è il segnale ricevuto; scegliere la causa con la massima probabilità a posteriori è l'idea del ricevitore MAP.</p>
+<blockquote class="co mia"><p>📚 Fonte esterna: il collegamento con il criterio MAP è standard (es. Madhow, <em>Fundamentals of Digital Communication</em>, cap. sulla demodulazione ottima), ma non compare ancora nelle slide ingerite. TODO: verificare quando arriverà la fonte sulla modulazione digitale.</p>
+</blockquote>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Teorema della probabilità totale</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia
+<div class="math inline">\begin{aligned}
+B &amp;= B \cap \Big(\textstyle\bigcup_i A_i\Big) &amp;&amp; B \subseteq \cup_i A_i \\
+&amp;= \textstyle\bigcup_i (B \cap A_i) &amp;&amp; \text{distributività} \\
+P(B) &amp;= \sum_i P(B A_i) &amp;&amp; BA_i \text{ disgiunti (perché } A_i \text{ lo sono); additività} \\
+&amp;= \sum_i P(B|A_i)P(A_i) &amp;&amp; \text{prob. composta, } probabilita condizionale
+\end{aligned}</div></p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Teorema di Bayes</summary>
+<div class="math block">
+\begin{aligned}
+P(A_i|B) &amp;= \frac{P(A_iB)}{P(B)} &amp;&amp; \text{def. condizionale} \\
+&amp;= \frac{P(B|A_i)P(A_i)}{P(B)} &amp;&amp; \text{prob. composta al numeratore} \\
+&amp;= \frac{P(B|A_i)P(A_i)}{\sum_j P(B|A_j)P(A_j)} &amp;&amp; \text{prob. totale al denominatore}
+\end{aligned}
+</div><p><strong>Sanity check:</strong> <span class="math inline">\sum_i P(A_i|B) = 1</span>, perché il numeratore sommato su <span class="math inline">i</span> dà proprio il denominatore.
+<strong>Ipotesi:</strong> <span class="math inline">P(B) \neq 0</span>; cause mutuamente esclusive; ogni effetto ha almeno una causa.</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Variabile aleatoria: CDF, pdf, DF</span></summary><div class="cb"><h4 id="variabile-aleatoria-spiegazione">Spiegazione</h4>
+<h4 id="variabile-aleatoria-tipi-di-v-a-e-valore-di-p-x-x">Tipi di v.a. e valore di <span class="math inline">P(X=x)</span></h4>
+<blockquote class="co mia"><p>📄 Fonte: («Discussione del valore assunto da <span class="math inline">P(X=x)</span> nei tre casi», lasciata alla lezione)</p>
+</blockquote>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>CDF</th>
+<th>pdf</th>
+<th><span class="math inline">P(X=x)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Discreta</strong></td>
+<td>costante a tratti: <span class="math inline">F(x) = \sum_i p_i\,u(x-x_i)</span></td>
+<td><span class="math inline">f(x) = \sum_i p_i\,\delta(x-x_i)</span></td>
+<td><span class="math inline">p_i</span> se <span class="math inline">x=x_i</span>, 0 altrove</td>
+</tr>
+<tr>
+<td><strong>Continua</strong></td>
+<td>continua</td>
+<td>senza impulsi</td>
+<td><span class="math inline">0</span> per ogni <span class="math inline">x</span></td>
+</tr>
+<tr>
+<td><strong>Mista</strong></td>
+<td>discontinua ma non costante a tratti</td>
+<td>parte continua + impulsi</td>
+<td><span class="math inline">\neq 0</span> solo nei punti di salto</td>
+</tr>
+</tbody>
+</table></div>
+<p>Simboli: <span class="math inline">u(\cdot)</span> = gradino unitario, <span class="math inline">\delta(\cdot)</span> = impulso di Dirac, <span class="math inline">p_i = P(X=x_i)</span>.</p>
+<blockquote class="co mia"><p>🧩 Derivazione mia (la colonna <span class="math inline">P(X=x)</span>): discende direttamente dalla prop. 6. Se <span class="math inline">F</span> è continua in <span class="math inline">x</span> il salto è nullo. Per una v.a. continua anche l'evento &quot;<span class="math inline">X</span> vale esattamente <span class="math inline">x</span>&quot; ha probabilità zero, pur non essendo impossibile.</p>
+</blockquote>
+<p>La DF &quot;ha senso solo per v.a. discrete&quot; e va calcolata solo nei punti <span class="math inline">x=x_i</span>, altrove è nulla.</p>
+<h4 id="variabile-aleatoria-esempio-di-v-a-mista">Esempio di v.a. mista</h4>
+<blockquote class="co mia"><p>🧩 Derivazione mia (esempio non nelle slide): l'uscita di un quantizzatore con saturazione applicata a un ingresso gaussiano. È discreta; se invece si satura <em>senza</em> quantizzare, <span class="math inline">Y = \min(X, X_{max})</span> ha una parte continua più un impulso di area <span class="math inline">P(X\ge X_{max})</span> in <span class="math inline">X_{max}</span>, quindi è mista.</p>
+</blockquote>
+<h4 id="variabile-aleatoria-perche-importa">Perché importa</h4>
+<p>Campioni di segnale, rumore ed errore di quantizzazione sono tutti modellati come v.a. Il modello <span class="math inline">e(n)\sim\mathcal{U}(-\Delta/2,\Delta/2)</span> è una pdf (snr di quantizzazione); la probabilità di sovraccarico è una CDF complementare (quantizzazione uniforme).</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><blockquote class="co mia"><p>🧩 Derivazione mia: le slide elencano le proprietà senza dimostrarle.</p>
+</blockquote>
+<details class="der"><summary>Derivazione — Proprietà 5 della CDF</summary>
+<div class="math block">
+\begin{aligned}
+\{X\le x_2\} &amp;= \{X\le x_1\} \cup \{x_1 &lt; X \le x_2\} &amp;&amp; x_1&lt;x_2,\ \text{unione disgiunta} \\
+F(x_2) &amp;= F(x_1) + P(x_1&lt;X\le x_2) &amp;&amp; \text{additività} \\
+\Rightarrow P(x_1&lt;X\le x_2) &amp;= F(x_2) - F(x_1)
+\end{aligned}
+</div><p>La proprietà 2 segue subito: <span class="math inline">F(x_2)-F(x_1)</span> è una probabilità, quindi <span class="math inline">\ge 0</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — Proprietà 3 della CDF</summary>
+<p><span class="math inline">\{X&gt;x\}</span> è il complementare di <span class="math inline">\{X\le x\}</span>, quindi <span class="math inline">P(X&gt;x) = 1 - P(X\le x) = 1 - F(x)</span> (proprietà 3 di spazio di probabilita).</p>
+</details>
+<details class="der"><summary>Derivazione — Proprietà 6 della CDF</summary>
+<div class="math block">
+\begin{aligned}
+P(X = x) &amp;= \lim_{\varepsilon\to0^+} P(x-\varepsilon &lt; X \le x) &amp;&amp; \{X=x\} = \textstyle\bigcap_\varepsilon \{x-\varepsilon&lt;X\le x\} \\
+&amp;= \lim_{\varepsilon\to0^+} [F(x) - F(x-\varepsilon)] &amp;&amp; \text{prop. 5} \\
+&amp;= F(x) - F(x^-)
+\end{aligned}
+</div><p>Quindi <span class="math inline">P(X=x)</span> è l'<strong>ampiezza del salto</strong> della CDF in <span class="math inline">x</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — Proprietà 5 della pdf</summary>
+<div class="math block">
+\begin{aligned}
+P(x &lt; X\le x+\Delta x) &amp;= F(x+\Delta x) - F(x) &amp;&amp; \text{prop. 5 CDF} \\
+&amp;= F&#x27;(x)\,\Delta x + o(\Delta x) &amp;&amp; \text{Taylor al 1° ordine} \\
+&amp;\approx f(x)\,\Delta x &amp;&amp; f = F&#x27;
+\end{aligned}
+</div><p><strong>Ipotesi:</strong> <span class="math inline">F</span> derivabile in <span class="math inline">x</span>, cioè nessun impulso della pdf in <span class="math inline">x</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — Proprietà 3 della pdf</summary>
+<p>Dalla 2 e da <span class="math inline">F(+\infty)=1</span>: <span class="math inline">\int_{-\infty}^{+\infty}f = F(+\infty) = 1</span>.</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Variabili aleatorie notevoli: Bernoulli, Binomiale, Uniforme (e Laplace)</span></summary><div class="cb"><h4 id="variabili-aleatorie-notevoli-spiegazione">Spiegazione</h4>
+<img class="zoom" src="img/probabilita-p22-uniforme.png" alt="" loading="lazy">
+<ul>
+<li><strong>Esempio uniforme</strong>: un bus arriva a caso tra le 10:00 e le 10:15, quindi <span class="math inline">X\sim\mathcal{U}(0,900)</span> s (15 min × 60 s/min = 900 s). Per esempio <span class="math inline">P(X\le 300\,\text{s}) = 300/900 = 1/3</span> (🧩 mio).</li>
+<li>La Bernoulli è simile alla v.a. <strong>indicatrice</strong> di un evento <span class="math inline">A</span>: vale 1 se <span class="math inline">\omega\in A</span>, 0 altrimenti, con <span class="math inline">p = P(A)</span>.</li>
+<li><strong>Laplace e voce</strong>: i valori vicini allo zero sono i più probabili, e per questo la quantizzazione uniforme non è ottima per la voce → quantizzazione non uniforme.</li>
+</ul>
+<h4 id="variabili-aleatorie-notevoli-perche-importa">Perché importa</h4>
+<ul>
+<li>Bernoulli/Binomiale: il numero di bit errati in un blocco di <span class="math inline">n</span> bit, con errori indipendenti di probabilità <span class="math inline">p</span>, è Binomiale.
+<blockquote class="co mia"><p>🧩 Derivazione mia: applicazione naturale, non nelle slide.</p>
+</blockquote>
+</li>
+<li>Uniforme: è il modello dell'errore di quantizzazione (snr di quantizzazione).</li>
+<li>Laplace: è il modello delle ampiezze della voce (companding).</li>
+</ul>
+<h4 class="sub">Dimostrazioni passo-passo</h4><p>Le CDF e pdf di Bernoulli e Binomiale sono esercizi lasciati al lettore nelle slide («Calcolare CDF e pdf»). Svolgimento completo in cdf pdf variabili notevoli; qui i risultati:</p>
+<div class="math block">
+\begin{aligned}
+\text{Bern:}\quad F(x) &amp;= q\,u(x) + p\,u(x-1), &amp; f(x) &amp;= q\,\delta(x) + p\,\delta(x-1) \\
+\text{Bin:}\quad F(x) &amp;= \sum_{k=0}^n \tbinom{n}{k}p^kq^{n-k}\,u(x-k), &amp; f(x) &amp;= \sum_{k=0}^n \tbinom{n}{k}p^kq^{n-k}\,\delta(x-k)
+\end{aligned}
+</div><details class="der"><summary>Derivazione — Normalizzazione della Binomiale</summary>
+<div class="math block">
+\begin{aligned}
+\sum_{k=0}^n p(k) &amp;= \sum_{k=0}^n \tbinom{n}{k}p^kq^{n-k} &amp;&amp; \text{DF binomiale} \\
+&amp;= (p+q)^n &amp;&amp; \text{sviluppo di Newton del binomio} \\
+&amp;= 1^n = 1 &amp;&amp; p+q=1
+\end{aligned}
+</div></details>
+<details class="der"><summary>Derivazione — Da dove viene la DF binomiale</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia (la slide dà la formula senza giustificarla)</p>
+</blockquote>
+<p>Faccio <span class="math inline">n</span> prove di Bernoulli <strong>indipendenti</strong>, ognuna con successo di probabilità <span class="math inline">p</span>. Una sequenza <em>specifica</em> con <span class="math inline">k</span> successi e <span class="math inline">n-k</span> insuccessi ha probabilità <span class="math inline">p^kq^{n-k}</span>, per l'indipendenza (probabilita condizionale). Le sequenze con esattamente <span class="math inline">k</span> successi sono <span class="math inline">\binom{n}{k}</span> e sono eventi disgiunti; sommando si ottiene <span class="math inline">p(k) = \binom nk p^kq^{n-k}</span>.</p>
+<p><strong>Caso particolare</strong> <span class="math inline">n=1</span>: <span class="math inline">p(0) = \binom10 q = q</span> e <span class="math inline">p(1) = \binom11 p = p</span>, cioè la Bernoulli.</p>
+</details>
+<details class="der"><summary>Derivazione — CDF dell'Uniforme</summary>
+<div class="math block">
+\begin{aligned}
+x&lt;a:&amp;\quad F(x) = \int_{-\infty}^x 0\,dy = 0 \\
+a\le x&lt;b:&amp;\quad F(x) = \int_a^x \frac{1}{b-a}\,dy = \frac{x-a}{b-a} &amp;&amp; \text{pdf costante in }(a,b) \\
+x\ge b:&amp;\quad F(x) = \int_a^b \frac{1}{b-a}\,dy = 1
+\end{aligned}
+</div><p><strong>Sanity check:</strong> <span class="math inline">F</span> è continua in <span class="math inline">a</span> (vale 0) e in <span class="math inline">b</span> (vale 1), come deve per una v.a. continua.</p>
+</details>
+<details class="der"><summary>Derivazione — Media e varianza dell'Uniforme</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia
+<div class="math inline">\begin{aligned}
+E(X) &amp;= \int_a^b \frac{x}{b-a}\,dx = \frac{b^2-a^2}{2(b-a)} = \frac{a+b}{2} &amp;&amp; b^2-a^2=(b-a)(b+a) \\
+E(X^2) &amp;= \int_a^b \frac{x^2}{b-a}\,dx = \frac{b^3-a^3}{3(b-a)} = \frac{a^2+ab+b^2}{3} &amp;&amp; b^3-a^3=(b-a)(a^2+ab+b^2) \\
+\text{Var}(X) &amp;= E(X^2) - E^2(X) &amp;&amp; media e varianza \\
+&amp;= \frac{4(a^2+ab+b^2) - 3(a+b)^2}{12} &amp;&amp; \text{denominatore comune} \\
+&amp;= \frac{a^2 - 2ab + b^2}{12} = \frac{(b-a)^2}{12}
+\end{aligned}</div>
+<strong>Caso d'uso:</strong> <span class="math inline">a=-\Delta/2</span>, <span class="math inline">b=\Delta/2</span> → <span class="math inline">\text{Var} = \Delta^2/12</span>, cioè la potenza del rumore di quantizzazione.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Media e varianza di Bernoulli e Binomiale</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia
+<div class="math inline">\begin{aligned}
+\text{Bern:}\ E(X) &amp;= 0\cdot q + 1\cdot p = p, \quad E(X^2) = p, \quad \text{Var} = p - p^2 = pq \\
+\text{Bin:}\ X &amp;= \textstyle\sum_{i=1}^n X_i,\ X_i \sim \text{Bern}(p) \text{ indip.} &amp;&amp; \text{conteggio dei successi} \\
+E(X) &amp;= \textstyle\sum_i E(X_i) = np &amp;&amp; \text{linearità} \\
+\text{Var}(X) &amp;= \textstyle\sum_i \text{Var}(X_i) = npq &amp;&amp; X_i \text{ incorrelate, } correlazione e covarianza
+\end{aligned}</div></p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Normalizzazione e varianza della Laplace</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia
+<div class="math inline">\begin{aligned}
+\int_{-\infty}^{\infty}\tfrac{\lambda}{2}e^{-\lambda|x|}dx &amp;= 2\cdot\tfrac{\lambda}{2}\int_0^\infty e^{-\lambda x}dx = \lambda\cdot\tfrac1\lambda = 1 &amp;&amp; \text{pdf pari} \\
+E(X) &amp;= 0 &amp;&amp; \text{pdf pari} \\
+E(X^2) &amp;= 2\cdot\tfrac\lambda2\int_0^\infty x^2e^{-\lambda x}dx = \lambda\cdot\tfrac{2}{\lambda^3} = \tfrac{2}{\lambda^2} &amp;&amp; \textstyle\int_0^\infty x^2e^{-\lambda x}dx = 2/\lambda^3
+\end{aligned}</div>
+Quindi <span class="math inline">x_{rms} = \sqrt2/\lambda</span>: più <span class="math inline">\lambda</span> è grande, più la pdf è concentrata intorno allo zero.</p>
+</blockquote>
+<img class="zoom" src="img/grafico-laplace-pdf-lambda.png" alt="" loading="lazy">
+<p><em>🧩 Grafico mio: cuspide in 0 alta <span class="math inline">\lambda/2</span>, code esponenziali; larghezza <span class="math inline">\propto 1/\lambda</span>. Confronto con gaussiana e uniforme a pari potenza in quantizzazione non uniforme.</em></p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Variabile aleatoria Gaussiana e funzioni erf, erfc, Q</span></summary><div class="cb"><h4 id="variabile-aleatoria-gaussiana-spiegazione">Spiegazione</h4>
+<ul>
+<li>La CDF <strong>non ha forma chiusa</strong>: per questo si introducono funzioni tabulate/numeriche.</li>
+<li>In <strong>Matlab</strong>: <code>erf</code>, <code>erfc</code>, <code>qfunc</code>. Codice per la CDF di <span class="math inline">\mathcal{N}(0,1)</span>:<pre><code class="language-matlab">x = -3:0.1:3;
+y = (1/2)*(1+erf(x/sqrt(2)));
+plot(x,y)
+grid on
+title('CDF of normal distribution with µ = 0 and σ = 1')
+xlabel('x')
+ylabel('CDF')
+</code></pre>
+Qui <span class="math inline">\mu=0</span>, <span class="math inline">\sigma=1</span>, quindi <span class="math inline">z = x/\sqrt2</span>.</li>
+<li>Una <strong>trasformazione affine</strong> di una gaussiana è ancora gaussiana → funzione di variabile aleatoria.</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: saper passare da erf/erfc/Q in entrambi i sensi e scrivere <span class="math inline">P(X&gt;x)</span>, <span class="math inline">P(|X|&gt;x)</span> per una gaussiana non standard. Nel corso la probabilità d'errore dei sistemi digitali si scriverà con <span class="math inline">Q(\cdot)</span>.</p>
+</blockquote>
+<p><strong>Valori di riferimento</strong> — 📚 Fonte esterna (tabelle standard della Q, non nelle slide): <span class="math inline">Q(1)\approx 0.159</span>, <span class="math inline">Q(2)\approx 0.0228</span>, <span class="math inline">Q(3)\approx 1.35\cdot10^{-3}</span>, <span class="math inline">Q(4)\approx 3.17\cdot10^{-5}</span>.</p>
+<blockquote class="co conn"><p>💡 Connessione: con il <em>four-sigma loading</em> (quantizzazione uniforme), se il segnale fosse gaussiano la probabilità di sovraccarico sarebbe <span class="math inline">P(|X|&gt;4\sigma) = 2Q(4) \approx 6.3\cdot10^{-5}</span> (🧩 mio). È molto meno del limite di Chebyshev (6.25%), che vale per qualunque pdf ed è quindi pessimistico.</p>
+</blockquote>
+<h4 id="variabile-aleatoria-gaussiana-perche-importa">Perché importa</h4>
+<p>Il rumore termico è somma di moltissimi contributi indipendenti (moto degli elettroni), quindi per il CLT è gaussiano. La funzione <span class="math inline">Q</span> sarà lo strumento standard per le probabilità d'errore.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Normalizzazione della pdf</summary>
+<div class="math block">
+\begin{aligned}
+\int_{-\infty}^{+\infty} \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}dx
+&amp;= \frac{1}{\sigma\sqrt{2\pi}}\int_{-\infty}^{+\infty} e^{-t^2}\sqrt2\,\sigma\,dt &amp;&amp; t = \tfrac{x-\mu}{\sqrt2\sigma},\ dx = \sqrt2\sigma\,dt \\
+&amp;= \frac{1}{\sqrt\pi}\int_{-\infty}^{+\infty}e^{-t^2}dt &amp;&amp; \text{semplifico } \sqrt2\sigma \\
+&amp;= \frac{1}{\sqrt\pi}\sqrt\pi = 1 &amp;&amp; \text{integrale notevole}
+\end{aligned}
+</div></details>
+<details class="der"><summary>Derivazione — CDF in termini di erf</summary>
+<div class="math block">
+\begin{aligned}
+F(x) &amp;= \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^x e^{-(t-\mu)^2/(2\sigma^2)}dt &amp;&amp; \text{def. CDF} \\
+&amp;= \frac{1}{\sqrt\pi}\int_{-\infty}^{z} e^{-u^2}du, \quad z \triangleq \tfrac{x-\mu}{\sqrt2\sigma} &amp;&amp; u = \tfrac{t-\mu}{\sqrt2\sigma} \\
+&amp;= \frac{1}{\sqrt\pi}\left[\int_{-\infty}^0 e^{-u^2}du + \int_0^z e^{-u^2}du\right] &amp;&amp; \text{spezzo in } 0 \\
+&amp;= \frac{1}{\sqrt\pi}\left[\frac{\sqrt\pi}{2} + \frac{\sqrt\pi}{2}\text{erf}(z)\right] &amp;&amp; \text{metà dell&#x27;integrale notevole; def. erf} \\
+&amp;= \frac12[1+\text{erf}(z)] = 1 - \frac12\text{erfc}(z) &amp;&amp; \text{erf} = 1-\text{erfc}
+\end{aligned}
+</div><p>La formula vale anche per <span class="math inline">z&lt;0</span>: in quel caso <span class="math inline">\int_0^z = -\int_z^0</span> e <span class="math inline">\text{erf}(z)&lt;0</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — Le quattro probabilità notevoli</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia. Uso due proprietà: <span class="math inline">\text{erf}</span> è <strong>dispari</strong> (<span class="math inline">\text{erf}(-z) = -\text{erf}(z)</span>, perché l'integrando è pari), e quindi <span class="math inline">1+\text{erf}(z) = 1-\text{erf}(-z) = \text{erfc}(-z)</span>.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+P(X&lt;x) &amp;= F(x) = \tfrac12[1+\text{erf}(z)] = \tfrac12\text{erfc}(-z) = \tfrac12\text{erfc}\tfrac{\mu-x}{\sqrt2\sigma} &amp;&amp; \text{v.a. continua: } P(X=x)=0 \\
+P(X&gt;x) &amp;= 1-F(x) = \tfrac12\text{erfc}(z) &amp;&amp; \text{prop. 3 CDF} \\
+P(|X|&lt;x) &amp;= F(x) - F(-x) &amp;&amp; x\ge0 \\
+&amp;= \tfrac12\left[\text{erf}\tfrac{x-\mu}{\sqrt2\sigma} - \text{erf}\tfrac{-x-\mu}{\sqrt2\sigma}\right] &amp;&amp; \text{sostituisco la CDF} \\
+&amp;= \tfrac12\left[\text{erf}\tfrac{x-\mu}{\sqrt2\sigma} + \text{erf}\tfrac{x+\mu}{\sqrt2\sigma}\right] &amp;&amp; \text{erf dispari} \\
+P(|X|&gt;x) &amp;= 1 - P(|X|&lt;x) = \tfrac12\left[(1-\text{erf}\tfrac{x-\mu}{\sqrt2\sigma}) + (1-\text{erf}\tfrac{x+\mu}{\sqrt2\sigma})\right] &amp;&amp; 1 = \tfrac12+\tfrac12 \\
+&amp;= \tfrac12\left[\text{erfc}\tfrac{x-\mu}{\sqrt2\sigma} + \text{erfc}\tfrac{x+\mu}{\sqrt2\sigma}\right]
+\end{aligned}
+</div><p><strong>Sanity check:</strong> con <span class="math inline">\mu=0</span>, <span class="math inline">P(|X|&gt;x) = \text{erfc}(x/(\sqrt2\sigma)) = 2Q(x/\sigma)</span>, due code uguali per simmetria.</p>
+</details>
+<details class="der"><summary>Derivazione — <span class="math inline">Q(x) = \frac12\text{erfc}(x/\sqrt2)</span></summary>
+<div class="math block">
+\begin{aligned}
+Q(x) &amp;= \frac{1}{\sqrt{2\pi}}\int_x^{\infty}e^{-t^2/2}dt &amp;&amp; \text{def.} \\
+&amp;= \frac{1}{\sqrt{2\pi}}\int_{x/\sqrt2}^{\infty}e^{-u^2}\sqrt2\,du &amp;&amp; t = \sqrt2 u \\
+&amp;= \frac12\cdot\frac{2}{\sqrt\pi}\int_{x/\sqrt2}^\infty e^{-u^2}du = \frac12\text{erfc}\left(\frac{x}{\sqrt2}\right) &amp;&amp; \text{def. erfc}
+\end{aligned}
+</div><p>Quindi <span class="math inline">P(X&gt;x) = \frac12\text{erfc}\frac{x-\mu}{\sqrt2\sigma} = Q\left(\frac{x-\mu}{\sigma}\right)</span>: <span class="math inline">Q</span> è la coda della gaussiana <strong>standard</strong> <span class="math inline">\mathcal{N}(0,1)</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — <span class="math inline">E(X)=\mu</span> e <span class="math inline">\text{Var}(X)=\sigma^2</span></summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia
+<div class="math inline">\begin{aligned}
+E(X) &amp;= \int x f(x)dx = \mu\underbrace{\int f(x)dx}_{=1} + \underbrace{\int (x-\mu) f(x)dx}_{=0} &amp;&amp; x = \mu + (x-\mu);\ \text{integrando dispari intorno a } \mu \\
+&amp;= \mu \\
+\text{Var}(X) &amp;= \int (x-\mu)^2 f(x)dx = \frac{\sigma^2}{\sqrt{2\pi}}\int_{-\infty}^{\infty} t^2 e^{-t^2/2}dt &amp;&amp; t=(x-\mu)/\sigma \\
+&amp;= \frac{\sigma^2}{\sqrt{2\pi}}\left( \left[-t e^{-t^2/2}\right]_{-\infty}^{\infty} + \int e^{-t^2/2}dt \right) &amp;&amp; \text{per parti: } t\cdot t e^{-t^2/2} \\
+&amp;= \frac{\sigma^2}{\sqrt{2\pi}}(0 + \sqrt{2\pi}) = \sigma^2 &amp;&amp; \int e^{-t^2/2}dt=\sqrt{2\pi}
+\end{aligned}</div></p>
+</blockquote>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Funzione di una variabile aleatoria</span></summary><div class="cb"><h4 id="funzione-di-variabile-aleatoria-spiegazione">Spiegazione</h4>
+<blockquote class="co esame"><p>🎯 Esame: «La trasformazione affine di una v.a. Gaussiana è essa stessa una v.a. Gaussiana».</p>
+</blockquote>
+<p>Metodo pratico:</p>
+<ol>
+<li>risolvere <span class="math inline">g(x)=y</span> e trovare tutte le radici <span class="math inline">x_i(y)</span>;</li>
+<li>calcolare <span class="math inline">|g&#x27;(x_i)|</span>;</li>
+<li>sommare <span class="math inline">f_X(x_i)/|g&#x27;(x_i)|</span>;</li>
+<li>se per certi <span class="math inline">y</span> non ci sono radici, lì <span class="math inline">f_Y(y) = 0</span>.</li>
+</ol>
+<p>Esempio di non-monotonia (🧩 mio): per <span class="math inline">Y = X^2</span> le radici sono <span class="math inline">\pm\sqrt y</span> per <span class="math inline">y&gt;0</span>, quindi <span class="math inline">f_Y(y) = [f_X(\sqrt y)+f_X(-\sqrt y)]/(2\sqrt y)</span>.</p>
+<h4 id="funzione-di-variabile-aleatoria-perche-importa">Perché importa</h4>
+<p>I sistemi trasformano v.a.: un amplificatore di guadagno <span class="math inline">a</span> con offset <span class="math inline">b</span> è una trasformazione affine, il quadrato corrisponde al calcolo di una potenza istantanea, il companding è una trasformazione non lineare <span class="math inline">F(x)</span>. Un quantizzatore <span class="math inline">Q[\cdot]</span> è una <span class="math inline">g</span> a gradini: <span class="math inline">g&#x27;=0</span> quasi ovunque, quindi la formula non si applica e l'uscita è discreta.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Formula per <span class="math inline">g</span> monotona (giustifica il <span class="math inline">|g&#x27;|</span>)</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia, caso di una sola radice</p>
+</blockquote>
+<p><span class="math inline">g</span> crescente (<span class="math inline">g&#x27;&gt;0</span>), <span class="math inline">x_1 = g^{-1}(y)</span>:
+<div class="math inline">\begin{aligned}
+F_Y(y) &amp;= P(g(X)\le y) = P(X \le g^{-1}(y)) = F_X(g^{-1}(y)) &amp;&amp; g \text{ crescente conserva } \le \\
+f_Y(y) &amp;= f_X(g^{-1}(y))\cdot\frac{d g^{-1}(y)}{dy} = \frac{f_X(x_1)}{g'(x_1)} &amp;&amp; \text{derivata della funzione inversa}
+\end{aligned}</div>
+<span class="math inline">g</span> decrescente (<span class="math inline">g&#x27;&lt;0</span>):
+<div class="math inline">\begin{aligned}
+F_Y(y) &amp;= P(X \ge g^{-1}(y)) = 1 - F_X(g^{-1}(y)) &amp;&amp; g \text{ decrescente inverte } \le;\ X \text{ continua} \\
+f_Y(y) &amp;= -\frac{f_X(x_1)}{g'(x_1)} = \frac{f_X(x_1)}{|g'(x_1)|} &amp;&amp; g'&lt;0
+\end{aligned}</div>
+I due casi si riassumono con <span class="math inline">|g&#x27;|</span>. Con più radici, <span class="math inline">\{Y\in(y,y+dy)\}</span> è l'unione disgiunta degli intervalli intorno a ciascuna <span class="math inline">x_i</span>, e i contributi si sommano.</p>
+</details>
+<details class="der"><summary>Derivazione — <span class="math inline">Y = aX+b</span>, <span class="math inline">X\sim\mathcal{N}(0,1)</span></summary>
+<div class="math block">
+\begin{aligned}
+g(x) &amp;= ax+b,\quad g&#x27;(x) = a &amp;&amp; a\neq0 \\
+y = ax+b &amp;\Rightarrow x_1 = \frac{y-b}{a} &amp;&amp; \text{unica radice} \\
+f_Y(y) &amp;= \frac{f_X\left(\frac{y-b}{a}\right)}{|a|} &amp;&amp; \text{formula generale} \\
+&amp;= \frac{1}{|a|}\cdot\frac{1}{\sqrt{2\pi}}e^{-\frac12\left(\frac{y-b}{a}\right)^2} &amp;&amp; f_X(x) = \tfrac{1}{\sqrt{2\pi}}e^{-x^2/2} \\
+&amp;= \frac{1}{\sqrt{2\pi a^2}}e^{-\frac{(y-b)^2}{2a^2}} &amp;&amp; |a|=\sqrt{a^2}
+\end{aligned}
+</div><p><strong>Risultato:</strong> <span class="math inline">Y\sim\mathcal{N}(b, |a|)</span>.
+<strong>Sanity check:</strong> coerente con <span class="math inline">E(aX+b) = aE(X)+b = b</span> e <span class="math inline">\sigma_Y = |a|\sigma_X = |a|</span> (vedi media e varianza).</p>
+<blockquote class="co mia"><p>🧩 Generalizzazione mia: con <span class="math inline">X\sim\mathcal{N}(\mu,\sigma)</span> lo stesso procedimento dà <span class="math inline">Y\sim\mathcal{N}(a\mu+b, |a|\sigma)</span>. Il caso <span class="math inline">a = 1/\sigma</span>, <span class="math inline">b = -\mu/\sigma</span> è la <strong>standardizzazione</strong> <span class="math inline">Z = (X-\mu)/\sigma \sim \mathcal{N}(0,1)</span>, cioè il passaggio che giustifica <span class="math inline">P(X&gt;x) = Q((x-\mu)/\sigma)</span> in variabile aleatoria gaussiana.</p>
+</blockquote>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Media statistica, momenti e varianza</span></summary><div class="cb"><h4 id="media-e-varianza-spiegazione">Spiegazione</h4>
+<ul>
+<li>La media è il <strong>baricentro</strong> della pdf, la deviazione standard ne misura la <strong>larghezza</strong>.</li>
+<li>Il teorema fondamentale della media è molto comodo: per calcolare <span class="math inline">E[g(X)]</span> basta <span class="math inline">f_X</span> e non serve ricavare la pdf di <span class="math inline">Y=g(X)</span> (funzione di variabile aleatoria).</li>
+<li>Lettura &quot;elettrica&quot; (🧩 mia; nelle slide appare come <span class="math inline">x_{rms} = \sqrt{P_x}</span>): per un segnale modellato come v.a., <span class="math inline">E(X)</span> è la componente continua, <span class="math inline">E(X^2)</span> la potenza (valor quadratico medio) e, per una v.a. a media nulla, <span class="math inline">\sigma_X = x_{rms}</span> è il valore efficace.</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: il valor quadratico medio dell'errore di quantizzazione <span class="math inline">E[e^2] = \Delta^2/12</span> è una varianza di un'uniforme a media nulla (snr di quantizzazione).</p>
+</blockquote>
+<p>Momenti delle v.a. notevoli: tabella in variabili aleatorie notevoli.</p>
+<h4 id="media-e-varianza-perche-importa">Perché importa</h4>
+<p>Potenza di segnale, potenza di rumore e SNR sono tutti momenti del secondo ordine. L'MSE che Lloyd-Max minimizza (quantizzazione non uniforme) è un valor quadratico medio; il centroide <span class="math inline">E[x|x\in R_i]</span> è una media condizionale.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — <span class="math inline">\text{Var}(X) = E(X^2)-E^2(X)</span></summary>
+<div class="math block">
+\begin{aligned}
+\text{Var}(X) &amp;= E[(X-\mu)^2], \quad \mu \triangleq E(X) &amp;&amp; \text{def.} \\
+&amp;= E[X^2 - 2\mu X + \mu^2] &amp;&amp; \text{sviluppo il quadrato} \\
+&amp;= E(X^2) - 2\mu E(X) + \mu^2 &amp;&amp; \text{linearità; } \mu \text{ costante} \\
+&amp;= E(X^2) - 2\mu^2 + \mu^2 = E(X^2) - \mu^2 &amp;&amp; E(X)=\mu
+\end{aligned}
+</div><p><strong>Sanity check:</strong> <span class="math inline">\text{Var}\ge0 \Rightarrow E(X^2)\ge E^2(X)</span>, cioè la potenza totale è almeno quella della componente continua.</p>
+</details>
+<details class="der"><summary>Derivazione — <span class="math inline">\text{Var}(aX+b) = a^2\text{Var}(X)</span></summary>
+<div class="math block">
+\begin{aligned}
+E(aX+b) &amp;= a\mu + b &amp;&amp; \text{linearità} \\
+\text{Var}(aX+b) &amp;= E[(aX + b - a\mu - b)^2] &amp;&amp; \text{def.} \\
+&amp;= E[a^2(X-\mu)^2] = a^2\,\text{Var}(X) &amp;&amp; b \text{ si cancella}
+\end{aligned}
+</div></details>
+<details class="der"><summary>Derivazione — Linearità della media</summary>
+<p>Dal teorema fondamentale: <span class="math inline">\int[a g(x)+b h(x)]f(x)dx = a\int g f + b\int h f</span> (linearità dell'integrale). Le proprietà 2–4 seguono da <span class="math inline">f\ge0</span> (monotonia dell'integrale) e da <span class="math inline">\int f = 1</span> (per la 4).</p>
+</details>
+<details class="der"><summary>Derivazione — Media e varianza della Gaussiana</summary>
+<p>Vedi variabile aleatoria gaussiana (derivazione <span class="math inline">E(X)=\mu</span>, <span class="math inline">\text{Var}(X)=\sigma^2</span>).</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Coppie di variabili aleatorie</span></summary><div class="cb"><h4 id="coppie-di-variabili-aleatorie-spiegazione">Spiegazione</h4>
+<ul>
+<li><strong>Pdf condizionale</strong>: dice come cambia la distribuzione di <span class="math inline">Y</span> quando si fissa <span class="math inline">\{X=x\}</span>. Esempio della slide: il peso <span class="math inline">Y</span> di una persona di cui si conosce l'altezza <span class="math inline">X</span>. È l'analogo per densità di <span class="math inline">P(A|B)</span> (probabilita condizionale).</li>
+<li><strong>Indipendenza</strong>: la fattorizzazione si può scrivere in modo equivalente con la CDF congiunta (<span class="math inline">F_{XY} = F_XF_Y</span>) o con la DF congiunta per v.a. discrete.</li>
+<li>Dalla congiunta si ricavano sempre le marginali. Il viceversa vale <strong>solo</strong> se c'è indipendenza.</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: marginali dalla congiunta, definizione di pdf condizionale, differenza tra indipendenza e incorrelazione (vedi correlazione e covarianza).</p>
+</blockquote>
+<h4 id="coppie-di-variabili-aleatorie-perche-importa">Perché importa</h4>
+<p>Segnale e rumore, oppure due campioni successivi dello stesso segnale, sono coppie di v.a. La loro relazione statistica (indipendenza, correlazione) è la base dei <strong>processi aleatori</strong>, argomento del corso.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><blockquote class="co mia"><p>🧩 Derivazione mia: le slide riassumono le proprietà senza dimostrarle.</p>
+</blockquote>
+<details class="der"><summary>Derivazione — CDF marginale (prop. 1)</summary>
+<p><span class="math inline">\{Y\le+\infty\} = \Omega</span>, quindi <span class="math inline">F_{XY}(x,+\infty) = P(\{X\le x\}\cap\Omega) = P(X\le x) = F_X(x)</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — pdf marginale (prop. 3)</summary>
+<div class="math block">
+\begin{aligned}
+F_X(x) &amp;= F_{XY}(x,+\infty) = \int_{-\infty}^{x}\left[\int_{-\infty}^{+\infty} f_{XY}(u,v)\,dv\right]du &amp;&amp; \text{prop. 1 + prop. 7} \\
+f_X(x) &amp;= \frac{dF_X}{dx} = \int_{-\infty}^{+\infty} f_{XY}(x,v)\,dv &amp;&amp; \text{teorema fondamentale del calcolo}
+\end{aligned}
+</div></details>
+<details class="der"><summary>Derivazione — Probabilità di un rettangolo (prop. 3 della CDF)</summary>
+<div class="math block">
+\begin{aligned}
+P(x_1&lt;X\le x_2,\ y_1&lt;Y\le y_2) &amp;= P(x_1&lt;X\le x_2, Y\le y_2) - P(x_1&lt;X\le x_2, Y\le y_1) &amp;&amp; \{Y\le y_2\} = \{Y\le y_1\}\cup\{y_1&lt;Y\le y_2\} \\
+&amp;= [F(x_2,y_2)-F(x_1,y_2)] - [F(x_2,y_1)-F(x_1,y_1)] &amp;&amp; \text{prop. 2 applicata due volte}
+\end{aligned}
+</div></details>
+<details class="der"><summary>Derivazione — Normalizzazione delle pdf condizionali</summary>
+<div class="math block">
+\int_{-\infty}^{+\infty} f_X(x|y)\,dx = \frac{1}{f_Y(y)}\int f_{XY}(x,y)\,dx = \frac{f_Y(y)}{f_Y(y)} = 1 \qquad \text{(prop. 4 delle marginali)}
+</div></details>
+<details class="der"><summary>Derivazione — Indipendenza ⇒ condizionale = marginale</summary>
+<div class="math block">f_X(x|y) = \frac{f_{XY}(x,y)}{f_Y(y)} = \frac{f_X(x)f_Y(y)}{f_Y(y)} = f_X(x)</div><p>Analogamente <span class="math inline">f_Y(y|x) = f_Y(y)</span>.</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Correlazione, covarianza e coefficiente di correlazione</span></summary><div class="cb"><h4 id="correlazione-e-covarianza-spiegazione">Spiegazione</h4>
+<ul>
+<li><strong>Ortogonale ≠ incorrelato</strong>: i due concetti coincidono se almeno una delle v.a. ha media nulla (per la prop. 1).</li>
+<li><span class="math inline">\rho_{XY}</span> misura la <strong>dipendenza lineare</strong>: <span class="math inline">|\rho|=1</span> se e solo se <span class="math inline">Y</span> è una funzione affine di <span class="math inline">X</span> in media quadratica (prop. 5); <span class="math inline">\rho=0</span> significa nessuna dipendenza <em>lineare</em>, ma può esserci dipendenza non lineare.</li>
+<li>La prop. 3 serve a sommare potenze di rumore: segnale e rumore incorrelati → le potenze si sommano.</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: indipendenza ⇒ incorrelazione ma non viceversa; ortogonalità vs incorrelazione; dimostrazione di Schwarz.</p>
+</blockquote>
+<h4 id="correlazione-e-covarianza-perche-importa">Perché importa</h4>
+<p>L'ipotesi &quot;errore di quantizzazione incorrelato col segnale&quot; (modello additivo <span class="math inline">x_q = x + e</span>) serve a dire che la potenza di <span class="math inline">x_q</span> è <span class="math inline">P_x + P_e</span>. La funzione di autocorrelazione dei processi aleatori estende <span class="math inline">\text{Corr}(X,Y)</span> a due campioni dello stesso processo.</p>
+<blockquote class="co mia"><p>🧩 Derivazione mia: il collegamento con il modello del quantizzatore è una mia lettura. La slide introduce il modello a sommatore senza parlare di correlazione.</p>
+</blockquote>
+<h4 class="sub">Dimostrazioni passo-passo</h4><blockquote class="co mia"><p>🧩 Derivazione mia: le slide enunciano le proprietà senza passaggi.</p>
+</blockquote>
+<details class="der"><summary>Derivazione — Proprietà 1</summary>
+<div class="math block">
+\begin{aligned}
+\text{Cov}(X,Y) &amp;= E[XY - \mu_YX - \mu_XY + \mu_X\mu_Y] &amp;&amp; \text{sviluppo il prodotto} \\
+&amp;= E(XY) - \mu_Y\mu_X - \mu_X\mu_Y + \mu_X\mu_Y &amp;&amp; \text{linearità} \\
+&amp;= E(XY) - E(X)E(Y)
+\end{aligned}
+</div></details>
+<details class="der"><summary>Derivazione — Proprietà 2 e 3</summary>
+<div class="math block">
+\begin{aligned}
+E[(X+Y)^2] &amp;= E[X^2+2XY+Y^2] = E(X^2)+E(Y^2)+2E(XY) &amp;&amp; \text{linearità} \\
+\text{Var}(X+Y) &amp;= E\big[\big((X-\mu_X)+(Y-\mu_Y)\big)^2\big] &amp;&amp; \mu_{X+Y} = \mu_X+\mu_Y \\
+&amp;= \text{Var}(X)+\text{Var}(Y)+2\text{Cov}(X,Y) &amp;&amp; \text{prop. 2 sulle v.a. centrate}
+\end{aligned}
+</div><p>Caso generale: <span class="math inline">\text{Var}(\sum_ic_iX_i) = E[(\sum_ic_i(X_i-\mu_i))^2] = \sum_i\sum_jc_ic_j\text{Cov}(X_i,X_j)</span>. Separando i termini <span class="math inline">i=j</span>, dove <span class="math inline">\text{Cov}(X_i,X_i) = \text{Var}(X_i)</span>, si ottiene la formula della slide.</p>
+</details>
+<details class="der"><summary>Derivazione — Disuguaglianza di Schwarz (prop. 4)</summary>
+<div class="math block">
+\begin{aligned}
+0 &amp;\le E[(Y-aX)^2] \quad \forall a\in\mathbb{R} &amp;&amp; \text{media di una quantità} \ge 0 \\
+&amp;= E(Y^2) - 2a\,E(XY) + a^2E(X^2) &amp;&amp; \text{polinomio di 2° grado in } a \\
+\Rightarrow \Delta &amp;= 4E^2(XY) - 4E(X^2)E(Y^2) \le 0 &amp;&amp; \text{mai negativo} \Rightarrow \text{discriminante} \le 0 \\
+\Rightarrow |E(XY)| &amp;\le \sqrt{E(X^2)E(Y^2)}
+\end{aligned}
+</div><p>L'uguaglianza vale se e solo se <span class="math inline">\Delta = 0</span>, cioè esiste <span class="math inline">a^\ast</span> con <span class="math inline">E[(Y-a^\ast X)^2] = 0</span>: <span class="math inline">Y = a^\ast X</span> in media quadratica.
+<strong>Prop. 5:</strong> applico la 4 alle v.a. centrate <span class="math inline">X-\mu_X</span> e <span class="math inline">Y-\mu_Y</span>. <strong>Prop. 6:</strong> divido la 5 per <span class="math inline">\sigma_X\sigma_Y</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — Indipendenti ⇒ incorrelate</summary>
+<blockquote class="co mia"><p>🧩 Derivazione mia
+<div class="math inline">E(XY) = \iint xy\,f_X(x)f_Y(y)\,dx\,dy = \int xf_X\,dx\int yf_Y\,dy = E(X)E(Y) \Rightarrow \text{Cov} = 0</div>
+Il <strong>viceversa è falso</strong> in generale. Controesempio (🧩 mio): <span class="math inline">X\sim\mathcal{U}(-1,1)</span> e <span class="math inline">Y=X^2</span> sono incorrelate, perché <span class="math inline">E(XY) = E(X^3) = 0 = E(X)E(Y)</span>, ma <span class="math inline">Y</span> è funzione deterministica di <span class="math inline">X</span>.</p>
+</blockquote>
+</details>
+</div></details>
+<details class="conc es"><summary><span class="n">Esercizio svolto · Calcolo di probabilità di eventi</span></summary><div class="cb"><h4 id="calcolo-probabilita-eventi-metodo">Metodo</h4>
+<ol>
+<li><strong>Definire</strong> <span class="math inline">\Omega</span> ed esplicitare gli eventi come sottoinsiemi (spazio di probabilita).</li>
+<li>Tradurre il testo: &quot;e&quot; → <span class="math inline">\cap</span>, &quot;o&quot; → <span class="math inline">\cup</span>, &quot;non&quot; → complementare.</li>
+<li>Scegliere lo strumento:
+<ul>
+<li>risultati <strong>equiprobabili</strong> in <span class="math inline">\Omega</span> finito → <span class="math inline">P(A) = |A|/|\Omega|</span> (conteggio / combinatoria);</li>
+<li>esperimento <strong>in più passi</strong> → probabilità composta / regola della catena, condizionando sull'evento che avviene &quot;prima&quot;;</li>
+<li><strong>cause/effetto</strong> → probabilità totale e Bayes (probabilita totale e bayes).</li>
+</ul>
+</li>
+<li>Per l'<strong>indipendenza</strong>: controllare <span class="math inline">P(AB) = P(A)P(B)</span>, non l'intuizione.</li>
+<li>Sanity check: <span class="math inline">0\le P\le1</span>, complementari che sommano a 1.</li>
+</ol>
+<h4 id="calcolo-probabilita-eventi-formule-usate">Formule usate</h4>
+<ul>
+<li><span class="math inline">P(A\cup B) = P(A)+P(B)-P(AB)</span> — spazio di probabilita</li>
+<li><span class="math inline">P(AB) = P(A|B)P(B)</span> — probabilita condizionale</li>
+<li><span class="math inline">P(AB) = P(A)P(B)</span> se indipendenti — probabilita condizionale</li>
+<li><span class="math inline">P(B) = \sum_iP(B|A_i)P(A_i)</span> — probabilita totale e bayes</li>
+</ul>
+<h4 id="calcolo-probabilita-eventi-casi-svolti">Casi svolti</h4>
+<h5 id="calcolo-probabilita-eventi-caso-1-esempio-1-4-lancio-di-un-dado">Caso 1 — Esempio 1.4: lancio di un dado</h5>
+<p><strong>Traccia</strong>: lancio di un dado, il risultato della prova è <span class="math inline">\omega = 4</span>. Stabilire se si verificano <span class="math inline">A</span> = {pari}, <span class="math inline">B</span> = {≥ 3}, <span class="math inline">C</span> = {&lt; 2}, &quot;A e B&quot;, &quot;A o C&quot;, &quot;A e C&quot;.</p>
+<p><strong>Svolgimento:</strong>
+<div class="math inline">\begin{aligned}
+\Omega &amp;= \{1,2,3,4,5,6\} \\
+A &amp;= \{2,4,6\},\quad B = \{3,4,5,6\},\quad C = \{1\} &amp;&amp; \text{esplicito gli insiemi}
+\end{aligned}</div></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Evento</th>
+<th>Insieme</th>
+<th><span class="math inline">4\in</span>?</th>
+<th>Esito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">A</span></td>
+<td><span class="math inline">\{2,4,6\}</span></td>
+<td>sì</td>
+<td>si verifica</td>
+</tr>
+<tr>
+<td><span class="math inline">B</span></td>
+<td><span class="math inline">\{3,4,5,6\}</span></td>
+<td>sì</td>
+<td>si verifica</td>
+</tr>
+<tr>
+<td><span class="math inline">C</span></td>
+<td><span class="math inline">\{1\}</span></td>
+<td>no</td>
+<td>non si verifica</td>
+</tr>
+<tr>
+<td><span class="math inline">A</span> e <span class="math inline">B</span></td>
+<td><span class="math inline">A\cap B = \{4,6\}</span></td>
+<td>sì</td>
+<td>si verifica</td>
+</tr>
+<tr>
+<td><span class="math inline">A</span> o <span class="math inline">C</span></td>
+<td><span class="math inline">A\cup C = \{1,2,4,6\}</span></td>
+<td>sì</td>
+<td>si verifica</td>
+</tr>
+<tr>
+<td><span class="math inline">A</span> e <span class="math inline">C</span></td>
+<td><span class="math inline">A\cap C = \emptyset</span></td>
+<td>no</td>
+<td>non si verifica (mai: <span class="math inline">A</span> e <span class="math inline">C</span> sono mutuamente esclusivi)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Risultato:</strong> coincide con la slide.</p>
+<blockquote class="co mia"><p>🧩 Estensione mia — con dado equo: <span class="math inline">P(A) = 3/6 = 1/2</span>, <span class="math inline">P(B) = 4/6 = 2/3</span>, <span class="math inline">P(AB) = 2/6 = 1/3 = P(A)P(B)</span>. Quindi <span class="math inline">A</span> e <span class="math inline">B</span> sono <strong>indipendenti</strong>, mentre <span class="math inline">A</span> e <span class="math inline">C</span> (disgiunti, a probabilità non nulla) sono <strong>dipendenti</strong>.</p>
+</blockquote>
+<h5 id="calcolo-probabilita-eventi-caso-2-esempio-2-3-estrazione-di-due-palle">Caso 2 — Esempio 2.3: estrazione di due palle</h5>
+<p><strong>Traccia</strong>: «estrazione di una coppia di palle da una scatola contenente tre palle bianche e due rosse — soluzione combinatoria vs. soluzione con probabilità condizionale».</p>
+<blockquote class="co dub"><p>❓ Salto non ricostruito: la slide <strong>non</strong> dice quale evento calcolare né se l'estrazione è con o senza reinserimento; la soluzione era alla lavagna. Svolgo il caso più tipico: <strong>senza reinserimento</strong>, evento <span class="math inline">E</span> = {entrambe bianche}. Da verificare con gli appunti della lezione.</p>
+</blockquote>
+<blockquote class="co mia"><p>🧩 Derivazione mia</p>
+</blockquote>
+<p><strong>Soluzione combinatoria:</strong> coppie non ordinate equiprobabili.
+<div class="math inline">\begin{aligned}
+|\Omega| &amp;= \tbinom52 = \frac{5\cdot4}{2} = 10 &amp;&amp; \text{coppie possibili} \\
+|E| &amp;= \tbinom32 = 3 &amp;&amp; \text{coppie di bianche} \\
+P(E) &amp;= \frac{3}{10} = 0.3
+\end{aligned}</div></p>
+<p><strong>Soluzione con probabilità condizionale:</strong> <span class="math inline">B_1</span> = {1ª bianca}, <span class="math inline">B_2</span> = {2ª bianca}.
+<div class="math inline">\begin{aligned}
+P(E) &amp;= P(B_1B_2) = P(B_2|B_1)\,P(B_1) &amp;&amp; \text{prob. composta, condiziono sulla 1ª estrazione} \\
+P(B_1) &amp;= 3/5 &amp;&amp; \text{3 bianche su 5} \\
+P(B_2|B_1) &amp;= 2/4 &amp;&amp; \text{restano 2 bianche su 4} \\
+P(E) &amp;= \frac35\cdot\frac24 = \frac{6}{20} = 0.3
+\end{aligned}</div>
+<strong>Sanity check:</strong> i due metodi coincidono ✓. Casi complementari (🧩): <span class="math inline">P</span>(entrambe rosse) <span class="math inline">= \binom22/10 = 0.1</span>, <span class="math inline">P</span>(una per colore) <span class="math inline">= 3\cdot2/10 = 0.6</span>; totale <span class="math inline">0.3+0.1+0.6 = 1</span> ✓.</p>
+<h5 id="calcolo-probabilita-eventi-caso-3-esempio-2-6-moneta-lanciata-due-volte">Caso 3 — Esempio 2.6: moneta lanciata due volte</h5>
+<p><strong>Traccia</strong>: «lancio di una moneta due volte» come esempio di indipendenza.</p>
+<blockquote class="co dub"><p>❓ Salto non ricostruito: la slide dà solo il titolo, senza gli eventi. Svolgo il caso standard.</p>
+</blockquote>
+<blockquote class="co mia"><p>🧩 Derivazione mia
+<div class="math inline">\begin{aligned}
+\Omega &amp;= \{TT, TC, CT, CC\},\ \text{equiprobabili } (1/4) &amp;&amp; \text{moneta equa} \\
+A &amp;= \{\text{T al 1° lancio}\} = \{TT,TC\},\ P(A) = 1/2 \\
+B &amp;= \{\text{T al 2° lancio}\} = \{TT,CT\},\ P(B) = 1/2 \\
+P(AB) &amp;= P(\{TT\}) = 1/4 = P(A)P(B) &amp;&amp; \Rightarrow \text{indipendenti}
+\end{aligned}</div>
+<strong>Commento:</strong> l'indipendenza qui <em>discende</em> dall'equiprobabilità dei 4 risultati. Di solito si procede al contrario: si <strong>assume</strong> che i lanci siano indipendenti e se ne deduce <span class="math inline">P(\{TT\}) = 1/4</span>.</p>
+</blockquote>
+<h5 id="calcolo-probabilita-eventi-caso-4-esempio-2-2-qualitativo">Caso 4 — Esempio 2.2 (qualitativo)</h5>
+<p><strong>Traccia</strong>: <span class="math inline">A</span> = {piove}; confrontare <span class="math inline">P(A|B)</span> e <span class="math inline">P(A)</span> con <span class="math inline">B</span> = {estate} e <span class="math inline">B</span> = {inverno}.
+<strong>Risultato</strong> (dalla slide): <span class="math inline">P(A|\text{estate})&lt;P(A)</span>, quindi <span class="math inline">A</span> è &quot;respinto&quot; dall'estate; <span class="math inline">P(A|\text{inverno})&gt;P(A)</span>, quindi <span class="math inline">A</span> è &quot;attratto&quot; dall'inverno.</p>
+<h4 id="calcolo-probabilita-eventi-trappole">Trappole</h4>
+<ul>
+<li><strong>Disgiunti ≠ indipendenti</strong>: due eventi disgiunti a probabilità non nulla sono sempre <em>dipendenti</em> (probabilita condizionale).</li>
+<li><span class="math inline">P(A|B)\neq P(B|A)</span> in generale: i denominatori sono diversi.</li>
+<li>Per tre eventi, <span class="math inline">P(ABC) = P(A)P(B)P(C)</span> <strong>non basta</strong> per l'indipendenza: servono anche le coppie.</li>
+<li>Nel metodo combinatorio, contare in modo coerente: o tutto ordinato o tutto non ordinato.</li>
+<li>Nella probabilità totale, verificare che le cause siano una <strong>partizione</strong>.</li>
+</ul>
+</div></details>
+<details class="conc es"><summary><span class="n">Esercizio svolto · CDF e pdf di variabili aleatorie notevoli e trasformate</span></summary><div class="cb"><h4 id="cdf-pdf-variabili-notevoli-metodo">Metodo</h4>
+<p><strong>V.a. discreta</strong> con DF <span class="math inline">p(x_i) = p_i</span> (variabile aleatoria):</p>
+<ol>
+<li>CDF: somma di gradini, <span class="math inline">F(x) = \sum_ip_i\,u(x-x_i)</span>, costante a tratti con salti di ampiezza <span class="math inline">p_i</span> in <span class="math inline">x_i</span>;</li>
+<li>pdf: derivata generalizzata, <span class="math inline">f(x) = \sum_ip_i\,\delta(x-x_i)</span>;</li>
+<li>verifica: <span class="math inline">\sum_ip_i = 1</span>.</li>
+</ol>
+<p><strong>V.a. continua</strong> con pdf <span class="math inline">f</span>:</p>
+<ol>
+<li>CDF: <span class="math inline">F(x) = \int_{-\infty}^xf</span>, <strong>spezzando</strong> l'integrale nei tratti in cui <span class="math inline">f</span> cambia espressione;</li>
+<li>verifica: <span class="math inline">F(-\infty)=0</span>, <span class="math inline">F(+\infty)=1</span>, <span class="math inline">F</span> continua.</li>
+</ol>
+<p><strong>Funzione di v.a.</strong> <span class="math inline">Y=g(X)</span> (funzione di variabile aleatoria):</p>
+<ol>
+<li>radici <span class="math inline">x_i(y)</span> di <span class="math inline">g(x)=y</span>;</li>
+<li><span class="math inline">f_Y(y) = \sum_if_X(x_i)/|g&#x27;(x_i)|</span>;</li>
+<li>controllo con media e varianza (<span class="math inline">E(aX+b) = aE(X)+b</span>, <span class="math inline">\text{Var}(aX+b) = a^2\text{Var}(X)</span>).</li>
+</ol>
+<h4 id="cdf-pdf-variabili-notevoli-formule-usate">Formule usate</h4>
+<ul>
+<li>Definizioni di CDF, pdf, DF → variabile aleatoria</li>
+<li>DF Bernoulli e Binomiale, pdf Uniforme → variabili aleatorie notevoli</li>
+<li><span class="math inline">f_Y = \sum f_X(x_i)/|g&#x27;(x_i)|</span> → funzione di variabile aleatoria</li>
+<li>CDF gaussiana con erf → variabile aleatoria gaussiana</li>
+</ul>
+<h4 id="cdf-pdf-variabili-notevoli-casi-svolti">Casi svolti</h4>
+<h5 id="cdf-pdf-variabili-notevoli-caso-1-cdf-e-pdf-della-bernoulli">Caso 1 — CDF e pdf della Bernoulli</h5>
+<p><strong>Traccia</strong>: <span class="math inline">X\sim\text{Bern}(p)</span>, «Calcolare CDF e pdf».</p>
+<blockquote class="co mia"><p>🧩 Derivazione mia (esercizio lasciato al lettore)
+<div class="math inline">\begin{aligned}
+F(x) = P(X\le x) &amp;= \begin{cases}0 &amp; x&lt;0 &amp;&amp; \text{nessun valore} \le x\\ q &amp; 0\le x&lt;1 &amp;&amp; \text{solo } X=0\\ q+p = 1 &amp; x\ge1 &amp;&amp; \text{entrambi}\end{cases} \\
+&amp;= q\,u(x) + p\,u(x-1) &amp;&amp; \text{forma compatta con gradini} \\
+f(x) = \frac{dF}{dx} &amp;= q\,\delta(x) + p\,\delta(x-1) &amp;&amp; \frac{d}{dx}u(x-x_0) = \delta(x-x_0)
+\end{aligned}</div>
+<strong>Sanity check:</strong> salto <span class="math inline">q</span> in 0 e <span class="math inline">p</span> in 1, che sommano a 1 ✓; <span class="math inline">F</span> continua da destra ✓ (con <span class="math inline">u(0) = 1</span>).</p>
+</blockquote>
+<h5 id="cdf-pdf-variabili-notevoli-caso-2-cdf-e-pdf-della-binomiale">Caso 2 — CDF e pdf della Binomiale</h5>
+<p><strong>Traccia</strong>: <span class="math inline">X\sim\mathcal{B}(n,p)</span>, «Calcolare CDF e pdf»; verificare la normalizzazione.</p>
+<blockquote class="co mia"><p>🧩 Derivazione mia
+<div class="math inline">\begin{aligned}
+F(x) &amp;= \sum_{k\le x}p(k) = \sum_{k=0}^{\lfloor x\rfloor}\tbinom nkp^kq^{n-k} \quad (0\le x&lt;n) &amp;&amp; \text{prop. 2 della DF} \\
+&amp;= \sum_{k=0}^n\tbinom nkp^kq^{n-k}\,u(x-k) &amp;&amp; \text{forma con gradini, valida } \forall x \\
+f(x) &amp;= \sum_{k=0}^n\tbinom nkp^kq^{n-k}\,\delta(x-k) \\
+\sum_{k=0}^np(k) &amp;= (p+q)^n = 1 &amp;&amp; \text{binomio di Newton}
+\end{aligned}</div>
+<strong>Esempio numerico</strong> (🧩 mio): <span class="math inline">n = 3</span>, <span class="math inline">p = 0.5</span>: <span class="math inline">p(k) = \binom3k/8 = 1/8, 3/8, 3/8, 1/8</span> per <span class="math inline">k = 0,1,2,3</span>. CDF: <span class="math inline">1/8</span>, <span class="math inline">1/2</span>, <span class="math inline">7/8</span>, <span class="math inline">1</span> ✓.</p>
+</blockquote>
+<h5 id="cdf-pdf-variabili-notevoli-caso-3-cdf-dell-uniforme-ed-esempio-del-bus">Caso 3 — CDF dell'Uniforme ed esempio del bus</h5>
+<p><strong>Traccia</strong>: <span class="math inline">X\sim\mathcal{U}(a,b)</span>, ricavare la CDF per integrazione; bus tra le 10:00 e le 10:15.
+<strong>Svolgimento:</strong> derivazione completa in variabili aleatorie notevoli:
+<div class="math inline">F(x) = 0\ (x&lt;a),\quad\frac{x-a}{b-a}\ (a\le x&lt;b),\quad1\ (x\ge b)</div>
+<strong>Numeri:</strong> 15 min × 60 s/min = 900 s, quindi <span class="math inline">X\sim\mathcal{U}(0,900\,\text{s})</span> ✓. Probabilità di attendere al più 5 min (🧩): <span class="math inline">F(300\,\text{s}) = 300/900 = 0.333</span>.</p>
+<h5 id="cdf-pdf-variabili-notevoli-caso-4-y-ax-b-con-x-gaussiana-standard">Caso 4 — <span class="math inline">Y = aX+b</span> con <span class="math inline">X</span> gaussiana standard</h5>
+<p><strong>Traccia</strong>: <span class="math inline">X\sim\mathcal{N}(0,1)</span>, calcolare la pdf di <span class="math inline">Y = aX+b</span>.
+<strong>Svolgimento:</strong> vedi funzione di variabile aleatoria (derivazione passo-passo).
+<strong>Risultato:</strong> <span class="math inline">f_Y(y) = \frac{1}{\sqrt{2\pi a^2}}e^{-(y-b)^2/(2a^2)}</span>, cioè <span class="math inline">Y\sim\mathcal{N}(b,|a|)</span>.</p>
+<h5 id="cdf-pdf-variabili-notevoli-caso-5-cdf-gaussiana-standard-in-matlab">Caso 5 — CDF gaussiana standard in Matlab</h5>
+<p><strong>Traccia</strong>: rappresentare la CDF di <span class="math inline">\mathcal{N}(0,1)</span>.
+<strong>Svolgimento:</strong> con <span class="math inline">\mu=0</span>, <span class="math inline">\sigma=1</span> la formula <span class="math inline">F(x) = \frac12[1+\text{erf}(\frac{x-\mu}{\sqrt2\sigma})]</span> diventa <code>y = (1/2)*(1+erf(x/sqrt(2)))</code>.
+<strong>Sanity check</strong> (🧩 mio): <span class="math inline">F(0) = \frac12(1+0) = 0.5</span>, per simmetria ✓; <span class="math inline">F(3)\approx1-Q(3)\approx0.99865</span>.</p>
+<h4 id="cdf-pdf-variabili-notevoli-trappole">Trappole</h4>
+<ul>
+<li><strong>Estremi di integrazione</strong> nella CDF di pdf definite a tratti: per <span class="math inline">x\ge b</span> l'integrale si ferma a <span class="math inline">b</span>, non a <span class="math inline">x</span>.</li>
+<li><strong>Impulsi</strong> negli estremi: <span class="math inline">P(x_1&lt;X\le x_2) = \int_{x_1}^{x_2}f</span> vale solo se si gestiscono gli eventuali impulsi in <span class="math inline">x_1</span> e <span class="math inline">x_2</span>.</li>
+<li>Nella formula di <span class="math inline">f_Y</span> il modulo <span class="math inline">|g&#x27;|</span> è necessario: senza, per <span class="math inline">a&lt;0</span> la pdf verrebbe negativa.</li>
+<li>La notazione <span class="math inline">\mathcal{N}(\mu,\sigma)</span> delle slide usa <span class="math inline">\sigma</span>, <strong>non</strong> <span class="math inline">\sigma^2</span>.</li>
+<li>Per le v.a. discrete la pdf esiste solo in senso generalizzato (con le <span class="math inline">\delta</span>).</li>
+</ul>
+</div></details>
+</section>
+<section id="domande"><h2 class="ps">Domande da esame</h2>
+<ul>
+<li>Enunciare gli assiomi di Kolmogorov e dimostrare <span class="math inline">P(A\cup B) = P(A)+P(B)-P(AB)</span>.</li>
+<li>Differenza tra eventi indipendenti e mutuamente esclusivi.</li>
+<li>Teorema della probabilità totale e di Bayes: ipotesi e interpretazione.</li>
+<li>Proprietà della CDF; come si calcola <span class="math inline">P(X=x)</span> per v.a. continue, discrete, miste.</li>
+<li>Esprimere <span class="math inline">P(X&gt;x)</span> e <span class="math inline">P(|X|&gt;x)</span> per una gaussiana con erfc e con <span class="math inline">Q</span>.</li>
+<li>pdf di <span class="math inline">Y = aX+b</span> con <span class="math inline">X</span> gaussiana.</li>
+<li>Dimostrare <span class="math inline">\text{Var}(X) = E(X^2)-E^2(X)</span> e <span class="math inline">\text{Cov}(X,Y) = E(XY)-E(X)E(Y)</span>.</li>
+<li>Indipendenza ⇒ incorrelazione? E il viceversa?</li>
+<li>Disuguaglianza di Schwarz e <span class="math inline">|\rho|\le1</span>.</li>
+</ul>
+
+</section>
+<nav class="pn"><a href="lezione-1.html">← Lezione 1</a><a href="lezione-3.html">Lezione 3 →</a></nav>
+</main>
+<footer>Appunti personali del corso di Trasmissione dei Segnali Digitali (LM Ingegneria Informatica, UNINA). Generato dal wiki con <code>output/crea_sito.py</code>.</footer>
+<div id="lb" hidden></div><a id="su" href="#" hidden aria-label="torna su">↑</a>
+</body></html>

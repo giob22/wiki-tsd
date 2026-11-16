@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lezione 11 · Union bound e approssimazione dei primi vicini</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="style.css">
+<script>try{var t=localStorage.getItem('tsd-tema');if(t==='chiaro')document.documentElement.setAttribute('data-theme','light');else if(t==='scuro')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="app.js"></script></head>
+<body><header class="top"><nav><a href="index.html" class="home" aria-label="indice">⌂</a><a href="lezione-1.html">L1</a><a href="lezione-2.html">L2</a><a href="lezione-3.html">L3</a><a href="lezione-4.html">L4</a><a href="lezione-5.html">L5</a><a href="lezione-6.html">L6</a><a href="lezione-7.html">L7</a><a href="lezione-8.html">L8</a><a href="lezione-9.html">L9</a><a href="lezione-10.html">L10</a><a href="lezione-11.html" aria-current="page">L11</a><a href="lezione-12.html">L12</a></nav><span class="ctl"><span class="tm" role="group" aria-label="tema"><button data-t="sistema" title="Tema del sistema" aria-label="tema del sistema"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor" stroke="none"/></svg></button><button data-t="chiaro" title="Tema chiaro" aria-label="tema chiaro"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="3" fill="currentColor"/><path d="M8 1.2v2M8 12.8v2M1.2 8h2M12.8 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4M3.2 12.8l1.4-1.4M11.4 4.6l1.4-1.4"/></svg></button><button data-t="scuro" title="Tema scuro" aria-label="tema scuro"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M13.2 9.6A5.8 5.8 0 1 1 6.4 2.8a4.6 4.6 0 0 0 6.8 6.8z" fill="currentColor"/></svg></button></span><span class="fs"><button id="fm" aria-label="testo più piccolo">A−</button><button id="fp" aria-label="testo più grande">A+</button></span></span></header>
+<main>
+<p class="crumb"><a href="index.html">Home</a> · <a href="index.html#lezioni">Lezioni</a> · Lezione 11 · 02/11</p>
+<h1>Union bound e approssimazione dei primi vicini</h1>
+<p class="breve">Union bound e pairwise error probability, approssimazione dei primi vicini, 16-QAM, modulazioni ortogonali M-arie.</p>
+<details class="toc"><summary>Indice della lezione</summary><ul><li class="l3"><a href="#union-bound">Union bound</a></li><li class="l3"><a href="#approssimazione-dei-primi-vicini">Approssimazione dei primi vicini</a></li><li class="l3"><a href="#esempio-16-qam">Esempio: 16-QAM</a></li><li class="l3"><a href="#esempio-modulazione-ortogonale">Esempio: modulazione ortogonale</a></li><li class="l3"><a href="#note-finali">Note finali</a></li><li class="l3"><a href="#approfondimenti">Spiegazioni e dimostrazioni passo-passo</a></li><li class="l3"><a href="#domande">Domande da esame</a></li></ul></details>
+<section id="corso"><h2 class="ps">Il corso, slide per slide</h2>
+<h3 id="union-bound">Union bound</h3>
+<ul>
+<li>Per schemi più complessi la <span class="math inline">P(e)</span> esatta è difficile: si ricorre ad approssimazioni e allo <strong>union bound</strong>.</li>
+<li>Regola ML: si decide <span class="math inline">H_k</span> se <span class="math inline">\lambda_k(\mathbf r)=\int_0^Tr(t)s_k(t)\,dt-\frac12E_{s,k}</span> è massima (caso non equienergetico); in termini geometrici <span class="math inline">\lambda_k=\mathbf r^T\mathbf s^{(k)}-\frac12E_k</span> e si decide <span class="math inline">H_k</span> se <span class="math inline">\mathbf r\in Z_k=\{\mathbf r:\lambda_k(\mathbf r)&gt;\lambda_i(\mathbf r),\ \forall i\neq k\}</span>.</li>
+<li>Probabilità d'errore sotto <span class="math inline">H_k</span>, con eventi non mutuamente esclusivi e <span class="math inline">P(A\cup B)\le P(A)+P(B)</span>:</li>
+</ul>
+<div class="math block">P(e|H_k)=P\Big(\bigcup_{i\neq k}\{\lambda_i(\mathbf r)&gt;\lambda_k(\mathbf r)\}\,\Big|\,H_k\Big)\le\sum_{i\neq k}P\big(\lambda_i&gt;\lambda_k\,|\,H_k\big)=\frac12\sum_{i\neq k}\text{erfc}\Big(\frac{d_{ik}}{2\sqrt{N_0}}\Big)</div><p>Ogni termine è la <strong>pairwise error probability</strong> (PEP), la probabilità di confondere <span class="math inline">s_k</span> con <span class="math inline">s_i</span>: ci si riconduce a un problema binario. Si ottiene un maggiorante:</p>
+<div class="math block">P(e)=\frac1M\sum_{k=1}^MP(e|H_k)\le\frac{1}{2M}\sum_{k=1}^M\sum_{i\neq k}\text{erfc}\Big(\frac{d_{ik}}{2\sqrt{N_0}}\Big)</div><figure class="fig"><svg viewBox="0 0 400 230" role="img" aria-label="union bound" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a41" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><path class="fl" d="M400.6 -210.7 L-90.6 420.7 L-406.3 175.2 L84.8 -456.3 Z"/><line class="gd" x1="277.8" y1="-52.9" x2="32.2" y2="262.9"/><path class="fl2" d="M455.8 453.0 L44.2 -233.0 L387.2 -438.8 L798.8 247.2 Z"/><line class="gd" x1="352.9" y1="281.5" x2="147.1" y2="-61.5"/><circle class="pt cv" cx="200.0" cy="140.0" r="5.0"/><text class="tx a1" x="208.0" y="156.0" text-anchor="start">s<tspan dy="3" font-size="0.72em">k</tspan><tspan dy="-3">​</tspan></text><circle class="pt cv" cx="110.0" cy="70.0" r="5.0"/><text class="tx a1" x="118.0" y="86.0" text-anchor="start">s<tspan dy="3" font-size="0.72em">i</tspan><tspan dy="-3">​</tspan></text><circle class="pt cv2" cx="300.0" cy="80.0" r="5.0"/><text class="tx a1" x="308.0" y="96.0" text-anchor="start">s<tspan dy="3" font-size="0.72em">j</tspan><tspan dy="-3">​</tspan></text><text class="ts a2" x="200.0" y="20.0" text-anchor="middle">zona contata due volte</text></svg><figcaption>🧩 La somma delle due PEP conta due volte la zona sovrapposta: maggiorante.</figcaption></figure>
+<h3 id="approssimazione-dei-primi-vicini">Approssimazione dei primi vicini</h3>
+<ul>
+<li><strong>Nearest neighbors approximation</strong>: <span class="math inline">P(e)\approx\frac{\bar N_{d_{min}}}{2}\text{erfc}\big(\frac{d_{min}}{2\sqrt{N_0}}\big)</span>, con <span class="math inline">d_{min}</span> distanza minima della costellazione e <span class="math inline">\bar N_{d_{min}}=\frac1M\sum_iN_{d_{min}}(i)</span> numero medio di vicini a distanza minima.</li>
+</ul>
+<h3 id="esempio-16-qam">Esempio: 16-QAM</h3>
+<ul>
+<li>Per il calcolo esatto: <span class="math inline">P(e)=1-\frac1M\sum_kP(c|H_k)</span>, con tre tipi di regioni congruenti (interne, di bordo, d'angolo); per un punto interno <span class="math inline">P(c|H_k)=\big[P(-\frac d2&lt;n&lt;\frac d2)\big]^2</span>. Si dovrebbe calcolare per i tre tipi e poi mediare.</li>
+<li>Con i primi vicini: <span class="math inline">d_{min}=d</span>, <span class="math inline">\bar N_{d_{min}}=\frac{1}{16}(4\cdot4+8\cdot3+4\cdot2)=3</span>, quindi <span class="math inline">P(e)\approx\frac32\text{erfc}\big(\frac{d}{2\sqrt{N_0}}\big)</span>.</li>
+<li>In termini di energia per bit: <span class="math inline">E_s=\frac{1}{16}\big(4\cdot\frac{d^2}{2}+8\cdot\frac{5d^2}{2}+4\cdot\frac{9d^2}{2}\big)=\frac52d^2=E_b\log_2M=4E_b</span>, quindi <span class="math inline">d^2=\frac85E_b</span> e</li>
+</ul>
+<div class="math block">P(e)\approx\frac32\,\text{erfc}\Big(\sqrt{\frac25\frac{E_b}{N_0}}\Big)</div><figure class="fig"><svg viewBox="0 0 400 230" role="img" aria-label="vicini a distanza minima nella 16-QAM" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a42" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker></defs><circle class="pt cv2" cx="134.0" cy="178.0" r="6.0"/><text class="ts" x="145.0" y="172.0" text-anchor="start">2</text><circle class="pt cv3" cx="134.0" cy="134.0" r="6.0"/><text class="ts" x="145.0" y="128.0" text-anchor="start">3</text><circle class="pt cv3" cx="134.0" cy="90.0" r="6.0"/><text class="ts" x="145.0" y="84.0" text-anchor="start">3</text><circle class="pt cv2" cx="134.0" cy="46.0" r="6.0"/><text class="ts" x="145.0" y="40.0" text-anchor="start">2</text><circle class="pt cv3" cx="178.0" cy="178.0" r="6.0"/><text class="ts" x="189.0" y="172.0" text-anchor="start">3</text><circle class="pt cv" cx="178.0" cy="134.0" r="6.0"/><text class="ts" x="189.0" y="128.0" text-anchor="start">4</text><circle class="pt cv" cx="178.0" cy="90.0" r="6.0"/><text class="ts" x="189.0" y="84.0" text-anchor="start">4</text><circle class="pt cv3" cx="178.0" cy="46.0" r="6.0"/><text class="ts" x="189.0" y="40.0" text-anchor="start">3</text><circle class="pt cv3" cx="222.0" cy="178.0" r="6.0"/><text class="ts" x="233.0" y="172.0" text-anchor="start">3</text><circle class="pt cv" cx="222.0" cy="134.0" r="6.0"/><text class="ts" x="233.0" y="128.0" text-anchor="start">4</text><circle class="pt cv" cx="222.0" cy="90.0" r="6.0"/><text class="ts" x="233.0" y="84.0" text-anchor="start">4</text><circle class="pt cv3" cx="222.0" cy="46.0" r="6.0"/><text class="ts" x="233.0" y="40.0" text-anchor="start">3</text><circle class="pt cv2" cx="266.0" cy="178.0" r="6.0"/><text class="ts" x="277.0" y="172.0" text-anchor="start">2</text><circle class="pt cv3" cx="266.0" cy="134.0" r="6.0"/><text class="ts" x="277.0" y="128.0" text-anchor="start">3</text><circle class="pt cv3" cx="266.0" cy="90.0" r="6.0"/><text class="ts" x="277.0" y="84.0" text-anchor="start">3</text><circle class="pt cv2" cx="266.0" cy="46.0" r="6.0"/><text class="ts" x="277.0" y="40.0" text-anchor="start">2</text><line class="ar2" x1="222.0" y1="195.6" x2="266.0" y2="195.6" marker-end="url(#a42)" marker-start="url(#a42)"/><text class="ts a2" x="244.0" y="209.6" text-anchor="middle">d</text><text class="ts a1" x="20.0" y="30.0" text-anchor="start">4 interni × 4</text><text class="ts a3" x="20.0" y="46.0" text-anchor="start">8 di bordo × 3</text><text class="ts a2" x="20.0" y="62.0" text-anchor="start">4 d&#x27;angolo × 2</text><text class="tx" x="20.0" y="86.0" text-anchor="start">N̄ = 48/16 = 3</text></svg><figcaption>🧩 Numero di vicini a distanza d per ogni punto.</figcaption></figure>
+<h3 id="esempio-modulazione-ortogonale">Esempio: modulazione ortogonale</h3>
+<ul>
+<li>Con <span class="math inline">M=3</span> segnali <span class="math inline">\mathbf s_1=(\frac{d}{\sqrt2},0,0)</span>, <span class="math inline">\mathbf s_2=(0,\frac{d}{\sqrt2},0)</span>, <span class="math inline">\mathbf s_3=(0,0,\frac{d}{\sqrt2})</span> tutte le distanze valgono <span class="math inline">d</span>; lo union bound dà</li>
+</ul>
+<div class="math block">P(e)\le\frac{1}{2M}\sum_k\sum_{i\neq k}\text{erfc}\Big(\frac{d}{2\sqrt{N_0}}\Big)=\frac{M-1}{2}\text{erfc}\Big(\frac{d}{2\sqrt{N_0}}\Big)</div><ul>
+<li>Con <span class="math inline">E_s=\frac1M\sum\lVert\mathbf s_i\rVert^2=\frac{d^2}{2}</span>, <span class="math inline">d=\sqrt{2E_s}=\sqrt{2E_b\log_2M}</span>:</li>
+</ul>
+<div class="math block">P(e)\le\frac{M-1}{2}\text{erfc}\Big(\sqrt{\frac{E_b\log_2M}{2N_0}}\Big)</div><p>Se <span class="math inline">M</span> aumenta con <span class="math inline">E_b</span> fisso, <span class="math inline">P(e)</span> diminuisce; se invece è fisso <span class="math inline">E_s</span>, <span class="math inline">P(e)</span> aumenta con <span class="math inline">M</span>.</p>
+<h3 id="note-finali">Note finali</h3>
+<ul>
+<li>Rimandi a figure da vedere: la <span class="math inline">P(e)</span> in funzione del contrasto di energia, e perché a basso SNR i vicini più lontani diventano rilevanti (a basso SNR l'approssimazione dei primi vicini è poco affidabile; ad alto SNR contano solo i punti a distanza minima).</li>
+</ul>
+<hr />
+
+</section>
+<section id="approfondimenti"><h2 class="ps">Spiegazioni e dimostrazioni passo-passo</h2>
+<p class="nota">Apri una voce per leggere la spiegazione in parole semplici e le dimostrazioni svolte riga per riga (🧩 = passaggio ricostruito da me).</p>
+<details class="conc"><summary><span class="n">Probabilità d&#x27;errore delle modulazioni M-arie</span></summary><div class="cb"><h4 id="probabilita-errore-m-aria-spiegazione">Spiegazione</h4>
+<p>Con più di due simboli le regioni di decisione hanno forme complicate e l'integrale della gaussiana su di esse raramente si calcola in forma chiusa.</p>
+<ul>
+<li><strong>QPSK</strong>: le regioni sono quadranti, e le due coordinate del rumore sono indipendenti. Indovinare il simbolo vuol dire indovinare due bit antipodali indipendenti: <span class="math inline">P(c)=(1-p)^2</span>.</li>
+<li><strong>Union bound</strong>: un errore avviene se il ricevuto è più vicino ad <strong>almeno un</strong> altro punto. La probabilità dell'unione è al più la somma delle probabilità: ogni termine è un problema binario tra due punti (pairwise error probability). Si ottiene un <strong>maggiorante</strong>.</li>
+<li><strong>Primi vicini</strong>: ad alto SNR i termini con distanza maggiore sono trascurabili rispetto a quelli a <span class="math inline">d_{min}</span> (la erfc decresce come una gaussiana). Resta <span class="math inline">\frac{\bar N_{d_{min}}}{2}\text{erfc}\frac{d_{min}}{2\sqrt{N_0}}</span>. A basso SNR l'approssimazione è poco affidabile, perché anche i punti più lontani contribuiscono.</li>
+<li><strong>SER e BER</strong>: con il mapping di Gray i vicini differiscono per un bit, quindi un errore di simbolo è quasi sempre un solo bit sbagliato su <span class="math inline">\log_2M</span>.</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: SER della QPSK via corretta decisione e confronto BER con l'antipodale, union bound con la PEP, approssimazione dei primi vicini, esempio 16-QAM (<span class="math inline">\bar N=3</span>, <span class="math inline">d^2=\frac85E_b</span>), ortogonali con <span class="math inline">M</span>.</p>
+</blockquote>
+<h4 id="probabilita-errore-m-aria-perche-importa">Perché importa</h4>
+<p>Sono le formule con cui si confrontano le modulazioni: l'approssimazione dei primi vicini è la (5) della lezione sui parametri globali, e da essa nascono l'efficienza in potenza e il piano di Shannon (parametri globali modulazioni, limite di shannon).</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — SER della QPSK</summary>
+<div class="math block">
+\begin{aligned}
+P(c)&amp;=P(c\mid H_1) &amp;&amp; \text{regioni congruenti (quadranti)}\\
+&amp;=P\Big(n_1&gt;-\frac{A\sqrt T}{2},\ n_2&gt;-\frac{A\sqrt T}{2}\Big)=\Big[P\Big(n_1&gt;-\frac{A\sqrt T}{2}\Big)\Big]^2 &amp;&amp; \mathbf s_1=\big(\tfrac{A\sqrt T}{2},\tfrac{A\sqrt T}{2}\big)\text{, } n_1,n_2 \text{ indipendenti}\\
+&amp;=(1-p)^2,\qquad p=\frac12\text{erfc}\Big(\frac A2\sqrt{\frac{T}{N_0}}\Big) &amp;&amp; \text{coda della gaussiana}\\
+P(e)&amp;=1-(1-p)^2=2p-p^2
+\end{aligned}
+</div><p>Con <span class="math inline">E_s=\lVert\mathbf s_i\rVert^2=\frac{A^2T}{4}+\frac{A^2T}{4}=\frac{A^2T}{2}</span>: <span class="math inline">\frac A2\sqrt{\frac{T}{N_0}}=\sqrt{\frac{A^2T}{4N_0}}=\sqrt{\frac{E_s}{2N_0}}</span>, quindi</p>
+<div class="math block">
+P(e)=\text{erfc}\Big(\sqrt{\frac{E_s}{2N_0}}\Big)-\frac14\text{erfc}^2\Big(\sqrt{\frac{E_s}{2N_0}}\Big)\simeq\text{erfc}\Big(\sqrt{\frac{E_b}{N_0}}\Big)\qquad(E_s=2E_b,\ \text{alto SNR})
+</div><p>È il doppio della <span class="math inline">P(e)</span> dell'antipodale; ma ogni simbolo porta 2 bit e, con Gray, un errore di simbolo è quasi sempre un solo bit sbagliato: <span class="math inline">\text{BER}=\frac{\text{SER}}{2}=\frac12\text{erfc}\sqrt{E_b/N_0}</span>, <strong>uguale all'antipodale</strong>.</p>
+</details>
+<details class="der"><summary>Derivazione — Union bound</summary>
+<div class="math block">
+\begin{aligned}
+P(e\mid H_k)&amp;=P\Big(\bigcup_{i\neq k}\{\lambda_i(\mathbf r)&gt;\lambda_k(\mathbf r)\}\ \Big|\ H_k\Big) &amp;&amp; \text{errore se un altro } \lambda_i \text{ supera } \lambda_k\\
+&amp;\le\sum_{i\neq k}P\big(\lambda_i&gt;\lambda_k\mid H_k\big) &amp;&amp; P(A\cup B)\le P(A)+P(B)\\
+&amp;=\sum_{i\neq k}\frac12\text{erfc}\Big(\frac{d_{ik}}{2\sqrt{N_0}}\Big) &amp;&amp; \text{ogni termine è una PEP binaria}\\
+P(e)&amp;=\frac1M\sum_kP(e\mid H_k)\le\frac{1}{2M}\sum_k\sum_{i\neq k}\text{erfc}\Big(\frac{d_{ik}}{2\sqrt{N_0}}\Big)
+\end{aligned}
+</div></details>
+<details class="der"><summary>Derivazione — 16-QAM con i primi vicini</summary>
+<div class="math block">
+\begin{aligned}
+\bar N_{d_{min}}&amp;=\frac{1}{16}(4\cdot4+8\cdot3+4\cdot2)=\frac{48}{16}=3 &amp;&amp; \text{4 interni, 8 di bordo, 4 d&#x27;angolo}\\
+E_s&amp;=\frac{1}{16}\Big(4\cdot\frac{d^2}{2}+8\cdot\frac{5d^2}{2}+4\cdot\frac{9d^2}{2}\Big)=\frac{40}{16}d^2=\frac52d^2 &amp;&amp; \text{punti in } (\pm\tfrac d2,\pm\tfrac d2),(\pm\tfrac d2,\pm\tfrac{3d}{2}),\dots\\
+\frac52d^2&amp;=4E_b\ \Rightarrow\ d^2=\frac85E_b &amp;&amp; E_s=E_b\log_216\\
+P(e)&amp;\approx\frac32\text{erfc}\Big(\frac{d}{2\sqrt{N_0}}\Big)=\frac32\text{erfc}\Big(\sqrt{\frac{d^2}{4N_0}}\Big)=\frac32\text{erfc}\Big(\sqrt{\frac25\frac{E_b}{N_0}}\Big)
+\end{aligned}
+</div><p><strong>Verifica:</strong> <span class="math inline">\frac25=0.4</span> è proprio l'<span class="math inline">\eta_P</span> della 16-QAM in parametri globali modulazioni.</p>
+</details>
+<details class="der"><summary>Derivazione — <span class="math inline">M</span> segnali ortogonali</summary>
+<div class="math block">
+\begin{aligned}
+d_{ik}&amp;=d\ \ \forall i\neq k &amp;&amp; \text{tutti alla stessa distanza}\\
+P(e)&amp;\le\frac{1}{2M}\cdot M(M-1)\,\text{erfc}\Big(\frac{d}{2\sqrt{N_0}}\Big)=\frac{M-1}{2}\text{erfc}\Big(\frac{d}{2\sqrt{N_0}}\Big) &amp;&amp; M(M-1) \text{ coppie ordinate}\\
+E_s&amp;=\frac{d^2}{2}\ \Rightarrow\ d=\sqrt{2E_s}=\sqrt{2E_b\log_2M} &amp;&amp; \lVert\mathbf s_i\rVert=\tfrac{d}{\sqrt2}\\
+P(e)&amp;\le\frac{M-1}{2}\text{erfc}\Big(\sqrt{\frac{E_b\log_2M}{2N_0}}\Big)
+\end{aligned}
+</div><p>A <span class="math inline">E_b</span> fisso, aumentando <span class="math inline">M</span> l'argomento cresce come <span class="math inline">\sqrt{\log_2M}</span> e la erfc scende più in fretta di quanto cresca <span class="math inline">M-1</span>: <span class="math inline">P(e)</span> diminuisce. A <span class="math inline">E_s</span> fisso, invece, <span class="math inline">P(e)</span> aumenta con <span class="math inline">M</span>.</p>
+</details>
+</div></details>
+</section>
+<section id="domande"><h2 class="ps">Domande da esame</h2>
+<ul>
+<li>Ricavare lo union bound e spiegare cos'è la pairwise error probability.</li>
+<li>Enunciare l'approssimazione dei primi vicini e quando vale.</li>
+<li>Calcolare la <span class="math inline">P(e)</span> della 16-QAM in funzione di <span class="math inline">E_b/N_0</span>.</li>
+<li>Maggiorare la <span class="math inline">P(e)</span> di <span class="math inline">M</span> segnali ortogonali e commentare l'effetto di <span class="math inline">M</span>.</li>
+</ul>
+
+</section>
+<nav class="pn"><a href="lezione-10.html">← Lezione 10</a><a href="lezione-12.html">Lezione 12 →</a></nav>
+</main>
+<footer>Appunti personali del corso di Trasmissione dei Segnali Digitali (LM Ingegneria Informatica, UNINA). Generato dal wiki con <code>output/crea_sito.py</code>.</footer>
+<div id="lb" hidden></div><a id="su" href="#" hidden aria-label="torna su">↑</a>
+</body></html>

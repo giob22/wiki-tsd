@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lezione 1 · Introduzione al corso</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="style.css">
+<script>try{var t=localStorage.getItem('tsd-tema');if(t==='chiaro')document.documentElement.setAttribute('data-theme','light');else if(t==='scuro')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="app.js"></script></head>
+<body><header class="top"><nav><a href="index.html" class="home" aria-label="indice">⌂</a><a href="lezione-1.html" aria-current="page">L1</a><a href="lezione-2.html">L2</a><a href="lezione-3.html">L3</a><a href="lezione-4.html">L4</a><a href="lezione-5.html">L5</a><a href="lezione-6.html">L6</a><a href="lezione-7.html">L7</a><a href="lezione-8.html">L8</a><a href="lezione-9.html">L9</a><a href="lezione-10.html">L10</a><a href="lezione-11.html">L11</a><a href="lezione-12.html">L12</a></nav><span class="ctl"><span class="tm" role="group" aria-label="tema"><button data-t="sistema" title="Tema del sistema" aria-label="tema del sistema"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor" stroke="none"/></svg></button><button data-t="chiaro" title="Tema chiaro" aria-label="tema chiaro"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="3" fill="currentColor"/><path d="M8 1.2v2M8 12.8v2M1.2 8h2M12.8 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4M3.2 12.8l1.4-1.4M11.4 4.6l1.4-1.4"/></svg></button><button data-t="scuro" title="Tema scuro" aria-label="tema scuro"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M13.2 9.6A5.8 5.8 0 1 1 6.4 2.8a4.6 4.6 0 0 0 6.8 6.8z" fill="currentColor"/></svg></button></span><span class="fs"><button id="fm" aria-label="testo più piccolo">A−</button><button id="fp" aria-label="testo più grande">A+</button></span></span></header>
+<main>
+<p class="crumb"><a href="index.html">Home</a> · <a href="index.html#lezioni">Lezioni</a> · Lezione 1 · 15/09</p>
+<h1>Introduzione al corso</h1>
+<p class="breve">Organizzazione e programma, il processo di comunicazione, gli elementi di un sistema digitale, rigenerazione e vantaggi del digitale.</p>
+<details class="toc"><summary>Indice della lezione</summary><ul><li class="l3"><a href="#organizzazione-e-programma">Organizzazione e programma</a></li><li class="l3"><a href="#comunicazione-e-processo-di-comunicazione">Comunicazione e processo di comunicazione</a></li><li class="l3"><a href="#elementi-di-un-sistema-di-comunicazione">Elementi di un sistema di comunicazione</a></li><li class="l3"><a href="#comunicazione-digitale-e-rigenerazione">Comunicazione digitale e rigenerazione</a></li><li class="l3"><a href="#schema-di-un-sistema-di-comunicazione-digitale">Schema di un sistema di comunicazione digitale</a></li><li class="l3"><a href="#vantaggi-dell-approccio-digitale-e-separazione">Vantaggi dell'approccio digitale e separazione</a></li><li class="l3"><a href="#approfondimenti">Spiegazioni e dimostrazioni passo-passo</a></li><li class="l3"><a href="#domande">Domande da esame</a></li></ul></details>
+<section id="corso"><h2 class="ps">Il corso, slide per slide</h2>
+<h3 id="organizzazione-e-programma">Organizzazione e programma</h3>
+<ul>
+<li>Docente: Donatella Darsena (DIETI, UNINA); LM Ingegneria Informatica, a.a. 2026-27.</li>
+<li>Testo: U. Madhow, <em>Fundamentals of Digital Communication</em>, Cambridge, 2008 (altri testi per alcuni argomenti), più gli appunti delle lezioni. Lezioni con slide e lavagna.</li>
+<li>Esame: <strong>colloquio orale</strong>.</li>
+<li>Argomenti del corso:
+<ol>
+<li>rappresentazione complessa in banda base dei segnali;</li>
+<li>processi aleatori;</li>
+<li>modulazione digitale dei segnali;</li>
+<li>stima dei parametri e sincronizzazione;</li>
+<li>comunicazione digitale su canali selettivi in frequenza;</li>
+<li>elementi di teoria dell'informazione e codifica di canale.</li>
+</ol>
+</li>
+</ul>
+<h3 id="comunicazione-e-processo-di-comunicazione">Comunicazione e processo di comunicazione</h3>
+<ul>
+<li><strong>Comunicazione</strong> = trasferimento di informazione (voce, audio, video, file, pagine web...) tra punti diversi dello <strong>spazio</strong> o del <strong>tempo</strong> (memorizzazione).</li>
+<li>Il processo di comunicazione comporta:
+<ol>
+<li>generazione di un segnale messaggio (voce, musica, immagine, dati);</li>
+<li>sua descrizione, con una certa precisione, mediante un insieme di simboli (elettrici, sonori, visivi);</li>
+<li>codifica dei simboli in forma adatta a un mezzo fisico;</li>
+<li>trasmissione dei simboli codificati alla destinazione;</li>
+<li>decodifica e riproduzione dei simboli originali;</li>
+<li>ricostruzione del messaggio con una degradazione definibile, dovuta a imperfezioni inevitabili.</li>
+</ol>
+</li>
+<li>Anche nelle comunicazioni tra computer la decisione umana interviene solo nell'impostazione dei programmi o nel controllo dei risultati.</li>
+<li>Ogni sistema ha tre elementi base: <strong>trasmettitore</strong>, <strong>canale</strong>, <strong>ricevitore</strong>. La cascata trasmettitore + ricevitore è detta <strong>transceiver</strong>.</li>
+</ul>
+<h3 id="elementi-di-un-sistema-di-comunicazione">Elementi di un sistema di comunicazione</h3>
+<img class="zoom" src="img/intro-p7-elementi-sistema-comunicazione.png" alt="" loading="lazy">
+<p><em>Sorgente → trasmettitore → canale → ricevitore → utente.</em></p>
+<ul>
+<li><strong>Trasmissione:</strong> il trasmettitore è in un punto, il ricevitore in un altro, il canale è il mezzo fisico che li collega. Il trasmettitore converte il segnale messaggio della sorgente in una forma adatta al canale.</li>
+<li><strong>Ricezione:</strong> propagandosi, il segnale si distorce per le imperfezioni del canale; all'uscita si sommano <strong>rumore</strong> e <strong>interferenze</strong> (da altre sorgenti): il segnale ricevuto è una versione corrotta del trasmesso. Il ricevitore ricostruisce una forma riconoscibile del messaggio per l'utente.</li>
+<li>Il processo di comunicazione, in ogni sistema, è di natura <strong>statistica</strong>.</li>
+</ul>
+<h3 id="comunicazione-digitale-e-rigenerazione">Comunicazione digitale e rigenerazione</h3>
+<ul>
+<li><strong>Digitale:</strong> l'informazione è rappresentata in forma digitale (di solito cifre binarie, bit). <strong>Analogica:</strong> l'informazione assume un continuo di valori.</li>
+<li>Perché si passa al digitale: il vantaggio primario è la facilità di <strong>rigenerare</strong> i segnali digitali; con rivelazione e correzione d'errore si hanno probabilità d'errore bassissime e alta fedeltà (procedure non disponibili per l'analogico).</li>
+</ul>
+<img class="zoom" src="img/intro-p11-degradazione-impulso.png" alt="" loading="lazy">
+<p><em>Impulso binario ideale lungo una linea: degradazione crescente con la distanza (1→4) e rigenerazione (5).</em></p>
+<ul>
+<li>La forma d'onda è alterata da due meccanismi: (i) linee e circuiti hanno una funzione di trasferimento non ideale (distorsione); (ii) rumore elettrico e altre interferenze. Entrambi degradano l'impulso con la lunghezza della linea.</li>
+<li>Finché l'impulso è ancora identificabile con affidabilità (prima di diventare ambiguo), un amplificatore digitale ne recupera la forma ideale: l'impulso «rinasce». I circuiti che lo fanno a intervalli regolari sono i <strong>ripetitori rigenerativi</strong>.</li>
+<li>Altri vantaggi: circuiti digitali più affidabili ed economici; hardware più flessibile (microprocessori, commutazione digitale, LSI); <em>a bit is a bit</em> (dati, telegrafo, telefono, TV trattati come segnali identici in trasmissione e commutazione); messaggi gestiti a <strong>pacchetti</strong>; elaborazioni contro interferenza e jamming, crittografia e privacy; molta comunicazione è tra computer, terminazioni digitali.</li>
+</ul>
+<h3 id="schema-di-un-sistema-di-comunicazione-digitale">Schema di un sistema di comunicazione digitale</h3>
+<img class="zoom" src="img/intro-p14-schema-sistema-digitale.png" alt="" loading="lazy">
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Blocco</th>
+<th>Funzione (slide)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Codificatore di sorgente</strong></td>
+<td>Ogni informazione si rappresenta in modo efficiente in forma digitale con precisione arbitraria, con un numero di bit che dipende dalla fedeltà richiesta. Realizza la conversione A/D (sorgenti analogiche) e riduce la ridondanza tenendo conto dell'utente finale. Bit rate: voce 64 kbit/s (telefonia cablata), MP3 consumer 128 kbit/s tipici, audio da studio circa 10 volte di più</td>
+</tr>
+<tr>
+<td><strong>Codificatore di canale</strong></td>
+<td>Introduce ridondanza <strong>controllata</strong> contro errori dovuti a imperfezioni e rumore del canale; l'uscita è una <em>parola di codice</em> progettata sul canale e sui requisiti dei livelli di rete superiori: rivelazione d'errore + ritrasmissione per applicazioni insensibili al ritardo, correzione d'errore per applicazioni real-time</td>
+</tr>
+<tr>
+<td><strong>Modulatore</strong></td>
+<td>Traduce simboli di messaggio o di canale (se c'è codifica di canale) in forme d'onda analogiche trasmissibili sul canale fisico</td>
+</tr>
+<tr>
+<td><strong>Canale</strong></td>
+<td>Distorce la forma d'onda in modo diverso a seconda dei casi: cablato → sistema LTI descritto dalla risposta impulsiva; wireless mobile → variabile per la mobilità relativa TX-RX; il wireless è un mezzo broadcast, quindi può esserci interferenza di accesso multiplo</td>
+</tr>
+<tr>
+<td><strong>Rumore termico</strong></td>
+<td>Alla ricezione il segnale è corrotto dal rumore termico dei componenti. Un elemento con due terminali ha resistenza <span class="math inline">R</span> (Ω); contiene elettroni liberi in moto casuale se la temperatura è sopra lo zero assoluto, il che genera una tensione di rumore ai terminali. È piccolo, ma diventa un problema se amplificato da un ricevitore ad alto guadagno. Si caratterizza con la meccanica quantistica</td>
+</tr>
+<tr>
+<td><strong>Demodulatore</strong></td>
+<td>Elabora la forma d'onda ricevuta (distorta e rumorosa). Compito chiave: <strong>sincronizzazione</strong> (il canale produce sfasamenti di fase, frequenza e tempo; clock e oscillatori di TX e RX non sono sincronizzati a priori). Può fare anche equalizzazione di canale. Obiettivo finale: produrre <strong>decisioni</strong> sui simboli trasmessi (detection) per il decodificatore di canale</td>
+</tr>
+<tr>
+<td><strong>Decodificatore di canale</strong></td>
+<td>Sfrutta la ridondanza inserita in trasmissione per stimare i simboli di informazione in ingresso al codificatore di canale</td>
+</tr>
+<tr>
+<td><strong>Decodificatore di sorgente</strong></td>
+<td>Converte i bit stimati in un formato utilizzabile dall'utente, non necessariamente quello originale (esempio: la voce tradotta in testo, codificata in bit; il decodificatore mostra il testo invece di riprodurre la voce)</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="vantaggi-dell-approccio-digitale-e-separazione">Vantaggi dell'approccio digitale e separazione</h3>
+<ul>
+<li><strong>Progetto indipendente dalla sorgente:</strong> trasformata l'informazione in bit, la si memorizza o trasmette senza interpretarla; il mezzo non dipende dalla sorgente e sorgenti diverse condividono lo stesso mezzo.</li>
+<li><strong>Progetto ottimizzato per il canale:</strong> per ogni collegamento si ottimizzano codifica di canale e modulazione per quel canale. Poiché i bit sono rigenerati a ogni tratta, non c'è accumulo di rumore.</li>
+<li>Osservazioni: (1) lo schema si basa sulla <strong>separazione tra codifica di sorgente e di canale</strong>, che dà vantaggi pratici ed è ottima per collegamenti punto-punto (teoria dell'informazione); in certi casi la codifica congiunta dà prestazioni migliori. (2) Le <strong>comunicazioni semantiche</strong> sono un tema emergente: invece di recuperare accuratamente la sequenza di bit, si trasmette il significato della sorgente; la codifica semantica estrae le caratteristiche utili ai compiti da eseguire al ricevitore.</li>
+</ul>
+
+</section>
+<section id="approfondimenti"><h2 class="ps">Spiegazioni e dimostrazioni passo-passo</h2>
+<p class="nota">Apri una voce per leggere la spiegazione in parole semplici e le dimostrazioni svolte riga per riga (🧩 = passaggio ricostruito da me).</p>
+<details class="conc"><summary><span class="n">Sistema di comunicazione digitale</span></summary><div class="cb"><h4 id="sistema-comunicazione-digitale-spiegazione">Spiegazione</h4>
+<h4 id="sistema-comunicazione-digitale-processo-di-comunicazione">Processo di comunicazione</h4>
+<p>Passi logici del processo:</p>
+<ol>
+<li>generazione del segnale messaggio (voce, musica, immagine, dati);</li>
+<li>descrizione del messaggio con una certa precisione tramite un insieme di simboli;</li>
+<li>codifica dei simboli in forma adatta al mezzo fisico;</li>
+<li>trasmissione dei simboli codificati;</li>
+<li>decodifica e riproduzione dei simboli originali;</li>
+<li>ricreazione del messaggio con una degradazione definibile, dovuta a imperfezioni inevitabili.</li>
+</ol>
+<p>Il segnale si distorce propagandosi nel canale; in più al ricevitore si sommano <strong>rumore</strong> e <strong>interferenze</strong>. Il segnale ricevuto è quindi una versione corrotta di quello trasmesso.</p>
+<blockquote class="co esame"><p>🎯 Esame: «Il processo di comunicazione, in ogni sistema, è di natura <strong>statistica</strong>». Per questo nel corso servono la teoria della probabilità e i processi aleatori.</p>
+</blockquote>
+<img class="zoom" src="img/intro-p7-elementi-sistema-comunicazione.png" alt="" loading="lazy">
+<p><em>Sorgente → trasmettitore → canale → ricevitore → utente</em></p>
+<h4 id="sistema-comunicazione-digitale-schema-a-blocchi-del-sistema-digitale">Schema a blocchi del sistema digitale</h4>
+<img class="zoom" src="img/intro-p14-schema-sistema-digitale.png" alt="" loading="lazy">
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Blocco</th>
+<th>Funzione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Codificatore di sorgente</strong></td>
+<td>Conversione A/D (per sorgenti analogiche) e riduzione della ridondanza, secondo i requisiti dell'utente finale</td>
+</tr>
+<tr>
+<td><strong>Codificatore di canale</strong></td>
+<td>Introduce ridondanza <strong>controllata</strong> contro gli errori del canale; produce una <em>parola di codice</em></td>
+</tr>
+<tr>
+<td><strong>Modulatore</strong></td>
+<td>Traduce simboli (di messaggio o di canale) in forme d'onda analogiche trasmissibili</td>
+</tr>
+<tr>
+<td><strong>Canale</strong></td>
+<td>Distorce la forma d'onda: LTI (risposta impulsiva) per i canali cablati; tempo-variante per il wireless mobile; interferenza di accesso multiplo nel wireless (mezzo broadcast)</td>
+</tr>
+<tr>
+<td><strong>Demodulatore</strong></td>
+<td>Sincronizzazione (sfasamenti di fase, frequenza, tempo; clock non sincronizzati a priori), eventuale equalizzazione, <strong>decisione</strong> sui simboli (<em>detection</em>)</td>
+</tr>
+<tr>
+<td><strong>Decodificatore di canale</strong></td>
+<td>Sfrutta la ridondanza per stimare i simboli d'informazione</td>
+</tr>
+<tr>
+<td><strong>Decodificatore di sorgente</strong></td>
+<td>Converte i bit stimati in un formato usabile dall'utente (non per forza quello originale, es. voce → testo)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Codifica di canale: per applicazioni insensibili al ritardo si usa rivelazione d'errore + ritrasmissione; per applicazioni real-time si usa correzione d'errore.</p>
+<p>Il blocco tratteggiato dello schema (codificatore di canale →... → decodificatore di canale) è la parte &quot;trasmissiva&quot; su cui si concentra il corso.</p>
+<h4 id="sistema-comunicazione-digitale-rumore-termico">Rumore termico</h4>
+<p>Il segnale ricevuto è corrotto dal <strong>rumore termico</strong> generato dai componenti elettronici. Un conduttore di resistenza <span class="math inline">R</span> (Ω) a temperatura sopra lo zero assoluto contiene elettroni liberi in moto casuale, che producono una tensione di rumore ai suoi capi. Il rumore è piccolo, ma diventa un problema quando viene amplificato da un ricevitore ad alto guadagno. Si caratterizza con la meccanica quantistica.</p>
+<p>TODO: da espandere — la slide non dà formule (densità spettrale, <span class="math inline">kT</span>). Le slide sui processi aleatori citano il rumore termico come esempio di segnale aleatorio (processo aleatorio) e danno gli strumenti per descriverlo (densita spettrale di potenza, processo gaussiano), ma non il suo modello quantitativo.</p>
+<h4 id="sistema-comunicazione-digitale-perche-quot-going-digital-quot">Perché &quot;going digital&quot;</h4>
+<ul>
+<li><strong>Rigenerazione</strong>: il vantaggio principale. Vedi ripetitore rigenerativo.</li>
+<li><strong>Basse probabilità d'errore</strong> grazie a rivelazione e correzione d'errore, che non hanno equivalenti analogici.</li>
+<li>Circuiti digitali più <strong>affidabili</strong> ed <strong>economici</strong>; implementazione <strong>flessibile</strong> (microprocessori, switching digitale, LSI).</li>
+<li><em>«A bit is a bit»</em>: dati, telegrafo, telefono e TV vengono trattati come segnali identici.</li>
+<li>Gestione a <strong>pacchetti</strong>; protezione da interferenza/jamming; crittografia e privacy.</li>
+<li>Gran parte del traffico è tra computer, che per natura sono terminazioni digitali.</li>
+</ul>
+<h4 id="sistema-comunicazione-digitale-vantaggi-dell-approccio-digitale-e-principio-di-">Vantaggi dell'approccio digitale e principio di separazione</h4>
+<ul>
+<li><strong>Progetto indipendente dalla sorgente</strong>: una volta ridotta in bit, l'informazione si memorizza o trasmette senza interpretarla, e sorgenti diverse condividono lo stesso mezzo.</li>
+<li><strong>Progetto ottimizzato per il canale</strong>: codifica di canale e modulazione si ottimizzano per ogni collegamento. Siccome i bit vengono rigenerati a ogni tratta, il rumore <strong>non si accumula</strong>.</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: lo schema si basa sulla <strong>separazione tra codifica di sorgente e di canale</strong>. Il principio di separazione dà vantaggi pratici ed è <strong>ottimo per collegamenti punto-punto</strong> (risultato di teoria dell'informazione). In certi casi la <em>codifica congiunta sorgente-canale</em> dà prestazioni migliori.</p>
+</blockquote>
+<p><strong>Comunicazioni semantiche</strong> (tema emergente): invece di ricostruire fedelmente la sequenza di bit, si trasmette il <em>significato</em> della sorgente. La codifica semantica estrae le caratteristiche utili al compito che il ricevitore deve svolgere.</p>
+<h4 id="sistema-comunicazione-digitale-perche-importa">Perché importa</h4>
+<p>È il quadro di riferimento di tutto il corso: ogni argomento del programma corrisponde a un blocco dello schema:</p>
+<ul>
+<li>rappresentazione complessa in banda base → come modulatore e demodulatore lavorano in banda base, con upconverter e downconverter verso il canale (inviluppo complesso, upconversion e downconversion);</li>
+<li>modulazione digitale → modulatore/demodulatore (modulazione digitale);</li>
+<li>stima dei parametri e sincronizzazione → demodulatore;</li>
+<li>canali selettivi in frequenza → canale ed equalizzazione;</li>
+<li>teoria dell'informazione e codifica di canale → codificatore/decodificatore di canale;</li>
+<li>conversione A/D → codificatore di sorgente (teorema del campionamento, quantizzazione uniforme).</li>
+</ul>
+<h4 class="sub">Dimostrazioni passo-passo</h4><p>Nessun risultato numerico da espandere nella fonte. Il collegamento quantitativo con il bit rate da 64 kbit/s è in campionamento e aliasing e dimensionamento quantizzatore.</p>
+<blockquote class="co conn"><p>💡 Connessione: 64 kbit/s = 8 kHz × 8 bit/campione. La frequenza di campionamento di 8 kHz per la voce è (banda 4 kHz → <span class="math inline">f_c \ge 8</span> kHz, vedi teorema del campionamento).
+📚 Fonte esterna: gli 8 bit/campione sono della raccomandazione ITU-T G.711 (vedi g711); le slide non riportano questo valore.</p>
+</blockquote>
+</div></details>
+<details class="conc"><summary><span class="n">Ripetitore rigenerativo</span></summary><div class="cb"><h4 id="ripetitore-rigenerativo-cos-e">Cos'è</h4>
+<p>Circuito posto a <strong>intervalli regolari</strong> lungo una linea di trasmissione digitale. Prima che l'impulso trasmesso diventi ambiguo, lo amplifica con un amplificatore digitale e ne recupera la forma ideale originale: l'impulso viene &quot;rigenerato&quot; (<em>reborn</em>).</p>
+<img class="zoom" src="img/intro-p11-degradazione-impulso.png" alt="" loading="lazy">
+<p><em>Impulso binario lungo una linea: distorsione crescente con la distanza (1→4) e rigenerazione (5)</em></p>
+<p>La forma d'onda si degrada con la lunghezza della linea per due meccanismi:</p>
+<ol>
+<li><strong>distorsione</strong>: linee e circuiti hanno una funzione di trasferimento non ideale;</li>
+<li><strong>rumore</strong> elettrico e interferenze.</li>
+</ol>
+<h4 id="ripetitore-rigenerativo-come-si-usa-nel-corso">Come si usa nel corso</h4>
+<p>È il motivo principale del passaggio al digitale. Siccome i bit vengono rigenerati a ogni tratta, il rumore <strong>non si accumula</strong> lungo il collegamento. Con un amplificatore analogico, invece, il rumore verrebbe amplificato insieme al segnale.</p>
+<blockquote class="co mia"><p>🧩 Derivazione mia: il confronto con l'amplificatore analogico è implicito nelle slide («similar procedures are not available with analog»), qui lo rendo esplicito.</p>
+</blockquote>
+<h4 id="ripetitore-rigenerativo-concetti-correlati">Concetti correlati</h4>
+<ul>
+<li>sistema comunicazione digitale</li>
+</ul>
+</div></details>
+</section>
+<section id="domande"><h2 class="ps">Domande da esame</h2>
+<ul>
+<li>Descrivere lo schema a blocchi di un sistema di comunicazione digitale e la funzione di ogni blocco.</li>
+<li>Perché i sistemi di comunicazione &quot;diventano digitali&quot;? Cos'è un ripetitore rigenerativo?</li>
+<li>Quali compiti svolge il demodulatore?</li>
+<li>Cosa dice il principio di separazione e quali vantaggi porta?</li>
+<li>Perché il processo di comunicazione è di natura statistica?</li>
+</ul>
+
+</section>
+<nav class="pn"><span></span><a href="lezione-2.html">Lezione 2 →</a></nav>
+</main>
+<footer>Appunti personali del corso di Trasmissione dei Segnali Digitali (LM Ingegneria Informatica, UNINA). Generato dal wiki con <code>output/crea_sito.py</code>.</footer>
+<div id="lb" hidden></div><a id="su" href="#" hidden aria-label="torna su">↑</a>
+</body></html>

@@ -81,6 +81,8 @@ details.der>*:not(summary):last-child{padding-bottom:.6em}
 .card .b{display:block;color:var(--ink2);font-size:.92em;margin-bottom:.3em}
 .card ul{margin:.3em 0 0;font-size:.86em;color:var(--ink2);columns:1}
 .legenda li{margin:.5em 0}
+.card.hero{border:2px solid var(--a1);background:var(--soft)}
+.card.hero strong{font-size:1.25em}
 .nota{color:var(--ink2);font-size:.92em}
 .pn{display:flex;justify-content:space-between;margin-top:2em;font-weight:600}
 footer{max-width:760px;margin:0 auto;padding:0 16px 30px;color:var(--ink2);font-size:.8em}
