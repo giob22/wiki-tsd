@@ -28,7 +28,7 @@ KATEX = "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/"
 
 LEZIONI = [
     dict(n=1, slug="lezione-1", data="15/09", titolo="Introduzione al corso",
-         breve="Organizzazione e programma, il processo di comunicazione, gli elementi di un sistema digitale, rigenerazione e vantaggi del digitale.",
+         breve="Il processo di comunicazione, gli elementi di un sistema di comunicazione digitale, rigenerazione e vantaggi del digitale.",
          concetti=["sistema-comunicazione-digitale", "entità/ripetitore-rigenerativo"], fonte="intro-corso", esercizi=[]),
     dict(n=2, slug="lezione-2", data="16/09", titolo="Elementi di teoria della probabilità",
          breve="Spazio di probabilità, probabilità condizionale, Bayes, variabili aleatorie notevoli, gaussiana, media, varianza, coppie, correlazione.",
@@ -81,6 +81,9 @@ LEZIONI = [
 for _c in LEZIONI:
     _c.setdefault("inizio", None)
     _c.setdefault("domande_filtro", None)
+
+# sezioni del corso completo che il sito non mostra (organizzazione del corso, non argomenti): (lezione, inizio del titolo)
+ESCLUDI = [(1, "Organizzazione e programma")]
 
 # percorso della prima prova intercorso: (lezione, titolo della sezione da cui partire o None, nota)
 INTERCORSO = [
@@ -418,6 +421,9 @@ def corpo_lezione(cfg, corso, out):
     blocco = re.sub(r"(?m)^\*Approfondimenti nel wiki.*$", "", blocco)
     if cfg["inizio"]:
         blocco = blocco[blocco.index(cfg["inizio"]):]
+    for n, titolo in ESCLUDI:
+        if n == cfg["n"]:
+            blocco = re.sub(rf"(?ms)^### {re.escape(titolo)}.*?(?=^### |^## |\Z)", "", blocco)
     blocco = inserisci_figure(blocco, cfg["n"])
     return titoli_con_pagine(wikilink_testo(blocco, out)).strip()
 
