@@ -888,6 +888,323 @@ def fig_bilancio_wlan():
                         "Il ricevitore ha un rumore di −95 dBm e per la BER richiesta servono 12 dB sopra il rumore (sensibilità −83 dBm); i 20 dB restanti sono il margine.")
 
 
+# --------------------------------------------------------------------------------------------- Lezioni 8–11
+
+def _gonna(s, x0, x1, y0, h, fn, cl="cv", n=160):
+    xs = np.linspace(x0, x1, n)
+    s.poly([(x, y0 - h * fn(x)) for x in xs], cl)
+
+
+def fig_forme_mary():
+    s = Svg(400, 300, "stessa sequenza di bit con M = 2, 4, 8")
+    bits = "100101111000"
+    x0, w = 46, 336 / 12
+    righe = ((2, 1, {"1": 1, "0": -1}, 1), (4, 2, {"10": 3, "11": 1, "01": -1, "00": -3}, 3),
+             (8, 3, {"111": 7, "101": 5, "100": 3, "110": 1, "010": -1, "011": -3, "001": -5, "000": -7}, 7))
+    for r, (M, h, mappa, amax) in enumerate(righe):
+        yc = 50 + r * 96
+        k = 38 / amax
+        s.line(x0 - 4, yc, 392, yc, "ax", ar=True)
+        s.t(8, yc + 4, f"M={M}", "tx tb a1", "start")
+        pts = []
+        for i in range(0, 12, h):
+            v = mappa[bits[i:i + h]]
+            xa, xb = x0 + i * w, x0 + (i + h) * w
+            pts += [(xa, yc - k * v), (xb, yc - k * v)]
+            s.line(xb, yc - 3, xb, yc + 3, "gd")
+        s.poly(pts, "cv")
+        s.t(x0 + h * w / 2, yc + 44, f"T = {h}T_b", "ts a2")
+    for i, b in enumerate(bits):
+        s.t(x0 + (i + .5) * w, 14, b, "ts")
+    return s.render(), "🧩 Più bit per simbolo: simboli più lunghi, livelli più vicini."
+
+
+def fig_nrz_rz():
+    s = Svg(400, 200, "segnali NRZ e RZ")
+    bits = [1, 0, 1, 1, 0, 0, 1]
+    x0, w = 50, 46
+    for r, (nome, frac) in enumerate((("NRZ", 1.0), ("RZ", 0.5))):
+        yc = 58 + r * 92
+        s.line(x0 - 4, yc, 392, yc, "ax", ar=True)
+        s.t(10, yc + 4, nome, "tx tb a1", "start")
+        pts = []
+        for i, b in enumerate(bits):
+            v = -1 if b else 1
+            xa = x0 + i * w
+            pts += [(xa, yc), (xa, yc - 30 * v), (xa + frac * w, yc - 30 * v), (xa + frac * w, yc)]
+            if r == 0:
+                s.t(xa + w / 2, 14, str(b), "ts")
+        s.poly(pts, "cv")
+        s.t(x0 - 8, yc - 26, "A", "ts", "end")
+        s.t(x0 - 8, yc + 34, "−A", "ts", "end")
+    return s.render(), "🧩 NRZ tiene il livello per tutto il simbolo, RZ per metà."
+
+
+def _punto(s, x, y, lab=None, dy=-8, cl="cv"):
+    s.circ(x, y, 4, "pt " + cl)
+    if lab:
+        s.t(x, y + dy, lab, "ts")
+
+
+def fig_costellazioni_lineari():
+    s = Svg(400, 330, "costellazioni PAM, QPSK, 8-PSK, 16-QAM")
+    # PAM-4
+    y = 46
+    s.t(10, 18, "4-PAM", "tx tb a1", "start")
+    s.line(30, y, 380, y, "ax", ar=True)
+    for v, lab in ((-3, "00"), (-1, "10"), (1, "11"), (3, "01")):
+        _punto(s, 205 + v * 40, y, lab, -10)
+        s.t(205 + v * 40, y + 16, str(v), "ts")
+    # QPSK
+    cx, cy, R = 100, 170, 50
+    s.t(10, 96, "QPSK (Gray)", "tx tb a1", "start")
+    s.line(cx - 70, cy, cx + 70, cy, "ax")
+    s.line(cx, cy + 70, cx, cy - 70, "ax")
+    s.circ(cx, cy, R, "gd")
+    for a, lab in ((45, "00"), (135, "01"), (225, "11"), (315, "10")):
+        x, yy = cx + R * math.cos(math.radians(a)), cy - R * math.sin(math.radians(a))
+        _punto(s, x, yy)
+        s.t(cx + (R + 16) * math.cos(math.radians(a)), cy - (R + 16) * math.sin(math.radians(a)) + 4, lab, "ts")
+    # 8-PSK
+    cx = 300
+    s.t(220, 96, "8-PSK", "tx tb a1", "start")
+    s.line(cx - 70, cy, cx + 70, cy, "ax")
+    s.line(cx, cy + 70, cx, cy - 70, "ax")
+    s.circ(cx, cy, R, "gd")
+    for i in range(8):
+        a = math.radians(45 * i)
+        _punto(s, cx + R * math.cos(a), cy - R * math.sin(a))
+    # 16-QAM
+    cx, cy = 205, 290
+    s.t(10, 262, "16-QAM", "tx tb a1", "start")
+    s.line(cx - 70, cy, cx + 70, cy, "ax")
+    s.line(cx, cy + 38, cx, cy - 38, "ax")
+    for i in (-3, -1, 1, 3):
+        for j in (-3, -1, 1, 3):
+            _punto(s, cx + 16 * i, cy - 11 * j)
+    return s.render(), "🧩 Costellazioni: PAM su una retta, PSK su un cerchio, QAM su una griglia."
+
+
+def fig_psd_sinc2():
+    s = Svg(400, 190, "PSD per impulso rettangolare")
+    ox, oy, kx, ky = 200, 160, 50, 130
+    s.line(20, oy, 390, oy, "ax", ar=True)
+    s.line(ox, oy + 4, ox, oy - ky - 12, "ax", ar=True)
+    f = lambda x: 1.0 if abs(x) < 1e-9 else (math.sin(math.pi * x) / (math.pi * x)) ** 2
+    pts = [(ox + kx * x, oy - ky * f(x)) for x in np.linspace(-3.5, 3.5, 400)]
+    s.poly([(ox - kx * 1, oy)] + [(ox + kx * x, oy - ky * f(x)) for x in np.linspace(-1, 1, 120)] + [(ox + kx * 1, oy)], "fl", True)
+    s.poly(pts, "cv")
+    for k in (-3, -2, -1, 1, 2, 3):
+        s.t(ox + kx * k, oy + 15, f"{k}/T", "ts")
+    s.t(390, oy + 15, "f", "ts", "end")
+    s.t(ox + 8, oy - ky - 8, "S_{ss}(f) ∝ sinc²(fT)", "ts", "start")
+    return s.render(), "🧩 Il lobo principale è largo 2/T: simboli più lunghi, banda più stretta."
+
+
+def fig_base_ortonormale():
+    s = Svg(400, 220, "vettore nello spazio dei segnali")
+    ox, oy = 120, 190
+    s.line(ox - 10, oy, 380, oy, "ax", ar=True)
+    s.line(ox, oy + 10, ox, 14, "ax", ar=True)
+    s.t(380, oy + 15, "ψ_1(t)", "ts", "end")
+    s.t(ox + 6, 18, "ψ_2(t)", "ts", "start")
+    px, py = 200, 120
+    s.line(ox, oy, ox + px, oy - py, "cv", ar=True)
+    s.line(ox + px, oy - py, ox + px, oy, "gd")
+    s.line(ox, oy - py, ox + px, oy - py, "gd")
+    s.t(ox + px / 2, oy + 16, "s_i(1) = ⟨s_i, ψ_1⟩", "ts a1")
+    s.t(ox - 6, oy - py + 4, "s_i(2)", "ts a1", "end")
+    s.t(ox + px + 8, oy - py, "s_i = [s_i(1), s_i(2)]", "tx a1", "start")
+    s.t(ox + px / 2 - 30, oy - py / 2 - 10, "‖s_i‖² = E_i", "ts a2", "end")
+    return s.render(), "🧩 Ogni forma d'onda è un punto: le coordinate sono le proiezioni sulla base."
+
+
+def fig_fsk_ortogonalita():
+    s = Svg(400, 210, "prodotto scalare tra due toni in funzione della spaziatura")
+    ox, oy, kx, ky = 40, 120, 160, 80
+    s.line(ox - 4, oy, 392, oy, "ax", ar=True)
+    s.line(ox, oy + 70, ox, oy - ky - 12, "ax", ar=True)
+    coer = lambda x: 1.0 if x == 0 else math.sin(2 * math.pi * x) / (2 * math.pi * x)
+    nonc = lambda x: 1.0 if x == 0 else abs(math.sin(math.pi * x) / (math.pi * x))
+    xs = np.linspace(0, 2.15, 300)
+    s.poly([(ox + kx * x, oy - ky * coer(x)) for x in xs], "cv")
+    s.poly([(ox + kx * x, oy - ky * nonc(x)) for x in xs], "cv2 dash")
+    for x, lab in ((0.5, "1/(2T)"), (1, "1/T"), (1.5, "3/(2T)"), (2, "2/T")):
+        s.line(ox + kx * x, oy - 3, ox + kx * x, oy + 3, "ln")
+        s.t(ox + kx * x, oy + 16, lab, "ts")
+    s.circ(ox + kx * .5, oy, 4, "pt cv")
+    s.circ(ox + kx * 1, oy, 4, "pt cv2")
+    s.t(392, oy + 32, "Δf", "ts", "end")
+    s.t(250, 30, "coerente", "ts a1", "start")
+    s.t(250, 46, "non coerente (modulo)", "ts a2", "start")
+    s.line(222, 26, 244, 26, "cv")
+    s.line(222, 42, 244, 42, "cv2 dash")
+    return s.render(), "🧩 Primo zero a 1/(2T) se la fase è nota, a 1/T se non lo è."
+
+
+def fig_onoff_decisione():
+    s = Svg(400, 200, "decisione on-off con soglia a metà")
+    ox, oy, k, H = 90, 160, 60, 110
+    g = lambda x, m: math.exp(-((x - m) ** 2) / 0.5)
+    s.line(20, oy, 392, oy, "ax", ar=True)
+    xs = np.linspace(-1.2, 4.0, 300)
+    soglia = 1.25
+    s.poly([(ox + k * soglia, oy)] + [(ox + k * x, oy - H * g(x, 0)) for x in np.linspace(soglia, 2.6, 60)] + [(ox + k * 2.6, oy)], "fl", True)
+    s.poly([(ox + k * -0.2, oy)] + [(ox + k * x, oy - H * g(x, 2.5)) for x in np.linspace(-0.2, soglia, 60)] + [(ox + k * soglia, oy)], "fl2", True)
+    s.poly([(ox + k * x, oy - H * g(x, 0)) for x in xs], "cv")
+    s.poly([(ox + k * x, oy - H * g(x, 2.5)) for x in xs], "cv2")
+    s.line(ox + k * soglia, oy + 4, ox + k * soglia, oy - H - 6, "gd")
+    s.t(ox, oy + 15, "0", "ts")
+    s.t(ox + k * 2.5, oy + 15, "√E_s", "ts")
+    s.t(ox + k * soglia, oy + 15, "√E_s/2", "ts a2")
+    s.t(ox - 10, oy - H - 4, "H_0", "tx a1", "end")
+    s.t(ox + k * 2.5 + 12, oy - H - 4, "H_1", "tx a2", "start")
+    s.t(392, oy + 30, "r", "ts", "end")
+    return s.render(), "🧩 Le code oltre la soglia sono la probabilità d'errore."
+
+
+def fig_ricevitore_correlatori():
+    s = Svg(400, 210, "ricevitore ottimo a correlatori")
+    s.t(18, 108, "r(t)", "tx a1")
+    s.line(36, 104, 56, 104, "ln")
+    s.line(56, 40, 56, 170, "ln")
+    for i, (y, lab) in enumerate(((40, "1"), (104, "2"), (170, "M"))):
+        s.line(56, y, 80, y, "ln", ar=True)
+        s.mult(90, y)
+        s.t(90, y - 16, f"s_{lab}(t)", "ts")
+        s.line(99, y, 120, y, "ln", ar=True)
+        s.rect(120, y - 14, 60, 28, "bx bx1")
+        s.t(150, y + 4, "∫_0^T dt", "ts")
+        s.line(180, y, 206, y, "ln", ar=True)
+        s.circ(215, y, 9)
+        s.t(215, y + 4, "+", "ts")
+        s.t(215, y - 14, f"−E_{lab}/2", "ts a2")
+        s.line(224, y, 290, y, "ln", ar=True)
+        s.t(258, y - 6, f"λ_{lab}", "ts a1")
+    s.t(150, 140, "⋮", "tx")
+    s.rect(290, 26, 50, 158, "bx bx2")
+    s.t(315, 108, "MAX", "tx tb")
+    s.line(340, 104, 386, 104, "ln", ar=True)
+    s.t(364, 96, "m̂", "tx")
+    return s.render(), "🧩 Banco di correlatori; ogni ramo può essere un filtro adattato s_k(T−t) campionato in T."
+
+
+def fig_voronoi():
+    s = Svg(400, 260, "regioni di Voronoi")
+    P = [(120, 150), (260, 80), (300, 200), (170, 50)]
+    W, H = 400, 260
+    import itertools
+    for (a, b) in itertools.combinations(range(len(P)), 2):
+        # confine: punti equidistanti da a e b e non più vicini a un terzo
+        seg = []
+        (xa, ya), (xb, yb) = P[a], P[b]
+        mx, my = (xa + xb) / 2, (ya + yb) / 2
+        dx, dy = -(yb - ya), xb - xa
+        n = math.hypot(dx, dy)
+        dx, dy = dx / n, dy / n
+        for t in np.linspace(-400, 400, 1601):
+            x, y = mx + t * dx, my + t * dy
+            if not (0 <= x <= W and 0 <= y <= H):
+                continue
+            da = (x - xa) ** 2 + (y - ya) ** 2
+            if all(da <= (x - P[c][0]) ** 2 + (y - P[c][1]) ** 2 + 1e-6 for c in range(len(P)) if c not in (a, b)):
+                seg.append((x, y))
+        if len(seg) > 1:
+            s.line(seg[0][0], seg[0][1], seg[-1][0], seg[-1][1], "ln")
+    for i, (x, y) in enumerate(P):
+        s.circ(x, y, 5, "pt cv")
+        s.t(x + 10, y - 8, f"s_{i + 1}", "tx a1", "start")
+    return s.render(), "🧩 Ogni regione contiene i punti più vicini al suo segnale."
+
+
+def _Q(x):
+    return 0.5 * math.erfc(x / math.sqrt(2))
+
+
+def fig_ber_binarie():
+    s = Svg(400, 250, "probabilità d'errore di antipodale e ortogonale")
+    ox, oy, W, H = 50, 220, 330, 200
+    x = lambda db: ox + W * db / 14
+    y = lambda p: oy - H * (-math.log10(p)) / 7
+    s.line(ox - 4, oy, ox + W + 8, oy, "ax", ar=True)
+    s.line(ox, oy + 4, ox, oy - H - 10, "ax", ar=True)
+    for e in range(1, 8):
+        s.line(ox, y(10 ** -e), ox + W, y(10 ** -e), "gd")
+        s.t(ox - 6, y(10 ** -e) + 4, f"10^{{−{e}}}", "ts", "end")
+    for db in (0, 4, 8, 12):
+        s.t(x(db), oy + 15, str(db), "ts")
+    dbs = np.linspace(0, 14, 200)
+    for fn, cl in ((lambda g: 0.5 * math.erfc(math.sqrt(g)), "cv"), (lambda g: 0.5 * math.erfc(math.sqrt(g / 2)), "cv2")):
+        pts = [(x(d), y(fn(10 ** (d / 10)))) for d in dbs if fn(10 ** (d / 10)) > 1e-7]
+        s.poly(pts, cl)
+    s.t(x(4.2), y(1e-5), "antipodale", "ts a1", "end")
+    s.t(x(12.7), y(1e-4), "ortogonale, on-off", "ts a2", "start")
+    s.t(ox + W + 8, oy + 30, "E_b/N_0 [dB]", "ts", "end")
+    s.t(ox + 6, 14, "P(e)", "ts", "start")
+    return s.render(), "🧩 A parità di E_b l'antipodale guadagna 3 dB."
+
+
+def fig_qpsk_regioni():
+    s = Svg(400, 230, "regioni di decisione della QPSK")
+    cx, cy, R = 200, 116, 70
+    s.rect(cx, cy - 104, 170, 104, "fl", 0)
+    s.line(cx - 180, cy, cx + 180, cy, "ax", ar=True)
+    s.line(cx, cy + 104, cx, cy - 106, "ax", ar=True)
+    for a, lab in ((45, "s_1 · 00"), (135, "s_2 · 01"), (225, "s_3 · 11"), (315, "s_4 · 10")):
+        xx, yy = cx + R * math.cos(math.radians(a)), cy - R * math.sin(math.radians(a))
+        s.circ(xx, yy, 5, "pt cv")
+        s.t(xx + (14 if math.cos(math.radians(a)) > 0 else -14), yy + 4, lab, "ts", "start" if math.cos(math.radians(a)) > 0 else "end")
+    s.t(cx + 160, cy - 86, "Z_1", "tx tb a1", "end")
+    s.t(cx + 176, cy + 15, "z_1", "ts", "end")
+    s.t(cx + 6, cy - 98, "z_2", "ts", "start")
+    return s.render(), "🧩 Si decide dai segni di z_1 e z_2: le regioni sono i quadranti."
+
+
+def fig_union_bound():
+    s = Svg(400, 230, "union bound")
+    k, a, b = (200, 140), (110, 70), (300, 80)
+    def semipiano(p, q, cl):
+        mx, my = (p[0] + q[0]) / 2, (p[1] + q[1]) / 2
+        dx, dy = q[0] - p[0], q[1] - p[1]
+        n = math.hypot(dx, dy)
+        ux, uy = dx / n, dy / n
+        tx, ty = -uy, ux
+        L = 400
+        pts = [(mx + tx * L, my + ty * L), (mx - tx * L, my - ty * L), (mx - tx * L + ux * L, my - ty * L + uy * L), (mx + tx * L + ux * L, my + ty * L + uy * L)]
+        s.poly(pts, cl, True)
+        s.line(mx + tx * 200, my + ty * 200, mx - tx * 200, my - ty * 200, "gd")
+    semipiano(k, a, "fl")
+    semipiano(k, b, "fl2")
+    for p, lab, cl in ((k, "s_k", "cv"), (a, "s_i", "cv"), (b, "s_j", "cv2")):
+        s.circ(p[0], p[1], 5, "pt " + cl)
+        s.t(p[0] + 8, p[1] + 16, lab, "tx a1", "start")
+    s.t(200, 20, "zona contata due volte", "ts a2")
+    return s.render(), "🧩 La somma delle due PEP conta due volte la zona sovrapposta: maggiorante."
+
+
+def fig_qam16_vicini():
+    s = Svg(400, 230, "vicini a distanza minima nella 16-QAM")
+    cx, cy, d = 200, 112, 44
+    for i in (-3, -1, 1, 3):
+        for j in (-3, -1, 1, 3):
+            nv = (2 if abs(i) == 3 else 3) if abs(i) == 3 or abs(j) == 3 else 4
+            if abs(i) == 3 and abs(j) == 3:
+                nv = 2
+            elif abs(i) == 3 or abs(j) == 3:
+                nv = 3
+            cl = {2: "cv2", 3: "cv3", 4: "cv"}[nv]
+            x, y = cx + i * d / 2, cy - j * d / 2
+            s.circ(x, y, 6, "pt " + cl)
+            s.t(x + 11, y - 6, str(nv), "ts", "start")
+    s.line(cx + d / 2, cy + d * 1.9, cx + 3 * d / 2, cy + d * 1.9, "ar2", ar=True, ar0=True)
+    s.t(cx + d, cy + d * 1.9 + 14, "d", "ts a2")
+    s.t(20, 30, "4 interni × 4", "ts a1", "start")
+    s.t(20, 46, "8 di bordo × 3", "ts a3", "start")
+    s.t(20, 62, "4 d'angolo × 2", "ts a2", "start")
+    s.t(20, 86, "N̄ = 48/16 = 3", "tx", "start")
+    return s.render(), "🧩 Numero di vicini a distanza d per ogni punto."
+
+
 def tutte():
     f = {k[4:]: v for k, v in globals().items() if k.startswith("fig_")}
     return {k: fn() for k, fn in f.items()}

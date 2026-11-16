@@ -55,6 +55,16 @@
 - [[psd-componenti-in-quadratura]] — $S_{x_cx_c}$ (13), $S_{xx} = 2S_{x_px_p}(f+f_c)u(f+f_c)$ (14), cross-PSD, spettro simmetrico ⇒ componenti incoerenti (alta)
 - [[rumore-in-banda-passante]] — PSD $N_0/2$ in banda $W$: $S_{w_cw_c} = N_0/2$, $S_{ww} = N_0$, potenza $N_0W$; costruzione grafica (alta)
 
+**Modulazione e rivelazione**
+- [[principi-di-modulazione]] — mapper e generatore, $R_s=R_b/\log_2M$, memoria, compromesso potenza-banda (alta)
+- [[spazio-dei-segnali]] — rappresentazione vettoriale, $D=WT_0$, base ortonormale, Gram-Schmidt (alta)
+- [[modulazione-lineare]] — NRZ/RZ, I/Q, PSK, QAM, PAM, Gray, PSD $\frac{E|\xi|^2}{T}|G_{TX}|^2$ (alta)
+- [[modulazione-ortogonale]] — FSK, spaziatura $1/(2T)$ e $1/T$ (media)
+- [[rivelazione-map-ml]] — test di ipotesi, MAP, irrilevanza, statistica sufficiente, ML (alta)
+- [[ricevitore-ottimo-awgn]] — correlatori, filtro adattato, minima distanza, Voronoi (alta)
+- [[probabilita-errore-binaria]] — on-off, antipodale, ortogonale, $\frac12\text{erfc}(d/2\sqrt{N_0})$ (alta)
+- [[probabilita-errore-m-aria]] — QPSK, union bound, primi vicini, 16-QAM (alta)
+
 **Parametri globali e capacità**
 - [[informazione-mutua-e-capacita]] — $I(X;Y)=H(Y)-H(Y\mid X)$, $C=\max_{p(x)}I$, teorema di Shannon, $C=W\log_2(1+\gamma)$ (alta)
 - [[parametri-globali-modulazioni]] — banda di Shannon, $E_b$, $\text{SNR}=\frac{E_b}{N_0}\eta_B$, $\eta_B$, $\eta_P$, tabella PAM/PSK/QAM/ortogonali (alta)
@@ -76,6 +86,10 @@
 - [[processi-aleatori]] — random_processes.pdf, pp. 1–46 (41 slide + 5 pagine di appunti a mano)
 - [[laboratorio-conversione-ad]] — scripts/09_28_2006: AD_conversion.m + 3 figure (laboratorio, non d'esame)
 - [[rappresentazione-processi-passa-banda]] — Rappresentazione_Rice_processi.pdf, pp. 1–25 (13 slide + 12 pagine di appunti a mano)
+- [[principles-of-modulation]] — goodnotes/Modulazione.pdf, pp. 1–39 (23 slide + 16 pagine di appunti)
+- [[elementi-teoria-rivelazione]] — goodnotes/Detection.pdf, pp. 1–18 (dispense + 8 pagine di appunti)
+- [[appunti-lezione-28-ottobre]] — goodnotes/Lezione 10-28.pdf, pp. 1–4
+- [[appunti-lezione-2-novembre]] — goodnotes/Lezione 11-2.pdf, pp. 1–3
 - [[parametri-globali-e-capacita]] — Confronto_new.pdf, pp. 1–33 (slide con note a mano)
 
 ## Laboratorio (non materia d'esame)
@@ -106,4 +120,5 @@ Grafici 🧩 del laboratorio — script `genera_grafici_laboratorio_ad.py` (repl
 Grafici 🧩 dei processi aleatori — script `genera_grafici_random_processes.py`: realizzazioni e v.a. a $t_0$, processo lento contro veloce (autocorrelazione e PSD), gaussiana bivariata, animazione della costruzione di $R_{XX}(\tau)$ (`grafico-rp-autocorrelazione.gif`).
 Grafici 🧩 della lezione sulla banda base — script `genera_grafici_rappresentazione_rice.py`: catena degli spettri $S_p \to S_p^+ \to S$, componenti I/Q nel tempo, animazione della downconversion (`grafico-rice-downconversion.gif`).
 Grafici di funzione generati (🧩) in `output/grafici/` — script `genera_grafici_campionamento.py`: pdf di Laplace, Laplace/gauss/uniforme, Lloyd-Max M=8, SNR vs bit, errore di quantizzazione, Chebyshev vs esatto, $|H_r(f)|$ interpolatori, SNR vs livello (uniforme/µ/A), soglie equivalenti della µ-law (companding), ripiegamento della frequenza ricostruita. Animazioni GIF (🧩): `grafico-aliasing-animazione.gif` (tempo + spettro, 6 passi), `grafico-aliasing-stroboscopio.gif` (fasori).
+Copie GoodNotes di tutti i PDF delle lezioni (versioni annotate più recenti, tranne Intercorso.pdf) in `raw/goodnotes/`: i file già presenti in `raw/` hanno il suffisso « (GoodNotes)»; la cartella `matlab/` contiene gli script del laboratorio.
 Ambiente Python per rigenerarli: venv in `C:\Users\giova\.venvs\wiki-tsd` (fuori da OneDrive e dalla repo).

@@ -189,3 +189,23 @@ Filtra ultimi 10: `grep "^## " wiki/log.md | tail -10`
 - ⚠️ segnalati: $E_b/N_0$ richiesto a BER $10^{-6}$ per QPSK è 10.5 dB, non 10.2 (slide 30); $\eta_P$ delle ortogonali stampata $2\log_2M$ (va $\frac12\log_2M$); ordinata della slide 23 scritta $R_s/W$
 - sito: Lezione 8 in `output/crea_sito.py` e 6 disegni nuovi in `output/sito_disegni.py` (canale, entropie, capacità, costellazioni binarie, piano di Shannon con le modulazioni a BER $10^{-5}$, bilancio WLAN); aggiornati [[lezioni]], [[index]], [[overview]]
 - aggiunta, stesso giorno: in `raw/` c'era anche `Confronto new.pdf` (6.3 MB, 35 pagine), copia delle slide con **appunti presi a lezione** scritti a mano (quasi ogni slide più due pagine di soli appunti, p. 5 e p. 15). Letta pagina per pagina e integrata in [[corso-completo]] (righe «Appunti a lezione» e due sezioni «Appunti —») e nelle sezioni Spiegazione di [[informazione-mutua-e-capacita]], [[parametri-globali-modulazioni]], [[limite-di-shannon]], [[link-budget]]; numerazione della copia: slide 1–4 = p. 1–4, slide 5–13 = p. 6–14, slide 14–33 = p. 16–35
+
+## [2026-11-16] riorganizzazione | ordine delle lezioni e copia dei PDF GoodNotes
+- ordine delle lezioni ricavato dalla data di primo caricamento su OneDrive (SharePoint, `TimeCreated`): laboratorio diventa Lezione 5, processi aleatori Lezione 6, Confronto Lezione 12; aggiornati [[corso-completo]], [[lezioni]], [[overview]], `output/crea_sito.py`
+- copiati in `raw/goodnotes/` tutti i PDF della cartella GoodNotes tranne Intercorso.pdf (più la cartella `matlab/`); i file con nome già presente in `raw/` hanno il suffisso « (GoodNotes)»; Confronto new.pdf era identico e non è stato ricopiato
+
+## [2026-11-16] ingest | Principles of modulation (Modulazione.pdf) | pagine coperte: 1-39
+- fonte [[principles-of-modulation]]; concetti nuovi [[principi-di-modulazione]], [[spazio-dei-segnali]], [[modulazione-lineare]], [[modulazione-ortogonale]]; Lezione 8 in [[corso-completo]] con gli appunti a lezione (16 pagine)
+- 🧩 ricostruiti: PSD della modulazione lineare, spaziatura FSK dell'esercizio 2.25, compromesso potenza-banda con i livelli
+
+## [2026-11-16] ingest | Elementi di teoria della rivelazione (Detection.pdf) | pagine coperte: 1-18
+- fonte [[elementi-teoria-rivelazione]]; concetti nuovi [[rivelazione-map-ml]], [[ricevitore-ottimo-awgn]]; Lezione 9 in [[corso-completo]]
+- ⚠️ eq. (IV.2) delle dispense senza il fattore ½ (corretto negli appunti a lezione)
+
+## [2026-11-16] ingest | Appunti del 28/10 (Lezione 10-28.pdf) | pagine coperte: 1-4
+- fonte [[appunti-lezione-28-ottobre]]; concetti [[probabilita-errore-binaria]], [[probabilita-errore-m-aria]] (QPSK); Lezione 10 in [[corso-completo]]
+
+## [2026-11-16] ingest | Appunti del 2/11 (Lezione 11-2.pdf) | pagine coperte: 1-3
+- fonte [[appunti-lezione-2-novembre]]; [[probabilita-errore-m-aria]] (union bound, primi vicini, 16-QAM, ortogonali); Lezione 11 in [[corso-completo]]
+- da recuperare: le due figure a cui rimanda p. 3 (P(e) in funzione del contrasto di energia; vicini lontani a basso SNR)
+- restano da ingerire: 11-9.pdf, Synchro_Kay_example.pdf (e la copia (1)), signaling_bandlimited_channel.pdf, Lezioni.pdf, e le versioni GoodNotes aggiornate delle lezioni già nel wiki

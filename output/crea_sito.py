@@ -27,34 +27,67 @@ WIKI = ROOT / "wiki"
 KATEX = "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/"
 
 LEZIONI = [
-    dict(n=3, slug="lezione-3", titolo="Quantizzazione: SNR, legge dei 6 dB, Lloyd-Max e companding",
-         breve="Il quantizzatore uniforme e il suo SNR (legge dei 6 dB/bit), i suoi limiti, il quantizzatore ottimo di Lloyd-Max e il companding (leggi µ e A).",
-         pdf="Campionamento_AD_DA.pdf, slide 26–43", inizio="### Relazione ingresso-uscita del quantizzatore",
-         concetti=["quantizzazione-uniforme", "snr-di-quantizzazione", "quantizzazione-non-uniforme", "companding"],
-         fonte="campionamento-conversione-ad-da",
-         domande_filtro=("quantizzatore uniforme", "6 dB", "Lloyd", "robusta", "companding"), esercizi=["dimensionamento-quantizzatore"]),
-    dict(n=4, slug="lezione-4", titolo="Rappresentazione complessa in banda base",
+    dict(n=1, slug="lezione-1", data="15/09", titolo="Introduzione al corso",
+         breve="Organizzazione e programma, il processo di comunicazione, gli elementi di un sistema digitale, rigenerazione e vantaggi del digitale.",
+         concetti=["sistema-comunicazione-digitale", "entità/ripetitore-rigenerativo"], fonte="intro-corso", esercizi=[]),
+    dict(n=2, slug="lezione-2", data="16/09", titolo="Elementi di teoria della probabilità",
+         breve="Spazio di probabilità, probabilità condizionale, Bayes, variabili aleatorie notevoli, gaussiana, media, varianza, coppie, correlazione.",
+         concetti=["spazio-di-probabilita", "probabilita-condizionale", "probabilita-totale-e-bayes", "variabile-aleatoria",
+                   "variabili-aleatorie-notevoli", "variabile-aleatoria-gaussiana", "funzione-di-variabile-aleatoria", "media-e-varianza",
+                   "coppie-di-variabili-aleatorie", "correlazione-e-covarianza"],
+         fonte="elementi-teoria-probabilita", esercizi=["calcolo-probabilita-eventi", "cdf-pdf-variabili-notevoli"]),
+    dict(n=3, slug="lezione-3", data="22/09", titolo="Campionamento e conversione A/D e D/A",
+         breve="Teorema del campionamento, aliasing, interpolazione; quantizzazione uniforme e legge dei 6 dB/bit, Lloyd-Max, companding.",
+         concetti=["conversione-ad-da", "teorema-del-campionamento", "interpolazione", "aliasing", "quantizzazione-uniforme",
+                   "disuguaglianza-di-chebyshev", "snr-di-quantizzazione", "quantizzazione-non-uniforme", "companding"],
+         fonte="campionamento-conversione-ad-da", esercizi=["campionamento-e-aliasing", "dimensionamento-quantizzatore"]),
+    dict(n=4, slug="lezione-4", data="25/09", titolo="Rappresentazione complessa in banda base",
          breve="Segnali in banda base e passa-banda, segnale analitico, inviluppo complesso, componenti I/Q, up/down-conversion, filtri.",
-         pdf="Rappresentazione_Rice.pdf, slide 1–19 più appunti", inizio=None,
          concetti=["modulazione-digitale", "segnali-banda-base-e-passa-banda", "segnale-analitico", "inviluppo-complesso",
                    "upconversion-e-downconversion", "equivalente-banda-base-dei-filtri"],
-         fonte="rappresentazione-complessa-banda-base", domande_filtro=None, esercizi=[]),
-    dict(n=5, slug="lezione-5", titolo="Processi aleatori",
+         fonte="rappresentazione-complessa-banda-base", esercizi=[]),
+    dict(n=5, slug="lezione-5", data="29/09", titolo="Laboratorio Matlab: conversione A/D e D/A",
+         breve="Lo script AD_conversion.m commentato: spettro, campionamento, interpolazione, quantizzazione, SNR. Non è materia d'esame.",
+         concetti=["laboratorio/lab-setup-e-spettro", "laboratorio/lab-campionamento", "laboratorio/lab-interpolazione",
+                   "laboratorio/lab-quantizzazione", "laboratorio/lab-snr"],
+         fonte="laboratorio-conversione-ad", esercizi=[]),
+    dict(n=6, slug="lezione-6", data="05/10", titolo="Processi aleatori",
          breve="Processi stocastici, momenti, stazionarietà, acf, passaggio attraverso filtri LTI, PSD, processo gaussiano, tempo discreto.",
-         pdf="random_processes.pdf, slide 1–41 più appunti", inizio=None,
          concetti=["processo-aleatorio", "momenti-di-un-processo", "stazionarieta", "autocorrelazione-processi-wss",
                    "processi-e-sistemi-lti", "densita-spettrale-di-potenza", "processo-gaussiano"],
-         fonte="processi-aleatori", domande_filtro=None, esercizi=["calcolo-densita-spettrale"]),
-    dict(n=7, slug="lezione-7", titolo="Rappresentazione di Rice per i processi aleatori",
+         fonte="processi-aleatori", esercizi=["calcolo-densita-spettrale"]),
+    dict(n=7, slug="lezione-7", data="13/10", titolo="Rappresentazione di Rice per i processi aleatori",
          breve="Inviluppo complesso e componenti in quadratura di un processo passa-banda, loro PSD, rumore in banda.",
-         pdf="Rappresentazione_Rice_processi.pdf, slide 1–13 più appunti", inizio=None,
          concetti=["processi-passa-banda", "psd-componenti-in-quadratura", "rumore-in-banda-passante"],
-         fonte="rappresentazione-processi-passa-banda", domande_filtro=None, esercizi=[]),
-    dict(n=8, slug="lezione-8", titolo="Parametri globali delle modulazioni e capacità di canale",
-         breve="Informazione mutua, capacità e canale AWGN; banda di Shannon, efficienza spettrale e in potenza; frontiera di Shannon; link budget con un esempio WLAN.",
-         pdf="Confronto_new.pdf, slide 1–33", inizio=None,
+         fonte="rappresentazione-processi-passa-banda", esercizi=[]),
+    dict(n=8, slug="lezione-8", data="16/10", titolo="Principi di modulazione",
+         breve="Modulatore digitale, baud rate, compromesso potenza-banda, spazio dei segnali, modulazione lineare (PAM, PSK, QAM), PSD, FSK.",
+         concetti=["principi-di-modulazione", "spazio-dei-segnali", "modulazione-lineare", "modulazione-ortogonale"],
+         fonte="principles-of-modulation", esercizi=[]),
+    dict(n=9, slug="lezione-9", data="20/10", titolo="Elementi di teoria della rivelazione",
+         breve="Test di ipotesi in AWGN, criteri MAP e ML, teorema dell'irrilevanza, filtro adattato, minima distanza e regioni di Voronoi.",
+         concetti=["rivelazione-map-ml", "ricevitore-ottimo-awgn"], fonte="elementi-teoria-rivelazione", esercizi=[]),
+    dict(n=10, slug="lezione-10", data="28/10", titolo="Prestazioni delle modulazioni binarie e della QPSK",
+         breve="Probabilità d'errore di on-off, antipodale e ortogonale, formula con la distanza, QPSK: SER e BER.",
+         concetti=["probabilita-errore-binaria", "probabilita-errore-m-aria"], fonte="appunti-lezione-28-ottobre", esercizi=[]),
+    dict(n=11, slug="lezione-11", data="02/11", titolo="Union bound e approssimazione dei primi vicini",
+         breve="Union bound e pairwise error probability, approssimazione dei primi vicini, 16-QAM, modulazioni ortogonali M-arie.",
+         concetti=["probabilita-errore-m-aria"], fonte="appunti-lezione-2-novembre", esercizi=[]),
+    dict(n=12, slug="lezione-12", data="03/11", titolo="Parametri globali delle modulazioni e capacità di canale",
+         breve="Informazione mutua, capacità e canale AWGN; banda di Shannon, efficienza spettrale e in potenza; frontiera di Shannon; link budget.",
          concetti=["informazione-mutua-e-capacita", "parametri-globali-modulazioni", "limite-di-shannon", "link-budget"],
-         fonte="parametri-globali-e-capacita", domande_filtro=None, esercizi=["link-budget-wlan"]),
+         fonte="parametri-globali-e-capacita", esercizi=["link-budget-wlan"]),
+]
+for _c in LEZIONI:
+    _c.setdefault("inizio", None)
+    _c.setdefault("domande_filtro", None)
+
+# percorso della prima prova intercorso: (lezione, titolo della sezione da cui partire o None, nota)
+INTERCORSO = [
+    (3, "Relazione ingresso-uscita del quantizzatore", "dalla quantizzazione uniforme (SNR e legge dei 6 dB/bit) a Lloyd-Max e al companding"),
+    (4, None, "tutta la lezione"),
+    (6, None, "tutta la lezione"),
+    (7, None, "tutta la lezione"),
 ]
 
 # dove va ogni disegno: (n. lezione, inizio del titolo della sezione) -> chiavi; il disegno sta in fondo alla sezione
@@ -71,21 +104,69 @@ FIGURE = {
     (4, "Inviluppo complesso"): ["catena_spettri", "fasore"],
     (4, "Energia dell'inviluppo"): ["chi_e_chi"],
     (4, "Upconversion e downconversion"): ["up_down"],
-    (5, "Appunti — Sinusoide a fase casuale"): ["realizzazioni"],
-    (5, "Slide 13 — Processi stazionari in senso lato"): ["stazionarieta"],
-    (5, "Slide 16 — Significato fisico della acf"): ["acf"],
-    (5, "Slide 19 — Processi indipendenti"): ["implicazioni"],
-    (5, "Slide 28 — PSD e sistemi LTI"): ["lti"],
-    (5, "Slide 29–30 — Significato fisico della PSD"): ["psd_filtro"],
+    (6, "Appunti — Sinusoide a fase casuale"): ["realizzazioni"],
+    (6, "Slide 13 — Processi stazionari in senso lato"): ["stazionarieta"],
+    (6, "Slide 16 — Significato fisico della acf"): ["acf"],
+    (6, "Slide 19 — Processi indipendenti"): ["implicazioni"],
+    (6, "Slide 28 — PSD e sistemi LTI"): ["lti"],
+    (6, "Slide 29–30 — Significato fisico della PSD"): ["psd_filtro"],
     (7, "Slide 8 e appunti"): ["catena_psd"],
     (7, "Slide 9 e appunti"): ["simmetria"],
     (7, "Slide 12–13"): ["rumore"],
-    (8, "Slide 4 — Informazione mutua"): ["canale"],
-    (8, "Slide 5 — Informazione mutua ed entropia"): ["entropie"],
-    (8, "Slide 9 — Interpretazione della capacità"): ["capacita"],
-    (8, "Slide 15–16 — Efficienza in potenza"): ["costellazioni_etap"],
-    (8, "Slide 21 — Frontiera di Shannon"): ["piano_shannon"],
-    (8, "Slide 31 — Path loss ammissibile"): ["bilancio_wlan"],
+    (8, "Slide 4–5 — Esempio di Benedetto-Biglieri"): ["forme_mary"],
+    (8, "Slide 10 e appunti — Descrizione nello spazio dei segnali"): ["base_ortonormale"],
+    (8, "Slide 13–14 — NRZ e RZ"): ["nrz_rz"],
+    (8, "Slide 15 — I/Q e conversione"): ["up_down"],
+    (8, "Slide 17–18 — QAM e PAM"): ["costellazioni_lineari"],
+    (8, "Slide 20–21 — Occupazione spettrale"): ["psd_sinc2"],
+    (8, "Slide 22–23 — Modulazione ortogonale"): ["fsk_ortogonalita"],
+    (9, "Dispense p. 4 e appunti — Criterio MAP"): ["onoff_decisione"],
+    (9, "Dispense p. 7 e appunti — Correlatore e filtro adattato"): ["ricevitore_correlatori"],
+    (9, "Dispense p. 8–10 e appunti — Demodulatore a minima distanza"): ["voronoi"],
+    (10, "Segnalazione on-off"): ["onoff_decisione"],
+    (10, "Modulazione binaria generica"): ["ber_binarie"],
+    (10, "QPSK"): ["qpsk_regioni"],
+    (11, "Union bound"): ["union_bound"],
+    (11, "Esempio: 16-QAM"): ["qam16_vicini"],
+    (12, "Slide 4 — Informazione mutua"): ["canale"],
+    (12, "Slide 5 — Informazione mutua ed entropia"): ["entropie"],
+    (12, "Slide 9 — Interpretazione della capacità"): ["capacita"],
+    (12, "Slide 15–16 — Efficienza in potenza"): ["costellazioni_etap"],
+    (12, "Slide 21 — Frontiera di Shannon"): ["piano_shannon"],
+    (12, "Slide 31 — Path loss ammissibile"): ["bilancio_wlan"],
+}
+
+# didascalie brevi (una riga) che sostituiscono quelle lunghe dei disegni
+BREVI = {
+    "laplace": "pdf di Laplace (voce) e uniforme.",
+    "quantizzatore": "Gradini più stretti vicino a 0.",
+    "lloyd_centroide": "Livello al baricentro, soglia a metà tra i livelli.",
+    "lloyd_ciclo": "Lloyd-Max alterna centroide e punto medio.",
+    "companding_schema": "Compressione, quantizzatore uniforme, espansione.",
+    "companding_equivalenza": "Passi uniformi su F(x) = passi non uniformi su x.",
+    "leggi": "Leggi µ e A quasi coincidenti.",
+    "snr_livello": "Con la legge µ l'SNR non dipende dal livello.",
+    "spettri_bb_pb": "Banda base attorno a 0, passa-banda attorno a ±f_c.",
+    "catena_spettri": "Tolgo le frequenze negative e traslo in 0.",
+    "hilbert": "Hilbert: modulo 1, fase ∓90°.",
+    "fasore": "L'inviluppo ruota con la portante.",
+    "chi_e_chi": "s_c, s_s in banda base; x_c, x_s passa-banda.",
+    "up_down": "Upconversion e downconversion.",
+    "realizzazioni": "Fisso ω: un segnale. Fisso t: una variabile aleatoria.",
+    "acf": "acf larga = processo lento.",
+    "implicazioni": "Indipendenti ⇒ incorrelati; il viceversa solo se gaussiani.",
+    "stazionarieta": "SSS ⇒ WSS, non viceversa.",
+    "lti": "Media, acf e PSD all'uscita di un filtro LTI.",
+    "psd_filtro": "La PSD è potenza per unità di banda.",
+    "catena_psd": "PSD dell'inviluppo: un lobo, raddoppiato e traslato.",
+    "simmetria": "Spettro simmetrico ⇒ componenti incoerenti.",
+    "rumore": "Rumore in banda: N_0/2, inviluppo N_0, componenti N_0/2.",
+    "canale": "Canale senza memoria e canale AWGN.",
+    "entropie": "L'intersezione è l'informazione mutua.",
+    "capacita": "Capacità: log in γ, satura in W.",
+    "costellazioni_etap": "OOK, antipodale, ortogonale: distanze a parità di E_b.",
+    "piano_shannon": "Frontiera di Shannon e modulazioni a BER 10⁻⁵.",
+    "bilancio_wlan": "Bilancio di potenza dell'esempio WLAN.",
 }
 
 # ----------------------------------------------------------------------------------------------- immagini
@@ -140,7 +221,7 @@ def togli_riferimenti(t):
     t = "\n".join(r for r in t.split("\n") if ".pdf" not in r)
     t = re.sub(r"(?m)^\*\*Fonte:\*\*.*\n?", "", t)
     t = re.sub(r"(?m)^Fonte:.*\n?", "", t)
-    t = re.sub(r"(?m)^(#{2,6}) (?:Slide \d+(?:[–-]\d+)?(?: e appunti)? — |Appunti — )", r"\1 ", t)
+    t = re.sub(r"(?m)^(#{2,6}) (?:Slide \d+(?:[–-]\d+)?(?: e appunti)? — |Dispense p\. \d+(?:[–-]\d+)?(?: e appunti)? — |Appunti — )", r"\1 ", t)
     t = re.sub(r"(?m)^(#{2,6} .+?) · (?:.*\bpp?\. ?\d+.*|appunti.*)$", r"\1", t)
     t = re.sub(r"(?m)^(@@DET:.+?) · [^@]*(@@)$", r"\1\2", t)
     t = re.sub(r"[ \t]*\((?:[^()$]*?)\b(?:pp?\.|[Ss]lide|pagin[ae])[ \t]*\d[^()$]*\)", "", t)
@@ -320,7 +401,10 @@ VERBOSO = bool(__import__("os").environ.get("VERBOSO"))
 
 def figure_html(h):
     def f(m):
-        svg, didascalia = DISEGNI[m.group(1)]
+        k = m.group(1)
+        svg, didascalia = DISEGNI[k]
+        breve = BREVI.get(k)
+        didascalia = ("🧩 " + breve) if breve else didascalia
         return f'<figure class="fig">{svg}<figcaption>{render_inline(didascalia)}</figcaption></figure>'
     return re.sub(r"<p>@@FIG:(\w+)@@</p>", f, h)
 
@@ -339,6 +423,8 @@ def corpo_lezione(cfg, corso, out):
 
 
 def concetto_html(nome, out, usati, cartella="concetti"):
+    if "/" in nome:
+        cartella, nome = nome.split("/", 1)
     md = rimuovi_frontmatter((WIKI / cartella / f"{nome}.md").read_text(encoding="utf-8"))
     titolo = re.search(r"(?m)^# (.+)$", md).group(1).strip()
     pezzi = []
@@ -359,6 +445,12 @@ def concetto_html(nome, out, usati, cartella="concetti"):
         for b in resto:
             tit, _, testo = b.partition("\n")
             corpo_der += f"@@DET:{tit[4:].strip()}@@\n\n{testo.strip()}\n\n@@/DET@@\n\n"
+    if not pezzi and not der:
+        # pagina senza le sezioni standard (entità, laboratorio): tutto il testo tranne titolo e fonti
+        corpo_tutto = re.sub(r"(?m)^# .*\n", "", md)
+        corpo_tutto = re.sub(r"(?ms)^## Fonti.*?(?=^## |\Z)", "", corpo_tutto)
+        corpo_tutto = re.sub(r"(?ms)^_Aggiornato.*", "", corpo_tutto)
+        pezzi.append(demota(corpo_tutto, 2))
     testo = "\n\n".join(pezzi)
     if esame:
         testo += "\n\n" + "\n".join(esame)
@@ -423,7 +515,7 @@ def pagina_lezione(cfg, corso, out, precedente, successiva):
     nav += f'<a href="{successiva["slug"]}.html">Lezione {successiva["n"]} →</a>' if successiva else "<span></span>"
     nav += "</nav>"
     corpo_pagina = f"""
-<p class="crumb"><a href="index.html">Intercorso</a> · Lezione {cfg['n']}</p>
+<p class="crumb"><a href="index.html">Home</a> · <a href="index.html#lezioni">Lezioni</a> · Lezione {cfg['n']} · {cfg["data"]}</p>
 <h1>{html.escape(cfg['titolo'])}</h1>
 <p class="breve">{html.escape(cfg['breve'])}</p>
 {indice}
@@ -442,28 +534,61 @@ def pagina_lezione(cfg, corso, out, precedente, successiva):
     return pagina(f"Lezione {cfg['n']} · {cfg['titolo']}", corpo_pagina, cfg["slug"])
 
 
+def _toc(c, out):
+    return [re.sub(r'<span class="pag">.*?</span>', "", x).strip() for x in re.findall(r"(?m)^### (.+)$", corpo_lezione(c, CORSO, out))]
+
+
 def pagina_indice(out):
+    """Home: due strade, il percorso della prima prova intercorso oppure le lezioni una per una."""
     card = []
     for c in LEZIONI:
-        toc = [re.sub(r'<span class="pag">.*?</span>', "", x).strip() for x in re.findall(r"(?m)^### (.+)$", corpo_lezione(c, CORSO, out))]
-        li = "".join(f"<li>{html.escape(re.sub(r'<[^>]+>', '', t))}</li>" for t in toc)
-        card.append(f'<a class="card" href="{c["slug"]}.html"><span class="num">Lezione {c["n"]}</span>'
-                    f'<strong>{html.escape(c["titolo"])}</strong><span class="b">{html.escape(c["breve"])}</span>'
-                    f'<ul>{li}</ul></a>')
+        card.append(f'<a class="card" href="{c["slug"]}.html"><span class="num">Lezione {c["n"]} · {c["data"]}</span>'
+                    f'<strong>{html.escape(c["titolo"])}</strong><span class="b">{html.escape(c["breve"])}</span></a>')
     corpo = f"""
 <h1>Trasmissione dei Segnali Digitali</h1>
-<p class="breve">Appunti per la <strong>prima prova intercorso</strong>: dal quantizzatore uniforme (SNR e legge dei 6 dB/bit) e dalla quantizzazione non uniforme alla rappresentazione di Rice dei processi aleatori, fino ai parametri globali delle modulazioni, alla capacità di canale e al link budget. Segue l'ordine delle lezioni.</p>
+<p class="breve">Appunti di studio del corso (LM Ingegneria Informatica, UNINA): il testo delle slide, le spiegazioni e le dimostrazioni passo-passo, i disegni e le domande da esame.</p>
+<div class="cards strade">
+<a class="card hero" href="intercorso.html"><span class="num">Percorso</span><strong>Prima prova intercorso</strong><span class="b">Dalla quantizzazione alla rappresentazione di Rice dei processi aleatori: solo gli argomenti della prova, nell'ordine delle lezioni.</span></a>
+<a class="card hero" href="#lezioni"><span class="num">Percorso</span><strong>Tutte le lezioni</strong><span class="b">Le lezioni una per una, nell'ordine in cui sono state svolte.</span></a>
+</div>
+<h2 class="ps" id="lezioni">Le lezioni</h2>
 <div class="cards">{"".join(card)}</div>
 <h2 class="ps">Come si legge</h2>
 <ul class="legenda">
-<li>Ogni lezione ha tre parti: <strong>il corso slide per slide</strong> (come nelle slide), le <strong>spiegazioni e dimostrazioni</strong> passo-passo (a comparsa) e le <strong>domande da esame</strong>.</li>
+<li>Ogni lezione ha tre parti: <strong>il corso slide per slide</strong> (con gli appunti presi a lezione), le <strong>spiegazioni e dimostrazioni</strong> passo-passo (a comparsa) e le <strong>domande da esame</strong>.</li>
 <li>Le equazioni numerate sono quelle delle slide. I disegni sono costruiti dalle formule delle slide.</li>
-<li><span class="chip formula">🧮</span> formula da sapere a memoria · <span class="chip esame">🎯</span> punto da esame · <span class="chip mia">🧩</span> passaggio ricostruito da me · <span class="chip conn">💡</span> collegamento · <span class="chip avv">⚠️</span> refuso o contraddizione nella slide · <span class="chip dub">❓</span> salto non ricostruito.</li>
+<li><span class="chip formula">🧮</span> formula da sapere a memoria · <span class="chip esame">🎯</span> punto da esame · <span class="chip mia">🧩</span> passaggio o disegno ricostruito da me · <span class="chip conn">💡</span> collegamento · <span class="chip avv">⚠️</span> refuso o contraddizione nella slide · <span class="chip dub">❓</span> salto non ricostruito.</li>
 <li>Tocca un'immagine per ingrandirla. I pulsanti <strong>A−</strong> e <strong>A+</strong> in alto cambiano la dimensione del testo.</li>
-<li>La Lezione 6 (laboratorio Matlab) non è materia d'esame, per questo non compare. Le Lezioni 1–2 e la prima parte della 3 (campionamento e conversione A/D) precedono l'intercorso; della quantizzazione uniforme è inclusa la parte che serve alla legge dei 6 dB/bit.</li>
 </ul>
 """
-    return pagina("Trasmissione dei Segnali Digitali · Intercorso", corpo, "index")
+    return pagina("Trasmissione dei Segnali Digitali", corpo, "index")
+
+
+def pagina_intercorso(out):
+    card = []
+    for n, inizio, nota in INTERCORSO:
+        c = next(x for x in LEZIONI if x["n"] == n)
+        toc = _toc(c, out)
+        if inizio:
+            k = next(i for i, x in enumerate(toc) if re.sub(r"<[^>]+>", "", x).startswith(inizio))
+            toc = toc[k:]
+            href = f'{c["slug"]}.html#{slug(inizio)}'
+        else:
+            href = f'{c["slug"]}.html'
+        li = "".join(f"<li>{html.escape(re.sub(r'<[^>]+>', '', x))}</li>" for x in toc)
+        card.append(f'<a class="card" href="{href}"><span class="num">Lezione {c["n"]} · {html.escape(nota)}</span>'
+                    f'<strong>{html.escape(c["titolo"])}</strong><span class="b">{html.escape(c["breve"])}</span>'
+                    f'<ul>{li}</ul></a>')
+    corpo = f"""
+<p class="crumb"><a href="index.html">Home</a> · Prima prova intercorso</p>
+<h1>Prima prova intercorso</h1>
+<p class="breve">Gli argomenti della <strong>prima prova intercorso</strong>: dal quantizzatore uniforme (SNR e legge dei 6 dB/bit) e dalla quantizzazione non uniforme alla rappresentazione di Rice dei processi aleatori. Ogni scheda apre la lezione dal punto giusto.</p>
+<div class="cards">{"".join(card)}</div>
+<ul class="legenda">
+<li>Le Lezioni 1–2 (introduzione e probabilità) e la prima parte della 3 (campionamento e conversione A/D) precedono l'intercorso; della quantizzazione uniforme serve la parte sulla legge dei 6 dB/bit. Il laboratorio Matlab (Lezione 5) non è materia d'esame.</li>
+</ul>
+"""
+    return pagina("Prima prova intercorso · Trasmissione dei Segnali Digitali", corpo, "intercorso")
 
 
 # ----------------------------------------------------------------------------------------------- pagina, stile, script
@@ -583,6 +708,8 @@ details.der>*:not(summary):last-child{padding-bottom:.6em}
 .card .b{display:block;color:var(--ink2);font-size:.92em;margin-bottom:.3em}
 .card ul{margin:.3em 0 0;font-size:.86em;color:var(--ink2);columns:1}
 .legenda li{margin:.5em 0}
+.card.hero{border:2px solid var(--a1);background:var(--soft)}
+.card.hero strong{font-size:1.25em}
 .nota{color:var(--ink2);font-size:.92em}
 .pn{display:flex;justify-content:space-between;margin-top:2em;font-weight:600}
 footer{max-width:760px;margin:0 auto;padding:0 16px 30px;color:var(--ink2);font-size:.8em}
@@ -781,6 +908,7 @@ def costruisci(out):
         (out / f"{c['slug']}.html").write_text(pagina_lezione(c, CORSO, out, prec, succ), encoding="utf-8")
         print("scritto", c["slug"])
     (out / "index.html").write_text(pagina_indice(out), encoding="utf-8")
+    (out / "intercorso.html").write_text(pagina_intercorso(out), encoding="utf-8")
     print("scritto index, immagini:", len(COPIATE))
     # pagine aggiuntive tenute fuori dal repository e non collegate dall'indice (facoltative)
     extra = ROOT.parent / "extra_sito.py"

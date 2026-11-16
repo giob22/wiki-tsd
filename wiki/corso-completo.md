@@ -12,10 +12,14 @@ Testo unico di studio del corso (LM Ingegneria Informatica, UNINA, D. Darsena; t
 | 2 | [[#Lezione 2 — Elementi di teoria della probabilità\|Elementi di teoria della probabilità]] | Probabilità.pdf |
 | 3 | [[#Lezione 3 — Campionamento e conversione A/D e D/A\|Campionamento e conversione A/D e D/A]] | Campionamento_AD_DA.pdf |
 | 4 | [[#Lezione 4 — Rappresentazione complessa in banda base\|Rappresentazione complessa in banda base]] | Rappresentazione_Rice.pdf |
-| 5 | [[#Lezione 5 — Processi aleatori\|Processi aleatori]] | random_processes.pdf (+ random_processes_v2.pdf) |
-| 6 | [[#Lezione 6 — Laboratorio Matlab: conversione A/D e D/A (28/09)\|Laboratorio Matlab: conversione A/D e D/A]] | AD_conversion.m + figure |
+| 5 | [[#Lezione 5 — Laboratorio Matlab: conversione A/D e D/A (28/09)\|Laboratorio Matlab: conversione A/D e D/A]] | AD_conversion.m + figure |
+| 6 | [[#Lezione 6 — Processi aleatori\|Processi aleatori]] | random_processes.pdf (+ random_processes_v2.pdf) |
 | 7 | [[#Lezione 7 — Rappresentazione dei processi passa-banda\|Rappresentazione dei processi passa-banda]] | Rappresentazione_Rice_processi.pdf |
-| 8 | [[#Lezione 8 — Parametri globali delle modulazioni e capacità di canale\|Parametri globali delle modulazioni e capacità di canale]] | Confronto_new.pdf |
+| 8 | [[#Lezione 8 — Principi di modulazione\|Principi di modulazione]] | Modulazione.pdf |
+| 9 | [[#Lezione 9 — Elementi di teoria della rivelazione\|Elementi di teoria della rivelazione]] | Detection.pdf |
+| 10 | [[#Lezione 10 — Prestazioni delle modulazioni binarie e della QPSK\|Prestazioni delle modulazioni binarie e della QPSK]] | Lezione 10-28.pdf |
+| 11 | [[#Lezione 11 — Union bound e approssimazione dei primi vicini\|Union bound e approssimazione dei primi vicini]] | Lezione 11-2.pdf |
+| 12 | [[#Lezione 12 — Parametri globali delle modulazioni e capacità di canale\|Parametri globali delle modulazioni e capacità di canale]] | Confronto_new.pdf |
 
 
 
@@ -966,7 +970,209 @@ L'occupazione spettrale di un segnale fisico a valori reali è la più piccola b
 *Approfondimenti nel wiki: [[modulazione-digitale]], [[segnali-banda-base-e-passa-banda]], [[segnale-analitico]], [[inviluppo-complesso]], [[upconversion-e-downconversion]], [[equivalente-banda-base-dei-filtri]] (derivazioni estese, esempi e grafici).*
 
 
-## Lezione 5 — Processi aleatori
+## Lezione 5 — Laboratorio Matlab: conversione A/D e D/A (28/09)
+
+*Fonte: lo script `AD_conversion.m` e le tre figure della lezione di laboratorio (`raw/scripts/09_28_2006/`). Non è materia d'esame: serve a vedere sui numeri ciò che la Lezione 3 dice a parole. Le figure «replica» sono ricavate rieseguendo lo script in Python.*
+
+Lo script simula la catena **campionamento → interpolazione → quantizzazione → SNR** su due segnali (esempio 1: il trapezio; esempio 2: tre sinusoidi). Il computer lavora su vettori, quindi il «tempo continuo» è una griglia molto fitta.
+
+### 0. Il «tempo continuo» e lo spettro · [[Campionamento_AD_DA.pdf#page=8|p. 8]]
+
+```matlab
+accuracy = 1e4;  t_i = -30;  t_f = 30;
+D  = t_f - t_i;                % 60 s
+dt = D/accuracy;               % 6 ms
+t  = t_i:dt:t_f-dt;            % N = 10^4 istanti
+```
+
+| Grandezza | Valore |
+|---|---|
+| finestra $D$ | 60 s ($-30 \to 30$) |
+| passo $dt$ | $60/10^4 = 6$ ms |
+| punti $N$ | $10^4$ (l'ultimo estremo è escluso) |
+| banda visibile | $\pm 1/(2\,dt) = \pm 83.3$ Hz |
+| risoluzione in frequenza | $1/(N\,dt) = 1/60$ Hz |
+
+- **Regola del codice:** ogni istante «speciale» (spigoli, $T_s$) viene arrotondato a un multiplo di $dt$ con `round(x/dt)*dt`, perché nel vettore esistono solo i tempi della griglia.
+- **Esempio 1 (trapezio):** 0 fino a $-2$ s, rampa fino a 1 in $-1$ s, costante a 1 fino a $+1$ s, rampa fino a 0 in $+2$ s. Banda dichiarata `W = 1` Hz.
+- **Esempio 2:** $s(t) = 5\sin(2\pi\,4t + \tfrac{\pi}{5}) + 3\sin(2\pi\,\tfrac43 t + \tfrac{\pi}{8}) + 2\sin(2\pi\,0.4t - \tfrac{\pi}{3})$, frequenze 4, 1.33, 0.4 Hz, `W = 4` Hz (banda davvero limitata).
+
+#### Lo spettro: perché `dt*fft`
+
+```matlab
+S_dft = fftshift(fft(s));     % DFT con la frequenza zero al centro
+S     = dt*S_dft;             % approssima l'integrale di Fourier
+f     = linspace(-0.5,0.5,N)/dt;
+```
+
+La trasformata è un integrale; sulla griglia diventa una somma di Riemann, e il passo $dt$ è l'ampiezza di ogni rettangolino:
+
+$$S(f_k) = \int s(t)\,e^{-j2\pi f_k t}\,dt \approx dt\sum_{n} s(t_n)\,e^{-j2\pi f_k t_n} \;\Rightarrow\; \lvert S(f_k)\rvert \approx dt\,\lvert \text{FFT}(s)[k]\rvert$$
+
+La FFT è la somma senza $dt$: moltiplicare per $dt$ dà le unità giuste (V·s = V/Hz) e rende il risultato indipendente da quanto è fitta la griglia. Il fattore di fase $e^{-j2\pi f t_i}$ (la griglia parte da $-30$, non da 0) non cambia il modulo.
+
+**Spettro esatto del trapezio** (derivazione del lab): è la convoluzione di un rettangolo largo 3 e uno largo 1, $s = \Pi(t/3)\ast\Pi(t)$, quindi
+
+$$S(f) = 3\,\text{sinc}(3f)\,\text{sinc}(f), \qquad S(0) = 3 = \text{area}, \qquad E = \tfrac83 \approx 2.667$$
+
+La FFT dà $S(0) = 2.986$. Solo lo 0.05% dell'energia sta oltre 1 Hz (0.85% oltre 0.5 Hz): per questo `W = 1` è una banda ragionevole, anche se il trapezio non è a banda limitata.
+
+![[grafico-lab-setup-spettro.png|640]]
+*Replica: a sinistra lo spigolo in $t = -1$ visto come fila di punti ogni 6 ms; al centro $\lvert dt\cdot\text{FFT}\rvert$ (blu) sovrapposta alla trasformata esatta (arancio tratteggiato); a destra lo spettro in dB, con lobi che non arrivano mai a zero.*
+
+![[lab-0928-figure1-segnale-spettro-campioni.png|520]]
+*Figura 1 del laboratorio (esempio 1). In alto il trapezio su $[-3, 3]$ s; al centro lo spettro sull'asse $\pm 83$ Hz, concentrato attorno a 0 con picco 3; in basso i 121 campioni su $[-30, 30]$ s, quasi tutti nulli.*
+
+### 1. Campionamento · [[Campionamento_AD_DA.pdf#page=11|p. 11]], [[Campionamento_AD_DA.pdf#page=12|12]], [[Campionamento_AD_DA.pdf#page=13|13]]
+
+```matlab
+fs   = 2*W;   Ts = 1/fs;
+Ts   = round(Ts/dt)*dt;                     % multiplo di dt
+high = (abs((t/Ts)-round(t/Ts)) < eps);     % 1 dove t è multiplo di Ts
+s_samp = s.*high;                           % azzera tutto il resto
+is   = find(high);                          % indici dei campioni
+stem(t(is), s_samp(is));
+```
+
+- `high` vale 1 negli istanti $nT_s$ (con tolleranza `eps` per gli errori di virgola mobile); `s.*high` è il prodotto punto per punto: lascia $s$ ai campioni e mette 0 altrove.
+- `find(high)` restituisce gli **indici** degli 1; `stem` disegna aste (campioni) invece di una curva.
+- `s_samp` è la versione simulata di $x_\delta(t) = \sum_n x(nT_s)\,\delta(t - nT_s)$: ha ancora $10^4$ punti, ma solo i campioni possono essere non nulli. Il filtro di interpolazione ha picco 1, quindi non serve correggere la scala della $\delta$.
+
+**Esempio 1:** $f_s = 2W = 2$ Hz → $T_s = 0.5$ s; $0.5/0.006 = 83.3 \to 83$, quindi $T_s = 0.498$ s e $f_{samp} = 2.008$ Hz. Nella finestra cadono $n = -60, \dots, 60$: **121 campioni**, di cui 9 non nulli:
+
+| $nT_s$ [s] | $\pm 1.992$ | $\pm 1.494$ | $\pm 0.996$, $\pm 0.498$, 0 |
+|---|---|---|---|
+| $s(nT_s)$ | 0.008 | 0.506 | 1 |
+
+**Spettro:** campionare replica lo spettro ogni $f_{samp}$, $X_\delta(f) = \frac{1}{T_s}\sum_k S\big(f - \frac{k}{T_s}\big)$. Il trapezio non è a banda limitata, quindi le code delle repliche entrano in $\lvert f\rvert < f_s/2$ (aliasing), ma qui è trascurabile (0.05% dell'energia oltre 1 Hz). Il commento del codice («come se avessimo applicato un filtro anti-aliasing») significa questo: nessun filtro è applicato, il segnale ha solo già quasi tutta l'energia sotto 1 Hz.
+
+![[grafico-lab-campionamento-spettro.png|640]]
+*Replica. In alto il trapezio e i campioni ogni 0.498 s; in basso lo spettro dei campioni (blu) come somma delle repliche $S(f)$, $S(f \mp f_s)$ (tratteggiate). Nella fascia $\lvert f\rvert < 1.004$ Hz la replica centrale è quasi pulita.*
+
+**Esempio 2 (l'arrotondamento rompe il teorema):** $f_s = 2W = 8$ Hz → $T_s = 0.125$ s; $0.125/0.006 = 20.83 \to 21$, quindi $T_s = 0.126$ s e $f_{samp} = 7.937$ Hz $< 2W = 8$ Hz. La componente a 4 Hz supera $f_{samp}/2 = 3.968$ Hz e si ripiega in $f_{samp} - 4 = 3.937$ Hz: la ricostruzione con la sinc ha **SNR 2 dB**; con $f_s = 16.7$ Hz sale a **37.5 dB**. Anche $f_s = 2W$ esatto è il caso limite della p. 13: una sinusoide a $f_s/2$ viene campionata sempre nella stessa fase, e l'ampiezza non si ricostruisce.
+
+![[grafico-lab-esempio2.png|520]]
+*Replica. In alto $f_s = 7.94$ Hz: i campioni sono giusti ma la curva ricostruita non è il segnale (i campioni sono compatibili anche con una sinusoide più lenta); in basso $f_s = 16.67$ Hz: la ricostruzione coincide.*
+
+### 2. Interpolazione · [[Campionamento_AD_DA.pdf#page=17|p. 17]], [[Campionamento_AD_DA.pdf#page=23|23]], [[Campionamento_AD_DA.pdf#page=24|24]]
+
+```matlab
+C = 2;                          % 1 rettangolo, 2 triangolo, 3 sinc
+switch C
+case 1  th = 0:dt:Ts;           h = ones(size(th));       % rect((t-Ts/2)/Ts)
+case 2  th = -Ts:dt:Ts;         h = 1-abs(th/Ts);         % lambda(t/Ts)
+case 3  th = -25*Ts:dt:25*Ts;   h = sinc(th/Ts);          % sinc(t/Ts)
+end
+L = length(h);
+s_r       = conv(s_samp,h);                            % interpolazione
+s_r_trunc = s_r(floor((L-1)/2)+1 : floor((L-1)/2)+N);  % taglio a N punti
+t_conv = (t(1)+th(1)) + (0:length(s_r)-1)*dt;          % asse dell'uscita completa
+```
+
+- **La convoluzione è la formula di interpolazione:** $x_r(t) = \sum_n x(nT_s)\,h(t - nT_s)$. Ogni campione «accende» una copia di $h$ centrata sul suo istante e pesata dal suo valore; le copie si sommano. Con triangoli la somma è la spezzata che unisce i campioni; con la sinc le copie oscillano e si compensano.
+- **Le durate si sommano.** `conv` di vettori con $N$ e $L$ punti dà $N + L - 1$ punti: l'uscita esiste da quando i due segnali si toccano a quando si lasciano. Se $x \ne 0$ solo su $[a_1, b_1]$ e $h$ solo su $[a_2, b_2]$, $y \ne 0$ solo su $[a_1 + a_2,\, b_1 + b_2]$.
+
+| Filtro | `th` | $L$ | Punti di `conv` | Asse dell'uscita [s] |
+|---|---|---|---|---|
+| triangolo (C = 2) | $[-T_s, T_s]$ | $2\cdot 83 + 1 = 167$ | $10^4 + 166 = 10166$ | $[-30.498,\ 30.492]$ |
+| sinc, 25 lobi (C = 3) | $[-25T_s, 25T_s]$ | $4151$ | $14150$ | $[-42.45,\ 42.44]$ |
+| rettangolo (C = 1) | $[0, T_s]$ | $84$ | $10083$ | $[-30,\ 30.492]$ |
+
+- **Perché si taglia:** per confrontare $s_r$ con $s$ (e calcolare l'errore) i due vettori devono avere la stessa lunghezza e gli stessi istanti; i punti in più sono le code dei filtri vicino ai bordi.
+- **Perché proprio da $(L-1)/2 + 1$:** il punto $k$ dell'uscita sta a $t(1) + th(1) + (k-1)\,dt$; lo voglio a $t(1)$, quindi $k - 1 = -th(1)/dt = (L-1)/2$ (filtro simmetrico). Si scartano $(L-1)/2$ punti per lato: 83 per il triangolo, 2075 per la sinc (12.45 s). Tagliando i primi $N$ punti il ricostruito risulterebbe ritardato di 0.498 s (triangolo) o 12.45 s (sinc).
+
+![[grafico-lab-durata-convoluzione.png|600]]
+*Replica (esempio 1, sinc). In alto gli ingressi di `conv` (10⁴ punti e 4151 punti); al centro l'uscita completa (14150 punti, fasce rosse = parti tagliate); in basso il taglio del codice (blu) contro il taglio sbagliato (rosso, spostato di 12.45 s).*
+
+**I tre filtri a confronto** (esempio 1 senza quantizzazione, SNR come in §4):
+
+| Filtro | SNR | Comportamento |
+|---|---|---|
+| rettangolo (C = 1) | 15.8 dB | gradini con picchi |
+| triangolo (C = 2) | 50.2 dB | la spezzata coincide con il trapezio (suoi spigoli $\pm1$, $\pm2$ cadono quasi su campioni: coincidenza favorevole) |
+| sinc (C = 3) | 26.7 dB | curva morbida con piccole oscillazioni, massimo 1.029 in $t = -0.82$ s |
+
+La sinc (serie di Shannon) ricostruisce l'unico segnale a banda limitata $\lvert f\rvert < f_s/2$ che passa per i campioni: il trapezio non lo è, quindi viene «smussato». Il rettangolo del codice ha due particolarità: `th = 0:dt:Ts` contiene sia 0 sia $T_s$ (84 punti per 83 passi: due copie adiacenti condividono un punto, da cui i picchi a 2 e a 1.5) ed è causale, quindi con il taglio da $(L-1)/2$ i gradini risultano centrati sui campioni (interpolazione «al campione più vicino»), non ZOH.
+
+![[grafico-lab-interpolatori.png|600]]
+*Replica: i tre interpolatori sull'esempio 1 senza quantizzazione (in verde tratteggiato lo ZOH causale vero, SNR 12.2 dB).*
+
+#### Quanto deve essere largo il filtro
+
+Rettangolo largo $T_s$; triangolo con base $2T_s$ (da $-T_s$ a $+T_s$). Sono le larghezze per cui valgono due condizioni:
+1. **Passare per i campioni:** $h(0) = 1$ e $h(kT_s) = 0$ per $k \ne 0$ (il triangolo si annulla in $\pm T_s$; con base $3T_s$ varrebbe ancora $1/3$ e sporcherebbe i vicini; la sinc ha gli zeri in $kT_s$).
+2. **Niente buchi né sovrapposizioni:** con tutti i campioni a 1, il ricostruito deve valere 1 ovunque, cioè $\sum_n h(t - nT_s) = 1$. Rettangoli larghi $T_s$ pavimentano l'asse; più stretti lasciano buchi, più larghi si sovrappongono. Tra due campioni i due triangoli valgono $1 - \tau/T_s$ e $\tau/T_s$, e sommano a 1.
+
+![[grafico-lab-larghezza-filtro.png|600]]
+*Replica: lo stesso segnale lento campionato ogni $T$ e ricostruito con sei larghezze (rettangolo $T/2$, $T$, $1.5T$; triangolo base $T$, $2T$, $3T$).*
+
+![[lab-0928-figure2-interpolazione-lineare.png|520]]
+*Figura 2 del laboratorio, C = 2 (triangolo): in alto il ricostruito $s_r(t)$, identico al trapezio; al centro e in basso la parte quantizzata (§3).*
+
+![[lab-0928-figure2-interpolazione-shannon.png|520]]
+*Figura 2 del laboratorio, C = 3 (sinc): fianchi arrotondati, due gobbe sopra 1 attorno a $\pm 0.8$ s e piccole oscillazioni fuori da $[-2, 2]$.*
+
+### 3. Quantizzazione · [[Campionamento_AD_DA.pdf#page=25|p. 25]], [[Campionamento_AD_DA.pdf#page=26|26]], [[Campionamento_AD_DA.pdf#page=28|28]]
+
+```matlab
+bits  = 4;
+s_min = min(s_samp);  s_max = max(s_samp);
+range = s_max - s_min;
+Nq    = pow2(bits);                    % 2^4 = 16 livelli
+Delta = range/Nq;                      % larghezza di una cella
+cbook = s_min+Delta/2:Delta:s_max;     % livelli al centro delle celle
+for k=1:length(is)
+   [~,index(k)] = min(abs(cbook-s_samp(is(k))));   % livello più vicino
+end
+s_q(is) = cbook(index);
+```
+
+1. Dinamica $[s_{min}, s_{max}]$ dei campioni; 2. divisa in $N_q = 2^b$ celle uguali di larghezza $\Delta$; 3. i livelli (codebook) sono i **centri** delle celle; 4. ogni campione va al livello più vicino; 5. i campioni quantizzati passano nello stesso interpolatore, con lo stesso taglio.
+
+**Numeri (esempio 1, 4 bit):** $s_{min} = 0$, $s_{max} = 1$, $N_q = 16$, $\Delta = 1/16 = 0.0625$, codebook $0.03125, 0.09375, \dots, 0.96875$.
+
+| Campione | Livello più vicino | Errore $e = s_q - s$ |
+|---|---|---|
+| 0 (112 campioni su 121) | 0.03125 | $+0.03125 = +\Delta/2$ |
+| 0.008 | 0.03125 | $+0.023$ |
+| 0.506 | 0.53125 | $+0.025$ |
+| 1 (5 campioni) | 0.96875 | $-0.03125 = -\Delta/2$ |
+
+È il quantizzatore uniforme della lezione 3: $\lvert e\rvert \le \Delta/2$. Con i livelli al centro delle celle e l'estremo della dinamica in 0, **lo zero non è rappresentabile** (il livello più basso è $\Delta/2$): fuori dal trapezio il ricostruito ha un «pavimento» a 0.031 e il plateau si abbassa a 0.969. Per quei campioni l'errore vale **sempre** $\Delta/2$, non è uniforme in $(-\Delta/2, \Delta/2)$ come nel modello. (Dettaglio: `s_min`/`s_max` sono presi su tutto `s_samp`, zeri compresi; per il trapezio non cambia nulla.)
+
+![[grafico-lab-quantizzazione.png|640]]
+*Replica (4 bit). A sinistra la caratteristica a 16 livelli con i valori dei campioni (lo 0 finisce su $\Delta/2$); al centro l'errore sui 121 campioni, sempre dentro $\pm\Delta/2$; a destra il ricostruito dopo la quantizzazione, con pavimento a 0.031 e plateau a 0.969.*
+
+### 4. SNR · [[Campionamento_AD_DA.pdf#page=29|p. 29]], [[Campionamento_AD_DA.pdf#page=30|30]]
+
+```matlab
+P_s   = mean(s.^2);                  % potenza del segnale originale
+E_q   = mean((s-sq_r_trunc).^2);     % potenza dell'errore
+SNR_q = 10*log10(P_s/E_q)            % in dB
+```
+
+È la definizione della lezione 3, $\text{SNR} = \langle x^2\rangle/\langle e^2\rangle$, ma l'errore è **segnale originale − ricostruito dopo quantizzazione e interpolazione**: misura l'intera catena A/D + D/A, non la sola quantizzazione.
+
+**Valore stampato (esempio 1, triangolo, 4 bit): 16.7 dB.** $P_s \approx E/D = (8/3)/60 = 0.0444$; $E_q \approx 9.6\cdot10^{-4}$ (il 95% viene dai 56 s con segnale nullo e ricostruito a 0.031); $\text{SNR} = 10\log_{10}(0.0444/9.6\cdot10^{-4}) \approx 16.7$ dB.
+
+Il numero mescola tre cose: la quantizzazione; l'interpolazione (senza quantizzare: 50.2 dB triangolo, 26.7 dB sinc, 15.8 dB rettangolo, e sono tetti per qualunque numero di bit); la finestra (calcolato su $\lvert t\rvert < 2.5$ s l'SNR sale a 28.4 dB).
+
+**Confronto con i 6 dB/bit:** il modello assume errore uniforme di potenza $\Delta^2/12$; qui quasi tutti gli errori valgono $\Delta/2$, potenza $\Delta^2/4$, cioè 3 volte tanto: $10\log_{10}3 = 4.77$ dB in meno. Modello: $10\log_{10}\frac{0.0444}{(1/16)^2/12} = 21.4$ dB; misurato 16.7 dB (differenza 4.7 dB). La **pendenza** resta 6.02 dB/bit: ogni bit dimezza $\Delta$, la potenza dell'errore si divide per 4.
+
+| $b$ [bit] | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| SNR del codice [dB] | −1.4 | 4.6 | 10.6 | **16.7** | 22.7 | 28.7 | 34.4 | 40.0 | 44.7 | 47.9 |
+| SNR sui soli campioni [dB] | −1.4 | 4.7 | 10.7 | 16.7 | 22.8 | 28.9 | 34.8 | 40.9 | 46.8 | 52.9 |
+
+Fino a 7–8 bit le due righe coincidono e crescono di 6.0 dB/bit; poi quella del codice si ferma verso il limite dell'interpolazione (50.2 dB). Aumentare i bit migliora solo finché domina la quantizzazione; oltre contano l'interpolatore e, prima ancora, il campionamento (esempio 2: l'aliasing tiene l'SNR a 2 dB).
+
+![[grafico-lab-snr-vs-bit.png|560]]
+*Replica. Blu: SNR stampato dal codice; arancio: SNR dei soli campioni; nero tratteggiato: modello $\Delta^2/12$ (parallelo, +4.77 dB); linee orizzontali: i tetti senza quantizzazione (50.2 dB triangolo, 26.7 dB sinc).*
+
+*Approfondimenti nel wiki: [[laboratorio-conversione-ad]], [[lab-setup-e-spettro]], [[lab-campionamento]], [[lab-interpolazione]], [[lab-quantizzazione]], [[lab-snr]] (derivazioni complete e animazione dell'interpolazione).*
+
+
+## Lezione 6 — Processi aleatori
 
 *Fonte: random_processes.pdf, 46 pagine (41 slide, 5 pagine di appunti a mano alle p. 3, 4, 5, 8, 10, e una nota a mano sulla slide 5, p. 9). Le slide 33, 40 e 41 sono quelle della versione aggiornata dalla docente (random_processes_v2.pdf). Corrispondenza: slide 1–2 = p. 1–2, slide 3 = p. 6, slide 4 = p. 7, slide 5 = p. 9, dalla slide 6 in poi pagina = slide + 5.*
 
@@ -1399,208 +1605,6 @@ $$S_{XX}(\nu) = \sum_{m=-\infty}^{+\infty} R_{XX}(m)\,e^{-j2\pi\nu m}$$
 *Approfondimenti nel wiki (derivazioni, esempi svolti, grafici): [[processo-aleatorio]], [[momenti-di-un-processo]], [[stazionarieta]], [[autocorrelazione-processi-wss]], [[processi-e-sistemi-lti]], [[densita-spettrale-di-potenza]], [[processo-gaussiano]], [[calcolo-densita-spettrale]].*
 
 
-## Lezione 6 — Laboratorio Matlab: conversione A/D e D/A (28/09)
-
-*Fonte: lo script `AD_conversion.m` e le tre figure della lezione di laboratorio (`raw/scripts/09_28_2006/`). Non è materia d'esame: serve a vedere sui numeri ciò che la Lezione 3 dice a parole. Le figure «replica» sono ricavate rieseguendo lo script in Python.*
-
-Lo script simula la catena **campionamento → interpolazione → quantizzazione → SNR** su due segnali (esempio 1: il trapezio; esempio 2: tre sinusoidi). Il computer lavora su vettori, quindi il «tempo continuo» è una griglia molto fitta.
-
-### 0. Il «tempo continuo» e lo spettro · [[Campionamento_AD_DA.pdf#page=8|p. 8]]
-
-```matlab
-accuracy = 1e4;  t_i = -30;  t_f = 30;
-D  = t_f - t_i;                % 60 s
-dt = D/accuracy;               % 6 ms
-t  = t_i:dt:t_f-dt;            % N = 10^4 istanti
-```
-
-| Grandezza | Valore |
-|---|---|
-| finestra $D$ | 60 s ($-30 \to 30$) |
-| passo $dt$ | $60/10^4 = 6$ ms |
-| punti $N$ | $10^4$ (l'ultimo estremo è escluso) |
-| banda visibile | $\pm 1/(2\,dt) = \pm 83.3$ Hz |
-| risoluzione in frequenza | $1/(N\,dt) = 1/60$ Hz |
-
-- **Regola del codice:** ogni istante «speciale» (spigoli, $T_s$) viene arrotondato a un multiplo di $dt$ con `round(x/dt)*dt`, perché nel vettore esistono solo i tempi della griglia.
-- **Esempio 1 (trapezio):** 0 fino a $-2$ s, rampa fino a 1 in $-1$ s, costante a 1 fino a $+1$ s, rampa fino a 0 in $+2$ s. Banda dichiarata `W = 1` Hz.
-- **Esempio 2:** $s(t) = 5\sin(2\pi\,4t + \tfrac{\pi}{5}) + 3\sin(2\pi\,\tfrac43 t + \tfrac{\pi}{8}) + 2\sin(2\pi\,0.4t - \tfrac{\pi}{3})$, frequenze 4, 1.33, 0.4 Hz, `W = 4` Hz (banda davvero limitata).
-
-#### Lo spettro: perché `dt*fft`
-
-```matlab
-S_dft = fftshift(fft(s));     % DFT con la frequenza zero al centro
-S     = dt*S_dft;             % approssima l'integrale di Fourier
-f     = linspace(-0.5,0.5,N)/dt;
-```
-
-La trasformata è un integrale; sulla griglia diventa una somma di Riemann, e il passo $dt$ è l'ampiezza di ogni rettangolino:
-
-$$S(f_k) = \int s(t)\,e^{-j2\pi f_k t}\,dt \approx dt\sum_{n} s(t_n)\,e^{-j2\pi f_k t_n} \;\Rightarrow\; \lvert S(f_k)\rvert \approx dt\,\lvert \text{FFT}(s)[k]\rvert$$
-
-La FFT è la somma senza $dt$: moltiplicare per $dt$ dà le unità giuste (V·s = V/Hz) e rende il risultato indipendente da quanto è fitta la griglia. Il fattore di fase $e^{-j2\pi f t_i}$ (la griglia parte da $-30$, non da 0) non cambia il modulo.
-
-**Spettro esatto del trapezio** (derivazione del lab): è la convoluzione di un rettangolo largo 3 e uno largo 1, $s = \Pi(t/3)\ast\Pi(t)$, quindi
-
-$$S(f) = 3\,\text{sinc}(3f)\,\text{sinc}(f), \qquad S(0) = 3 = \text{area}, \qquad E = \tfrac83 \approx 2.667$$
-
-La FFT dà $S(0) = 2.986$. Solo lo 0.05% dell'energia sta oltre 1 Hz (0.85% oltre 0.5 Hz): per questo `W = 1` è una banda ragionevole, anche se il trapezio non è a banda limitata.
-
-![[grafico-lab-setup-spettro.png|640]]
-*Replica: a sinistra lo spigolo in $t = -1$ visto come fila di punti ogni 6 ms; al centro $\lvert dt\cdot\text{FFT}\rvert$ (blu) sovrapposta alla trasformata esatta (arancio tratteggiato); a destra lo spettro in dB, con lobi che non arrivano mai a zero.*
-
-![[lab-0928-figure1-segnale-spettro-campioni.png|520]]
-*Figura 1 del laboratorio (esempio 1). In alto il trapezio su $[-3, 3]$ s; al centro lo spettro sull'asse $\pm 83$ Hz, concentrato attorno a 0 con picco 3; in basso i 121 campioni su $[-30, 30]$ s, quasi tutti nulli.*
-
-### 1. Campionamento · [[Campionamento_AD_DA.pdf#page=11|p. 11]], [[Campionamento_AD_DA.pdf#page=12|12]], [[Campionamento_AD_DA.pdf#page=13|13]]
-
-```matlab
-fs   = 2*W;   Ts = 1/fs;
-Ts   = round(Ts/dt)*dt;                     % multiplo di dt
-high = (abs((t/Ts)-round(t/Ts)) < eps);     % 1 dove t è multiplo di Ts
-s_samp = s.*high;                           % azzera tutto il resto
-is   = find(high);                          % indici dei campioni
-stem(t(is), s_samp(is));
-```
-
-- `high` vale 1 negli istanti $nT_s$ (con tolleranza `eps` per gli errori di virgola mobile); `s.*high` è il prodotto punto per punto: lascia $s$ ai campioni e mette 0 altrove.
-- `find(high)` restituisce gli **indici** degli 1; `stem` disegna aste (campioni) invece di una curva.
-- `s_samp` è la versione simulata di $x_\delta(t) = \sum_n x(nT_s)\,\delta(t - nT_s)$: ha ancora $10^4$ punti, ma solo i campioni possono essere non nulli. Il filtro di interpolazione ha picco 1, quindi non serve correggere la scala della $\delta$.
-
-**Esempio 1:** $f_s = 2W = 2$ Hz → $T_s = 0.5$ s; $0.5/0.006 = 83.3 \to 83$, quindi $T_s = 0.498$ s e $f_{samp} = 2.008$ Hz. Nella finestra cadono $n = -60, \dots, 60$: **121 campioni**, di cui 9 non nulli:
-
-| $nT_s$ [s] | $\pm 1.992$ | $\pm 1.494$ | $\pm 0.996$, $\pm 0.498$, 0 |
-|---|---|---|---|
-| $s(nT_s)$ | 0.008 | 0.506 | 1 |
-
-**Spettro:** campionare replica lo spettro ogni $f_{samp}$, $X_\delta(f) = \frac{1}{T_s}\sum_k S\big(f - \frac{k}{T_s}\big)$. Il trapezio non è a banda limitata, quindi le code delle repliche entrano in $\lvert f\rvert < f_s/2$ (aliasing), ma qui è trascurabile (0.05% dell'energia oltre 1 Hz). Il commento del codice («come se avessimo applicato un filtro anti-aliasing») significa questo: nessun filtro è applicato, il segnale ha solo già quasi tutta l'energia sotto 1 Hz.
-
-![[grafico-lab-campionamento-spettro.png|640]]
-*Replica. In alto il trapezio e i campioni ogni 0.498 s; in basso lo spettro dei campioni (blu) come somma delle repliche $S(f)$, $S(f \mp f_s)$ (tratteggiate). Nella fascia $\lvert f\rvert < 1.004$ Hz la replica centrale è quasi pulita.*
-
-**Esempio 2 (l'arrotondamento rompe il teorema):** $f_s = 2W = 8$ Hz → $T_s = 0.125$ s; $0.125/0.006 = 20.83 \to 21$, quindi $T_s = 0.126$ s e $f_{samp} = 7.937$ Hz $< 2W = 8$ Hz. La componente a 4 Hz supera $f_{samp}/2 = 3.968$ Hz e si ripiega in $f_{samp} - 4 = 3.937$ Hz: la ricostruzione con la sinc ha **SNR 2 dB**; con $f_s = 16.7$ Hz sale a **37.5 dB**. Anche $f_s = 2W$ esatto è il caso limite della p. 13: una sinusoide a $f_s/2$ viene campionata sempre nella stessa fase, e l'ampiezza non si ricostruisce.
-
-![[grafico-lab-esempio2.png|520]]
-*Replica. In alto $f_s = 7.94$ Hz: i campioni sono giusti ma la curva ricostruita non è il segnale (i campioni sono compatibili anche con una sinusoide più lenta); in basso $f_s = 16.67$ Hz: la ricostruzione coincide.*
-
-### 2. Interpolazione · [[Campionamento_AD_DA.pdf#page=17|p. 17]], [[Campionamento_AD_DA.pdf#page=23|23]], [[Campionamento_AD_DA.pdf#page=24|24]]
-
-```matlab
-C = 2;                          % 1 rettangolo, 2 triangolo, 3 sinc
-switch C
-case 1  th = 0:dt:Ts;           h = ones(size(th));       % rect((t-Ts/2)/Ts)
-case 2  th = -Ts:dt:Ts;         h = 1-abs(th/Ts);         % lambda(t/Ts)
-case 3  th = -25*Ts:dt:25*Ts;   h = sinc(th/Ts);          % sinc(t/Ts)
-end
-L = length(h);
-s_r       = conv(s_samp,h);                            % interpolazione
-s_r_trunc = s_r(floor((L-1)/2)+1 : floor((L-1)/2)+N);  % taglio a N punti
-t_conv = (t(1)+th(1)) + (0:length(s_r)-1)*dt;          % asse dell'uscita completa
-```
-
-- **La convoluzione è la formula di interpolazione:** $x_r(t) = \sum_n x(nT_s)\,h(t - nT_s)$. Ogni campione «accende» una copia di $h$ centrata sul suo istante e pesata dal suo valore; le copie si sommano. Con triangoli la somma è la spezzata che unisce i campioni; con la sinc le copie oscillano e si compensano.
-- **Le durate si sommano.** `conv` di vettori con $N$ e $L$ punti dà $N + L - 1$ punti: l'uscita esiste da quando i due segnali si toccano a quando si lasciano. Se $x \ne 0$ solo su $[a_1, b_1]$ e $h$ solo su $[a_2, b_2]$, $y \ne 0$ solo su $[a_1 + a_2,\, b_1 + b_2]$.
-
-| Filtro | `th` | $L$ | Punti di `conv` | Asse dell'uscita [s] |
-|---|---|---|---|---|
-| triangolo (C = 2) | $[-T_s, T_s]$ | $2\cdot 83 + 1 = 167$ | $10^4 + 166 = 10166$ | $[-30.498,\ 30.492]$ |
-| sinc, 25 lobi (C = 3) | $[-25T_s, 25T_s]$ | $4151$ | $14150$ | $[-42.45,\ 42.44]$ |
-| rettangolo (C = 1) | $[0, T_s]$ | $84$ | $10083$ | $[-30,\ 30.492]$ |
-
-- **Perché si taglia:** per confrontare $s_r$ con $s$ (e calcolare l'errore) i due vettori devono avere la stessa lunghezza e gli stessi istanti; i punti in più sono le code dei filtri vicino ai bordi.
-- **Perché proprio da $(L-1)/2 + 1$:** il punto $k$ dell'uscita sta a $t(1) + th(1) + (k-1)\,dt$; lo voglio a $t(1)$, quindi $k - 1 = -th(1)/dt = (L-1)/2$ (filtro simmetrico). Si scartano $(L-1)/2$ punti per lato: 83 per il triangolo, 2075 per la sinc (12.45 s). Tagliando i primi $N$ punti il ricostruito risulterebbe ritardato di 0.498 s (triangolo) o 12.45 s (sinc).
-
-![[grafico-lab-durata-convoluzione.png|600]]
-*Replica (esempio 1, sinc). In alto gli ingressi di `conv` (10⁴ punti e 4151 punti); al centro l'uscita completa (14150 punti, fasce rosse = parti tagliate); in basso il taglio del codice (blu) contro il taglio sbagliato (rosso, spostato di 12.45 s).*
-
-**I tre filtri a confronto** (esempio 1 senza quantizzazione, SNR come in §4):
-
-| Filtro | SNR | Comportamento |
-|---|---|---|
-| rettangolo (C = 1) | 15.8 dB | gradini con picchi |
-| triangolo (C = 2) | 50.2 dB | la spezzata coincide con il trapezio (suoi spigoli $\pm1$, $\pm2$ cadono quasi su campioni: coincidenza favorevole) |
-| sinc (C = 3) | 26.7 dB | curva morbida con piccole oscillazioni, massimo 1.029 in $t = -0.82$ s |
-
-La sinc (serie di Shannon) ricostruisce l'unico segnale a banda limitata $\lvert f\rvert < f_s/2$ che passa per i campioni: il trapezio non lo è, quindi viene «smussato». Il rettangolo del codice ha due particolarità: `th = 0:dt:Ts` contiene sia 0 sia $T_s$ (84 punti per 83 passi: due copie adiacenti condividono un punto, da cui i picchi a 2 e a 1.5) ed è causale, quindi con il taglio da $(L-1)/2$ i gradini risultano centrati sui campioni (interpolazione «al campione più vicino»), non ZOH.
-
-![[grafico-lab-interpolatori.png|600]]
-*Replica: i tre interpolatori sull'esempio 1 senza quantizzazione (in verde tratteggiato lo ZOH causale vero, SNR 12.2 dB).*
-
-#### Quanto deve essere largo il filtro
-
-Rettangolo largo $T_s$; triangolo con base $2T_s$ (da $-T_s$ a $+T_s$). Sono le larghezze per cui valgono due condizioni:
-1. **Passare per i campioni:** $h(0) = 1$ e $h(kT_s) = 0$ per $k \ne 0$ (il triangolo si annulla in $\pm T_s$; con base $3T_s$ varrebbe ancora $1/3$ e sporcherebbe i vicini; la sinc ha gli zeri in $kT_s$).
-2. **Niente buchi né sovrapposizioni:** con tutti i campioni a 1, il ricostruito deve valere 1 ovunque, cioè $\sum_n h(t - nT_s) = 1$. Rettangoli larghi $T_s$ pavimentano l'asse; più stretti lasciano buchi, più larghi si sovrappongono. Tra due campioni i due triangoli valgono $1 - \tau/T_s$ e $\tau/T_s$, e sommano a 1.
-
-![[grafico-lab-larghezza-filtro.png|600]]
-*Replica: lo stesso segnale lento campionato ogni $T$ e ricostruito con sei larghezze (rettangolo $T/2$, $T$, $1.5T$; triangolo base $T$, $2T$, $3T$).*
-
-![[lab-0928-figure2-interpolazione-lineare.png|520]]
-*Figura 2 del laboratorio, C = 2 (triangolo): in alto il ricostruito $s_r(t)$, identico al trapezio; al centro e in basso la parte quantizzata (§3).*
-
-![[lab-0928-figure2-interpolazione-shannon.png|520]]
-*Figura 2 del laboratorio, C = 3 (sinc): fianchi arrotondati, due gobbe sopra 1 attorno a $\pm 0.8$ s e piccole oscillazioni fuori da $[-2, 2]$.*
-
-### 3. Quantizzazione · [[Campionamento_AD_DA.pdf#page=25|p. 25]], [[Campionamento_AD_DA.pdf#page=26|26]], [[Campionamento_AD_DA.pdf#page=28|28]]
-
-```matlab
-bits  = 4;
-s_min = min(s_samp);  s_max = max(s_samp);
-range = s_max - s_min;
-Nq    = pow2(bits);                    % 2^4 = 16 livelli
-Delta = range/Nq;                      % larghezza di una cella
-cbook = s_min+Delta/2:Delta:s_max;     % livelli al centro delle celle
-for k=1:length(is)
-   [~,index(k)] = min(abs(cbook-s_samp(is(k))));   % livello più vicino
-end
-s_q(is) = cbook(index);
-```
-
-1. Dinamica $[s_{min}, s_{max}]$ dei campioni; 2. divisa in $N_q = 2^b$ celle uguali di larghezza $\Delta$; 3. i livelli (codebook) sono i **centri** delle celle; 4. ogni campione va al livello più vicino; 5. i campioni quantizzati passano nello stesso interpolatore, con lo stesso taglio.
-
-**Numeri (esempio 1, 4 bit):** $s_{min} = 0$, $s_{max} = 1$, $N_q = 16$, $\Delta = 1/16 = 0.0625$, codebook $0.03125, 0.09375, \dots, 0.96875$.
-
-| Campione | Livello più vicino | Errore $e = s_q - s$ |
-|---|---|---|
-| 0 (112 campioni su 121) | 0.03125 | $+0.03125 = +\Delta/2$ |
-| 0.008 | 0.03125 | $+0.023$ |
-| 0.506 | 0.53125 | $+0.025$ |
-| 1 (5 campioni) | 0.96875 | $-0.03125 = -\Delta/2$ |
-
-È il quantizzatore uniforme della lezione 3: $\lvert e\rvert \le \Delta/2$. Con i livelli al centro delle celle e l'estremo della dinamica in 0, **lo zero non è rappresentabile** (il livello più basso è $\Delta/2$): fuori dal trapezio il ricostruito ha un «pavimento» a 0.031 e il plateau si abbassa a 0.969. Per quei campioni l'errore vale **sempre** $\Delta/2$, non è uniforme in $(-\Delta/2, \Delta/2)$ come nel modello. (Dettaglio: `s_min`/`s_max` sono presi su tutto `s_samp`, zeri compresi; per il trapezio non cambia nulla.)
-
-![[grafico-lab-quantizzazione.png|640]]
-*Replica (4 bit). A sinistra la caratteristica a 16 livelli con i valori dei campioni (lo 0 finisce su $\Delta/2$); al centro l'errore sui 121 campioni, sempre dentro $\pm\Delta/2$; a destra il ricostruito dopo la quantizzazione, con pavimento a 0.031 e plateau a 0.969.*
-
-### 4. SNR · [[Campionamento_AD_DA.pdf#page=29|p. 29]], [[Campionamento_AD_DA.pdf#page=30|30]]
-
-```matlab
-P_s   = mean(s.^2);                  % potenza del segnale originale
-E_q   = mean((s-sq_r_trunc).^2);     % potenza dell'errore
-SNR_q = 10*log10(P_s/E_q)            % in dB
-```
-
-È la definizione della lezione 3, $\text{SNR} = \langle x^2\rangle/\langle e^2\rangle$, ma l'errore è **segnale originale − ricostruito dopo quantizzazione e interpolazione**: misura l'intera catena A/D + D/A, non la sola quantizzazione.
-
-**Valore stampato (esempio 1, triangolo, 4 bit): 16.7 dB.** $P_s \approx E/D = (8/3)/60 = 0.0444$; $E_q \approx 9.6\cdot10^{-4}$ (il 95% viene dai 56 s con segnale nullo e ricostruito a 0.031); $\text{SNR} = 10\log_{10}(0.0444/9.6\cdot10^{-4}) \approx 16.7$ dB.
-
-Il numero mescola tre cose: la quantizzazione; l'interpolazione (senza quantizzare: 50.2 dB triangolo, 26.7 dB sinc, 15.8 dB rettangolo, e sono tetti per qualunque numero di bit); la finestra (calcolato su $\lvert t\rvert < 2.5$ s l'SNR sale a 28.4 dB).
-
-**Confronto con i 6 dB/bit:** il modello assume errore uniforme di potenza $\Delta^2/12$; qui quasi tutti gli errori valgono $\Delta/2$, potenza $\Delta^2/4$, cioè 3 volte tanto: $10\log_{10}3 = 4.77$ dB in meno. Modello: $10\log_{10}\frac{0.0444}{(1/16)^2/12} = 21.4$ dB; misurato 16.7 dB (differenza 4.7 dB). La **pendenza** resta 6.02 dB/bit: ogni bit dimezza $\Delta$, la potenza dell'errore si divide per 4.
-
-| $b$ [bit] | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
-|---|---|---|---|---|---|---|---|---|---|---|
-| SNR del codice [dB] | −1.4 | 4.6 | 10.6 | **16.7** | 22.7 | 28.7 | 34.4 | 40.0 | 44.7 | 47.9 |
-| SNR sui soli campioni [dB] | −1.4 | 4.7 | 10.7 | 16.7 | 22.8 | 28.9 | 34.8 | 40.9 | 46.8 | 52.9 |
-
-Fino a 7–8 bit le due righe coincidono e crescono di 6.0 dB/bit; poi quella del codice si ferma verso il limite dell'interpolazione (50.2 dB). Aumentare i bit migliora solo finché domina la quantizzazione; oltre contano l'interpolatore e, prima ancora, il campionamento (esempio 2: l'aliasing tiene l'SNR a 2 dB).
-
-![[grafico-lab-snr-vs-bit.png|560]]
-*Replica. Blu: SNR stampato dal codice; arancio: SNR dei soli campioni; nero tratteggiato: modello $\Delta^2/12$ (parallelo, +4.77 dB); linee orizzontali: i tetti senza quantizzazione (50.2 dB triangolo, 26.7 dB sinc).*
-
-*Approfondimenti nel wiki: [[laboratorio-conversione-ad]], [[lab-setup-e-spettro]], [[lab-campionamento]], [[lab-interpolazione]], [[lab-quantizzazione]], [[lab-snr]] (derivazioni complete e animazione dell'interpolazione).*
-
-
 ## Lezione 7 — Rappresentazione dei processi passa-banda
 
 *Fonte: Rappresentazione_Rice_processi.pdf, 25 pagine (13 slide e 12 pagine di appunti a mano alle p. 3, 5, 7, 8, 9, 13, 15, 16, 18, 19, 22, 23; note a mano sopra le slide a p. 4, 11, 20). Corrispondenza: slide 1 = p. 1, 2 = p. 2, 3 = p. 4, 4 = p. 6, 5 = p. 10, 6 = p. 11, 7 = p. 12, 8 = p. 14, 9 = p. 17, 10 = p. 20, 11 = p. 21, 12 = p. 24, 13 = p. 25. Le equazioni (1)–(14) sono quelle delle slide di questa lezione.*
@@ -1785,7 +1789,356 @@ $$S_{w_cw_c}(f) = S_{w_sw_s}(f) = \frac{N_0}{2} \quad \text{per } |f| < \frac W2
 *Approfondimenti nel wiki (derivazioni passo per passo, controlli, cross-PSD): [[processi-passa-banda]], [[psd-componenti-in-quadratura]], [[rumore-in-banda-passante]]; sul caso deterministico [[inviluppo-complesso]] e [[segnale-analitico]].*
 
 
-## Lezione 8 — Parametri globali delle modulazioni e capacità di canale
+## Lezione 8 — Principi di modulazione
+
+*Fonte: Modulazione.pdf (copia GoodNotes in `raw/goodnotes/`, 39 pagine: le 23 slide «Principles of modulation» più 16 pagine di appunti a lezione alle p. 3, 5, 9–11, 13, 15, 17–19, 21, 22, 24, 25, 27, 32). Corrispondenza: slide 1–2 = p. 1–2, 3 = p. 4, 4–6 = p. 6–8, 7 = p. 12, 8 = p. 14, 9 = p. 16, 10 = p. 20, 11 = p. 23, 12 = p. 26, 13–17 = p. 28–31 e 33, 18–23 = p. 34–39. Le equazioni (1)–(4) sono quelle delle slide.*
+
+### Il modulatore digitale
+
+#### Slide 2 e appunti — Struttura del modulatore · [[Modulazione.pdf#page=2|p. 2]], [[Modulazione.pdf#page=3|3]]
+- Il **modulatore digitale** è composto da due stadi in cascata: il **mapper**, che converte la sequenza di bit in ingresso in simboli, e il **generatore di forme d'onda**, che associa a ciascun simbolo una forma d'onda da inviare sul canale (schema: dal codificatore di canale, bit $b_k$ → mapper → simboli $\xi_k$ → generatore → segnali $s(t;\xi_k)$ → al canale).
+- Una sequenza di bit $\{b_k\}$ con **bit rate** $R_b=1/T_b$ (bit/s) alimenta il mapper: è la velocità con cui i bit alimentano il modulatore.
+- Il bit rate così definito conta tutti i bit trasferiti fisicamente, cioè sia quelli d'informazione sia quelli di ridondanza (codifica di canale) o di protocollo: è un **raw bit rate**.
+
+#### Slide 3 e appunti — Simboli, baud rate, memoria · [[Modulazione.pdf#page=4|p. 4]], [[Modulazione.pdf#page=5|5]]
+- Il mapper raggruppa i bit in blocchi $\xi_k\triangleq[b_k,b_{k+1},\dots,b_{k+h-1}]$ di lunghezza $h$, detti **simboli di sorgente** o **messaggi**. Ogni simbolo assume uno degli $M=2^h$ valori dell'insieme $\mathcal M=\{m_i\}_{i=1}^M$, ciascuno con probabilità $P(m_i)$. (Appunti: con $h=1$ il mapper non fa nulla.)
+- Il mapper emette un simbolo ogni $T=hT_b$ secondi (**periodo di simbolo**), quindi il
+
+$$R_s\triangleq\frac1T=\frac{1}{hT_b}=\frac{R_b}{\log_2M}$$
+
+  è il **symbol rate** o **baud rate** (simboli/s, baud): il numero di forme d'onda trasmesse dal modulatore nell'unità di tempo, detto anche **signaling rate**.
+- Il generatore associa a ogni simbolo una forma d'onda presa da un insieme di $M$ forme d'onda. La corrispondenza può essere **senza memoria** (biunivoca: la forma d'onda dipende solo da $\xi_k$) o **con memoria** (dipende anche da $\xi_{k-1},\dots,\xi_{k-L}$, con $L\ge1$ memoria della modulazione).
+- Appunti a lezione: con la memoria si possono raccordare dolcemente le transizioni da un simbolo all'altro: si contiene la banda, ma si rallenta il sistema.
+
+### Un esempio e il compromesso potenza-banda
+
+#### Slide 4–5 — Esempio di Benedetto-Biglieri · [[Modulazione.pdf#page=6|p. 6]], [[Modulazione.pdf#page=7|7]]
+- Il modulatore usa $M$ segnali $\{s_i(t)\}_{i=1}^M$ di durata $T=hT_s$ ($T_s$ tempo di bit). Per $M=2$: $s_1=+A$, $s_2=-A$ su $[0,T_s)$; per $M=4$: $-3A,-A,+A,+3A$ su $[0,2T_s)$; per $M=8$: $s_i=(2i-9)A$, $i=1,\dots,8$, su $[0,3T_s)$. Ogni segnale dura $hT_s$: a parità di rate della sorgente, la durata è proporzionale a $h$ (appunti: è la distanza tra un simbolo e il successivo).
+- La figura mostra la stessa sequenza binaria $1\,0\,0\,1\,0\,1\,1\,1\,1\,0\,0\,0$ trasmessa con $M=2$ ($T=T_s$), $M=4$ ($T=2T_s$, livelli $\pm A,\pm3A$) e $M=8$ ($T=3T_s$, livelli da $-7A$ a $+7A$). Appunti: l'ampiezza $+A$ ha ripercussione diretta sull'SNR; schizzi di segnale in banda base (canale) e in banda passante (up → canale → down).
+
+#### Slide 6 e appunti — Come scegliere la modulazione · [[Modulazione.pdf#page=8|p. 8]]–[[Modulazione.pdf#page=11|11]]
+- Uno schema di modulazione è il procedimento con cui una sequenza numerica di bit viene convertita in un segnale analogico a tempo continuo. La scelta è un **compromesso** tra complessità, efficienza di potenza ed efficienza di banda.
+- A bit rate costante, le forme d'onda con $M=8$ richiedono meno banda di quelle con $M=2$ perché l'impulso dura di più: **aumentare $M$ riduce in generale l'occupazione di banda** (appunti: $M=2$, un simbolo per bit, durata $T=T_s$; $M=8$, un simbolo ogni 3 bit, durata $3T_s$; durata e banda sono inversamente proporzionali).
+- Se il budget di potenza è fisso al variare di $M$, con il rumore il demodulatore distingue peggio i segnali quando $M$ è grande, perché i livelli sono più vicini (appunti: con $M=2$ si distinguono 2 livelli lontani, con $M=8$ otto livelli vicini): **compromesso potenza-banda**.
+- Dalla teoria dei segnali, la regolarità di una funzione nel tempo è legata alla rapidità con cui decade la sua trasformata: per uno spettro più stretto si «smussano» le discontinuità della forma d'onda ⇒ **modulazione con memoria** (appunti: gli impulsi rettangolari generano code spettrali che decadono lentamente).
+- Appunti a lezione (p. 11): per una modulazione lineare $S_{xx}(f)=\frac1T S_{aa}(fT)\,|P(f)|^2$; con impulso rettangolare $|P(f)|^2\propto\text{sinc}^2(fT)$, primo zero a $1/T$ (schizzo). Fissare il budget di potenza vuol dire fissare un intervallo sull'asse delle ascisse.
+
+### Rappresentazione discreta e spazio dei segnali
+
+#### Slide 7 e appunti — Rappresentazione discreta dei segnali (1/2) · [[Modulazione.pdf#page=12|p. 12]], [[Modulazione.pdf#page=13|13]]
+- Nella forma più semplice il modulatore mappa ogni messaggio su un insieme di $M$ forme d'onda $\mathcal S=\{s_i(t)\}_{i=1}^M$ trasmesse in sequenza (appunti: ogni simbolo è mappato su una singola forma d'onda dell'insieme).
+- Lavorare con funzioni del tempo è analiticamente e computazionalmente complesso: conviene associare a ogni $s_i(t)$ una **rappresentazione discreta**, una sequenza $s_i(\ell)$ raccolta nel vettore $\mathbf s_i$. Così la comunicazione si descrive in uno **spazio vettoriale** di dimensione finita o infinita numerabile, e l'analisi si riduce a operazioni geometriche tra vettori.
+- Se il segnale è a banda limitata si prendono i campioni equispaziati (teorema del campionamento di Nyquist); per segnali periodici, i coefficienti della serie di Fourier.
+
+#### Slide 8 e appunti — Rappresentazione discreta (2/2) · [[Modulazione.pdf#page=14|p. 14]], [[Modulazione.pdf#page=15|15]]
+- Canale passa-banda idealmente limitato $f_c-W/2\le f\le f_c+W/2$: presa $f_c$ come riferimento, equivale a un canale complesso in banda base su $[-W/2,W/2]$ (appunti: l'inviluppo complesso). Il progetto del modulatore diventa la scelta di forme d'onda complesse in banda base limitate a $[-W/2,W/2]$, indipendentemente da $f_c$.
+- Per il teorema del campionamento $s_i(t)$ è determinata dai campioni $s_i(\ell/W)$ presi a frequenza $W$, e si ricostruisce con
+
+$$s_i(t)=\sum_{\ell=-\infty}^{+\infty}s_i\Big(\frac{\ell}{W}\Big)\,p\Big(t-\frac{\ell}{W}\Big),\qquad p(t)=\text{sinc}(Wt)$$
+
+#### Slide 9 e appunti — Gradi di libertà della modulazione · [[Modulazione.pdf#page=16|p. 16]]–[[Modulazione.pdf#page=19|19]]
+- Basta specificare i campioni $s_i(\ell/W)$, ma su tutto l'asse dei tempi il vettore dei campioni ha dimensione infinita.
+- Nessun segnale limitato nel tempo è limitato in banda: $x_{T_0}(t)=x(t)\,\text{rect}(t/T_0)\Leftrightarrow X_{T_0}(f)=X(f)\ast T_0\,\text{sinc}(fT_0)$.
+- Se però i segnali occupano un intervallo $T_0$ abbastanza lungo da considerarli approssimativamente a banda limitata, il modulatore deve specificare circa $WT_0$ campioni complessi: l'insieme dei segnali sta in un sottospazio complesso di dimensione $WT_0$, cioè reale di dimensione $2WT_0$ (appunti: ogni valore complesso porta 2 gradi di libertà reali).
+- Il massimo numero di dimensioni dello spazio dei segnali complessi (**gradi di libertà**) è il prodotto tempo-banda $D=WT_0$; in pratica il numero effettivo è minore, per vincoli implementativi.
+- Appunti (p. 18–19): l'obiettivo è rappresentare una forma d'onda con un numero finito di valori senza perdere informazione. Usare tutti i $D$ campioni è ridondante se si usano solo $M$ forme d'onda: $D$ sono i gradi di libertà offerti dal canale, $n\le M\le D$ quelli usati davvero, perché le $M$ forme d'onda stanno in un sottospazio di dimensione $n$ (alcune possono essere combinazioni lineari delle altre). Con una base ortonormale di quel sottospazio ogni $s_i(t)$ diventa un vettore di $n$ componenti: si lavora nello spazio di dimensione minima.
+
+#### Slide 10 e appunti — Descrizione nello spazio dei segnali · [[Modulazione.pdf#page=20|p. 20]]–[[Modulazione.pdf#page=22|22]]
+- L'insieme $\mathcal S$ sta in uno spazio di dimensione finita: si lavora con i vettori $\mathbf s_i$. Sia $n\le M$ la dimensione dello spazio generato. Ogni segnale si rappresenta con $\mathbf s_i=[s_i(1),\dots,s_i(n)]^T$ rispetto a una **base ortonormale** $\psi_1(t),\dots,\psi_n(t)$:
+
+$$\langle\psi_k(t),\psi_\ell(t)\rangle=\delta_{k\ell},\qquad s_i(t)=\sum_{\ell=1}^{n}s_i(\ell)\,\psi_\ell(t),\qquad s_i(\ell)=\langle s_i(t),\psi_\ell(t)\rangle=\int_{\mathcal T}s_i(t)\,\psi_\ell^\ast(t)\,dt$$
+
+- Prodotti scalari e distanze euclidee si conservano passando dai segnali ai vettori: $\langle s_i(t),s_j(t)\rangle=\langle\mathbf s_i,\mathbf s_j\rangle$.
+- Appunti (p. 22): la verifica sviluppa entrambi i segnali sulla base e usa l'ortonormalità, $\int\psi_\ell\psi_k^\ast\,dt=\delta_{\ell k}$. Perché importa: per calcolare energia dei segnali, effetto del rumore e decisioni del ricevitore basta la distanza euclidea tra punti di uno spazio a $n$ dimensioni. I punti della costellazione generano un sottospazio di dimensione $n$ dentro lo spazio di dimensione $D$ offerto dal canale.
+
+### Modulazione lineare
+
+#### Slide 11 e appunti — Modulazione lineare · [[Modulazione.pdf#page=23|p. 23]]–[[Modulazione.pdf#page=25|25]]
+- Ci si concentra sul caso più generale dei sistemi passa-banda: l'informazione è codificata in una forma d'onda complessa in banda base (l'inviluppo). I sistemi reali in banda base sono un caso particolare.
+- Segnale modulato linearmente in banda base complessa:
+
+$$s(t)=\sum_{k=-\infty}^{+\infty}\xi_k\,g_{TX}(t-kT)$$
+
+  con $T$ periodo di simbolo, $\{\xi_k\}$ simboli trasmessi a rate $1/T$ con valori in un alfabeto fisso (**costellazione**), $g_{TX}(t)$ forma d'onda deterministica in banda base.
+- Appunti: i simboli si modellano come una sequenza di v.a. i.i.d.; la costellazione è fissata quando si fissa $h$. Lo spazio dei segnali complessi ha dimensione 2 (parte reale in fase, parte immaginaria in quadratura); con simboli reali il canale può essere un passa-basso o un passa-banda con filtro simmetrico rispetto a $f_c$, e la dimensione è 1.
+
+#### Slide 12 e appunti — Codici di linea in banda base · [[Modulazione.pdf#page=26|p. 26]], [[Modulazione.pdf#page=27|27]]
+- Se il canale fisico è in banda base, $s(t)$ è trasmesso direttamente e deve essere **reale**. I metodi per mappare bit in forme d'onda analogiche reali sono i **codici di linea**.
+- Sorgente che emette bit $b_k\in\{0,1\}$ a rate $R_b=1/T_b$ con $p=P(b_k=1)$, $q=P(b_k=0)$, $p+q=1$ (processo di Bernoulli), bit statisticamente indipendenti e identicamente distribuiti.
+
+#### Slide 13–14 — NRZ e RZ · [[Modulazione.pdf#page=28|p. 28]], [[Modulazione.pdf#page=29|29]]
+- **NRZ**: $\xi_k=(-1)^{b_k}\in\{-1,1\}$ ($R_b=R_s=1/T$), $g_{TX}(t)=A\,\text{rect}\big(\frac{t-0.5T}{T}\big)$:
+
+$$s(t)=A\sum_{k}\xi_k\,\text{rect}\Big(\frac{t-0.5T-kT}{T}\Big)$$
+
+  Le forme d'onda sono multipli scalari di un'unica forma d'onda, $\{-Ag_{TX}(t),Ag_{TX}(t)\}$ (appunti: modulazione con cardinalità $M=2$ e dimensione 1). Figura: una realizzazione che salta tra $+A$ e $-A$. È usata nel protocollo CAN.
+- **RZ**: $g_{TX}(t)=A\,\text{rect}\big(\frac{t-0.25T}{0.5T}\big)$, l'impulso occupa solo metà intervallo e torna a zero. Per NRZ e RZ l'insieme dei segnali è **unidimensionale**.
+
+### Modulazione lineare passa-banda
+
+#### Slide 15 — I/Q e conversione · [[Modulazione.pdf#page=30|p. 30]]
+- In passa-banda i simboli possono essere complessi: si rappresentano su un piano (**modulazione bidimensionale**). Con $g_{TX}(t)$ reale (appunti: forma d'onda deterministica in banda base):
+
+$$s_c(t)=\sum_k\text{Re}(\xi_k)\,g_{TX}(t-kT)\quad(1)\qquad s_s(t)=\sum_k\text{Im}(\xi_k)\,g_{TX}(t-kT)\quad(2)$$
+
+- L'inviluppo $s(t)=s_c(t)+js_s(t)$ si porta in banda passante con l'upconverter ($\sqrt2\cos2\pi f_ct$, $-\sqrt2\sin2\pi f_ct$, somma) prima di trasmetterlo sul canale fisico; il downconverter (moltiplicatori e passa-basso) restituisce $s_c(t)$, che contiene la parte reale dei simboli, e $s_s(t)$, che ne contiene la parte immaginaria.
+
+#### Slide 16 e appunti — PSK · [[Modulazione.pdf#page=31|p. 31]], [[Modulazione.pdf#page=32|32]]
+- **Phase shift keying**: si sceglie $\arg(\xi_k)$ in una costellazione a modulo costante, $\xi_k=e^{j\Phi_k}$, con $\Phi_k\in\big\{\frac{2\pi}{M}(i-1)+\Phi\big\}_{i=1}^M$ ($\Phi$ fase costante arbitraria, $R_b=\log_2M/T$). Appunti: l'informazione è contenuta nella fase; $\Phi_k$ è un processo aleatorio discreto a tempo discreto; modulazione a modulo costante, ogni simbolo ha modulo unitario.
+- Costellazioni per $M=4$ (QPSK) e $M=8$. Componenti:
+
+$$s_c(t)=A\sum_k\cos(\Phi_k)\,g_{TX}(t-kT)\quad(3)\qquad s_s(t)=A\sum_k\sin(\Phi_k)\,g_{TX}(t-kT)\quad(4)$$
+
+  con $A$ fattore di ampiezza (appunti: permette di gestire la potenza del segnale).
+- Appunti (p. 32): **mapping di Gray**: a simboli a distanza minima si assegnano sequenze di bit che differiscono per un solo bit (QPSK: 00, 01, 11, 10 in giro sul cerchio). Così l'errore più probabile del ricevitore (scambiare un simbolo con un vicino) costa un solo bit. Il problema della PSK: il modulo è costante, quindi aumentando $M$ la costellazione si affolla e la distanza tra simboli diminuisce; per allontanarli bisogna aumentare la potenza.
+
+#### Slide 17–18 — QAM e PAM · [[Modulazione.pdf#page=33|p. 33]], [[Modulazione.pdf#page=34|34]]
+- **QAM**: variano sia $|\xi_k|$ sia $\arg(\xi_k)$; di solito la costellazione è una griglia di $M$ punti regolarmente spaziati (figura: esempi PSK e QAM).
+- **PAM**: se $\xi_k$ è reale la QAM diventa modulazione d'ampiezza, con livelli equispaziati
+
+$$a_i=(2i-1-M)\frac d2,\qquad i=1,\dots,M$$
+
+  Figura per $d=2$: $M=4$ con livelli $-3,-1,1,3$ (Gray 00, 10, 11, 01) e $M=8$ con livelli da $-7$ a $7$ (000, 001, 101, 100, 110, 111, 011, 010). La PAM è **unidimensionale** (appunti: si suppone un canale in banda base).
+
+#### Slide 19 — Scelte di progetto · [[Modulazione.pdf#page=35|p. 35]]
+- Nei sistemi modulati linearmente si scelgono: la forma dell'impulso $g_{TX}(t)$, il symbol rate $R_s=1/T$, la costellazione, il mapping bit-simboli. Symbol rate e forma dell'impulso dipendono soprattutto dalla banda disponibile; il resto si vedrà nelle lezioni successive.
+
+### Occupazione spettrale e modulazione ortogonale
+
+#### Slide 20–21 — Occupazione spettrale · [[Modulazione.pdf#page=36|p. 36]], [[Modulazione.pdf#page=37|37]]
+- Con $\xi_k$ i.i.d. a media nulla e valore quadratico medio $E[|\xi_k|^2]$ (appunti: $=\sigma_\xi^2$), la PSD di $s(t)=\sum_k\xi_kg_{TX}(t-kT)$ è
+
+$$S_{ss}(f)=\frac{E[|\xi_k|^2]}{T}\,|G_{TX}(f)|^2$$
+
+  con $G_{TX}(f)$ trasformata dell'impulso (figura: PSD per impulso rettangolare in funzione di $fT$, lobo principale tra $-1$ e $1$). Appunti: in generale $E[\xi_k\xi_{k-m}^\ast]=\sigma_\xi^2\delta(m)+|\mu_\xi|^2$, che con media nulla dà la formula.
+- Con simboli i.i.d. la forma della PSD è determinata solo dallo spettro dell'impulso. Per un processo la banda si definisce sulla PSD; si usa la banda **bilatera** dell'inviluppo complesso, che coincide con la banda monolatera fisica del segnale passa-banda.
+
+#### Slide 22–23 — Modulazione ortogonale · [[Modulazione.pdf#page=38|p. 38]], [[Modulazione.pdf#page=39|39]]
+- Nella modulazione ortogonale lo spazio dei segnali ha dimensione $n=M$ ($R_b=\log_2M/T$). Esempio classico: **FSK**, modulazione **non lineare** (appunti: l'informazione si trova nella frequenza; lo schema va bene solo in banda base):
+
+$$s_i(t)=e^{j2\pi f_it}g_{TX}(t),\qquad i=1,\dots,M$$
+
+  con le spaziature $|f_i-f_k|$ scelte per rendere ortogonali le forme d'onda.
+- Condizione di ortogonalità sui segnali passa-banda $s_{i,p}(t)=\text{Re}(\sqrt2\,s_i(t)e^{j2\pi f_ct})$:
+
+$$\langle s_{i,p}(t),s_{k,p}(t)\rangle=\text{Re}(\langle s_i(t),s_k(t)\rangle)=0$$
+
+  (nota della slide: esiste un'altra condizione per i sistemi **non coerenti**, senza riferimento di fase accurato).
+- Dall'esercizio 2.25 (Madhow, riportato nella slide): per $s_0=\cos(2\pi f_0t+\phi_0)$ e $s_1=\cos(2\pi f_1t+\phi_1)$ su $[0,T]$, con $f_1>f_0\gg1/T$, la minima spaziatura che dà ortogonalità è $1/(2T)$ con $\phi_0=\phi_1=0$ (FSK coerente) e $1/T$ per fasi arbitrarie (FSK non coerente).
+- Segnale FSK ortogonale in banda base complessa, con $b_k\in\{2i-1-M\}_{i=1}^M$:
+
+$$s(t)=A\sum_{k}e^{j2\pi\frac{b_k}{2T}(t-kT)}\,g_{TX}(t-kT)$$
+
+---
+
+*Approfondimenti nel wiki: [[principi-di-modulazione]], [[spazio-dei-segnali]], [[modulazione-lineare]], [[modulazione-ortogonale]], [[modulazione-digitale]].*
+
+## Lezione 9 — Elementi di teoria della rivelazione
+
+*Fonte: Detection.pdf (copia GoodNotes in `raw/goodnotes/`, 18 pagine): le 10 pagine di dispense della docente «Elementi di teoria della rivelazione» sono p. 1 e p. 10–18; le p. 2–9 sono appunti a lezione che ne svolgono i passaggi. Le equazioni (I.1)–(IV.2) sono quelle delle dispense.*
+
+### Modulazione on-off e problema della rivelazione
+
+#### Dispense p. 1 e appunti — Modello · [[Detection.pdf#page=1|p. 1]], [[Detection.pdf#page=2|2]]
+- Sorgente di bit $\{b_k\}$ a rate $R_b=1/T_b$; il mapper associa $0\to m_0$, $1\to m_1$ ($h=1$, quindi $R_s=R_b$). Il simbolo $\xi_k$ è una v.a. (i.i.d.) con valori in $\mathcal M=\{m_0,m_1\}$, $M=2$, $p=P(m_1)$, $q=P(m_0)$, $p+q=1$.
+- Il generatore associa segnali a energia finita: $m_0\to s_0(t)=0$ e $m_1\to s_1(t)=s(t)$ per $t\in(kT_b,(k+1)T_b)$ (**modulazione on-off**, senza memoria).
+- Segnalazione in AWGN: $r(t)=s(t;\xi_k)+n(t)$ (I.1), con $n(t)$ rumore termico gaussiano, WSS, a media nulla, indipendente dal segnale, $R_{nn}(\tau)=\frac{N_0}{2}\delta(\tau)$, $S_{nn}(f)=\frac{N_0}{2}$. Un segnale a media nulla con acf impulsiva si dice **bianco**.
+- Il rumore bianco ha potenza infinita, ma il modello è comodo ricordando che ogni ricevitore filtra a banda limitata. Per un ricevitore ideale $N_0=kT_0$, con $T_0=290$ K e $k=1.38\cdot10^{-23}$ J/K (costante di Boltzmann).
+
+#### Dispense p. 2 e appunti — Ipotesi e base ortonormale · [[Detection.pdf#page=10|p. 10]], [[Detection.pdf#page=2|p. 2]], [[Detection.pdf#page=3|3]]
+- Si deve decidere quale tra $s_0(t)$ e $s_1(t)$ è stato trasmesso osservando $r(t)$ in $(0,T_b)$: **rivelazione simbolo a simbolo**. Ipotesi $H_0=\{$trasmesso «0»$\}$, $H_1=\{$trasmesso «1»$\}$:
+
+$$H_0:\ r(t)=n(t)\qquad H_1:\ r(t)=s(t)+n(t),\qquad t\in(0,T_b)\tag{I.2}$$
+
+  Sotto $H_0$ $r(t)$ è gaussiano a media nulla con acf $\frac{N_0}{2}\delta(\tau)$; sotto $H_1$ gaussiano a media $s(t)$ con autocovarianza $\frac{N_0}{2}\delta(\tau)$.
+- Si proietta $r(t)$ su una base ortonormale completa $\{\psi_i(t)\}_{i=1}^{+\infty}$ in $(0,T_b)$, $\langle\psi_i,\psi_j\rangle=\delta_{ij}$, con prima funzione $\psi_1(t)=s(t)/\lVert s(t)\rVert$, $\lVert s\rVert^2=E_s$. Il segnale diventa $(\sqrt{E_s},0,0,\dots)$, il rumore $(n_1,n_2,\dots)$ con $n_i=\langle n(t),\psi_i(t)\rangle$. Appunti: il rumore non si rappresenta in dimensione finita (ha banda infinita, la sua energia è distribuita su tutto lo spettro); $r_1=\langle s+n,\psi_1\rangle=\sqrt{E_s}+n_1$, cioè l'ampiezza energetica del segnale lungo la prima dimensione. (Rimando delle dispense: Benedetto-Biglieri per una trattazione rigorosa dell'espansione dei processi.)
+
+#### Dispense p. 3 e appunti — Proiezioni del rumore e test di ipotesi · [[Detection.pdf#page=11|p. 11]], [[Detection.pdf#page=3|p. 3]]
+- Le proiezioni $n_i$ sono v.a. congiuntamente gaussiane, a media nulla e incorrelate:
+
+$$E[n_i]=\int_0^{T_b}E[n(t)]\psi_i(t)\,dt=0,\qquad E[n_in_j]=\iint\frac{N_0}{2}\delta(t-u)\psi_i(t)\psi_j(u)\,dt\,du=\frac{N_0}{2}\delta_{ij}$$
+
+  quindi **statisticamente indipendenti**, con $n_i\sim\mathcal N(0,N_0/2)$. Con $r_i=\langle r(t),\psi_i(t)\rangle$: $H_0:\ r_1=n_1$, $H_1:\ r_1=\sqrt{E_s}+n_1$, e $r_i=n_i$ per $i\ge2$ in entrambe.
+- Con vettori troncati $\mathbf r_N$, $\mathbf n_N$, $\mathbf s_N=(\sqrt{E_s},0,\dots,0)$ (poi $N\to\infty$) il problema diventa un **test di ipotesi**: $H_0:\mathbf r_N=\mathbf n_N$, $H_1:\mathbf r_N=\mathbf s_N+\mathbf n_N$. Si passa da funzioni del tempo a punti dello **spazio degli osservabili** $\mathbb R^N$.
+- Regola di decisione $\delta:\mathbb R^N\to\{H_0,H_1\}$ con il criterio a **minima probabilità d'errore**, $P(e)\triangleq P(\{\hat m_0\neq m_0\}\cup\{\hat m_1\neq m_1\})$; equivalentemente si partiziona $\mathbb R^N=Z_0\cup Z_1$, $Z_0\cap Z_1=\varnothing$ (**regioni di decisione**).
+
+### Criterio MAP, irrilevanza, filtro adattato
+
+#### Dispense p. 4 e appunti — Criterio MAP e teorema di irrilevanza · [[Detection.pdf#page=12|p. 12]], [[Detection.pdf#page=4|p. 4]], [[Detection.pdf#page=5|5]]
+- Probabilità d'errore:
+
+$$P(e)=p\int_{Z_0}f_{\mathbf r_N|H_1}d\mathbf r_N+q\int_{Z_1}f_{\mathbf r_N|H_0}d\mathbf r_N=p-\int_{Z_1}\big[p\,f_{\mathbf r_N|H_1}-q\,f_{\mathbf r_N|H_0}\big]d\mathbf r_N\tag{I.3}$$
+
+  Si minimizza assegnando a $Z_1$ i punti in cui l'integranda è positiva:
+
+$$\frac{f_{\mathbf r_N|H_1}(\mathbf r_N)}{f_{\mathbf r_N|H_0}(\mathbf r_N)}\ \underset{H_0}{\overset{H_1}{\gtrless}}\ \frac qp\tag{I.4}$$
+
+- Per l'indipendenza delle proiezioni il rapporto si riduce al solo $r_1$ (I.5): $(r_2,\dots,r_N)$ sono **irrilevanti** e si eliminano senza degradare le prestazioni (**teorema dell'irrilevanza**); $r_1$ è la **statistica sufficiente**. Con il **rapporto di verosimiglianza** $\Lambda(r)\triangleq f_{r_1|H_1}(r)/f_{r_1|H_0}(r)$ (I.6) la regola è $\Lambda(r)\gtrless q/p$ (I.7): criterio **MAP** (Maximum A Posteriori), ottimo in termini di probabilità d'errore.
+- Con $r_1\sim\mathcal N(0,N_0/2)$ sotto $H_0$ e $\mathcal N(\sqrt{E_s},N_0/2)$ sotto $H_1$:
+
+$$\Lambda(r)=\exp\Big\{-\frac{1}{N_0}\big(E_s-2r\sqrt{E_s}\big)\Big\}\tag{I.8}$$
+
+#### Dispense p. 5 e appunti — Log-verosimiglianza, ML, filtro adattato · [[Detection.pdf#page=13|p. 13]], [[Detection.pdf#page=5|p. 5]]
+- Log-verosimiglianza:
+
+$$\lambda(r)\triangleq\ln\Lambda(r)=\frac{2}{N_0}\sqrt{E_s}\,r-\frac{E_s}{N_0}=\frac{2}{N_0}\int_0^{T_b}r(t)s(t)\,dt-\frac{1}{N_0}\int_0^{T_b}s^2(t)\,dt\tag{I.9}$$
+
+  e la regola è $\lambda(r)\gtrless\ln\frac qp$ (I.10). Appunti: schema del demodulatore MAP (moltiplicatore per $s(t)$, integratore $\frac{2}{N_0}\int_0^{T_b}$, sottrazione di $E_s/N_0$, confronto con $\ln\frac qp$); il demodulatore MAP deve conoscere $\{s_i(t)\}$, $N_0$, $p$ e $q$.
+- Con $p=q=1/2$ la regola diventa $\lambda(r)\gtrless0$ (I.11): non dipende dalla densità spettrale del rumore. È il criterio a **massima verosimiglianza** (ML). Appunti: si semplifica in $\int_0^{T_b}r(t)s(t)\,dt\gtrless E_s/2$, indipendente da $N_0$; usarlo con simboli non equiprobabili fa perdere l'ottimalità, ma non serve conoscere $N_0$, $p$, $q$.
+- La statistica sufficiente si ottiene come uscita in $t=T_b$ di un filtro LTI con $h(t)=s(T_b-t)$:
+
+$$r=\int_0^{T_b}r(t)\psi_1(t)\,dt=\frac{1}{\sqrt{E_s}}\int_0^{T_b}r(t)s(t)\,dt=\frac{1}{\sqrt{E_s}}\,r(t)\ast h(t)\Big|_{t=T_b}\tag{I.12}$$
+
+  $h(t)$ è il **filtro adattato** a $s(t)$: campionato in $T_b$ estrae la statistica sufficiente.
+
+### Modulazione M-aria
+
+#### Dispense p. 5–6 e appunti — Generalizzazione · [[Detection.pdf#page=13|p. 13]], [[Detection.pdf#page=14|14]], [[Detection.pdf#page=6|p. 6]], [[Detection.pdf#page=7|7]]
+- $M=2^h$ messaggi $m_k$, forme d'onda $s_k(t)$ su $[0,T]$, $T=hT_b$, probabilità $p_k$. Ipotesi $H_k=\{$trasmesso $m_k\}$. La base $\{\psi_i\}$ ha le prime $L\le M$ funzioni che sono una base dello spazio dei segnali, costruita con la procedura di **Gram-Schmidt** (appunti: $\psi_1=s_1/\lVert s_1\rVert$, poi si sottraggono le proiezioni sulle funzioni già trovate e si normalizza; fuori dallo spazio dei segnali restano solo componenti di rumore).
+
+$$H_k:\ \mathbf r_N=\mathbf s^{(k)}_N+\mathbf n_N\tag{II.1}$$
+
+$$r_i=\begin{cases}s^{(k)}_i+n_i&i=1,\dots,L\\ n_i&i=L+1,\dots,N\end{cases}\tag{II.2}$$
+
+- Criterio MAP M-ario: si decide $H_k$ se $p_kf_{\mathbf r_N|H_k}=\max_ip_if_{\mathbf r_N|H_i}$ (II.3); per l'irrilevanza bastano $r_1,\dots,r_L$ (II.4), le **statistiche sufficienti**. Con $p_k=1/M$ si ha il criterio **ML** (II.5): minimizza $P(e)$ solo con ipotesi equiprobabili, ma è il più usato in pratica.
+- Con l'ipotesi ausiliaria $H_0:\mathbf r_L=\mathbf n_L$ (II.6), ML equivale a massimizzare $\Lambda_k=f_{\mathbf r_L|H_k}/f_{\mathbf r_L|H_0}$ (II.7)–(II.8). Essendo $\mathbf r|H_k$ gaussiano con media $\mathbf s^{(k)}$, componenti indipendenti di varianza $N_0/2$:
+
+$$\Lambda_k(\mathbf r)=\exp\Big\{\frac{2}{N_0}\mathbf r^T\mathbf s^{(k)}-\frac{1}{N_0}(\mathbf s^{(k)})^T\mathbf s^{(k)}\Big\}\tag{II.9}$$
+
+#### Dispense p. 7 e appunti — Correlatore e filtro adattato · [[Detection.pdf#page=15|p. 15]], [[Detection.pdf#page=7|p. 7]], [[Detection.pdf#page=8|8]]
+- Log-verosimiglianza (il fattore $2/N_0$ si toglie: è una costante comune):
+
+$$\lambda_k(\mathbf r)=\mathbf r^T\mathbf s^{(k)}-\frac12(\mathbf s^{(k)})^T\mathbf s^{(k)}\tag{II.10}$$
+
+$$\lambda_k(\mathbf r)=\int_0^Tr(t)s_k(t)\,dt-\frac12\int_0^Ts_k^2(t)\,dt=\langle r(t),s_k(t)\rangle-\frac12E_{s,k}\tag{II.11}$$
+
+- Due implementazioni equivalenti del ricevitore ottimo in AWGN per modulazione senza memoria (Fig. 1–2): **banco di correlatori** ($r(t)$ moltiplicato per ogni $s_k(t)$, integrato su $[0,T]$, meno $\frac12E_{s,k}$, poi MAX) e **banco di filtri adattati** $s_k(T-t)$ campionati in $t=T$.
+
+### Segnali passa-banda e interpretazione geometrica
+
+#### Dispense p. 8 e appunti — Estensione ai segnali passa-banda · [[Detection.pdf#page=16|p. 16]], [[Detection.pdf#page=8|p. 8]]
+- Segnali reali passa-banda $s_{p,k}(t)$, ricevuto $r_p(t)$, rumore $n_p(t)$ con PSD $N_0/2$. Dopo la downconversion, con inviluppi $\tilde s_k(t)$ e $\tilde r(t)$:
+
+$$H_k:\ r_p(t)=s_{p,k}(t)+n_p(t)\quad\longrightarrow\quad H_k:\ \tilde r(t)=\tilde s_k(t)+\tilde n(t)$$
+
+  con $\tilde n(t)$ gaussiano bianco di PSD $N_0$. Fig. 3: PSD di $n_p$ (due lobi $N_0/2$ attorno a $\pm f_c$), PSD di $\tilde n$ dopo la downconversion ($N_0$ in banda), e il modello semplificato piatto $N_0$ (appunti: si preferisce modellare il rumore complesso in banda base come bianco ideale, perché i limiti di banda complicherebbero gli integrali).
+- Statistiche sufficienti:
+
+$$\langle r_p(t),s_{p,k}(t)\rangle-\frac12E_{s,k}=\text{Re}(\langle\tilde r(t),\tilde s_k(t)\rangle)-\frac12E_{s,k}\tag{III.1}$$
+
+  usando che l'energia dell'inviluppo è uguale a quella del segnale passa-banda (lezione su Rice).
+
+#### Dispense p. 8–10 e appunti — Demodulatore a minima distanza e regioni di Voronoi · [[Detection.pdf#page=16|p. 16]]–[[Detection.pdf#page=18|18]], [[Detection.pdf#page=9|p. 9]]
+- Le proiezioni $\mathbf r$, $\mathbf s^{(k)}$, $\mathbf n$ sulle $L$ funzioni di base sono punti di uno spazio euclideo $L$-dimensionale. Completando il quadrato:
+
+$$\lambda_k(\mathbf r)=-\frac12\int_0^T[r(t)-s_k(t)]^2dt+\frac12\int_0^Tr^2(t)\,dt$$
+
+  (le dispense, eq. (IV.2), omettono il fattore $\frac12$ davanti al primo integrale; gli appunti lo riportano). Il secondo termine non dipende da $k$ ed è irrilevante: massimizzare $\lambda_k$ equivale a minimizzare $\lVert\mathbf r-\mathbf s^{(k)}\rVert^2$.
+- Il demodulatore ML decide per il segnale **più vicino** al ricevuto: è un **ricevitore a minima distanza**, che «si fida del canale».
+- Regioni di decisione ML o **regioni di Voronoi**: $Z_k\triangleq\{\mathbf r\in\mathbb R^L:\lVert\mathbf r-\mathbf s^{(k)}\rVert^2=\min_\ell\lVert\mathbf r-\mathbf s^{(\ell)}\rVert^2\}$. Fig. 4: esempio di regioni di Voronoi. I confini sono iperpiani, luoghi dei punti equidistanti da due segnali vicini.
+
+---
+
+*Approfondimenti nel wiki: [[rivelazione-map-ml]], [[ricevitore-ottimo-awgn]], [[spazio-dei-segnali]].*
+
+## Lezione 10 — Prestazioni delle modulazioni binarie e della QPSK
+
+*Fonte: Lezione 10-28.pdf (appunti a lezione del 28/10, 4 pagine, in `raw/goodnotes/`).*
+
+### Segnalazione on-off · [[Lezione 10-28.pdf#page=1|p. 1]]
+- Con la base $\psi(t)=s(t)/\sqrt{E_s}$, $E_s=\int_0^Ts^2(t)\,dt$ (energia della forma d'onda), $s(t)=\sqrt{E_s}\,\psi(t)$ e $\lambda(r)=\frac{2\sqrt{E_s}}{N_0}r-\frac{E_s}{N_0}$, con $r=\langle r(t),\psi(t)\rangle$.
+- Ipotesi equiprobabili ($p=q=\frac12$), demodulatore ML: $\lambda(r)\gtrless0\iff r\ \underset{H_0}{\overset{H_1}{\gtrless}}\ \frac{\sqrt{E_s}}{2}$, una soglia puramente geometrica che non richiede $N_0$. Schema: correlatore con $\psi(t)$ (o filtro adattato $h(t)=\psi(T_b-t)$ campionato in $T_b$) e comparatore a soglia $\sqrt{E_s}/2$.
+- Lo spazio dei segnali coincide con quello degli osservabili (una dimensione): $Z_0$ a sinistra della soglia, $Z_1$ a destra; la partizione minimizza $P(e)$ e il demodulatore decide a minima distanza.
+- Probabilità d'errore, con $n=\langle n(t),\psi(t)\rangle\sim\mathcal N(0,N_0/2)$:
+
+$$P(e)=\tfrac12\big[P(e|H_0)+P(e|H_1)\big],\qquad P(e|H_0)=P\Big(n>\frac{\sqrt{E_s}}{2}\Big)=\frac12\,\text{erfc}\Big(\frac12\sqrt{\frac{E_s}{N_0}}\Big)$$
+
+  e $P(e|H_1)=P(\sqrt{E_s}+n<\sqrt{E_s}/2)$ dà lo stesso valore (usando $\text{erfc}(-x)=2-\text{erfc}(x)$). È così perché le regioni di decisione sono **congruenti** (stessa forma, estensione e dimensione geometrica): con regioni congruenti basta calcolare la probabilità d'errore per una sola regione. Quindi $P(e)=\frac12\text{erfc}\big(\frac12\sqrt{E_s/N_0}\big)$, dove $\sqrt{E_s/N_0}$ è il **contrasto di energia**.
+- Schizzo: $P(e)$ in scala logaritmica decresce con $E_s/N_0$ in dB. In questo caso la BER (bit error rate) coincide con $P(e)$; la BER è un rate «raw» perché conta tutti i bit, non solo quelli d'informazione.
+- Per stimare una probabilità con il metodo Monte Carlo servono circa $n=100/p$ prove: per $p\approx10^{-4}$, $10^6$ prove.
+
+### Segnalazione antipodale e ortogonale · [[Lezione 10-28.pdf#page=2|p. 2]]
+- **Antipodale** (due punti agli estremi opposti di un diametro): $s_1(t)=A\,\text{rect}\big(\frac{t-T_b/2}{T_b}\big)$, $s_2(t)=-s_1(t)$, simboli equiprobabili; segnali equienergetici, $E_s=A^2T_b$; base $\psi=s_1/\sqrt{E_s}$.
+- Per segnali equienergetici si toglie $\frac12E_s$ dalla log-verosimiglianza: $\lambda_k=\int_0^Tr(t)s_k(t)\,dt$. Con $s^{(1)}=\sqrt{E_s}$, $s^{(2)}=-\sqrt{E_s}$: $\lambda_1\gtrless\lambda_2\iff r\gtrless0$ (comparatore a soglia 0).
+- $P(e)=P(e|H_2)=P(-\sqrt{E_s}+n>0)=P(n>\sqrt{E_s})=\frac12\text{erfc}\big(\sqrt{E_s/N_0}\big)$.
+- Confronto: antipodale $\frac12\text{erfc}\sqrt{E_s/N_0}$ («sfrutta meglio i gradi di libertà a disposizione»), on-off $\frac12\text{erfc}\big(\frac12\sqrt{E_s/N_0}\big)$: a parità di $E_s/N_0$ l'antipodale ha $P(e)$ minore, perché l'erfc decresce rapidamente. Distanze: $d=2\sqrt{E_s}$ (antipodale) e $d=\sqrt{E_s}$ (on-off).
+- In generale per una modulazione binaria $P(e)=\frac12\text{erfc}\big(\frac{d}{2\sqrt{N_0}}\big)$, con $d=\lVert s_1(t)-s_2(t)\rVert=\lVert\mathbf s_1-\mathbf s_2\rVert$.
+- **Ortogonale binaria**: $\mathbf s_1=(\sqrt{E_s},0)$, $\mathbf s_2=(0,\sqrt{E_s})$, $d=\sqrt{2E_s}$, regioni congruenti separate dalla bisettrice: $P(e)=\frac12\text{erfc}\big(\sqrt{E_s/(2N_0)}\big)$.
+- **Invarianza**: $P(e)$ non cambia per traslazioni e rotazioni della costellazione (stessa $d$). Cambia invece l'energia media $E_s=\sum_ip_i\lVert\mathbf s_i\rVert^2$ (con simboli equiprobabili $\frac1M\sum_i\lVert\mathbf s_i\rVert^2$), minima quando $\sum_i\mathbf s_i=0$ (baricentro nell'origine): una costellazione spostata non si sceglierebbe mai, perché richiede più energia. Vale anche per la FSK: due costellazioni con la stessa forma hanno la stessa $P(e)$ ma medie diverse.
+
+### Modulazione binaria generica · [[Lezione 10-28.pdf#page=3|p. 3]]
+- Distanza tra due segnali e **coefficiente di correlazione**:
+
+$$d^2=E_{s_1}+E_{s_2}-2\int_0^{T_b}s_1(t)s_2(t)\,dt,\qquad\rho\triangleq\frac{\langle s_1,s_2\rangle}{\lVert s_1\rVert\lVert s_2\rVert}\ \Rightarrow\ d^2=E_{s_1}+E_{s_2}-2\rho\sqrt{E_{s_1}E_{s_2}}$$
+
+$$P(e)=\frac12\text{erfc}\Big(\frac{d}{2\sqrt{N_0}}\Big)=\frac12\text{erfc}\Big(\sqrt{\frac{E_{s_1}+E_{s_2}-2\rho\sqrt{E_{s_1}E_{s_2}}}{4N_0}}\Big)$$
+
+- Segnali equienergetici: $P(e)=\frac12\text{erfc}\big(\sqrt{E_s(1-\rho)/(2N_0)}\big)$. Antipodale $\rho=-1$: $\frac12\text{erfc}\sqrt{E_s/N_0}$ (sfrutta meglio l'energia: la $P(e)$ scende più rapidamente all'aumentare di $E_s$); ortogonale $\rho=0$: $\frac12\text{erfc}\sqrt{E_s/(2N_0)}$; on-off (non equienergetica, $E_{s_1}=0$, $E_{s_2}=E_s$): $\frac12\text{erfc}\big(\frac12\sqrt{E_s/N_0}\big)$.
+
+### QPSK · [[Lezione 10-28.pdf#page=3|p. 3]], [[Lezione 10-28.pdf#page=4|4]]
+- M-PSK: $\xi=e^{j\phi}$, $\phi\in\{\frac{2\pi}{M}(i-1)+\phi_0\}$. QPSK, $M=4$: $\phi\in\{\frac\pi4,\frac34\pi,\frac54\pi,\frac74\pi\}$. La probabilità d'errore è sul **simbolo**, non sul bit; è invariante per rotazioni della costellazione.
+- Segnale passa-banda (modulazione a modulo costante): $s_{p,i}(t)=A\cos(2\pi f_0t+\phi_i)=A\cos\phi_i\cos(2\pi f_0t)-A\sin\phi_i\sin(2\pi f_0t)$, $t\in[0,T]$, $T=2T_b$, quindi $R_s=\frac{1}{2T_b}=\frac{R_b}{2}$: combinazione lineare di due funzioni ortogonali, spazio dei segnali di dimensione 2.
+- Base: $\lVert\cos(2\pi f_0t)\rVert^2=\int_0^T\frac{1+\cos(4\pi f_0t)}{2}dt\approx\frac T2$ (per $f_0T\gg1$ le aree positive e negative del coseno a $2f_0$ si bilanciano), quindi $\psi_1=\sqrt{\frac2T}\cos(2\pi f_0t)$, $\psi_2=-\sqrt{\frac2T}\sin(2\pi f_0t)$.
+- In inviluppo complesso, con $\tilde A=A/\sqrt2$: $\tilde s_i(t)=\tilde Ae^{j\phi_i}\text{rect}\big(\frac{t-T/2}{T}\big)$. Con segnali equienergetici la statistica sufficiente è $\lambda_k=\text{Re}\langle\tilde r,\tilde s_k\rangle=A\cos\phi_k\,z_1+A\sin\phi_k\,z_2$, con $z_1=\int_0^Tr_c(t)\,dt$, $z_2=\int_0^Tr_s(t)\,dt$ (componenti in fase e quadratura dopo il downconverter): la decisione si basa sui **segni** di $z_1$ e $z_2$ (schema: down-conversion, due integratori, decisore sul segno).
+- Probabilità d'errore sul simbolo (SER), conviene passare per la **corretta decisione**: $P(e)=1-P(c)$, $P(c)=\frac1M\sum_kP(c|H_k)=P(c|H_1)$ (regioni congruenti). Con $\mathbf s_1=\big(\frac{A\sqrt T}{2},\frac{A\sqrt T}{2}\big)$ e $n_1,n_2$ gaussiane indipendenti $\mathcal N(0,N_0/2)$:
+
+$$P(c|H_1)=P\Big(n_1>-\frac{A\sqrt T}{2}\Big)^2=(1-p)^2,\qquad p=\frac12\text{erfc}\Big(\frac A2\sqrt{\frac{T}{N_0}}\Big)$$
+
+- $P(e)=1-(1-p)^2=2p-p^2$. Con $E_s=\lVert\mathbf s_i\rVert^2=\frac{A^2T}{2}$: $p=\frac12\text{erfc}\sqrt{E_s/(2N_0)}$ e
+
+$$P(e)=\text{erfc}\Big(\sqrt{\frac{E_s}{2N_0}}\Big)-\frac14\text{erfc}^2\Big(\sqrt{\frac{E_s}{2N_0}}\Big)\simeq\text{erfc}\Big(\sqrt{\frac{E_s}{2N_0}}\Big)$$
+
+  trascurando il quadrato ad alto SNR. Con $E_s=E_b\log_2M=2E_b$: $P(e)\simeq\text{erfc}\sqrt{E_b/N_0}$, il **doppio** della $P(e)$ dell'antipodale.
+- Con il mapping di Gray (ottima approssimazione ad alto SNR) $\text{BER}=\frac{\text{SER}}{\log_2M}=\frac12\text{erfc}\sqrt{E_b/N_0}$: la BER della QPSK è la stessa dell'antipodale.
+
+---
+
+*Approfondimenti nel wiki: [[probabilita-errore-binaria]], [[probabilita-errore-m-aria]], [[ricevitore-ottimo-awgn]].*
+
+## Lezione 11 — Union bound e approssimazione dei primi vicini
+
+*Fonte: Lezione 11-2.pdf (appunti a lezione del 2/11, 3 pagine in `raw/goodnotes/`; p. 1 è la copertina del quaderno).*
+
+### Union bound · [[Lezione 11-2.pdf#page=2|p. 2]]
+- Per schemi più complessi la $P(e)$ esatta è difficile: si ricorre ad approssimazioni e allo **union bound**.
+- Regola ML: si decide $H_k$ se $\lambda_k(\mathbf r)=\int_0^Tr(t)s_k(t)\,dt-\frac12E_{s,k}$ è massima (caso non equienergetico); in termini geometrici $\lambda_k=\mathbf r^T\mathbf s^{(k)}-\frac12E_k$ e si decide $H_k$ se $\mathbf r\in Z_k=\{\mathbf r:\lambda_k(\mathbf r)>\lambda_i(\mathbf r),\ \forall i\neq k\}$.
+- Probabilità d'errore sotto $H_k$, con eventi non mutuamente esclusivi e $P(A\cup B)\le P(A)+P(B)$:
+
+$$P(e|H_k)=P\Big(\bigcup_{i\neq k}\{\lambda_i(\mathbf r)>\lambda_k(\mathbf r)\}\,\Big|\,H_k\Big)\le\sum_{i\neq k}P\big(\lambda_i>\lambda_k\,|\,H_k\big)=\frac12\sum_{i\neq k}\text{erfc}\Big(\frac{d_{ik}}{2\sqrt{N_0}}\Big)$$
+
+  Ogni termine è la **pairwise error probability** (PEP), la probabilità di confondere $s_k$ con $s_i$: ci si riconduce a un problema binario. Si ottiene un maggiorante:
+
+$$P(e)=\frac1M\sum_{k=1}^MP(e|H_k)\le\frac{1}{2M}\sum_{k=1}^M\sum_{i\neq k}\text{erfc}\Big(\frac{d_{ik}}{2\sqrt{N_0}}\Big)$$
+
+### Approssimazione dei primi vicini · [[Lezione 11-2.pdf#page=2|p. 2]]
+- **Nearest neighbors approximation**: $P(e)\approx\frac{\bar N_{d_{min}}}{2}\text{erfc}\big(\frac{d_{min}}{2\sqrt{N_0}}\big)$, con $d_{min}$ distanza minima della costellazione e $\bar N_{d_{min}}=\frac1M\sum_iN_{d_{min}}(i)$ numero medio di vicini a distanza minima.
+
+### Esempio: 16-QAM · [[Lezione 11-2.pdf#page=2|p. 2]]
+- Per il calcolo esatto: $P(e)=1-\frac1M\sum_kP(c|H_k)$, con tre tipi di regioni congruenti (interne, di bordo, d'angolo); per un punto interno $P(c|H_k)=\big[P(-\frac d2<n<\frac d2)\big]^2$. Si dovrebbe calcolare per i tre tipi e poi mediare.
+- Con i primi vicini: $d_{min}=d$, $\bar N_{d_{min}}=\frac{1}{16}(4\cdot4+8\cdot3+4\cdot2)=3$, quindi $P(e)\approx\frac32\text{erfc}\big(\frac{d}{2\sqrt{N_0}}\big)$.
+- In termini di energia per bit: $E_s=\frac{1}{16}\big(4\cdot\frac{d^2}{2}+8\cdot\frac{5d^2}{2}+4\cdot\frac{9d^2}{2}\big)=\frac52d^2=E_b\log_2M=4E_b$, quindi $d^2=\frac85E_b$ e
+
+$$P(e)\approx\frac32\,\text{erfc}\Big(\sqrt{\frac25\frac{E_b}{N_0}}\Big)$$
+
+### Esempio: modulazione ortogonale · [[Lezione 11-2.pdf#page=2|p. 2]]
+- Con $M=3$ segnali $\mathbf s_1=(\frac{d}{\sqrt2},0,0)$, $\mathbf s_2=(0,\frac{d}{\sqrt2},0)$, $\mathbf s_3=(0,0,\frac{d}{\sqrt2})$ tutte le distanze valgono $d$; lo union bound dà
+
+$$P(e)\le\frac{1}{2M}\sum_k\sum_{i\neq k}\text{erfc}\Big(\frac{d}{2\sqrt{N_0}}\Big)=\frac{M-1}{2}\text{erfc}\Big(\frac{d}{2\sqrt{N_0}}\Big)$$
+
+- Con $E_s=\frac1M\sum\lVert\mathbf s_i\rVert^2=\frac{d^2}{2}$, $d=\sqrt{2E_s}=\sqrt{2E_b\log_2M}$:
+
+$$P(e)\le\frac{M-1}{2}\text{erfc}\Big(\sqrt{\frac{E_b\log_2M}{2N_0}}\Big)$$
+
+  Se $M$ aumenta con $E_b$ fisso, $P(e)$ diminuisce; se invece è fisso $E_s$, $P(e)$ aumenta con $M$.
+
+### Note finali · [[Lezione 11-2.pdf#page=3|p. 3]]
+- Rimandi a figure da vedere: la $P(e)$ in funzione del contrasto di energia, e perché a basso SNR i vicini più lontani diventano rilevanti (a basso SNR l'approssimazione dei primi vicini è poco affidabile; ad alto SNR contano solo i punti a distanza minima).
+
+---
+
+*Approfondimenti nel wiki: [[probabilita-errore-m-aria]], [[probabilita-errore-binaria]], [[parametri-globali-modulazioni]].*
+
+## Lezione 12 — Parametri globali delle modulazioni e capacità di canale
 
 *Fonte: Confronto_new.pdf («Global parameters for memoryless modulation and channel capacity», a.a. 2026-27), 33 slide, slide N = p. N, con note a mano della docente a p. 8, 19, 21, 23, 25, 30. Appunti presi a lezione nella copia annotata Confronto new.pdf (35 pagine: slide 1–4 = p. 1–4, pagina di appunti p. 5, slide 5–13 = p. 6–14, pagina di appunti p. 15, slide 14–33 = p. 16–35). Le equazioni (1)–(6) sono quelle delle slide di questa lezione.*
 

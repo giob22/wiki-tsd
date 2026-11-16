@@ -65,7 +65,19 @@ Le pagine sotto sono quelle del PDF, non i numeri delle slide; la corrispondenza
 
 ---
 
-## Lezione 5 — Processi aleatori
+## Lezione 5 — Laboratorio Matlab: conversione A/D e D/A (28/09)
+**Materiale:** [[AD_conversion.m]] e 3 figure, in `raw/scripts/09_28_2006/` · **Fonte:** [[laboratorio-conversione-ad]]
+> ⚠️ Non materia d'esame: serve a vedere cosa succede nella teoria della Lezione 3. Riferimenti alle righe dello script.
+
+1. [[lab-setup-e-spettro]] — il tempo "continuo" simulato con una griglia di passo $dt = 6$ ms; i due segnali di prova (trapezio e tre sinusoidi); lo spettro come $dt\cdot$FFT, confrontato con la trasformata esatta del trapezio (righe 5–85; [[Figure_1.png]]).
+2. [[lab-campionamento]] — $f_s = 2W$ arrotondato alla griglia; `s.*high` come segnale campionato idealmente; repliche e aliasing; esempio 2 campionato sotto Nyquist (righe 87–101; [[Figure_1.png]]).
+3. [[lab-interpolazione]] — rettangolo, triangolo e sinc; la convoluzione come serie di interpolazione; perché dura la somma delle durate e dove va tagliata (righe 103–144, 199–202; [[Figure_2_interpolazione_lineaare.png]], [[Figure_2_interpolazione_shannon.png]]).
+4. [[lab-quantizzazione]] — quantizzatore uniforme a 4 bit con i livelli al centro delle celle; lo zero diventa $\Delta/2$ (righe 146–187).
+5. [[lab-snr]] — cosa misura l'SNR stampato (16.7 dB); la pendenza di 6 dB/bit e perché resta 4.77 dB sotto il modello $\Delta^2/12$ (righe 189–192).
+
+---
+
+## Lezione 6 — Processi aleatori
 **PDF:** [[random_processes.pdf]] (pp. 1–46: 41 slide più 5 pagine di appunti a mano); versione aggiornata dalla docente [[random_processes_v2.pdf]] (41 pagine, cambiate le slide 33, 40, 41) · **Fonte:** [[processi-aleatori]]
 
 1. [[processo-aleatorio]] — il processo come estensione della variabile aleatoria ai segnali; i due punti di vista (forme d'onda e variabili aleatorie nel tempo) e cosa si ottiene fissando $\omega$ o $t$; esempi del rettangolo di segno casuale e, negli appunti, della sinusoide a fase casuale; caratterizzazione completa con le distribuzioni congiunte di ordine $k$, costruite negli appunti dal primo e dal secondo ordine; DF del processo di Bernoulli (appunti) ([[random_processes.pdf#page=2|p. 2]]–[[random_processes.pdf#page=11|11]]); processi a tempo discreto ([[random_processes.pdf#page=45|p. 45]]).
@@ -80,18 +92,6 @@ Esercizi collegati: [[calcolo-densita-spettrale]] (esempio della slide 32)
 
 ---
 
-## Lezione 6 — Laboratorio Matlab: conversione A/D e D/A (28/09)
-**Materiale:** [[AD_conversion.m]] e 3 figure, in `raw/scripts/09_28_2006/` · **Fonte:** [[laboratorio-conversione-ad]]
-> ⚠️ Non materia d'esame: serve a vedere cosa succede nella teoria della Lezione 3. Riferimenti alle righe dello script.
-
-1. [[lab-setup-e-spettro]] — il tempo "continuo" simulato con una griglia di passo $dt = 6$ ms; i due segnali di prova (trapezio e tre sinusoidi); lo spettro come $dt\cdot$FFT, confrontato con la trasformata esatta del trapezio (righe 5–85; [[Figure_1.png]]).
-2. [[lab-campionamento]] — $f_s = 2W$ arrotondato alla griglia; `s.*high` come segnale campionato idealmente; repliche e aliasing; esempio 2 campionato sotto Nyquist (righe 87–101; [[Figure_1.png]]).
-3. [[lab-interpolazione]] — rettangolo, triangolo e sinc; la convoluzione come serie di interpolazione; perché dura la somma delle durate e dove va tagliata (righe 103–144, 199–202; [[Figure_2_interpolazione_lineaare.png]], [[Figure_2_interpolazione_shannon.png]]).
-4. [[lab-quantizzazione]] — quantizzatore uniforme a 4 bit con i livelli al centro delle celle; lo zero diventa $\Delta/2$ (righe 146–187).
-5. [[lab-snr]] — cosa misura l'SNR stampato (16.7 dB); la pendenza di 6 dB/bit e perché resta 4.77 dB sotto il modello $\Delta^2/12$ (righe 189–192).
-
----
-
 ## Lezione 7 — Rappresentazione dei processi passa-banda
 **PDF:** [[Rappresentazione_Rice_processi.pdf]] (pp. 1–25: 13 slide più 12 pagine di appunti a mano) · **Fonte:** [[rappresentazione-processi-passa-banda]]
 Le pagine sotto sono quelle del PDF, non i numeri delle slide; la corrispondenza è nella pagina fonte.
@@ -100,7 +100,32 @@ Le pagine sotto sono quelle del PDF, non i numeri delle slide; la corrispondenza
 2. [[psd-componenti-in-quadratura]] — PSD delle componenti in quadratura (eq. 13) e cross-PSD ([[Rappresentazione_Rice_processi.pdf#page=12|p. 12]], [[Rappresentazione_Rice_processi.pdf#page=13|13]]); PSD dell'inviluppo come PSD del processo analitico traslata (eq. 14, [[Rappresentazione_Rice_processi.pdf#page=14|p. 14]]–[[Rappresentazione_Rice_processi.pdf#page=16|16]]); caso di spettro simmetrico attorno a $f_c$: $S_{xx}$ pari, $R_{xx}$ reale, componenti incoerenti, $S_{xx} = 2S_{x_cx_c}$ ([[Rappresentazione_Rice_processi.pdf#page=17|p. 17]]–[[Rappresentazione_Rice_processi.pdf#page=19|19]]); vista grafica ([[Rappresentazione_Rice_processi.pdf#page=20|p. 20]]).
 3. [[rumore-in-banda-passante]] — rumore a PSD costante in banda, perché l'AWGN ha potenza infinita e il ricevitore filtra; PSD delle componenti e dell'inviluppo, costruzione grafica con la (13), conservazione della potenza $N_0W$, indipendenza delle componenti se gaussiano ([[Rappresentazione_Rice_processi.pdf#page=21|p. 21]]–[[Rappresentazione_Rice_processi.pdf#page=25|25]]).
 
-## Lezione 8 — Parametri globali delle modulazioni e capacità di canale
+## Lezione 8 — Principi di modulazione
+**PDF:** [[Modulazione.pdf]] (copia GoodNotes in `raw/goodnotes/`: 23 slide più 16 pagine di appunti a lezione; primo caricamento 16/10) · **Fonte:** [[principles-of-modulation]]
+
+1. [[principi-di-modulazione]] — modulatore = mapper + generatore, bit rate raw ([[Modulazione.pdf#page=2|p. 2]], [[Modulazione.pdf#page=3|p. 3]]); simboli, baud rate $R_s=R_b/\log_2M$, modulazione con e senza memoria ([[Modulazione.pdf#page=4|p. 4]], [[Modulazione.pdf#page=5|p. 5]]); esempio di Benedetto-Biglieri con $M=2,4,8$ ([[Modulazione.pdf#page=6|p. 6]], [[Modulazione.pdf#page=7|p. 7]]); compromesso potenza-banda-complessità e spettro sinc² ([[Modulazione.pdf#page=8|p. 8]]–[[Modulazione.pdf#page=11|11]]).
+2. [[spazio-dei-segnali]] — rappresentazione discreta, campioni di Nyquist ([[Modulazione.pdf#page=12|p. 12]]–[[Modulazione.pdf#page=15|15]]); gradi di libertà $D=WT_0$ ([[Modulazione.pdf#page=16|p. 16]]–[[Modulazione.pdf#page=19|19]]); base ortonormale, coefficienti, conservazione del prodotto scalare ([[Modulazione.pdf#page=20|p. 20]]–[[Modulazione.pdf#page=22|22]]).
+3. [[modulazione-lineare]] — $s(t)=\sum_k\xi_kg_{TX}(t-kT)$ ([[Modulazione.pdf#page=23|p. 23]]–[[Modulazione.pdf#page=25|25]]); codici di linea, NRZ, RZ ([[Modulazione.pdf#page=26|p. 26]]–[[Modulazione.pdf#page=29|29]]); I/Q in banda passante ([[Modulazione.pdf#page=30|p. 30]]); PSK e mapping di Gray ([[Modulazione.pdf#page=31|p. 31]], [[Modulazione.pdf#page=32|p. 32]]); QAM, PAM ([[Modulazione.pdf#page=33|p. 33]], [[Modulazione.pdf#page=34|p. 34]]); scelte di progetto ([[Modulazione.pdf#page=35|p. 35]]); PSD ([[Modulazione.pdf#page=36|p. 36]], [[Modulazione.pdf#page=37|p. 37]]).
+4. [[modulazione-ortogonale]] — FSK, condizione di ortogonalità, spaziatura $1/(2T)$ e $1/T$ ([[Modulazione.pdf#page=38|p. 38]], [[Modulazione.pdf#page=39|p. 39]]).
+
+## Lezione 9 — Elementi di teoria della rivelazione
+**PDF:** [[Detection.pdf]] (copia GoodNotes: dispense della docente a p. 1 e 10–18, appunti a lezione a p. 2–9; primo caricamento 20/10) · **Fonte:** [[elementi-teoria-rivelazione]]
+
+1. [[rivelazione-map-ml]] — modulazione on-off in AWGN, rumore bianco ([[Detection.pdf#page=1|p. 1]]–[[Detection.pdf#page=2|2]]); ipotesi, base ortonormale, proiezioni del rumore, test di ipotesi ([[Detection.pdf#page=10|p. 10]]–[[Detection.pdf#page=11|11]], [[Detection.pdf#page=3|p. 3]]); criterio MAP, irrilevanza, statistica sufficiente, verosimiglianza ([[Detection.pdf#page=12|p. 12]], [[Detection.pdf#page=4|p. 4]], [[Detection.pdf#page=5|p. 5]]); ML ([[Detection.pdf#page=13|p. 13]]); caso M-ario e Gram-Schmidt ([[Detection.pdf#page=14|p. 14]], [[Detection.pdf#page=6|p. 6]], [[Detection.pdf#page=7|p. 7]]).
+2. [[ricevitore-ottimo-awgn]] — filtro adattato ([[Detection.pdf#page=13|p. 13]]); correlatori e filtri adattati ([[Detection.pdf#page=15|p. 15]], [[Detection.pdf#page=8|p. 8]]); segnali passa-banda ([[Detection.pdf#page=16|p. 16]]); minima distanza e regioni di Voronoi ([[Detection.pdf#page=17|p. 17]], [[Detection.pdf#page=18|p. 18]], [[Detection.pdf#page=9|p. 9]]).
+
+## Lezione 10 — Prestazioni delle modulazioni binarie e della QPSK
+**PDF:** [[Lezione 10-28.pdf]] (appunti a lezione del 28/10, 4 pagine) · **Fonte:** [[appunti-lezione-28-ottobre]]
+
+1. [[probabilita-errore-binaria]] — on-off, regioni congruenti, Monte Carlo ([[Lezione 10-28.pdf#page=1|p. 1]]); antipodale, ortogonale, formula con la distanza, invarianza ed energia minima ([[Lezione 10-28.pdf#page=2|p. 2]]); modulazione binaria con coefficiente di correlazione ([[Lezione 10-28.pdf#page=3|p. 3]]).
+2. [[probabilita-errore-m-aria]] — QPSK: base, inviluppo, ricevitore sui segni ([[Lezione 10-28.pdf#page=3|p. 3]]); SER via corretta decisione e BER con Gray ([[Lezione 10-28.pdf#page=4|p. 4]]).
+
+## Lezione 11 — Union bound e approssimazione dei primi vicini
+**PDF:** [[Lezione 11-2.pdf]] (appunti a lezione del 2/11, 3 pagine; p. 1 copertina) · **Fonte:** [[appunti-lezione-2-novembre]]
+
+1. [[probabilita-errore-m-aria]] — union bound e pairwise error probability, primi vicini, 16-QAM, $M$ ortogonali ([[Lezione 11-2.pdf#page=2|p. 2]]); rimandi a figure ([[Lezione 11-2.pdf#page=3|p. 3]]).
+
+## Lezione 12 — Parametri globali delle modulazioni e capacità di canale
 **PDF:** [[Confronto_new.pdf]] (pp. 1–33, slide in inglese con note a mano della docente) · **Fonte:** [[parametri-globali-e-capacita]]
 
 1. [[informazione-mutua-e-capacita]] — obiettivi e motivazione ([[Confronto_new.pdf#page=2|p. 2]], [[Confronto_new.pdf#page=3|3]]); informazione mutua, simmetria, indipendenza ([[Confronto_new.pdf#page=4|p. 4]]); legame con le entropie $I=H(Y)-H(Y\mid X)$ ([[Confronto_new.pdf#page=5|p. 5]]); capacità $C=\max_{p(x)}I$ ([[Confronto_new.pdf#page=6|p. 6]]); secondo teorema di Shannon ([[Confronto_new.pdf#page=7|p. 7]]); capacità AWGN $C=W\log_2(1+\gamma)$, da non dimostrare ([[Confronto_new.pdf#page=8|p. 8]]), e sua interpretazione: lineare in $W$, logaritmica in $\gamma$ ([[Confronto_new.pdf#page=9|p. 9]]).
@@ -109,4 +134,4 @@ Le pagine sotto sono quelle del PDF, non i numeri delle slide; la corrispondenza
 4. [[link-budget]] — elementi e procedura ([[Confronto_new.pdf#page=24|p. 24]]); potenza di rumore e sensibilità ([[Confronto_new.pdf#page=25|p. 25]]); equazione di Friis ([[Confronto_new.pdf#page=26|p. 26]]); path loss massimo in dB ([[Confronto_new.pdf#page=27|p. 27]]); osservazione sulle costellazioni dense e messaggio conclusivo ([[Confronto_new.pdf#page=32|p. 32]], [[Confronto_new.pdf#page=33|33]]).
 5. [[link-budget-wlan]] (esercizio) — WLAN a 5 GHz con QPSK: bit rate, sensibilità, path loss e portata ([[Confronto_new.pdf#page=28|p. 28]]–[[Confronto_new.pdf#page=31|31]]).
 
-_Aggiornato: 2026-11-15 — aggiunta Lezione 8 (Confronto_new.pdf); 2026-11-01 — aggiunta Lezione 7 (Rappresentazione_Rice_processi.pdf); 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-10-11 — Lezione 3: aggiunti Chebyshev e la riga delle entità collegate; 2026-09-30 — aggiunta Lezione 6 (laboratorio Matlab, non d'esame); 2026-09-28 — re-ingest dei PDF con appunti a mano: argomenti e pagine delle Lezioni 4 e 5 aggiornati; aggiunta Lezione 5 (random_processes.pdf); 2026-09-25 — aggiunta Lezione 4 (Rappresentazione_Rice.pdf); 2026-09-24 — un punto per pagina del wiki: argomenti della stessa pagina raggruppati in un unico punto con sintesi; 2026-09-23 — creazione (3 lezioni, 1 PDF ciascuna)_
+_Aggiornato: 2026-11-16 — lezioni rinumerate secondo il primo caricamento su OneDrive (laboratorio 5, processi 6, Confronto 12); aggiunte Lezioni 8–11 (Modulazione, Detection, appunti del 28/10 e del 2/11); 2026-11-15 — aggiunta Lezione 8 (Confronto_new.pdf); 2026-11-01 — aggiunta Lezione 7 (Rappresentazione_Rice_processi.pdf); 2026-10-20 — formule con * (convoluzione, coniugato) scritte con \ast, perché in una riga in corsivo l'asterisco spezzava la formula; 2026-10-11 — Lezione 3: aggiunti Chebyshev e la riga delle entità collegate; 2026-09-30 — aggiunta Lezione 6 (laboratorio Matlab, non d'esame); 2026-09-28 — re-ingest dei PDF con appunti a mano: argomenti e pagine delle Lezioni 4 e 5 aggiornati; aggiunta Lezione 5 (random_processes.pdf); 2026-09-25 — aggiunta Lezione 4 (Rappresentazione_Rice.pdf); 2026-09-24 — un punto per pagina del wiki: argomenti della stessa pagina raggruppati in un unico punto con sintesi; 2026-09-23 — creazione (3 lezioni, 1 PDF ciascuna)_
