@@ -223,3 +223,8 @@ Filtra ultimi 10: `grep "^## " wiki/log.md | tail -10`
 - fonte [[appunti-sparsi-lezioni]]; DFT/DTFT in [[lab-setup-e-spettro]] (con la spiegazione del dubbio su `fftshift`) e nella Lezione 5; dimostrazione della (14) nella Lezione 4
 - non ancora re-ingerite: le versioni GoodNotes aggiornate delle Lezioni 1–4, 6, 7 (`raw/goodnotes/* (GoodNotes).pdf`) e le copie Campionamento_AD_DA (1), random_processes (1) e (1) 1
 
+
+## [2026-11-19] ingest | Appunti del 19/11 su signaling_bandlimited_channel | pagine coperte: 15
+- copiata in `raw/goodnotes/signaling_bandlimited_channel (19-11).pdf` la versione GoodNotes aggiornata (49 pagine: pagine di appunti inserite a p. 14 e p. 32, slide spostate di conseguenza); l'originale del 16/11 resta invariato
+- [[corso-completo]], Lezione 14, slide 14: riquadro «Approcci per il trattamento dell'ISI» (Viterbi, equalizzatori, OFDM) con descrizioni brevissime mie; riga aggiornata in [[lezioni]]
+- non ancora ingerito: gli altri appunti nuovi della versione del 19/11 (p. 2–16, 19, 23, 25, 27, 31–32)

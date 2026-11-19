@@ -2832,11 +2832,18 @@ $$y(t_k)=\sum_{n=-\infty}^{+\infty}s(n)\,p[(k-n)T]=s(k)+\sum_{\substack{n=-\inft
 
 ### Progetto del segnale a ISI nulla: criterio di Nyquist
 
-#### Slide 14 e appunti — Signal design per ISI nulla (1/2) · [[signaling_bandlimited_channel.pdf#page=14|p. 14]]
+#### Slide 14 e appunti — Signal design per ISI nulla (1/2) · [[signaling_bandlimited_channel.pdf#page=14|p. 14]] · appunti del 19/11 [[signaling_bandlimited_channel (19-11).pdf#page=15|p. 15]]
 - Problema: costruire l'impulso complessivo $p(t)$ dell'intero sistema in modo che il ricevitore possa ricostruire esattamente la sequenza di dati in ingresso al trasmettitore. La segnalazione sul canale a banda limitata diventa senza distorsione: è un **problema di progetto del segnale**.
 - Gli impulsi sovrapposti si configurano in modo che all'uscita del ricevitore non interferiscano tra loro negli istanti di campionamento $t_k=kT$.
 - In tal caso la rivelazione simbolo per simbolo, ottima in AWGN, resta ottima anche sul canale a banda limitata.
 - Appunti: posso costruire $g(t)$ e $c(t)$ in modo che il contributo dell'ISI sia annullato ⇒ si ottiene il teorema di Nyquist.
+
+> **Approcci per il trattamento dell'ISI** (appunti)
+> - **Algoritmo di Viterbi**: sceglie la sequenza di simboli più verosimile (MLSE) percorrendo un traliccio, senza provare tutte le sequenze possibili.
+> - **Equalizzatori**: filtri al ricevitore che compensano la distorsione del canale e riducono l'ISI residua (lineari ZF e MMSE, oppure DFE).
+> - **OFDM**: divide la banda in molte sottoportanti strette, ognuna vista come un canale piatto; i simboli diventano lunghi e l'ISI trascurabile.
+>
+> 🧩 Le descrizioni sono mie: Viterbi ed equalizzatori si vedono alla fine di questa lezione, l'OFDM nelle slide non c'è ancora.
 
 #### Slide 15 — Signal design per ISI nulla (2/2) · [[signaling_bandlimited_channel.pdf#page=15|p. 15]]
 - Il criterio di progetto è l'eliminazione dell'ISI dalla sequenza campionata $y(t_k)$. Il **criterio di Nyquist** richiede
