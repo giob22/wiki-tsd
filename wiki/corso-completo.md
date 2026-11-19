@@ -1839,7 +1839,14 @@ $$R_s\triangleq\frac1T=\frac{1}{hT_b}=\frac{R_b}{\log_2M}$$
 - A bit rate costante, le forme d'onda con $M=8$ richiedono meno banda di quelle con $M=2$ perché l'impulso dura di più: **aumentare $M$ riduce in generale l'occupazione di banda** (appunti: $M=2$, un simbolo per bit, durata $T=T_s$; $M=8$, un simbolo ogni 3 bit, durata $3T_s$; durata e banda sono inversamente proporzionali).
 - Se il budget di potenza è fisso al variare di $M$, con il rumore il demodulatore distingue peggio i segnali quando $M$ è grande, perché i livelli sono più vicini (appunti: con $M=2$ si distinguono 2 livelli lontani, con $M=8$ otto livelli vicini): **compromesso potenza-banda**.
 - Dalla teoria dei segnali, la regolarità di una funzione nel tempo è legata alla rapidità con cui decade la sua trasformata: per uno spettro più stretto si «smussano» le discontinuità della forma d'onda ⇒ **modulazione con memoria** (appunti: gli impulsi rettangolari generano code spettrali che decadono lentamente).
-- Appunti a lezione (p. 11): per una modulazione lineare $S_{xx}(f)=\frac1T S_{aa}(fT)\,|P(f)|^2$; con impulso rettangolare $|P(f)|^2\propto\text{sinc}^2(fT)$, primo zero a $1/T$ (schizzo). Fissare il budget di potenza vuol dire fissare un intervallo sull'asse delle ascisse.
+- Appunti a lezione (p. 11), sulla banda occupata. Per una modulazione lineare la densità spettrale di potenza del segnale è
+
+$$S_{xx}(f)=\frac1T\,S_{aa}(fT)\,|P(f)|^2$$
+
+  con $T$ periodo di simbolo, $S_{aa}$ spettro della sequenza dei simboli e $P(f)$ trasformata dell'impulso $p(t)$. Il bit rate è $R_b=1/T_b$.
+  - Se $p(t)$ è un rettangolo di durata $T$, allora $|P(f)|^2\propto\text{sinc}^2(fT)$. Lo schizzo mostra un lobo principale con il primo zero in $f=1/T$, seguito da lobi laterali piccoli.
+  - Quindi la banda è dell'ordine di $1/T$: simboli più lunghi (cioè $M$ più grande) occupano meno banda.
+  - C'è un compromesso tra potenza del segnale e banda, perché il budget di potenza è limitato. Nota riquadrata: fissare il budget significa fissare un intervallo sull'asse delle ascisse (🧩 lettura mia: nei grafici delle prestazioni in funzione di $E_b/N_0$, ci si può muovere solo nell'intervallo di potenze consentito).
 
 ### Rappresentazione discreta e spazio dei segnali
 
