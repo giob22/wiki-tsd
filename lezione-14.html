@@ -92,6 +92,15 @@
 <li>In tal caso la rivelazione simbolo per simbolo, ottima in AWGN, resta ottima anche sul canale a banda limitata.</li>
 <li>Appunti: posso costruire <span class="math inline">g(t)</span> e <span class="math inline">c(t)</span> in modo che il contributo dell'ISI sia annullato ⇒ si ottiene il teorema di Nyquist.</li>
 </ul>
+<blockquote>
+<p><strong>Approcci per il trattamento dell'ISI</strong> (appunti)</p>
+<ul>
+<li><strong>Algoritmo di Viterbi</strong>: sceglie la sequenza di simboli più verosimile (MLSE) percorrendo un traliccio, senza provare tutte le sequenze possibili.</li>
+<li><strong>Equalizzatori</strong>: filtri al ricevitore che compensano la distorsione del canale e riducono l'ISI residua (lineari ZF e MMSE, oppure DFE).</li>
+<li><strong>OFDM</strong>: divide la banda in molte sottoportanti strette, ognuna vista come un canale piatto; i simboli diventano lunghi e l'ISI trascurabile.</li>
+</ul>
+<p>🧩 Le descrizioni sono mie: Viterbi ed equalizzatori si vedono alla fine di questa lezione, l'OFDM nelle slide non c'è ancora.</p>
+</blockquote>
 <h4 id="signal-design-per-isi-nulla-2-2">Signal design per ISI nulla (2/2)</h4>
 <ul>
 <li>Il criterio di progetto è l'eliminazione dell'ISI dalla sequenza campionata <span class="math inline">y(t_k)</span>. Il <strong>criterio di Nyquist</strong> richiede</li>
