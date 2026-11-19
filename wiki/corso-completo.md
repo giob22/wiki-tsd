@@ -1835,7 +1835,7 @@ $$R_s\triangleq\frac1T=\frac{1}{hT_b}=\frac{R_b}{\log_2M}$$
 - La figura mostra la stessa sequenza binaria $1\,0\,0\,1\,0\,1\,1\,1\,1\,0\,0\,0$ trasmessa con $M=2$ ($T=T_s$), $M=4$ ($T=2T_s$, livelli $\pm A,\pm3A$) e $M=8$ ($T=3T_s$, livelli da $-7A$ a $+7A$). Appunti: l'ampiezza $+A$ ha ripercussione diretta sull'SNR; schizzi di segnale in banda base (canale) e in banda passante (up → canale → down).
 - Mapping della figura: $M=4$: 10 → $+3A$, 11 → $+A$, 01 → $-A$, 00 → $-3A$; $M=8$: 111 → $+7A$, 101 → $+5A$, 100 → $+3A$, 110 → $+A$, 010 → $-A$, 011 → $-3A$, 001 → $-5A$, 000 → $-7A$.
 
-> ⚠️ Errore nella figura (slide 5, $M=8$): la sequenza si divide in 100, 101, 111, 000, quindi i livelli dovrebbero essere $+3A,+5A,+7A,-7A$. Nella figura il terzo simbolo (111) è disegnato a $-A$, che secondo la tabella accanto corrisponde a 010. Le righe con $M=2$ e $M=4$ sono corrette.
+> ⚠️ Errore nella figura, riga con $M=8$: la sequenza si divide in 100, 101, 111, 000, quindi i livelli dovrebbero essere $+3A,+5A,+7A,-7A$. Nella figura il terzo simbolo (111) è disegnato a $-A$, che secondo la tabella accanto corrisponde a 010. Le righe con $M=2$ e $M=4$ sono corrette.
 
 #### Slide 6 e appunti — Come scegliere la modulazione · [[Modulazione.pdf#page=8|p. 8]]–[[Modulazione.pdf#page=11|11]]
 - Uno schema di modulazione è il procedimento con cui una sequenza numerica di bit viene convertita in un segnale analogico a tempo continuo. La scelta è un **compromesso** tra complessità, efficienza di potenza ed efficienza di banda (appunti: i segnali dell'esempio sono tutti segnali PAM).
