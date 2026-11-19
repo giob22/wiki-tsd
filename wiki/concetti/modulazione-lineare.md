@@ -54,9 +54,9 @@ $$
 
 $$
 \begin{aligned}
-\xi_k&=Ae^{j\Phi_k}=A\cos\Phi_k+jA\sin\Phi_k && \text{Eulero}\\
-s_c(t)&=\sum_k\text{Re}(\xi_k)g_{TX}(t-kT)=A\sum_k\cos(\Phi_k)\,g_{TX}(t-kT) && \text{(1) con } \text{Re}\,\xi_k=A\cos\Phi_k\\
-s_s(t)&=A\sum_k\sin(\Phi_k)\,g_{TX}(t-kT) && \text{(2)}
+A\,\xi_k&=A\,e^{j\Phi_k}=A\cos\Phi_k+jA\sin\Phi_k && \text{Eulero; } \xi_k=e^{j\Phi_k}\text{ ha modulo 1, } A \text{ è il fattore d'ampiezza}\\
+s_c(t)&=\sum_k\text{Re}(A\,\xi_k)\,g_{TX}(t-kT)=A\sum_k\cos(\Phi_k)\,g_{TX}(t-kT) && \text{(1) con i simboli scalati di } A\text{: è la (3)}\\
+s_s(t)&=\sum_k\text{Im}(A\,\xi_k)\,g_{TX}(t-kT)=A\sum_k\sin(\Phi_k)\,g_{TX}(t-kT) && \text{(2): è la (4)}
 \end{aligned}
 $$
 
@@ -101,4 +101,4 @@ Nella modulazione lineare il segnale è costruito come un treno di impulsi tutti
 
 [[principles-of-modulation]] — Modulazione.pdf, slide 11–21 e appunti.
 
-_Aggiornato: 2026-11-16 — creazione da ingest Modulazione.pdf_
+_Aggiornato: 2026-11-19 — derivazione I/Q della PSK resa coerente con la slide ($\xi_k=e^{j\Phi_k}$ di modulo 1 e fattore $A$ separato); 2026-11-16 — creazione da ingest Modulazione.pdf_

@@ -228,3 +228,9 @@ Filtra ultimi 10: `grep "^## " wiki/log.md | tail -10`
 - copiata in `raw/goodnotes/signaling_bandlimited_channel (19-11).pdf` la versione GoodNotes aggiornata (49 pagine: pagine di appunti inserite a p. 14 e p. 32, slide spostate di conseguenza); l'originale del 16/11 resta invariato
 - [[corso-completo]], Lezione 14, slide 14: riquadro «Approcci per il trattamento dell'ISI» (Viterbi, equalizzatori, OFDM) con descrizioni brevissime mie; riga aggiornata in [[lezioni]]
 - non ancora ingerito: gli altri appunti nuovi della versione del 19/11 (p. 2–16, 19, 23, 25, 27, 31–32)
+
+## [2026-11-19] lint | Lezione 8 (Modulazione.pdf) | pagine coperte: 1-39
+- revisione pagina per pagina di [[corso-completo]] contro il PDF: aggiunti gli appunti a mano rimasti fuori dall'ingest (p. 5, 8, 10, 12, 14, 17, 19, 20–21, 24, 29, 33, 35), il mapping della figura della slide 5 e la riscrittura degli appunti di p. 11
+- ⚠️ errore nella figura della slide 5 (p. 7): con $M=8$ il simbolo 111 è disegnato a $-A$ invece che a $+7A$; segnalato in [[corso-completo]] e in [[principles-of-modulation]]
+- [[modulazione-lineare]]: derivazione I/Q della PSK resa coerente con la slide ($\xi_k$ di modulo 1, fattore $A$ separato)
+- figura del sito «forme d'onda M-arie»: aggiunte le ordinate con i livelli PAM

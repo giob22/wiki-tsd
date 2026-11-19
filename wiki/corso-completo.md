@@ -1826,19 +1826,22 @@ $$R_s\triangleq\frac1T=\frac{1}{hT_b}=\frac{R_b}{\log_2M}$$
 
   è il **symbol rate** o **baud rate** (simboli/s, baud): il numero di forme d'onda trasmesse dal modulatore nell'unità di tempo, detto anche **signaling rate**.
 - Il generatore associa a ogni simbolo una forma d'onda presa da un insieme di $M$ forme d'onda. La corrispondenza può essere **senza memoria** (biunivoca: la forma d'onda dipende solo da $\xi_k$) o **con memoria** (dipende anche da $\xi_{k-1},\dots,\xi_{k-L}$, con $L\ge1$ memoria della modulazione).
-- Appunti a lezione: con la memoria si possono raccordare dolcemente le transizioni da un simbolo all'altro: si contiene la banda, ma si rallenta il sistema.
+- Appunti a lezione: con la memoria si possono raccordare dolcemente le transizioni da un simbolo all'altro: si contiene la banda, ma si rallenta il sistema (un simbolo viene inviato solo dopo $T$).
 
 ### Un esempio e il compromesso potenza-banda
 
 #### Slide 4–5 — Esempio di Benedetto-Biglieri · [[Modulazione.pdf#page=6|p. 6]], [[Modulazione.pdf#page=7|7]]
 - Il modulatore usa $M$ segnali $\{s_i(t)\}_{i=1}^M$ di durata $T=hT_s$ ($T_s$ tempo di bit). Per $M=2$: $s_1=+A$, $s_2=-A$ su $[0,T_s)$; per $M=4$: $-3A,-A,+A,+3A$ su $[0,2T_s)$; per $M=8$: $s_i=(2i-9)A$, $i=1,\dots,8$, su $[0,3T_s)$. Ogni segnale dura $hT_s$: a parità di rate della sorgente, la durata è proporzionale a $h$ (appunti: è la distanza tra un simbolo e il successivo).
 - La figura mostra la stessa sequenza binaria $1\,0\,0\,1\,0\,1\,1\,1\,1\,0\,0\,0$ trasmessa con $M=2$ ($T=T_s$), $M=4$ ($T=2T_s$, livelli $\pm A,\pm3A$) e $M=8$ ($T=3T_s$, livelli da $-7A$ a $+7A$). Appunti: l'ampiezza $+A$ ha ripercussione diretta sull'SNR; schizzi di segnale in banda base (canale) e in banda passante (up → canale → down).
+- Mapping della figura: $M=4$: 10 → $+3A$, 11 → $+A$, 01 → $-A$, 00 → $-3A$; $M=8$: 111 → $+7A$, 101 → $+5A$, 100 → $+3A$, 110 → $+A$, 010 → $-A$, 011 → $-3A$, 001 → $-5A$, 000 → $-7A$.
+
+> ⚠️ Errore nella figura (slide 5, $M=8$): la sequenza si divide in 100, 101, 111, 000, quindi i livelli dovrebbero essere $+3A,+5A,+7A,-7A$. Nella figura il terzo simbolo (111) è disegnato a $-A$, che secondo la tabella accanto corrisponde a 010. Le righe con $M=2$ e $M=4$ sono corrette.
 
 #### Slide 6 e appunti — Come scegliere la modulazione · [[Modulazione.pdf#page=8|p. 8]]–[[Modulazione.pdf#page=11|11]]
-- Uno schema di modulazione è il procedimento con cui una sequenza numerica di bit viene convertita in un segnale analogico a tempo continuo. La scelta è un **compromesso** tra complessità, efficienza di potenza ed efficienza di banda.
+- Uno schema di modulazione è il procedimento con cui una sequenza numerica di bit viene convertita in un segnale analogico a tempo continuo. La scelta è un **compromesso** tra complessità, efficienza di potenza ed efficienza di banda (appunti: i segnali dell'esempio sono tutti segnali PAM).
 - A bit rate costante, le forme d'onda con $M=8$ richiedono meno banda di quelle con $M=2$ perché l'impulso dura di più: **aumentare $M$ riduce in generale l'occupazione di banda** (appunti: $M=2$, un simbolo per bit, durata $T=T_s$; $M=8$, un simbolo ogni 3 bit, durata $3T_s$; durata e banda sono inversamente proporzionali).
-- Se il budget di potenza è fisso al variare di $M$, con il rumore il demodulatore distingue peggio i segnali quando $M$ è grande, perché i livelli sono più vicini (appunti: con $M=2$ si distinguono 2 livelli lontani, con $M=8$ otto livelli vicini): **compromesso potenza-banda**.
-- Dalla teoria dei segnali, la regolarità di una funzione nel tempo è legata alla rapidità con cui decade la sua trasformata: per uno spettro più stretto si «smussano» le discontinuità della forma d'onda ⇒ **modulazione con memoria** (appunti: gli impulsi rettangolari generano code spettrali che decadono lentamente).
+- Se il budget di potenza è fisso al variare di $M$, con il rumore il demodulatore distingue peggio i segnali quando $M$ è grande, perché i livelli sono più vicini (appunti: con $M=2$ si distinguono 2 livelli lontani, con $M=8$ otto livelli vicini): **compromesso potenza-banda**. Appunti (p. 10): aumentare $M$ fa risparmiare banda (efficienza di banda), ma rende il segnale più fragile al rumore (efficienza di potenza): per mantenere la stessa affidabilità serve più potenza.
+- Dalla teoria dei segnali, la regolarità di una funzione nel tempo è legata alla rapidità con cui decade la sua trasformata: per uno spettro più stretto si «smussano» le discontinuità della forma d'onda ⇒ **modulazione con memoria** (appunti, alla voce complessità: gli impulsi a gradino generano code spettrali che decadono lentamente; con la memoria nel generatore di forme d'onda il simbolo corrente si raccorda con i precedenti, si eliminano le discontinuità di ampiezza e fase e lo spettro diventa più stretto e compatto).
 - Appunti a lezione (p. 11), sulla banda occupata. Per una modulazione lineare la densità spettrale di potenza del segnale è
 
 $$S_{xx}(f)=\frac1T\,S_{aa}(fT)\,|P(f)|^2$$
@@ -1846,12 +1849,12 @@ $$S_{xx}(f)=\frac1T\,S_{aa}(fT)\,|P(f)|^2$$
   con $T$ periodo di simbolo, $S_{aa}$ spettro della sequenza dei simboli e $P(f)$ trasformata dell'impulso $p(t)$. Il bit rate è $R_b=1/T_b$.
   - Se $p(t)$ è un rettangolo di durata $T$, allora $|P(f)|^2\propto\text{sinc}^2(fT)$. Lo schizzo mostra un lobo principale con il primo zero in $f=1/T$, seguito da lobi laterali piccoli.
   - Quindi la banda è dell'ordine di $1/T$: simboli più lunghi (cioè $M$ più grande) occupano meno banda.
-  - C'è un compromesso tra potenza del segnale e banda, perché il budget di potenza è limitato. Nota riquadrata: fissare il budget significa fissare un intervallo sull'asse delle ascisse (🧩 lettura mia: nei grafici delle prestazioni in funzione di $E_b/N_0$, ci si può muovere solo nell'intervallo di potenze consentito).
+  - C'è un compromesso tra potenza del segnale e banda, perché il budget di potenza è limitato. Nota riquadrata: fissare il budget significa fissare un intervallo sull'asse delle ascisse (🧩 sulla pagina l'unico asse delle ascisse è quello delle frequenze dello schizzo, quindi la nota lega il budget a un intervallo di frequenze, cioè alla banda).
 
 ### Rappresentazione discreta e spazio dei segnali
 
 #### Slide 7 e appunti — Rappresentazione discreta dei segnali (1/2) · [[Modulazione.pdf#page=12|p. 12]], [[Modulazione.pdf#page=13|13]]
-- Nella forma più semplice il modulatore mappa ogni messaggio su un insieme di $M$ forme d'onda $\mathcal S=\{s_i(t)\}_{i=1}^M$ trasmesse in sequenza (appunti: ogni simbolo è mappato su una singola forma d'onda dell'insieme).
+- Nella forma più semplice il modulatore mappa ogni messaggio su un insieme di $M$ forme d'onda $\mathcal S=\{s_i(t)\}_{i=1}^M$ trasmesse in sequenza (appunti: ogni simbolo è mappato su una singola forma d'onda dell'insieme). Esiste una grande varietà di schemi di modulazione digitale, cioè di regole di mapping.
 - Lavorare con funzioni del tempo è analiticamente e computazionalmente complesso: conviene associare a ogni $s_i(t)$ una **rappresentazione discreta**, una sequenza $s_i(\ell)$ raccolta nel vettore $\mathbf s_i$. Così la comunicazione si descrive in uno **spazio vettoriale** di dimensione finita o infinita numerabile, e l'analisi si riduce a operazioni geometriche tra vettori.
 - Se il segnale è a banda limitata si prendono i campioni equispaziati (teorema del campionamento di Nyquist); per segnali periodici, i coefficienti della serie di Fourier.
 
@@ -1861,12 +1864,14 @@ $$S_{xx}(f)=\frac1T\,S_{aa}(fT)\,|P(f)|^2$$
 
 $$s_i(t)=\sum_{\ell=-\infty}^{+\infty}s_i\Big(\frac{\ell}{W}\Big)\,p\Big(t-\frac{\ell}{W}\Big),\qquad p(t)=\text{sinc}(Wt)$$
 
+- Appunti: $s_i(\ell/W)$ è la $\ell$-esima componente discreta associata alla $i$-esima forma d'onda; con la somma da $-\infty$ a $+\infty$ bisogna associare infinite componenti.
+
 #### Slide 9 e appunti — Gradi di libertà della modulazione · [[Modulazione.pdf#page=16|p. 16]]–[[Modulazione.pdf#page=19|19]]
 - Basta specificare i campioni $s_i(\ell/W)$, ma su tutto l'asse dei tempi il vettore dei campioni ha dimensione infinita.
-- Nessun segnale limitato nel tempo è limitato in banda: $x_{T_0}(t)=x(t)\,\text{rect}(t/T_0)\Leftrightarrow X_{T_0}(f)=X(f)\ast T_0\,\text{sinc}(fT_0)$.
+- Nessun segnale limitato nel tempo è limitato in banda: $x_{T_0}(t)=x(t)\,\text{rect}(t/T_0)\Leftrightarrow X_{T_0}(f)=X(f)\ast T_0\,\text{sinc}(fT_0)$ (appunti: i segnali desiderati sono a banda limitata perché il canale si comporta come un filtro passa-banda; troncandoli nel tempo, la convoluzione con la sinc allarga la banda).
 - Se però i segnali occupano un intervallo $T_0$ abbastanza lungo da considerarli approssimativamente a banda limitata, il modulatore deve specificare circa $WT_0$ campioni complessi: l'insieme dei segnali sta in un sottospazio complesso di dimensione $WT_0$, cioè reale di dimensione $2WT_0$ (appunti: ogni valore complesso porta 2 gradi di libertà reali).
 - Il massimo numero di dimensioni dello spazio dei segnali complessi (**gradi di libertà**) è il prodotto tempo-banda $D=WT_0$; in pratica il numero effettivo è minore, per vincoli implementativi.
-- Appunti (p. 18–19): l'obiettivo è rappresentare una forma d'onda con un numero finito di valori senza perdere informazione. Usare tutti i $D$ campioni è ridondante se si usano solo $M$ forme d'onda: $D$ sono i gradi di libertà offerti dal canale, $n\le M\le D$ quelli usati davvero, perché le $M$ forme d'onda stanno in un sottospazio di dimensione $n$ (alcune possono essere combinazioni lineari delle altre). Con una base ortonormale di quel sottospazio ogni $s_i(t)$ diventa un vettore di $n$ componenti: si lavora nello spazio di dimensione minima.
+- Appunti (p. 18–19): l'obiettivo è rappresentare una forma d'onda con un numero finito di valori senza perdere informazione. Usare tutti i $D$ campioni è ridondante se si usano solo $M$ forme d'onda: $D$ sono i gradi di libertà offerti dal canale, $n\le M\le D$ quelli usati davvero, perché le $M$ forme d'onda stanno in un sottospazio di dimensione $n$ (alcune possono essere combinazioni lineari delle altre). Con una base ortonormale di quel sottospazio ogni $s_i(t)$ diventa un vettore di $n$ componenti: si lavora nello spazio di dimensione minima. Riquadro riassuntivo negli appunti: Nyquist e $D$ servono a giustificare che il problema continuo si può ridurre a un numero finito di valori (dimostrano che l'approssimazione è fattibile); lo sviluppo su base ortonormale con $n$ componenti è la rappresentazione compatta usata in pratica dal ricevitore per calcolare le distanze euclidee e decidere sui simboli trasmessi.
 
 #### Slide 10 e appunti — Descrizione nello spazio dei segnali · [[Modulazione.pdf#page=20|p. 20]]–[[Modulazione.pdf#page=22|22]]
 - L'insieme $\mathcal S$ sta in uno spazio di dimensione finita: si lavora con i vettori $\mathbf s_i$. Sia $n\le M$ la dimensione dello spazio generato. Ogni segnale si rappresenta con $\mathbf s_i=[s_i(1),\dots,s_i(n)]^T$ rispetto a una **base ortonormale** $\psi_1(t),\dots,\psi_n(t)$:
@@ -1874,12 +1879,13 @@ $$s_i(t)=\sum_{\ell=-\infty}^{+\infty}s_i\Big(\frac{\ell}{W}\Big)\,p\Big(t-\frac
 $$\langle\psi_k(t),\psi_\ell(t)\rangle=\delta_{k\ell},\qquad s_i(t)=\sum_{\ell=1}^{n}s_i(\ell)\,\psi_\ell(t),\qquad s_i(\ell)=\langle s_i(t),\psi_\ell(t)\rangle=\int_{\mathcal T}s_i(t)\,\psi_\ell^\ast(t)\,dt$$
 
 - Prodotti scalari e distanze euclidee si conservano passando dai segnali ai vettori: $\langle s_i(t),s_j(t)\rangle=\langle\mathbf s_i,\mathbf s_j\rangle$.
+- Appunti (p. 20–21): $n$ è la dimensione effettiva; lo spazio è finito grazie all'approssimazione di banda e durata limitate ($T_0$ grande); i segnali di energia formano uno spazio vettoriale, e allo spazio dei segnali complessi si associa uno spazio euclideo con una corrispondenza 1:1.
 - Appunti (p. 22): la verifica sviluppa entrambi i segnali sulla base e usa l'ortonormalità, $\int\psi_\ell\psi_k^\ast\,dt=\delta_{\ell k}$. Perché importa: per calcolare energia dei segnali, effetto del rumore e decisioni del ricevitore basta la distanza euclidea tra punti di uno spazio a $n$ dimensioni. I punti della costellazione generano un sottospazio di dimensione $n$ dentro lo spazio di dimensione $D$ offerto dal canale.
 
 ### Modulazione lineare
 
 #### Slide 11 e appunti — Modulazione lineare · [[Modulazione.pdf#page=23|p. 23]]–[[Modulazione.pdf#page=25|25]]
-- Ci si concentra sul caso più generale dei sistemi passa-banda: l'informazione è codificata in una forma d'onda complessa in banda base (l'inviluppo). I sistemi reali in banda base sono un caso particolare.
+- Ci si concentra sul caso più generale dei sistemi passa-banda: l'informazione è codificata in una forma d'onda complessa in banda base (l'inviluppo). I sistemi reali in banda base sono un caso particolare (appunti: prima si era trattato il caso particolare con componente in quadratura nulla).
 - Segnale modulato linearmente in banda base complessa:
 
 $$s(t)=\sum_{k=-\infty}^{+\infty}\xi_k\,g_{TX}(t-kT)$$
@@ -1897,7 +1903,7 @@ $$s(t)=\sum_{k=-\infty}^{+\infty}\xi_k\,g_{TX}(t-kT)$$
 $$s(t)=A\sum_{k}\xi_k\,\text{rect}\Big(\frac{t-0.5T-kT}{T}\Big)$$
 
   Le forme d'onda sono multipli scalari di un'unica forma d'onda, $\{-Ag_{TX}(t),Ag_{TX}(t)\}$ (appunti: modulazione con cardinalità $M=2$ e dimensione 1). Figura: una realizzazione che salta tra $+A$ e $-A$. È usata nel protocollo CAN.
-- **RZ**: $g_{TX}(t)=A\,\text{rect}\big(\frac{t-0.25T}{0.5T}\big)$, l'impulso occupa solo metà intervallo e torna a zero. Per NRZ e RZ l'insieme dei segnali è **unidimensionale**.
+- **RZ**: $g_{TX}(t)=A\,\text{rect}\big(\frac{t-0.25T}{0.5T}\big)$, l'impulso occupa solo metà intervallo e torna a zero. Per NRZ e RZ l'insieme dei segnali è **unidimensionale** (appunti: entrambe vanno bene per canali in banda base, perché i simboli sono reali e si assume un canale in banda base).
 
 ### Modulazione lineare passa-banda
 
@@ -1918,7 +1924,7 @@ $$s_c(t)=A\sum_k\cos(\Phi_k)\,g_{TX}(t-kT)\quad(3)\qquad s_s(t)=A\sum_k\sin(\Phi
 - Appunti (p. 32): **mapping di Gray**: a simboli a distanza minima si assegnano sequenze di bit che differiscono per un solo bit (QPSK: 00, 01, 11, 10 in giro sul cerchio). Così l'errore più probabile del ricevitore (scambiare un simbolo con un vicino) costa un solo bit. Il problema della PSK: il modulo è costante, quindi aumentando $M$ la costellazione si affolla e la distanza tra simboli diminuisce; per allontanarli bisogna aumentare la potenza.
 
 #### Slide 17–18 — QAM e PAM · [[Modulazione.pdf#page=33|p. 33]], [[Modulazione.pdf#page=34|34]]
-- **QAM**: variano sia $|\xi_k|$ sia $\arg(\xi_k)$; di solito la costellazione è una griglia di $M$ punti regolarmente spaziati (figura: esempi PSK e QAM).
+- **QAM**: variano sia $|\xi_k|$ sia $\arg(\xi_k)$; di solito la costellazione è una griglia di $M$ punti regolarmente spaziati (figura: QPSK, 8-PSK e 16-QAM). Appunti: i punti si dispongono su un piano; in tutte queste costellazioni la successione dei simboli ha media nulla, se ogni simbolo è equiprobabile.
 - **PAM**: se $\xi_k$ è reale la QAM diventa modulazione d'ampiezza, con livelli equispaziati
 
 $$a_i=(2i-1-M)\frac d2,\qquad i=1,\dots,M$$
@@ -1927,6 +1933,12 @@ $$a_i=(2i-1-M)\frac d2,\qquad i=1,\dots,M$$
 
 #### Slide 19 — Scelte di progetto · [[Modulazione.pdf#page=35|p. 35]]
 - Nei sistemi modulati linearmente si scelgono: la forma dell'impulso $g_{TX}(t)$, il symbol rate $R_s=1/T$, la costellazione, il mapping bit-simboli. Symbol rate e forma dell'impulso dipendono soprattutto dalla banda disponibile; il resto si vedrà nelle lezioni successive.
+- Appunti:
+  - $g_{TX}(t)$ determina lo spettro e la banda occupata dal segnale sul canale;
+  - $R_s$ è limitato superiormente dalla banda passante disponibile ($R_s\le W$);
+  - la costellazione è l'insieme dei valori su cui si mappano gli $h$ bit: sono $2^h=M$;
+  - il mapping è, per esempio, quello di Gray;
+  - $T$ è la durata della forma d'onda: diminuendola la banda aumenta, e si sforerebbe la banda $W$ del canale. Schizzo: impulso rettangolare e il suo spettro, con gli zeri in $\pm1/T=\pm R_s$ confrontati con $\pm W$.
 
 ### Occupazione spettrale e modulazione ortogonale
 

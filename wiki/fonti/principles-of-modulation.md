@@ -35,6 +35,7 @@ argomenti: ["modulatore digitale", "baud rate", "compromesso potenza-banda", "sp
 
 - Slide 23: la soluzione dell'esercizio 2.25 del Madhow non è svolta; nel wiki è ricostruita ([[modulazione-ortogonale]]).
 - Slide 22: la condizione di ortogonalità per i sistemi non coerenti è solo citata in nota.
+- Slide 5 (p. 7): nella figura con $M=8$ il terzo simbolo (bit 111) è disegnato a $-A$ invece che a $+7A$, in contrasto con il mapping della tabella accanto. È un errore della figura; il disegno del sito usa il mapping corretto.
 
 ## Domande da esame
 
@@ -46,4 +47,4 @@ argomenti: ["modulatore digitale", "baud rate", "compromesso potenza-banda", "sp
 - Scrivere la PSD di un segnale modulato linearmente e commentarla.
 - Definire la modulazione ortogonale FSK e ricavare la spaziatura minima tra i toni.
 
-_Aggiornato: 2026-11-16 — creazione da ingest Modulazione.pdf_
+_Aggiornato: 2026-11-19 — revisione pagina per pagina: segnalato l'errore nella figura della slide 5; 2026-11-16 — creazione da ingest Modulazione.pdf_
