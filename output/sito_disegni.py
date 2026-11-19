@@ -896,15 +896,18 @@ def _gonna(s, x0, x1, y0, h, fn, cl="cv", n=160):
 
 
 def fig_forme_mary():
-    s = Svg(400, 300, "stessa sequenza di bit con M = 2, 4, 8")
+    s = Svg(400, 372, "stessa sequenza di bit con M = 2, 4, 8")
     bits = "100101111000"
-    x0, w = 46, 336 / 12
-    righe = ((2, 1, {"1": 1, "0": -1}, 1), (4, 2, {"10": 3, "11": 1, "01": -1, "00": -3}, 3),
-             (8, 3, {"111": 7, "101": 5, "100": 3, "110": 1, "010": -1, "011": -3, "001": -5, "000": -7}, 7))
-    for r, (M, h, mappa, amax) in enumerate(righe):
-        yc = 50 + r * 96
-        k = 38 / amax
+    x0, w = 74, 314 / 12
+    righe = ((2, 1, {"1": 1, "0": -1}, 1, 58, 30), (4, 2, {"10": 3, "11": 1, "01": -1, "00": -3}, 3, 158, 40),
+             (8, 3, {"111": 7, "101": 5, "100": 3, "110": 1, "010": -1, "011": -3, "001": -5, "000": -7}, 7, 286, 56))
+    for M, h, mappa, amax, yc, hh in righe:
+        k = hh / amax
         s.line(x0 - 4, yc, 392, yc, "ax", ar=True)
+        s.line(x0, yc + hh + 6, x0, yc - hh - 10, "ax", ar=True)
+        for v in range(-amax, amax + 1, 2):
+            s.line(x0 - 3, yc - k * v, x0 + 3, yc - k * v, "ax")
+            s.t(x0 - 6, yc - k * v + 4, f"{v}".replace("-", "−"), "ts", "end")
         s.t(8, yc + 4, f"M={M}", "tx tb a1", "start")
         pts = []
         for i in range(0, 12, h):
@@ -913,10 +916,11 @@ def fig_forme_mary():
             pts += [(xa, yc - k * v), (xb, yc - k * v)]
             s.line(xb, yc - 3, xb, yc + 3, "gd")
         s.poly(pts, "cv")
-        s.t(x0 + h * w / 2, yc + 44, f"T = {h}T_b", "ts a2")
+        s.t(x0 + h * w / 2 + 6, yc + hh + 16, f"T = {h}T_b", "ts a2")
     for i, b in enumerate(bits):
         s.t(x0 + (i + .5) * w, 14, b, "ts")
-    return s.render(), "🧩 Più bit per simbolo: simboli più lunghi, livelli più vicini."
+    return s.render(), ("🧩 Più bit per simbolo: simboli più lunghi, livelli più vicini. "
+                        "In ordinata i livelli PAM $a_i=(2i-1-M)\\frac d2$ con $d=2$, cioè $\\pm1,\\pm3,\\dots,\\pm(M-1)$.")
 
 
 def fig_nrz_rz():
