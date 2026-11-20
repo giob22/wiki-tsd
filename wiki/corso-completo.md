@@ -2807,7 +2807,7 @@ $$\int_{kT_0}^{(k+1)T_0}y_p(t)\sin(2\pi f_ct+\hat\theta_k)\,dt=\frac12\int_{kT_0
 - Figura (slide 5): BER da $1$ a $10^{-5}$ in funzione di $E_b/N_0$ da $-10$ a 12 dB; la curva tratteggiata è la continua traslata di 2 dB a destra.
 
 #### Slide 6–7 — Effetto dell'ISI: BER irriducibile · [[signaling_bandlimited_channel.pdf#page=6|p. 6]], [[signaling_bandlimited_channel.pdf#page=7|7]]
-- Se il sistema è degradato da rumore **e** ISI (curva tratteggiata della slide 7), nessun aumento di $E_b/N_0$ risolve il problema: la curva presenta un **pavimento** (BER floor, attorno a $10^{-4}$ nella figura), e aumentare $E_b/N_0$ non serve se il pavimento sta sopra la BER richiesta.
+- Se il sistema è degradato da rumore **e** ISI (curva tratteggiata della slide 7), nessun aumento di $E_b/N_0$ risolve il problema: la curva presenta un **pavimento** (BER floor, nella figura poco sotto $10^{-4}$, circa $4\cdot10^{-5}$), e aumentare $E_b/N_0$ non serve se il pavimento sta sopra la BER richiesta.
 - Il rimedio è l'**equalizzazione**: poiché l'ISI è causata dal filtraggio nel trasmettitore e nel canale, l'equalizzazione è il processo che inverte questi effetti di filtraggio non ottimi.
 
 #### Slide 8 — Modulazione lineare · [[signaling_bandlimited_channel.pdf#page=8|p. 8]]
@@ -2825,7 +2825,7 @@ $$u(t)=\sum_ns(n)\,g(t-nT)=\Big[\sum_ns(n)\,\delta(t-nT)\Big]\ast g(t)\tag{1}$$
 
 #### Slide 10 — Interferenza intersimbolica (1/4) · [[signaling_bandlimited_channel.pdf#page=10|p. 10]]
 - Si usa la rappresentazione in banda base complessa di segnali e filtri e si suppone sincronizzazione perfetta.
-- L'inviluppo $u(t)$ è modificato dal canale a banda limitata di risposta impulsiva $h(t)$: il segnale ricevuto in banda base è $x(t)=u(t)\ast h(t)+n(t)$, con $n(t)$ WGN.
+- L'inviluppo $u(t)$ è modificato dal canale a banda limitata di risposta impulsiva $h(t)$: il segnale ricevuto in banda base complessa (dopo la downconversion) è $x(t)=u(t)\ast h(t)+n(t)$, con $n(t)$ WGN.
 - In AWGN, con $h(t)=\delta(t)$, il rivelatore ottimo (simbolo per simbolo) è la cascata filtro adattato + campionatore.
 - Su canale a banda limitata si vuole un ricevitore fatto da un filtro lineare (**filtro di ricezione**) di risposta $c(t)$ seguito da un campionatore a rate $1/T$; i campioni di $y(t)$ presi ogni $T$ secondi vanno al decisore.
 
@@ -2834,7 +2834,7 @@ $$u(t)=\sum_ns(n)\,g(t-nT)=\Big[\sum_ns(n)\,\delta(t-nT)\Big]\ast g(t)\tag{1}$$
 
 $$y(t)=\sum_ns(n)\,p(t-nT)=\Big[\sum_ns(n)\,\delta(t-nT)\Big]\ast p(t),\qquad p(t)=g(t)\ast h(t)\ast c(t)\tag{2}$$
 
-- Nell'argomento di $p(t-nT)$ andrebbe un ritardo $t_0$ che rappresenta il ritardo di trasmissione; lo si pone a zero senza perdita di generalità.
+- Nell'argomento di $p(t-nT)$ andrebbe un ritardo arbitrario $t_0$ che rappresenta il ritardo di trasmissione attraverso il sistema; lo si pone a zero senza perdita di generalità.
 - L'impulso complessivo è una doppia convoluzione (3); in frequenza la convoluzione diventa prodotto:
 
 $$p(t)=g(t)\ast h(t)\ast c(t)\tag{3}\qquad\Longleftrightarrow\qquad P(f)=G(f)\,H(f)\,C(f)$$
@@ -2865,13 +2865,14 @@ $$y(t_k)=\sum_{n=-\infty}^{+\infty}s(n)\,p[(k-n)T]=s(k)+\sum_{\substack{n=-\inft
 > 🧩 Le descrizioni sono mie: Viterbi ed equalizzatori si vedono alla fine di questa lezione, l'OFDM nelle slide non c'è ancora.
 
 #### Slide 15 — Signal design per ISI nulla (2/2) · [[signaling_bandlimited_channel.pdf#page=15|p. 15]]
-- Il criterio di progetto è l'eliminazione dell'ISI dalla sequenza campionata $y(t_k)$. Il **criterio di Nyquist** richiede
+- Il criterio usato nel progetto del ricevitore è l'eliminazione dell'ISI dalla sequenza campionata $y(t_k)$. Il **criterio di Nyquist** richiede
 
 $$p(kT-nT)=\begin{cases}1&n=k\\0&n\neq k\end{cases}\tag{4}$$
 
 - Un impulso che soddisfa la (4) si chiama **impulso di Nyquist**. Non è unico: molte forme d'impulso soddisfano il criterio.
 
 #### Slide 16 — Il criterio nel dominio della frequenza (1/2) · [[signaling_bandlimited_channel.pdf#page=16|p. 16]]
+- Il titolo di questa slide e della successiva è «impulso di Nyquist ideale per la trasmissione dati **in banda base** senza distorsione».
 - Treno periodico di delta distanti $T$:
 
 $$\Delta_T(t)\triangleq\sum_{m=-\infty}^{+\infty}\delta(t-mT)\tag{5}$$
@@ -2888,20 +2889,20 @@ $$R_s\sum_{k=-\infty}^{+\infty}P(f-kR_s)=1$$
 
 $$\sum_{k=-\infty}^{+\infty}P(f-kR_s)=T\tag{6}$$
 
-- **Criterio di Nyquist in frequenza**: $P(f)$ elimina l'ISI per campioni presi a intervalli $T$ se soddisfa la (6). $P(f)$ si riferisce all'intero sistema: filtro di trasmissione, canale e filtro di ricezione.
+- **Criterio di Nyquist per la trasmissione in banda base senza distorsione**, nel dominio della frequenza: $P(f)$ elimina l'ISI per campioni presi a intervalli $T$ se soddisfa la (6). $P(f)$ si riferisce all'intero sistema: filtro di trasmissione, canale e filtro di ricezione.
 
 #### Slide 18–19 e appunti — Impulso di Nyquist ideale (1/4)–(2/4) · [[signaling_bandlimited_channel.pdf#page=18|p. 18]], [[signaling_bandlimited_channel.pdf#page=19|19]]
 - Il modo più semplice di soddisfare la (6) è uno spettro rettangolare:
 
 $$P(f)=T\,\text{rect}\Big(\frac{f}{1/T}\Big)\tag{7}$$
 
-  La banda (monolatera) in banda base è $1/(2T)=R_s/2$: non servono frequenze oltre metà del symbol rate.
+  La banda (monolatera) in banda base è $1/(2T)=R_s/2$: con la (7) non serve nessuna frequenza di valore assoluto maggiore di metà del symbol rate.
 - $W_N\triangleq1/(2T)=R_s/2$ è la **banda di Nyquist**.
 - La forma d'onda a ISI nulla è la sinc: $p(t)=\text{sinc}(2W_Nt)=\text{sinc}(t/T)$, detta **impulso di Nyquist ideale**, ideale perché la sua trasformata è nulla fuori dall'intervallo di Nyquist. Appunti: soddisfa il criterio di Nyquist con la minima occupazione di banda.
-- Figura (slide 19), modulazione binaria ($T=T_b$, $R_s=R_b$, $W\equiv W_N$): (a) risposta in ampiezza ideale, $|P(f)|=1/(2W)$ per $|f|<W$; (b) impulso $p(t)$, con zeri in $t=\pm T_b,\pm2T_b,\dots$
+- Figura (slide 19), modulazione binaria ($T=T_b$, $R_s=R_b$, $W\equiv W_N$): (a) risposta in ampiezza ideale: in ordinata $2W\,P(f)$, che vale 1 per $|f|/W<1$ (cioè $P(f)=1/(2W)$), con $W=1/(2T_b)=R_b/2$; (b) impulso ideale $p(t)$ in funzione di $t/T_b$, con picco 1 in 0 e zeri in $t=\pm T_b,\pm2T_b,\dots$; sotto, gli istanti di campionamento e gli intervalli di segnalazione lunghi $T_b$.
 
 #### Slide 20–21 — Impulso di Nyquist ideale (3/4)–(4/4) · [[signaling_bandlimited_channel.pdf#page=20|p. 20]], [[signaling_bandlimited_channel.pdf#page=21|21]]
-- $p(t)$ è la risposta impulsiva di un passa-basso ideale con ampiezza in banda passante $1/(2W_N)$ e banda $W_N$.
+- $p(t)$ è la risposta impulsiva di un **filtro passa-basso** ideale con risposta in ampiezza $1/(2W_N)$ nella sua banda passante (*passband*, le frequenze che lascia passare: $|f|<W_N$) e banda $W_N$.
 - $p(t)$ ha il picco nell'origine e si annulla nei multipli interi di $T$: se $y(t)$ è campionato in $t=0,\pm T,\pm2T,\dots$, gli impulsi $s(n)\,p(t-nT)$ non interferiscono tra loro.
 - Figura (slide 21): modulazione binaria, somma di sinc per la sequenza di bit 1011010; in ogni istante di campionamento conta solo l'impulso centrato lì.
 
@@ -2911,7 +2912,7 @@ $$P(f)=T\,\text{rect}\Big(\frac{f}{1/T}\Big)\tag{7}$$
   - $p(t)$ decresce come $1/|t|$ per $|t|$ grande: decadimento lento, dovuto anch'esso alla discontinuità di $P(f)$ in $\pm W_N$. Non c'è praticamente margine d'errore sugli istanti di campionamento.
 
 #### Slide 23–24 — Difficoltà pratiche (2/3)–(3/3): errore di timing · [[signaling_bandlimited_channel.pdf#page=23|p. 23]], [[signaling_bandlimited_channel.pdf#page=24|24]]
-- Si campiona in $t_k=kT+\Delta t$, con $\Delta t$ errore di timing; con $k=0$ e senza rumore:
+- Si campiona in $t_k=kT+\Delta t$, con $\Delta t$ errore di timing; ci si concentra sull'intervallo di simbolo $[0,T)$, cioè $k=0$, e senza rumore:
 
 $$y(t_0)=y(\Delta t)=\sum_{n=-\infty}^{+\infty}s(n)\,p(\Delta t-nT)\tag{8}$$
 
@@ -2937,7 +2938,7 @@ $$P(f)+P\Big(f-\frac1T\Big)+P\Big(f+\frac1T\Big)=T,\qquad f\in\Big(-\frac1{2T},\
 
 $$P(f)=\begin{cases}T,&|f|\le\dfrac{1-\alpha}{2T}\\[2mm]\dfrac T2\Big[1-\sin\Big(\big(|f|-\tfrac1{2T}\big)\dfrac{\pi T}{\alpha}\Big)\Big],&\dfrac{1-\alpha}{2T}\le|f|<\dfrac{1+\alpha}{2T}\\[2mm]0,&|f|\ge\dfrac{1+\alpha}{2T}\end{cases}$$
 
-- $\alpha\in[0,1]$ è il **fattore di roll-off**: indica la banda in eccesso rispetto alla soluzione ideale $W_N=1/(2T)$. La nuova banda (monolatera) è $W_N(1+\alpha)$.
+- $\alpha\in[0,1]$ è il **fattore di roll-off**: indica la banda in eccesso rispetto alla soluzione ideale $W_N=1/(2T)$. La nuova banda di trasmissione (monolatera) è $W_N(1+\alpha)$.
 - Antitrasformando:
 
 $$p(t)=\text{sinc}\Big(\frac tT\Big)\,\frac{\cos(\pi\alpha t/T)}{1-(2\alpha t/T)^2}$$
@@ -2954,7 +2955,7 @@ $$p(t)=\text{sinc}\Big(\frac tT\Big)\,\frac{\cos(\pi\alpha t/T)}{1-(2\alpha t/T)
 
 #### Slide 31 — Efficienza di banda con ISI nulla · [[signaling_bandlimited_channel.pdf#page=31|p. 31]]
 - In assenza di ISI l'efficienza di banda è $\eta_B=R_b/W$ (bit/s/Hz): $\eta_B=2\log_2M$ per modulazione lineare monodimensionale, $\eta_B=\log_2M$ per bidimensionale (Lezione 12).
-- Noti $R_b$ ed $\eta_B$, la banda (monolatera) minima senza ISI è $W=R_b/\eta_B$; con la banda in eccesso del coseno rialzato la banda effettiva è
+- Noti $R_b$ ed $\eta_B$, la banda (monolatera) minima richiesta in assenza di ISI è $W=R_b/\eta_B$; in presenza di ISI, dice la slide, questa banda si espande della banda in eccesso, e la banda effettiva è
 
 $$W_{actual}=(1+\alpha)\,\frac{R_b}{\eta_B}$$
 
@@ -2991,7 +2992,7 @@ $$y(t)=\sum_ns(n)\,q(t-nT)\tag{11}$$
 - Si considera il blocco $\mathbf s=[s(0),s(1),\dots,s(K)]^T$ trasmesso per $t\in[0,KT]$.
 
 #### Slide 37 — Il criterio MLSE (1/3) · [[signaling_bandlimited_channel.pdf#page=37|p. 37]]
-- La log-verosimiglianza della sequenza $\mathbf s$ è (vedi la rivelazione)
+- Il logaritmo del rapporto di verosimiglianza (*log-likelihood ratio*) della sequenza $\mathbf s$ è (vedi la rivelazione)
 
 $$\lambda(y)=\text{Re}\big(\langle r(t),y(t)\rangle\big)-\frac12\lVert y(t)\rVert^2\tag{12}$$
 

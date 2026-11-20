@@ -18,7 +18,7 @@ A differenza del rumore, l'ISI **dipende dal segnale trasmesso**: il rumore c'è
 | Formula | Significato |
 |---|---|
 | $u(t)=\sum_ns(n)\,g(t-nT)$ | modulazione lineare (1) |
-| $x(t)=u(t)\ast h(t)+n(t)$ | segnale ricevuto in banda base |
+| $x(t)=u(t)\ast h(t)+n(t)$ | segnale ricevuto in banda base complessa, dopo la downconversion |
 | $p(t)=g(t)\ast h(t)\ast c(t)$, $P(f)=G(f)H(f)C(f)$ | impulso complessivo (2)–(3) |
 | $y(t_k)=s(k)+\sum_{n\neq k}s(n)\,p[(k-n)T]$ | campione all'istante $kT$, con $p(0)=1$ |
 
@@ -47,7 +47,7 @@ La normalizzazione $p(0)=1$ è, come annotato a p. 13, un guadagno in ricezione:
 ### Derivazione — Perché c'è un BER floor · [[signaling_bandlimited_channel.pdf#page=6|p. 6]], [[signaling_bandlimited_channel.pdf#page=7|7]], [[signaling_bandlimited_channel.pdf#page=13|13]]
 **Fonte:** gli appunti di p. 13 scrivono $y_k=p(0)s(k)+i(k)+n(k)$ e indicano $i(k)$ come motivo del BER floor.
 
-> 🧩 Ragionamento mio. Con simboli antipodali $\pm1$ e soglia in 0, si sbaglia quando $i(k)+n(k)$ ha modulo maggiore di 1 e segno opposto al simbolo. Aumentando $E_b/N_0$ la varianza di $n(k)$ va a zero, ma $i(k)$ non cambia, perché scala con il segnale: se per qualche combinazione dei simboli vicini $|i(k)|\ge1$, quell'errore resta anche con rumore nullo. La BER tende allora alla probabilità di quelle combinazioni e non scende sotto quel valore: è il pavimento a circa $10^{-4}$ della figura di p. 7. La perdita di SNR (p. 4–5) è un'altra cosa: la curva si sposta a destra (2 dB a BER $10^{-5}$) ma continua a scendere.
+> 🧩 Ragionamento mio. Con simboli antipodali $\pm1$ e soglia in 0, si sbaglia quando $i(k)+n(k)$ ha modulo maggiore di 1 e segno opposto al simbolo. Aumentando $E_b/N_0$ la varianza di $n(k)$ va a zero, ma $i(k)$ non cambia, perché scala con il segnale: se per qualche combinazione dei simboli vicini $|i(k)|\ge1$, quell'errore resta anche con rumore nullo. La BER tende allora alla probabilità di quelle combinazioni e non scende sotto quel valore: è il pavimento poco sotto $10^{-4}$ (circa $4\cdot10^{-5}$) della figura di p. 7. La perdita di SNR (p. 4–5) è un'altra cosa: la curva si sposta a destra (2 dB a BER $10^{-5}$) ma continua a scendere.
 
 ## Spiegazione · [[signaling_bandlimited_channel.pdf#page=2|p. 2]], [[signaling_bandlimited_channel.pdf#page=4|4]]–[[signaling_bandlimited_channel.pdf#page=10|10]]
 
@@ -73,4 +73,4 @@ L'ISI è il limite principale della trasmissione veloce su canali a banda limita
 
 - [[signaling-bandlimited-channels]]
 
-_Aggiornato: 2026-11-16 — creazione da ingest signaling_bandlimited_channel.pdf (Lezione 14)_
+_Aggiornato: 2026-11-20 — revisione della traduzione delle slide (banda base, banda passante del filtro, log-likelihood ratio, livello del BER floor); 2026-11-16 — creazione da ingest signaling_bandlimited_channel.pdf (Lezione 14)_

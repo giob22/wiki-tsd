@@ -20,7 +20,7 @@ Con ISI nulla, la rivelazione simbolo per simbolo, ottima in AWGN, resta ottima 
 | $p(kT-nT)=1$ se $n=k$, $0$ se $n\neq k$ | criterio di Nyquist nel tempo (4) |
 | $\sum_kP(f-kR_s)=T$ | criterio in frequenza (6) |
 | $P(f)=T\,\text{rect}(fT)$, $p(t)=\text{sinc}(t/T)$ | impulso di Nyquist ideale (7) |
-| $W_N=1/(2T)=R_s/2$ | banda di Nyquist (minima) |
+| $W_N=1/(2T)=R_s/2$ | banda di Nyquist (minima, monolatera, in banda base) |
 | $P(f)$ a coseno rialzato, banda $W_N(1+\alpha)$ | roll-off $\alpha\in[0,1]$ |
 | $p(t)=\text{sinc}(t/T)\,\dfrac{\cos(\pi\alpha t/T)}{1-(2\alpha t/T)^2}$ | impulso a coseno rialzato |
 | $W_{actual}=(1+\alpha)R_b/\eta_B$ | banda effettiva con roll-off |
@@ -113,7 +113,7 @@ $$
 ### Derivazione — Banda effettiva · [[signaling_bandlimited_channel.pdf#page=31|p. 31]]
 **Si parte da:** $\eta_B=R_b/W$ ([[parametri-globali-modulazioni]]).
 
-> 🧩 Numeri miei: QPSK (bidimensionale, $M=4$) a $R_b=10$ Mbit/s ha $\eta_B=\log_24=2$ bit/s/Hz, quindi $W=R_b/\eta_B=5$ MHz senza eccesso di banda; con roll-off $\alpha=0.25$, $W_{actual}=1.25\cdot5=6.25$ MHz. Con $\alpha=1$ la banda raddoppia (10 MHz).
+> 🧩 Numeri miei: QPSK (bidimensionale, $M=4$) a $R_b=10$ Mbit/s ha $\eta_B=\log_24=2$ bit/s/Hz, quindi $W=R_b/\eta_B=5$ MHz attorno alla portante senza eccesso di banda (è la banda bilatera dell'inviluppo, $2W_N=R_s$); con roll-off $\alpha=0.25$, $W_{actual}=1.25\cdot5=6.25$ MHz. Con $\alpha=1$ la banda raddoppia (10 MHz).
 
 ## Spiegazione · [[signaling_bandlimited_channel.pdf#page=22|p. 22]], [[signaling_bandlimited_channel.pdf#page=29|29]], [[signaling_bandlimited_channel.pdf#page=30|30]]
 
@@ -136,4 +136,4 @@ Il coseno rialzato è la forma d'impulso usata in pratica nella modulazione line
 
 - [[signaling-bandlimited-channels]]
 
-_Aggiornato: 2026-11-16 — creazione da ingest signaling_bandlimited_channel.pdf (Lezione 14)_
+_Aggiornato: 2026-11-20 — revisione della traduzione delle slide (banda base, banda passante del filtro, log-likelihood ratio, livello del BER floor); 2026-11-16 — creazione da ingest signaling_bandlimited_channel.pdf (Lezione 14)_

@@ -1435,13 +1435,13 @@ def fig_ber_floor():
     ber = lambda d: 0.5 * math.erfc(math.sqrt(10 ** (d / 10)))
     s.poly([(x(d), y(ber(d))) for d in dbs if ber(d) > 1e-6], "cv")
     s.poly([(x(d), y(ber(d - 2))) for d in dbs if d >= 2 and ber(d - 2) > 1e-6], "cv2")
-    s.poly([(x(d), y(ber(d - 1) + 3e-4)) for d in dbs if d >= 1], "cv3")
+    s.poly([(x(d), y(ber(d - 1) + 4e-5)) for d in dbs if d >= 1], "cv3")
     for db in (0, 4, 8, 12, 16):
         s.t(x(db), oy + 15, str(db), "ts")
     s.t(ox + W + 8, oy + 30, "E_b/N_0 [dB]", "ts", "end")
     s.t(x(9.8), y(2e-6), "teorica", "ts a1", "start")
     s.t(x(12.2), y(2e-5), "perdita di SNR", "ts a2", "start")
-    s.t(x(15.8), y(3e-4) - 8, "BER floor (ISI)", "ts a3", "end")
+    s.t(x(15.8), y(4e-5) - 8, "BER floor (ISI)", "ts a3", "end")
     return s.render(), "🧩 La perdita di SNR sposta la curva; l'ISI la ferma su un pavimento."
 
 

@@ -234,3 +234,6 @@ Filtra ultimi 10: `grep "^## " wiki/log.md | tail -10`
 - ⚠️ errore nella figura della slide 5 (p. 7): con $M=8$ il simbolo 111 è disegnato a $-A$ invece che a $+7A$; segnalato in [[corso-completo]] e in [[principles-of-modulation]]
 - [[modulazione-lineare]]: derivazione I/Q della PSK resa coerente con la slide ($\xi_k$ di modulo 1, fattore $A$ separato)
 - figura del sito «forme d'onda M-arie»: aggiunte le ordinate con i livelli PAM
+
+## [2026-11-20] lint | Lezione 14 (signaling_bandlimited_channel.pdf) | pagine coperte: 1-47
+Revisione della traduzione slide per slide. Corretti: «passband» della slide 20 reso come banda passante del filtro passa-basso (non passa-banda); aggiunti «in banda base» nei titoli e nel criterio delle slide 16–17 e «dopo la downconversion» alla slide 10; «log-likelihood ratio» della slide 37; «in presenza di ISI» della slide 31 riportato come nella slide; livello del BER floor della figura di p. 7 (circa $4\cdot10^{-5}$, non $10^{-4}$); descrizione completa della figura di p. 19; dettagli minori alle slide 11, 15, 18, 23, 27. Aggiornate interferenza-intersimbolica, criterio-di-nyquist, equalizzazione.

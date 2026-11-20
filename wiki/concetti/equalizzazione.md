@@ -21,7 +21,7 @@ La **MLSE** non filtra: sceglie l'intera **sequenza** di simboli che massimizza 
 | Formula | Significato |
 |---|---|
 | $y(t)=\sum_ns(n)\,q(t-nT)$, $q=g\ast h$, $q\equiv0$ fuori da $[0,LT]$ | uscita del canale (11), memoria $L$ |
-| $\lambda(y)=\text{Re}\langle r,y\rangle-\frac12\lVert y\rVert^2$ | log-verosimiglianza della sequenza (12)–(13) |
+| $\lambda(y)=\text{Re}\langle r,y\rangle-\frac12\lVert y\rVert^2$ | log del rapporto di verosimiglianza della sequenza (12)–(13) |
 | $\alpha(n)=\int r(t)q^\ast(t-nT)\,dt$ | uscita del filtro adattato $q^\ast(-t)$ in $nT$ |
 | $\beta_{m,n}=\int q(t-nT)q^\ast(t-mT)\,dt$ | autocorrelazione dell'impulso (dipende da $n-m$) |
 | $\hat{\mathbf s}=\arg\max_{\mathbf s}\big\{\text{Re}\sum_ns^\ast(n)\alpha(n)-\frac12\sum_n\sum_ms(n)s^\ast(m)\beta(n-m)\big\}$ | regola MLSE |
@@ -107,4 +107,4 @@ Su canali dispersivi (multipath, cavi lunghi) l'ISI non si può evitare con il s
 
 - [[signaling-bandlimited-channels]]
 
-_Aggiornato: 2026-11-16 — creazione da ingest signaling_bandlimited_channel.pdf (Lezione 14)_
+_Aggiornato: 2026-11-20 — revisione della traduzione delle slide (banda base, banda passante del filtro, log-likelihood ratio, livello del BER floor); 2026-11-16 — creazione da ingest signaling_bandlimited_channel.pdf (Lezione 14)_
