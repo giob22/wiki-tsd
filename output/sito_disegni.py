@@ -1495,6 +1495,41 @@ def fig_nyquist_repliche():
     return s.render(), "🧩 Coseno rialzato: ogni replica riempie ciò che la vicina lascia."
 
 
+def fig_banda_minima():
+    s = Svg(400, 300, "repliche dello spettro distanti 1/T con banda minore, uguale e maggiore di 1/(2T)")
+    cx, k, H, xa, xb = 200, 100, 34, 22, 384
+    righe = (("2W < 1/T", "buchi: lì la somma vale 0", 0.3, "rect", 72),
+             ("2W = 1/T", "si toccano: somma = T ovunque", 0.5, "rect", 166),
+             ("2W > 1/T", "si sovrappongono: serve la forma giusta", 0.75, "rc", 260))
+    clip = lambda x: min(max(x, xa), xb)
+    for lab, nota, hw, forma, oy in righe:
+        s.line(xa - 4, oy, xb + 6, oy, "ax", ar=True)
+        s.t(10, oy - H - 14, lab, "tx tb", "start")
+        s.t(390, oy - H - 14, nota, "ts a2" if forma != "rect" or hw == 0.5 else "ts a3", "end")
+        for m in range(-2, 3):
+            c = cx + k * m
+            if forma == "rect":
+                pts = [(c - k * hw, oy), (c - k * hw, oy - H), (c + k * hw, oy - H), (c + k * hw, oy)]
+            else:
+                fs = np.linspace(-hw, hw, 80)
+                pts = [(c + k * f, oy - H * _rc(f, 0.5)) for f in fs]
+            pts = [(clip(x), y) for x, y in pts]
+            if m == 0:
+                s.poly(pts, "fl", True)
+            s.poly(pts, "cv" if m == 0 else "cv3")
+        if forma == "rc":
+            s.line(xa, oy - H, xb, oy - H, "gd")
+        for f, t in ((-1, "−1/T"), (0, "0"), (1, "1/T")):
+            s.t(cx + k * f, oy + 14, t, "ts")
+        if hw == 0.3:
+            for g in (-1, 1):
+                s.t(cx + g * 50, oy - 4, "0", "ts a3")
+    return s.render(), ("🧩 Le repliche $P(f-k/T)$ sono distanti $1/T$ e ognuna è larga $2W$. "
+                        "Se $2W<1/T$ restano frequenze dove nessuna replica arriva e la (6) non può valere: è il caso vietato. "
+                        "Con $2W=1/T$ i rettangoli si affiancano esattamente (impulso ideale, $W_N=\\frac1{2T}$). "
+                        "Con $2W>1/T$ le repliche si sovrappongono e la somma è costante solo per forme come il coseno rialzato.")
+
+
 def fig_nyquist_bande():
     s = Svg(400, 300, "banda passante, banda monolatera e bilatera dell'impulso di Nyquist ideale")
     cx, k = 200, 90

@@ -2901,6 +2901,17 @@ $$P(f)=T\,\text{rect}\Big(\frac{f}{1/T}\Big)\tag{7}$$
 - La forma d'onda a ISI nulla è la sinc: $p(t)=\text{sinc}(2W_Nt)=\text{sinc}(t/T)$, detta **impulso di Nyquist ideale**, ideale perché la sua trasformata è nulla fuori dall'intervallo di Nyquist. Appunti: soddisfa il criterio di Nyquist con la minima occupazione di banda.
 - Figura (slide 19), modulazione binaria ($T=T_b$, $R_s=R_b$, $W\equiv W_N$): (a) risposta in ampiezza ideale: in ordinata $2W\,P(f)$, che vale 1 per $|f|/W<1$ (cioè $P(f)=1/(2W)$), con $W=1/(2T_b)=R_b/2$; (b) impulso ideale $p(t)$ in funzione di $t/T_b$, con picco 1 in 0 e zeri in $t=\pm T_b,\pm2T_b,\dots$; sotto, gli istanti di campionamento e gli intervalli di segnalazione lunghi $T_b$.
 
+> 🧩 **Perché la banda minima è proprio $W_N=\frac1{2T}=\frac{R_s}2$** (spiegazione mia, dalla (6))
+> - La (6) chiede che le repliche $P(f-kR_s)$, **distanti $R_s=1/T$**, sommate diano la costante $T$ a **ogni** frequenza.
+> - Se $P(f)$ è nullo per $\lvert f\rvert>W$, ogni replica occupa un intervallo largo $2W$. Tre casi:
+>   - $2W<\frac1T$: tra una replica e la successiva restano frequenze dove tutte valgono 0, quindi lì la somma è 0 e non $T$. Nessuna forma di $P(f)$ dà ISI nulla: la banda è **troppo stretta**;
+>   - $2W=\frac1T$: le repliche si toccano bordo a bordo senza sovrapporsi, quindi in ogni punto ne lavora una sola, che deve valere $T$ da sola: l'unica soluzione è il rettangolo (7);
+>   - $2W>\frac1T$: le repliche si sovrappongono e ci sono molte forme che sommano a $T$ (il coseno rialzato, più avanti).
+> - Il confine è $2W=\frac1T$, cioè $W_N=\frac1{2T}$: la banda minima è **metà del symbol rate** (non del periodo).
+> - Lettura con il campionamento (Lezione 2): il ricevitore campiona ogni $T$, cioè a frequenza $f_c=\frac1T$; il teorema del campionamento dice che un segnale è descritto dai suoi campioni se la sua banda è al più $f_c/2=\frac1{2T}$. Trasmettere vuol dire costruire un segnale continuo i cui campioni sono i simboli: per farlo basta, e serve, la banda $\frac1{2T}$.
+> - Lettura con i gradi di libertà (Lezione 12): un segnale di banda $W$ e durata $T_0$ ha $2WT_0$ dimensioni reali, cioè porta al più $2W$ valori indipendenti al secondo; per $\frac1T$ simboli al secondo serve $2W\ge\frac1T$.
+> - Esempio: la sequenza più «veloce», $+1,-1,+1,-1,\dots$, è un'oscillazione di periodo $2T$, cioè di frequenza $\frac1{2T}$: nessuna sequenza chiede frequenze più alte.
+
 #### Slide 20–21 — Impulso di Nyquist ideale (3/4)–(4/4) · [[signaling_bandlimited_channel.pdf#page=20|p. 20]], [[signaling_bandlimited_channel.pdf#page=21|21]]
 - $p(t)$ è la risposta impulsiva di un **filtro passa-basso** ideale con risposta in ampiezza $1/(2W_N)$ nella sua banda passante (*passband*, le frequenze che lascia passare: $|f|<W_N$) e banda $W_N$.
 - $p(t)$ ha il picco nell'origine e si annulla nei multipli interi di $T$: se $y(t)$ è campionato in $t=0,\pm T,\pm2T,\dots$, gli impulsi $s(n)\,p(t-nT)$ non interferiscono tra loro.
