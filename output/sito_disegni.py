@@ -1495,6 +1495,46 @@ def fig_nyquist_repliche():
     return s.render(), "🧩 Coseno rialzato: ogni replica riempie ciò che la vicina lascia."
 
 
+def fig_nyquist_bande():
+    s = Svg(400, 300, "banda passante, banda monolatera e bilatera dell'impulso di Nyquist ideale")
+    cx, k = 200, 90
+    oy1, H = 100, 56
+    s.t(10, 14, "spettro: passa-basso ideale", "tx tb", "start")
+    s.line(20, oy1, 388, oy1, "ax", ar=True)
+    s.t(386, oy1 + 15, "f", "ts", "end")
+    pts = [(cx - k, oy1), (cx - k, oy1 - H), (cx + k, oy1 - H), (cx + k, oy1)]
+    s.poly(pts, "fl", True)
+    s.poly([(20, oy1)] + pts + [(380, oy1)], "cv")
+    s.t(cx, oy1 - H - 8, "|P(f)|", "ts a1")
+    s.t(cx, oy1 - H / 2 + 4, "banda passante", "ts a1")
+    s.t(cx - k - 6, oy1 - H + 4, "1/(2W_N) = T", "ts", "end")
+    for x, lab in ((cx - k, "−W_N"), (cx, "0"), (cx + k, "W_N")):
+        s.line(x, oy1 - 3, x, oy1 + 3, "ax")
+        s.t(x, oy1 + 15, lab, "ts")
+    s.line(cx, oy1 + 28, cx + k, oy1 + 28, "ar2", ar=True, ar0=True)
+    s.t(cx - 8, oy1 + 32, "monolatera: W_N = R_s/2", "ts a1", "end")
+    s.line(cx - k, oy1 + 46, cx + k, oy1 + 46, "ar2", ar=True, ar0=True)
+    s.t(cx, oy1 + 62, "bilatera: 2W_N = 1/T = R_s", "ts a1")
+
+    oy2, H2, kt = 262, 56, 36
+    s.t(10, 186, "impulso: p(t) = sinc(t/T)", "tx tb", "start")
+    s.line(20, oy2, 388, oy2, "ax", ar=True)
+    s.t(386, oy2 + 17, "t", "ts", "end")
+    ts = np.linspace(-5, 5, 500)
+    s.poly([(cx + kt * t, oy2 - H2 * float(np.sinc(t))) for t in ts], "cv2")
+    s.t(cx + 8, oy2 - H2 - 2, "1", "ts", "start")
+    for n in range(-4, 5):
+        if n:
+            s.line(cx + kt * n, oy2 - 3, cx + kt * n, oy2 + 3, "ax")
+    for n, lab in ((-2, "−2T"), (-1, "−T"), (1, "T"), (2, "2T")):
+        s.t(cx + kt * n, oy2 + 18, lab, "ts")
+    s.t(388, 200, "zeri ogni T = 1/(2W_N)", "ts a2", "end")
+    return s.render(), ("🧩 «Banda passante» qui è l'intervallo di frequenze che il filtro lascia passare, $\\lvert f\\rvert<W_N$, "
+                        "dove $\\lvert P(f)\\rvert=1/(2W_N)=T$: non c'entra il segnale passa-banda. "
+                        "La banda monolatera conta solo le frequenze positive, $W_N=R_s/2$; la bilatera anche le negative, $2W_N=R_s$. "
+                        "Più la banda è stretta, più la sinc è larga: i suoi zeri cadono ogni $T=1/(2W_N)$.")
+
+
 def fig_sinc_treno():
     s = Svg(400, 180, "treno di sinc per la sequenza 1011010")
     oy, k, H = 95, 46, 55

@@ -158,7 +158,7 @@ FIGURE = {
     (14, "Slide 6–7 — Effetto dell'ISI"): ["ber_floor"],
     (14, "Slide 9 e appunti — Modello del sistema"): ["sistema_bandlimitato"],
     (14, "Slide 17 — Il criterio nel dominio della frequenza (2/2)"): ["nyquist_repliche"],
-    (14, "Slide 20–21 — Impulso di Nyquist ideale"): ["sinc_treno"],
+    (14, "Slide 20–21 — Impulso di Nyquist ideale"): ["nyquist_bande", "sinc_treno"],
     (14, "Slide 26–27 — Raised cosine"): ["coseno_rialzato"],
     (14, "Slide 28–29 — Raised cosine"): ["rc_impulso"],
     (14, "Slide 33–34 — Tipi di equalizzatori"): ["equalizzatori"],
