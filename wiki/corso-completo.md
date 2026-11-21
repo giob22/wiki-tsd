@@ -2119,7 +2119,31 @@ $$P(e)=\frac12\text{erfc}\Big(\frac{d}{2\sqrt{N_0}}\Big)=\frac12\text{erfc}\Big(
 
 - Segnale passa-banda (modulazione a modulo costante): $s_{p,i}(t)=A\cos(2\pi f_0t+\phi_i)=A\cos\phi_i\cos(2\pi f_0t)-A\sin\phi_i\sin(2\pi f_0t)$, $t\in[0,T]$, $T=2T_b$, quindi $R_s=\frac{1}{2T_b}=\frac{R_b}{2}$: combinazione lineare di due funzioni ortogonali, spazio dei segnali di dimensione 2.
 - Base: $\lVert\cos(2\pi f_0t)\rVert^2=\int_0^T\frac{1+\cos(4\pi f_0t)}{2}dt\approx\frac T2$ (per $f_0T\gg1$ le aree positive e negative del coseno a $2f_0$ si bilanciano), quindi $\psi_1=\sqrt{\frac2T}\cos(2\pi f_0t)$, $\psi_2=-\sqrt{\frac2T}\sin(2\pi f_0t)$.
-- In inviluppo complesso, con $\tilde A=A/\sqrt2$: $\tilde s_i(t)=\tilde Ae^{j\phi_i}\text{rect}\big(\frac{t-T/2}{T}\big)$. Con segnali equienergetici la statistica sufficiente è $\lambda_k=\text{Re}\langle\tilde r,\tilde s_k\rangle=A\cos\phi_k\,z_1+A\sin\phi_k\,z_2$, con $z_1=\int_0^Tr_c(t)\,dt$, $z_2=\int_0^Tr_s(t)\,dt$ (componenti in fase e quadratura dopo il downconverter): la decisione si basa sui **segni** di $z_1$ e $z_2$ (schema: down-conversion, due integratori, decisore sul segno).
+- **Inviluppo complesso del segnale.** Si pone $\tilde A=A/\sqrt2$, così $s_{p,i}(t)=\sqrt2\,\text{Re}\{\tilde s_i(t)\,e^{j2\pi f_0t}\}$ con
+
+$$\tilde s_i(t)=\tilde Ae^{j\phi_i}\,\text{rect}\Big(\frac{t-T/2}{T}\Big)=\underbrace{\tilde A\cos\phi_i\,\text{rect}\Big(\frac{t-T/2}{T}\Big)}_{s_{ic}(t)}+j\,\underbrace{\tilde A\sin\phi_i\,\text{rect}\Big(\frac{t-T/2}{T}\Big)}_{s_{is}(t)},\qquad i=1,2,3,4$$
+
+  Le componenti in fase $s_{ic}$ e in quadratura $s_{is}$ sono due rettangoli su $[0,T]$, di altezza costante $\tilde A\cos\phi_i$ e $\tilde A\sin\phi_i$ (negli appunti l'ampiezza è scritta $A$: un fattore positivo comune a tutti i simboli non cambia la decisione).
+- **Perché l'inviluppo complesso.** Si vuole lavorare **a valle del down converter**, che dal segnale ricevuto $r_p(t)$ restituisce l'inviluppo complesso $\tilde r(t)=r_c(t)+j\,r_s(t)$: $r_c$ è la componente in fase, $r_s$ quella in quadratura.
+- **Statistica di decisione.** Demodulazione ML con simboli equiprobabili, scritta con gli inviluppi complessi: $\lambda_k(\tilde r)=\text{Re}\langle\tilde r,\tilde s_k\rangle-\frac12E_{s_k}$, e si sceglie il $k$ che la rende massima. I segnali sono equienergetici ($E_{s_k}=E_s$ per ogni $k$), quindi $\frac12E_{s_k}$ è lo stesso per tutti i candidati e si toglie: $\lambda_k(\tilde r)=\text{Re}\langle\tilde r,\tilde s_k\rangle$.
+- **Da $\lambda_k$ a $z_1$ e $z_2$.** Si scrive il prodotto scalare e si separano parte reale e immaginaria:
+
+$$
+\begin{aligned}
+\lambda_k&=\text{Re}\Big\{\int_0^T\tilde r(t)\,\tilde s_k^{\ast}(t)\,dt\Big\} && \text{prodotto scalare tra segnali complessi}\\
+&=\text{Re}\Big\{\int_0^T\big(r_c+j\,r_s\big)\big(s_{kc}-j\,s_{ks}\big)\,dt\Big\} && \text{il coniugato cambia segno alla parte immaginaria}\\
+&=\text{Re}\Big\{\int_0^T\big[r_cs_{kc}+r_ss_{ks}+j\,(r_ss_{kc}-r_cs_{ks})\big]\,dt\Big\} && \text{svolgo il prodotto: } j\cdot(-j)=+1\\
+&=\int_0^Tr_c(t)\,s_{kc}(t)\,dt+\int_0^Tr_s(t)\,s_{ks}(t)\,dt && \text{la parte reale elimina il termine con } j\\
+&=\tilde A\cos\phi_k\int_0^Tr_c(t)\,dt+\tilde A\sin\phi_k\int_0^Tr_s(t)\,dt && s_{kc},\,s_{ks}\text{ costanti su }[0,T]\text{: escono dall'integrale}\\
+&=\tilde A\cos\phi_k\,z_1+\tilde A\sin\phi_k\,z_2 && z_1=\int_0^Tr_c(t)\,dt,\ z_2=\int_0^Tr_s(t)\,dt
+\end{aligned}
+$$
+
+  $z_1$ e $z_2$ nascono quindi dal fatto che l'impulso è un **rettangolo**: correlare con un rettangolo vuol dire solo integrare il ricevuto su $[0,T]$. Gli appunti annotano che $(z_1,z_2)$ «dovrebbe combaciare con un punto della costellazione»: senza rumore è proprio il punto trasmesso.
+
+> 🧩 Due osservazioni per seguire il passaggio successivo. (1) $z_1$ e $z_2$ **non dipendono da $k$**: sono gli stessi due numeri per tutti e 4 i candidati, che cambiano solo i pesi $\cos\phi_k$, $\sin\phi_k$. Il ricevitore calcola solo $z_1$ e $z_2$, con due integratori. (2) Con $\phi_k\in\{\frac\pi4,\frac34\pi,\frac54\pi,\frac74\pi\}$ si ha $\cos\phi_k=\pm\frac1{\sqrt2}$ e $\sin\phi_k=\pm\frac1{\sqrt2}$, quindi $\lambda_k=\frac{\tilde A}{\sqrt2}(\pm z_1\pm z_2)$. Il massimo si ottiene scegliendo il segno di $\cos\phi_k$ uguale a quello di $z_1$ e il segno di $\sin\phi_k$ uguale a quello di $z_2$: si decide per il simbolo nel **quadrante** in cui cade $(z_1,z_2)$. Per esempio $z_1>0$, $z_2<0$ dà $\phi=\frac74\pi$.
+
+- **Decisione.** Il criterio di decisione ottimo si riduce a valutare i **segni** di $z_1$ e $z_2$. Schema: canale → $r_p(t)$ → down conversion → $r_c(t)$, $r_s(t)$ → due integratori $\int_0^T dt$ → $z_1$, $z_2$ → decisore sul segno.
 - Probabilità d'errore sul simbolo (SER), conviene passare per la **corretta decisione**: $P(e)=1-P(c)$, $P(c)=\frac1M\sum_kP(c|H_k)=P(c|H_1)$ (regioni congruenti). Con $\mathbf s_1=\big(\frac{A\sqrt T}{2},\frac{A\sqrt T}{2}\big)$ e $n_1,n_2$ gaussiane indipendenti $\mathcal N(0,N_0/2)$:
 
 $$P(c|H_1)=P\Big(n_1>-\frac{A\sqrt T}{2}\Big)^2=(1-p)^2,\qquad p=\frac12\text{erfc}\Big(\frac A2\sqrt{\frac{T}{N_0}}\Big)$$
