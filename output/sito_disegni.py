@@ -1626,6 +1626,24 @@ def fig_rc_impulso():
     return s.render(), "🧩 Stessi zeri in kT; con α grande le code quasi spariscono."
 
 
+def fig_radice_nyquist():
+    s = Svg(400, 130, "radice del coseno rialzato al trasmettitore e al ricevitore")
+    oy, H, k = 90, 55, 34
+    fs = np.linspace(-1.2, 1.2, 200)
+    pannelli = ((65, "G(f) = √P(f)", "trasmettitore", 0.5, "cv2"),
+                (200, "C(f) = √P(f)", "ricevitore", 0.5, "cv2"),
+                (335, "P(f) = G(f)C(f)", "di Nyquist", 1.0, "cv"))
+    for cx, nome, ruolo, esp, cl in pannelli:
+        s.line(cx - 52, oy, cx + 52, oy, "ax")
+        s.poly([(cx + k * f, oy - H * (_rc(f, 0.5) ** esp)) for f in fs], cl)
+        s.t(cx, 18, nome, "ts tb")
+        s.t(cx, oy + 18, ruolo, "ts")
+    s.t(132, oy - 22, "×", "tx tb")
+    s.t(268, oy - 22, "=", "tx tb")
+    return s.render(), ("🧩 Nessuno dei due filtri da solo è di Nyquist: lo è il prodotto, un coseno rialzato. "
+                        "Così l'ISI è nulla e il filtro di ricezione è anche adattato a quello di trasmissione.")
+
+
 def fig_equalizzatori():
     s = Svg(400, 170, "tipi di equalizzatori")
     s.rect(150, 10, 100, 26, "bx bx2")

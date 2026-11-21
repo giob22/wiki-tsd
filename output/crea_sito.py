@@ -162,7 +162,8 @@ FIGURE = {
     (14, "Slide 20–21 — Impulso di Nyquist ideale"):["nyquist_bande", "sinc_treno"],
     (14, "Slide 26–27 — Raised cosine"): ["coseno_rialzato"],
     (14, "Slide 28–29 — Raised cosine"): ["rc_impulso"],
-    (14, "Slide 33–34 — Tipi di equalizzatori"): ["equalizzatori"],
+    (14, "Slide 30 — Osservazioni"): ["radice_nyquist"],
+    (14, "Slide 33–34 — Tipi di equalizzatori"):["equalizzatori"],
     (14, "Slide 43–44 — I passi chiave"): ["traliccio_viterbi"],
 }
 
