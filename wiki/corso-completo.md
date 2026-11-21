@@ -2139,7 +2139,7 @@ $$
 \end{aligned}
 $$
 
-  $z_1$ e $z_2$ nascono quindi dal fatto che l'impulso è un **rettangolo**: correlare con un rettangolo vuol dire solo integrare il ricevuto su $[0,T]$. Gli appunti annotano che $(z_1,z_2)$ «dovrebbe combaciare con un punto della costellazione»: senza rumore è proprio il punto trasmesso.
+  $z_1$ e $z_2$ nascono quindi dal fatto che l'impulso è un **rettangolo**: correlare con un rettangolo vuol dire solo integrare il ricevuto su $[0,T]$. Gli appunti annotano che $(z_1,z_2)$ «dovrebbe combaciare con un punto della costellazione»: senza rumore è il punto trasmesso, a meno di un fattore di scala ($z_1=\tilde AT\cos\phi_i$, $z_2=\tilde AT\sin\phi_i$).
 
 > 🧩 Due osservazioni per seguire il passaggio successivo. (1) $z_1$ e $z_2$ **non dipendono da $k$**: sono gli stessi due numeri per tutti e 4 i candidati, che cambiano solo i pesi $\cos\phi_k$, $\sin\phi_k$. Il ricevitore calcola solo $z_1$ e $z_2$, con due integratori. (2) Con $\phi_k\in\{\frac\pi4,\frac34\pi,\frac54\pi,\frac74\pi\}$ si ha $\cos\phi_k=\pm\frac1{\sqrt2}$ e $\sin\phi_k=\pm\frac1{\sqrt2}$, quindi $\lambda_k=\frac{\tilde A}{\sqrt2}(\pm z_1\pm z_2)$. Il massimo si ottiene scegliendo il segno di $\cos\phi_k$ uguale a quello di $z_1$ e il segno di $\sin\phi_k$ uguale a quello di $z_2$: si decide per il simbolo nel **quadrante** in cui cade $(z_1,z_2)$. Per esempio $z_1>0$, $z_2<0$ dà $\phi=\frac74\pi$.
 
