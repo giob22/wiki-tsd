@@ -86,8 +86,10 @@ La capacità dice quanti bit/s passano in un canale con banda $W$ e SNR $\gamma$
 
 **Dagli appunti presi a lezione.** La frontiera è solo un altro modo di scrivere la condizione del secondo teorema di Shannon. Il valore di $-1.6$ dB è un **limite invalicabile**: sotto non vale più il teorema. La figura delle modulazioni viene dal libro di **Biglieri**; la distanza orizzontale tra ogni punto e la curva è il **margine di miglioramento**, che una codifica di canale permette di ridurre spostando i punti verso il limite.
 
-![[confronto-p23-appunti-limite-shannon.png|260]]
-*Schizzo della docente negli appunti: le curve di probabilità d'errore in funzione di $E_b/N_0$ diventano più ripide e si spostano a sinistra man mano che lo schema migliora, ma restano tutte a destra della verticale a $-1.6$ dB.*
+![[grafico-l12-ber-limite-shannon.png|620]]
+*🧩 Grafico mio, ricostruzione dello schizzo degli appunti di p. 23. Ascissa: $E_b/N_0$ in dB. Ordinata: probabilità d'errore sul bit $P_b(e)$, in scala logaritmica. Le curve sono della segnalazione ortogonale coerente ($\eta_B	o0$ al crescere di $M$, proprio il limite della slide 21): più $M$ cresce, più la curva è ripida e spostata a sinistra; per $M	o\infty$ diventa un gradino sulla verticale $\ln2=-1.59$ dB, con $P_b=rac12$ a sinistra e $P_b=0$ a destra. Nessuna curva entra nella zona rossa.*
+
+> 📚 Fonte esterna: le curve usano la probabilità d'errore esatta della segnalazione ortogonale coerente con $M$ segnali equiprobabili di energia $E_s=E_b\log_2M$, formula standard dei testi (Madhow, Benedetto-Biglieri) che nelle slide del corso non compare: $P_c=\int_{-\infty}^{+\infty}arphiig(y-\sqrt{2E_s/N_0}ig)\,\Phi(y)^{M-1}dy$, $P_b=rac{M}{2(M-1)}(1-P_c)$, con $arphi$ e $\Phi$ densità e distribuzione della gaussiana standard. Per $M=2$ si ritrova $P_b=Q(\sqrt{E_b/N_0})$, l'ortogonale binaria con $\eta_P=rac12$. Script: `output/grafici/genera_grafici_lezione12.py`.
 
 > 🎯 Esame: derivazione della frontiera da $R_b\le C$ (tutti i passaggi), limite $\ln2=-1.59$ dB con il limite notevole, significato delle regioni limitate in banda e in potenza, lettura del grafico della slide 23 (anche che la codifica sposta i punti verso sinistra).
 
@@ -105,4 +107,4 @@ La capacità dice quanti bit/s passano in un canale con banda $W$ e SNR $\gamma$
 
 [[parametri-globali-e-capacita]] — Confronto_new.pdf, slide 20–23.
 
-_Aggiornato: 2026-11-22 — schizzo delle curve BER dagli appunti di p. 23; 2026-11-15 — appunti presi a lezione dalla copia annotata Confronto new.pdf; creazione da ingest Confronto_new.pdf_
+_Aggiornato: 2026-11-22 — grafico ricostruito delle curve BER dello schizzo di p. 23; 2026-11-15 — appunti presi a lezione dalla copia annotata Confronto new.pdf; creazione da ingest Confronto_new.pdf_

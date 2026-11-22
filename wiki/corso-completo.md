@@ -2398,10 +2398,10 @@ $$\eta_B\le\log_2\Big(1+\eta_B\frac{E_b}{N_0}\Big)\qquad\Longleftrightarrow\qqua
 $$\lim_{\eta_B\to0}\frac{2^{\eta_B}-1}{\eta_B}=\ln2\qquad\Longrightarrow\qquad\Big(\frac{E_b}{N_0}\Big)_{min}=\ln2\approx-1.59\ \text{dB}$$
 
 - Nota a mano: $\lim_{x\to0}\dfrac{a^x-1}{x}=\ln a$.
-- Appunti a lezione: è un **limite invalicabile**; oltre non è più garantito il teorema di Shannon. Accanto, la docente schizza le curve BER che si avvicinano alla verticale di $-1.6$ dB:
+- Appunti a lezione: è un **limite invalicabile**; oltre non è più garantito il teorema di Shannon. Accanto, la docente schizza le curve BER che si avvicinano alla verticale di $-1.6$ dB, ridisegnate qui:
 
-![[confronto-p23-appunti-limite-shannon.png|260]]
-*Schizzo a mano della docente: curve di probabilità d'errore in funzione di $E_b/N_0$ che, migliorando lo schema, scendono sempre più ripide e più a sinistra, senza poter superare la verticale tratteggiata a $-1.6$ dB.*
+![[grafico-l12-ber-limite-shannon.png|620]]
+*🧩 Ricostruzione dello schizzo: in ascissa $E_b/N_0$ in dB, in ordinata la probabilità d'errore sul bit $P_b(e)$ in scala logaritmica. Le curve sono quelle della segnalazione ortogonale coerente con $M$ crescente: al crescere di $M$ scendono più ripide e si spostano a sinistra, ma non superano mai la verticale tratteggiata a $\ln2=-1.59$ dB, a cui tendono per $M	o\infty$.*
 
 #### Slide 22 — Interpretazione fisica del limite · [[Confronto_new.pdf#page=22|p. 22]]
 - Al crescere dell'efficienza spettrale $\eta_B$ cresce anche il minimo $E_b/N_0$ richiesto.
