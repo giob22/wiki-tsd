@@ -2421,7 +2421,7 @@ $$\lim_{\eta_B\to0}\frac{2^{\eta_B}-1}{\eta_B}=\ln2\qquad\Longrightarrow\qquad\B
 
 ### Link budget
 
-#### Slide 24 — Elementi di un link budget · [[Confronto_new.pdf#page=24|p. 24]]
+#### Slide 24 — Elementi di un link budget · [[Confronto_new.pdf#page=24|p. 24]], [[Confronto_new.pdf#page=28|28]]–[[Confronto_new.pdf#page=31|31]]
 - Il progetto di un collegamento richiede: bit rate, banda disponibile, modulazione e codifica, potenza trasmessa, distanza desiderata.
 - Procedura tipica:
   1. dati $R_b$ e la costellazione, si ricava il symbol rate $R_s$;
@@ -2429,6 +2429,16 @@ $$\lim_{\eta_B\to0}\frac{2^{\eta_B}-1}{\eta_B}=\ln2\qquad\Longrightarrow\qquad\B
   3. dalla BER obiettivo e dalla modulazione si ricava il valore richiesto di $E_b/N_0$;
   4. si calcola $\text{SNR}_{req}=\big(\frac{E_b}{N_0}\big)_{req}\frac{R_b}{W}$;
   5. nota la potenza di rumore, si determina la **sensibilità** del ricevitore.
+
+> 🧩 **Esempio: un access point Wi-Fi.** Sono i numeri dell'esempio delle slide 28–31, letti come elementi del progetto.
+> - **Bit rate:** 30 Mbit/s. **Banda disponibile:** un canale da 20 MHz a 5 GHz. **Modulazione e codifica:** QPSK, nessuna codifica. **Potenza trasmessa:** 100 mW, con antenne da 2 dBi. **Portata:** è quella che si vuole scoprire, circa 100 m.
+> - La procedura, un passo alla volta:
+>   1. con impulsi a eccesso di banda $a=0.33$ ci stanno $R_s=20/1.33\approx15$ Msimboli/s, e la QPSK porta 2 bit per simbolo: $R_b=30$ Mbit/s;
+>   2. la banda effettiva è tutto il canale, $W=20$ MHz;
+>   3. per BER $=10^{-6}$ la QPSK chiede $E_b/N_0\approx10.2$ dB;
+>   4. $\text{SNR}_{req}=10.2+10\log_{10}(30/20)\approx12$ dB: il segnale deve stare 12 dB sopra il rumore;
+>   5. il rumore del ricevitore vale $-95$ dBm, quindi la sensibilità è $-95+12=-83$ dBm.
+> - Con la sensibilità e la potenza trasmessa, le slide 26–27 danno quanta attenuazione si può tollerare (87 dB), e quindi la distanza (circa 107 m). I conti completi sono in [[link-budget-wlan]].
 
 #### Slide 25 — Potenza di rumore e sensibilità · slide [[Confronto_new.pdf#page=25|p. 25]] · appunti [[Confronto new.pdf#page=27|p. 27]]
 - Data la cifra di rumore $F$ del ricevitore (in dB), la potenza di rumore è
@@ -2456,13 +2466,23 @@ $$P_{rx}=P_{tx}\,G_{tx}\,G_{rx}\,\frac{\lambda^2}{(4\pi R)^2}$$
 >
 > Il caso opposto è il collegamento **NLOS** (*Non Line Of Sight*): un ostacolo blocca il percorso diretto e il segnale arriva solo per riflessioni e diffrazioni, su più cammini. È il canale «aperto» degli appunti. In quel caso l'attenuazione di solito cresce più in fretta di $R^2$, quindi la portata calcolata con Friis (i circa 107 m dell'esempio WLAN) è un valore **ottimistico**: in parte lo copre il margine di 20 dB.
 
-#### Slide 27 — Link budget in scala logaritmica · slide [[Confronto_new.pdf#page=27|p. 27]] · appunti [[Confronto new.pdf#page=29|p. 29]]
+#### Slide 27 — Link budget in scala logaritmica · slide [[Confronto_new.pdf#page=26|p. 26]], [[Confronto_new.pdf#page=27|27]] · appunti [[Confronto new.pdf#page=29|p. 29]]
 - Massimo path loss ammissibile:
 
 $$L_{path,\text{dB}}=P_{tx,\text{dBm}}-P_{rx,min,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}-L_{margin,\text{dB}}$$
 
 - Imponendo $P_{rx}\ge P_{rx,min}$ si ricava la minima potenza trasmessa necessaria oppure, a potenza fissata, la massima distanza raggiungibile.
 - Appunti a lezione: $L_{path}=\big(\frac{4\pi R}{\lambda}\big)^2$; la potenza del segnale ricevuto deve essere maggiore della minima, e da qui si ricava la distanza alla quale si riesce a trasmettere e ricevere.
+
+> 🧩 **Da dove viene la formula del path loss massimo.** Quattro passaggi a partire da Friis.
+> 1. **Friis con il path loss.** Con $L_{path}=\big(\frac{4\pi R}{\lambda}\big)^2$, Friis diventa $P_{rx}=\dfrac{P_{tx}G_{tx}G_{rx}}{L_{path}}$: la potenza trasmessa, moltiplicata per i guadagni d'antenna e divisa per l'attenuazione del tragitto.
+> 2. **In dB.** Divido per 1 mW e prendo $10\log_{10}$: i prodotti diventano somme e la divisione una differenza, $P_{rx,\text{dBm}}=P_{tx,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}-L_{path,\text{dB}}$. Solo le potenze sono in dBm; guadagni e attenuazione sono rapporti, quindi in dB.
+> 3. **La condizione, con il margine.** Non basta $P_{rx}\ge P_{rx,min}$: si chiede di stare almeno $L_{margin}$ dB sopra la sensibilità, per coprire attenuazioni impreviste. Quindi $P_{rx,\text{dBm}}\ge P_{rx,min,\text{dBm}}+L_{margin,\text{dB}}$.
+> 4. **Isolo il path loss.** Sostituisco il punto 2 nel punto 3 e porto $L_{path}$ da solo a sinistra (cambiando segno la disuguaglianza si gira):
+>
+> $$L_{path,\text{dB}}\le P_{tx,\text{dBm}}-P_{rx,min,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}-L_{margin,\text{dB}}$$
+>
+> Il valore massimo, con l'uguale, è la formula della slide. Risolvendo la stessa disuguaglianza per $P_{tx}$ si ottiene invece la minima potenza trasmessa per una distanza data.
 
 ### Esempio: collegamento WLAN a 5 GHz
 

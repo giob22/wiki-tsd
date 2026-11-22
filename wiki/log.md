@@ -255,3 +255,8 @@ Verificati i numeri: $\ln2=-1.59$ dB, $R_s\approx15$ Msimboli/s, $\text{SNR}_{re
 
 ## [2026-11-22] update | Lezione 12 (Confronto_new.pdf) | pagine coperte: 26
 - slide 26: spiegato cos'è un collegamento LOS (*Line Of Sight*) ideale, da dove viene il $1/R^2$ di Friis (📚) e il caso NLOS; in [[corso-completo]] e [[link-budget]]
+
+## [2026-11-22] update | Lezione 12 (Confronto_new.pdf) | pagine coperte: 24-31
+- [[link-budget-wlan]] riscritto passo per passo (9 passi): banda → symbol rate → bit rate → $E_b/N_0$ → SNR → rumore → sensibilità → path loss massimo → portata, con la derivazione della formula del path loss massimo da Friis, la verifica e la variante a 10.5 dB
+- [[corso-completo]], slide 24: riquadro 🧩 con l'esempio dell'access point Wi-Fi (numeri delle slide 28–31) letto come elementi del link budget
+- [[corso-completo]], slide 27: riquadro 🧩 con la derivazione della formula del path loss massimo in quattro passaggi
