@@ -270,6 +270,21 @@ Il primo termine è <span class="math inline">-H(Y\mid X)</span> (entropia condi
 </ol>
 </li>
 </ul>
+<blockquote class="co mia"><p>🧩 <strong>Esempio: un access point Wi-Fi.</strong> Sono i numeri dell'esempio, letti come elementi del progetto.</p>
+<ul>
+<li><strong>Bit rate:</strong> 30 Mbit/s. <strong>Banda disponibile:</strong> un canale da 20 MHz a 5 GHz. <strong>Modulazione e codifica:</strong> QPSK, nessuna codifica. <strong>Potenza trasmessa:</strong> 100 mW, con antenne da 2 dBi. <strong>Portata:</strong> è quella che si vuole scoprire, circa 100 m.</li>
+<li>La procedura, un passo alla volta:
+<ol>
+<li>con impulsi a eccesso di banda <span class="math inline">a=0.33</span> ci stanno <span class="math inline">R_s=20/1.33\approx15</span> Msimboli/s, e la QPSK porta 2 bit per simbolo: <span class="math inline">R_b=30</span> Mbit/s;</li>
+<li>la banda effettiva è tutto il canale, <span class="math inline">W=20</span> MHz;</li>
+<li>per BER <span class="math inline">=10^{-6}</span> la QPSK chiede <span class="math inline">E_b/N_0\approx10.2</span> dB;</li>
+<li><span class="math inline">\text{SNR}_{req}=10.2+10\log_{10}(30/20)\approx12</span> dB: il segnale deve stare 12 dB sopra il rumore;</li>
+<li>il rumore del ricevitore vale <span class="math inline">-95</span> dBm, quindi la sensibilità è <span class="math inline">-95+12=-83</span> dBm.</li>
+</ol>
+</li>
+<li>Con la sensibilità e la potenza trasmessa, le slide danno quanta attenuazione si può tollerare (87 dB), e quindi la distanza (circa 107 m). I conti completi sono in link budget wlan.</li>
+</ul>
+</blockquote>
 <h4 id="potenza-di-rumore-e-sensibilita">Potenza di rumore e sensibilità</h4>
 <ul>
 <li>Data la cifra di rumore <span class="math inline">F</span> del ricevitore (in dB), la potenza di rumore è</li>
@@ -301,6 +316,15 @@ Il primo termine è <span class="math inline">-H(Y\mid X)</span> (entropia condi
 <li>Imponendo <span class="math inline">P_{rx}\ge P_{rx,min}</span> si ricava la minima potenza trasmessa necessaria oppure, a potenza fissata, la massima distanza raggiungibile.</li>
 <li>Appunti a lezione: <span class="math inline">L_{path}=\big(\frac{4\pi R}{\lambda}\big)^2</span>; la potenza del segnale ricevuto deve essere maggiore della minima, e da qui si ricava la distanza alla quale si riesce a trasmettere e ricevere.</li>
 </ul>
+<blockquote class="co mia"><p>🧩 <strong>Da dove viene la formula del path loss massimo.</strong> Quattro passaggi a partire da Friis.</p>
+<ol>
+<li><strong>Friis con il path loss.</strong> Con <span class="math inline">L_{path}=\big(\frac{4\pi R}{\lambda}\big)^2</span>, Friis diventa <span class="math inline">P_{rx}=\dfrac{P_{tx}G_{tx}G_{rx}}{L_{path}}</span>: la potenza trasmessa, moltiplicata per i guadagni d'antenna e divisa per l'attenuazione del tragitto.</li>
+<li><strong>In dB.</strong> Divido per 1 mW e prendo <span class="math inline">10\log_{10}</span>: i prodotti diventano somme e la divisione una differenza, <span class="math inline">P_{rx,\text{dBm}}=P_{tx,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}-L_{path,\text{dB}}</span>. Solo le potenze sono in dBm; guadagni e attenuazione sono rapporti, quindi in dB.</li>
+<li><strong>La condizione, con il margine.</strong> Non basta <span class="math inline">P_{rx}\ge P_{rx,min}</span>: si chiede di stare almeno <span class="math inline">L_{margin}</span> dB sopra la sensibilità, per coprire attenuazioni impreviste. Quindi <span class="math inline">P_{rx,\text{dBm}}\ge P_{rx,min,\text{dBm}}+L_{margin,\text{dB}}</span>.</li>
+<li><strong>Isolo il path loss.</strong> Sostituisco il punto 2 nel punto 3 e porto <span class="math inline">L_{path}</span> da solo a sinistra (cambiando segno la disuguaglianza si gira):</li>
+</ol>
+<div class="math block">L_{path,\text{dB}}\le P_{tx,\text{dBm}}-P_{rx,min,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}-L_{margin,\text{dB}}</div><p>Il valore massimo, con l'uguale, è la formula della slide. Risolvendo la stessa disuguaglianza per <span class="math inline">P_{tx}</span> si ottiene invece la minima potenza trasmessa per una distanza data.</p>
+</blockquote>
 <h3 id="esempio-collegamento-wlan-a-5-ghz">Esempio: collegamento WLAN a 5 GHz</h3>
 <h4 id="dati-e-bit-rate">Dati e bit rate</h4>
 <ul>
@@ -672,65 +696,202 @@ R_{max}&amp;=\frac{\lambda}{4\pi}\,10^{L_{path,\text{dB}}/20} &amp;&amp; \text{i
 </details>
 </div></details>
 <details class="conc es"><summary><span class="n">Esercizio svolto · Link budget di un collegamento WLAN</span></summary><div class="cb"><h4 id="link-budget-wlan-metodo">Metodo</h4>
-<p>Si applica quando, dati modulazione, banda, BER obiettivo, cifra di rumore, potenza e antenne, si chiedono bit rate, sensibilità e portata.</p>
+<p>Si applica quando, dati modulazione, banda, BER obiettivo, cifra di rumore, potenza e antenne, si chiedono bit rate, sensibilità e portata. L'idea è una catena: <strong>dalla banda si ricava quanto si trasmette, dalla BER quanto il segnale deve stare sopra il rumore, da Friis quanto lontano si può arrivare.</strong></p>
 <ol>
 <li><strong>Symbol rate</strong> dalla banda: con impulsi a eccesso di banda <span class="math inline">a</span> la banda occupata è <span class="math inline">R_s(1+a)</span>, quindi <span class="math inline">R_s=W/(1+a)</span>.</li>
 <li><strong>Bit rate</strong>: <span class="math inline">R_b=R_s\log_2M</span>.</li>
-<li><strong><span class="math inline">E_b/N_0</span> richiesto</strong> dalla curva BER della modulazione.</li>
+<li><strong><span class="math inline">E_b/N_0</span> richiesto</strong> dalla formula (o dalla curva) della BER della modulazione.</li>
 <li><strong>SNR richiesto</strong>: <span class="math inline">\text{SNR}_{req,\text{dB}}=(E_b/N_0)_{req,\text{dB}}+10\log_{10}(R_b/W)</span>.</li>
 <li><strong>Rumore</strong>: <span class="math inline">P_{n,\text{dBm}}=-174+F_{\text{dB}}+10\log_{10}W</span>.</li>
 <li><strong>Sensibilità</strong>: <span class="math inline">P_{rx,min,\text{dBm}}=P_{n,\text{dBm}}+\text{SNR}_{req,\text{dB}}</span>.</li>
-<li><strong>Path loss massimo</strong>: <span class="math inline">L_{path}=P_{tx,\text{dBm}}-P_{rx,min,\text{dBm}}+G_{tx}+G_{rx}-L_{margin}</span>.</li>
-<li><strong>Portata</strong>: <span class="math inline">R=\frac{\lambda}{4\pi}10^{L_{path}/20}</span> con <span class="math inline">\lambda=c/f_c</span>.</li>
+<li><strong>Path loss massimo</strong>: <span class="math inline">L_{path,\text{dB}}=P_{tx,\text{dBm}}-P_{rx,min,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}-L_{margin,\text{dB}}</span>.</li>
+<li><strong>Portata</strong>: <span class="math inline">R=\frac{\lambda}{4\pi}10^{L_{path,\text{dB}}/20}</span> con <span class="math inline">\lambda=c/f_c</span>.</li>
 </ol>
 <h4 id="link-budget-wlan-formule-usate">Formule usate</h4>
 <ul>
-<li>link budget — sensibilità, Friis, path loss.</li>
+<li>link budget — rumore, sensibilità, Friis, path loss.</li>
 <li>parametri globali modulazioni — <span class="math inline">\text{SNR}=\frac{E_b}{N_0}\frac{R_b}{W}</span>.</li>
+<li>criterio di nyquist — banda occupata da impulsi a coseno rialzato, <span class="math inline">R_s(1+a)</span>.</li>
 <li>variabile aleatoria gaussiana — <span class="math inline">Q(x)=\frac12\text{erfc}(x/\sqrt2)</span>.</li>
 </ul>
 <h4 id="link-budget-wlan-casi-svolti">Casi svolti</h4>
 <h5 id="link-budget-wlan-caso-1-wlan-a-5-ghz-con-qpsk">Caso 1 — WLAN a 5 GHz con QPSK</h5>
-<p><strong>Traccia.</strong> Portante 5 GHz, banda del canale 20 MHz, QPSK, eccesso di banda <span class="math inline">a=0.33</span>, cifra di rumore <span class="math inline">F=6</span> dB. Determinare: (1) il bit rate; (2) la sensibilità del ricevitore per BER <span class="math inline">=10^{-6}</span>; (3) la portata con <span class="math inline">P_{tx}=100</span> mW, <span class="math inline">G_{tx}=G_{rx}=2</span> dBi e margine 20 dB.</p>
-<p><strong>1. Bit rate.</strong></p>
+<p><strong>Traccia.</strong> Portante <span class="math inline">f_c=5</span> GHz, banda del canale <span class="math inline">W=20</span> MHz, QPSK, eccesso di banda <span class="math inline">a=0.33</span>, cifra di rumore <span class="math inline">F=6</span> dB. Determinare:</p>
+<ol>
+<li>il bit rate;</li>
+<li>la sensibilità del ricevitore per BER <span class="math inline">=10^{-6}</span>;</li>
+<li>la portata con <span class="math inline">P_{tx}=100</span> mW, <span class="math inline">G_{tx}=G_{rx}=2</span> dBi e margine di 20 dB.</li>
+</ol>
+<p><strong>Dati in ordine d'uso.</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Simbolo</th>
+<th>Valore</th>
+<th>Significato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">W</span></td>
+<td>20 MHz</td>
+<td>banda del canale</td>
+</tr>
+<tr>
+<td><span class="math inline">a</span></td>
+<td>0.33</td>
+<td>eccesso di banda degli impulsi</td>
+</tr>
+<tr>
+<td><span class="math inline">M</span></td>
+<td>4</td>
+<td>QPSK: 4 simboli, 2 bit per simbolo</td>
+</tr>
+<tr>
+<td>BER</td>
+<td><span class="math inline">10^{-6}</span></td>
+<td>probabilità d'errore sul bit voluta</td>
+</tr>
+<tr>
+<td><span class="math inline">F</span></td>
+<td>6 dB</td>
+<td>cifra di rumore del ricevitore</td>
+</tr>
+<tr>
+<td><span class="math inline">P_{tx}</span></td>
+<td>100 mW</td>
+<td>potenza trasmessa</td>
+</tr>
+<tr>
+<td><span class="math inline">G_{tx},\,G_{rx}</span></td>
+<td>2 dBi</td>
+<td>guadagni delle antenne</td>
+</tr>
+<tr>
+<td><span class="math inline">L_{margin}</span></td>
+<td>20 dB</td>
+<td>margine di sicurezza</td>
+</tr>
+<tr>
+<td><span class="math inline">f_c</span></td>
+<td>5 GHz</td>
+<td>portante, serve per <span class="math inline">\lambda</span></td>
+</tr>
+</tbody>
+</table></div>
+<h6 id="link-budget-wlan-passo-1-symbol-rate">Passo 1 — Symbol rate</h6>
+<p>Gli impulsi con eccesso di banda <span class="math inline">a</span> occupano una banda <strong>più larga</strong> del minimo di Nyquist: in banda passante la banda occupata è <span class="math inline">R_s(1+a)</span>. Il canale ha 20 MHz, quindi il massimo symbol rate che ci sta è quello che la riempie tutta.</p>
 <div class="math block">
 \begin{aligned}
-R_s&amp;=\frac{W}{1+a}=\frac{20\ \text{MHz}}{1.33}=15.04\cdot10^6\ \text{simboli/s}\approx15\ \text{Msimboli/s} &amp;&amp; \text{la banda occupata è } R_s(1+a)\\
-R_b&amp;=R_s\log_2M=15\cdot2=30\ \text{Mbit/s} &amp;&amp; \text{QPSK: } M=4,\ 2 \text{ bit per simbolo}
+W&amp;=R_s(1+a) &amp;&amp; \text{banda occupata = banda del canale}\\
+R_s&amp;=\frac{W}{1+a} &amp;&amp; \text{isolo } R_s\\
+&amp;=\frac{20\cdot10^6\ \text{Hz}}{1.33}=15.04\cdot10^6\ \text{simboli/s}\approx15\ \text{Msimboli/s} &amp;&amp; \text{sostituisco}
 \end{aligned}
-</div><p><strong>2. Sensibilità.</strong> Per QPSK con codifica di Gray <span class="math inline">\text{BER}=Q\big(\sqrt{2E_b/N_0}\big)</span>, con <span class="math inline">Q(x)=\frac12\text{erfc}(x/\sqrt2)</span>.</p>
+</div><h6 id="link-budget-wlan-passo-2-bit-rate">Passo 2 — Bit rate</h6>
+<p>Ogni simbolo QPSK porta <span class="math inline">\log_2M=\log_24=2</span> bit.</p>
+<div class="math block">
+R_b=R_s\log_2M=15\cdot10^6\ \tfrac{\text{simboli}}{\text{s}}\cdot2\ \tfrac{\text{bit}}{\text{simbolo}}=30\ \text{Mbit/s}
+</div><p><strong>Risultato (1):</strong> <span class="math inline">R_b=30</span> Mbit/s. L'efficienza spettrale è <span class="math inline">\eta_B=R_b/W=30/20=1.5</span> bit/s/Hz, servirà al passo 4.</p>
+<h6 id="link-budget-wlan-passo-3-e-b-n-0-richiesto">Passo 3 — <span class="math inline">E_b/N_0</span> richiesto</h6>
+<p>Per la QPSK con codifica di Gray la BER è <span class="math inline">Q\big(\sqrt{2E_b/N_0}\big)</span> (nota a mano: <span class="math inline">Q(x)=\frac12\text{erfc}(x/\sqrt2)</span>). Si impone la BER voluta e si risolve per <span class="math inline">E_b/N_0</span>.</p>
 <div class="math block">
 \begin{aligned}
 Q\Big(\sqrt{2E_b/N_0}\Big)&amp;=10^{-6} &amp;&amp; \text{BER obiettivo}\\
 \sqrt{2E_b/N_0}&amp;=Q^{-1}(10^{-6})\approx4.75 &amp;&amp; \text{dalla tabella della } Q\\
-\frac{E_b}{N_0}&amp;=\frac{4.75^2}{2}=11.3\ \Rightarrow\ 10.5\ \text{dB} &amp;&amp; 10\log_{10}11.3
+\frac{E_b}{N_0}&amp;=\frac{4.75^2}{2}=11.3 &amp;&amp; \text{elevo al quadrato e divido per 2}\\
+\Big(\frac{E_b}{N_0}\Big)_{\text{dB}}&amp;=10\log_{10}11.3\approx10.5\ \text{dB} &amp;&amp; \text{in dB}
 \end{aligned}
-</div><blockquote class="co avv"><p>⚠️ Contraddizione: la slide usa <span class="math inline">(E_b/N_0)_{req}\approx10.2</span> dB; dalla formula esatta <span class="math inline">Q(\sqrt{2E_b/N_0})=10^{-6}</span> risulta circa <span class="math inline">10.5</span> dB. Per coerenza con la slide i conti seguenti usano <span class="math inline">10.2</span> dB; con <span class="math inline">10.5</span> dB tutto si sposta di 0.3 dB (sensibilità <span class="math inline">-82.7</span> dBm, portata circa 103 m).</p>
+</div><blockquote class="co avv"><p>⚠️ Contraddizione: la slide usa <span class="math inline">(E_b/N_0)_{req}\approx10.2</span> dB; dalla formula esatta risulta circa <span class="math inline">10.5</span> dB. Per seguire la slide i conti che seguono usano <span class="math inline">10.2</span> dB; alla fine c'è la variante con <span class="math inline">10.5</span> dB, che sposta tutto di 0.3 dB.</p>
 </blockquote>
+<h6 id="link-budget-wlan-passo-4-snr-richiesto">Passo 4 — SNR richiesto</h6>
+<p>Il ricevitore non «vede» <span class="math inline">E_b/N_0</span>, vede il rapporto tra la potenza del segnale e la potenza del rumore nella sua banda. Il legame è:</p>
 <div class="math block">
 \begin{aligned}
-\text{SNR}_{req,\text{dB}}&amp;=10.2+10\log_{10}\frac{30}{20}=10.2+1.76\approx12\ \text{dB} &amp;&amp; \eta_B=R_b/W=1.5\\
-P_{n,\text{dBm}}&amp;=-174+6+10\log_{10}(20\cdot10^6)=-174+6+73=-95\ \text{dBm} &amp;&amp; \text{rumore termico più cifra di rumore}\\
-P_{rx,min,\text{dBm}}&amp;=-95+12=-83\ \text{dBm} &amp;&amp; \text{sensibilità}
+\text{SNR}&amp;=\frac{P}{P_n} &amp;&amp; \text{definizione}\\
+&amp;=\frac{E_bR_b}{N_0W} &amp;&amp; P=E_bR_b \text{ (energia per bit × bit al secondo)},\ P_n=N_0W\\
+&amp;=\frac{E_b}{N_0}\cdot\frac{R_b}{W} &amp;&amp; \text{separo i due rapporti}\\
+\text{SNR}_{\text{dB}}&amp;=\Big(\frac{E_b}{N_0}\Big)_{\text{dB}}+10\log_{10}\frac{R_b}{W} &amp;&amp; \text{in dB il prodotto diventa somma}\\
+\text{SNR}_{req,\text{dB}}&amp;=10.2+10\log_{10}1.5=10.2+1.76\approx12\ \text{dB} &amp;&amp; \text{sostituisco}
 \end{aligned}
-</div><p>La slide dà direttamente la potenza di rumore <span class="math inline">-95</span> dBm; il calcolo con <span class="math inline">kT_0</span> la conferma (link budget).</p>
-<p><strong>3. Portata.</strong></p>
+</div><p>Il segnale deve stare <strong>12 dB sopra il rumore</strong>, cioè avere una potenza circa <span class="math inline">10^{1.2}\approx16</span> volte quella del rumore.</p>
+<h6 id="link-budget-wlan-passo-5-potenza-di-rumore">Passo 5 — Potenza di rumore</h6>
+<p>La slide dà direttamente <span class="math inline">P_n=-95</span> dBm. Si ricava da <span class="math inline">P_n=kT_0\,10^{F/10}\,W</span>:</p>
 <div class="math block">
 \begin{aligned}
-P_{tx}&amp;=10\log_{10}\frac{100\ \text{mW}}{1\ \text{mW}}=20\ \text{dBm}\\
-L_{path}&amp;=20-(-83)+2+2-20=87\ \text{dB} &amp;&amp; \text{path loss massimo con margine}\\
-\lambda&amp;=\frac{c}{f_c}=\frac{3\cdot10^8\ \text{m/s}}{5\cdot10^9\ \text{Hz}}=0.06\ \text{m}\\
-R&amp;=\frac{\lambda}{4\pi}10^{L_{path}/20}=\frac{0.06}{12.57}\cdot10^{4.35}=4.77\cdot10^{-3}\cdot22\,387\approx107\ \text{m} &amp;&amp; \text{inverto } 20\log_{10}\tfrac{4\pi R}{\lambda}=87
+kT_0&amp;=1.38\cdot10^{-23}\ \tfrac{\text{J}}{\text{K}}\cdot290\ \text{K}=4.0\cdot10^{-21}\ \text{W/Hz} &amp;&amp; \text{rumore termico per Hz}\\
+10\log_{10}\frac{4.0\cdot10^{-21}\ \text{W/Hz}}{10^{-3}\ \text{W}}&amp;=-174\ \text{dBm/Hz} &amp;&amp; \text{in dBm per Hz}\\
+P_{n,\text{dBm}}&amp;=-174+F_{\text{dB}}+10\log_{10}W &amp;&amp; \text{prodotto} \to \text{somma}\\
+&amp;=-174+6+10\log_{10}(2\cdot10^7)=-174+6+73=-95\ \text{dBm} &amp;&amp; \text{sostituisco}
 \end{aligned}
-</div><p><strong>Risultati:</strong> <span class="math inline">R_b=30</span> Mbit/s; sensibilità <span class="math inline">-83</span> dBm; portata circa 107 m in spazio libero.
-<strong>Sanity check:</strong> verifica inversa, <span class="math inline">20\log_{10}\frac{4\pi\cdot107}{0.06}=20\log_{10}22\,410\approx87</span> dB ✓. Bilancio: <span class="math inline">P_{rx}=20+2+2-87=-63</span> dBm, cioè esattamente 20 dB (il margine) sopra la sensibilità di <span class="math inline">-83</span> dBm.
-<strong>Ipotesi:</strong> propagazione in spazio libero (LOS ideale), AWGN, BER della QPSK ideale senza codifica.</p>
+</div><h6 id="link-budget-wlan-passo-6-sensibilita">Passo 6 — Sensibilità</h6>
+<p>La sensibilità è la <strong>minima potenza che deve arrivare</strong> al ricevitore perché la BER sia quella voluta: il rumore più l'SNR richiesto.</p>
+<div class="math block">
+\begin{aligned}
+P_{rx,min}&amp;=\text{SNR}_{req}\cdot P_n &amp;&amp; \text{slide}\\
+P_{rx,min,\text{dBm}}&amp;=P_{n,\text{dBm}}+\text{SNR}_{req,\text{dB}} &amp;&amp; \text{in dB}\\
+&amp;=-95+12=-83\ \text{dBm} &amp;&amp; \text{sostituisco}
+\end{aligned}
+</div><p><strong>Risultato (2):</strong> sensibilità <span class="math inline">-83</span> dBm, cioè <span class="math inline">10^{-8.3}</span> mW <span class="math inline">\approx5\cdot10^{-9}</span> mW. È negativa perché è una frazione minuscola di milliwatt.</p>
+<h6 id="link-budget-wlan-passo-7-da-friis-alla-formula-del-path-loss-mass">Passo 7 — Da Friis alla formula del path loss massimo</h6>
+<p>La slide scrive la formula del path loss massimo senza passaggi. Si ricava da Friis in quattro mosse.</p>
+<p><strong>(a) Friis con il path loss.</strong> Gli appunti chiamano <span class="math inline">\frac{\lambda^2}{(4\pi R)^2}=\frac{1}{L_{path}}</span> il fattore di attenuazione, quindi <span class="math inline">L_{path}=\big(\frac{4\pi R}{\lambda}\big)^2</span> è <strong>quante volte</strong> la potenza si riduce nel tragitto.</p>
+<div class="math block">
+P_{rx}=P_{tx}\,G_{tx}\,G_{rx}\,\frac{\lambda^2}{(4\pi R)^2}=\frac{P_{tx}\,G_{tx}\,G_{rx}}{L_{path}}
+</div><p><strong>(b) Passo in dB.</strong> Divido entrambi i membri per 1 mW e prendo <span class="math inline">10\log_{10}</span>. Il logaritmo trasforma prodotti in somme e divisioni in differenze:</p>
+<div class="math block">
+\begin{aligned}
+10\log_{10}\frac{P_{rx}}{1\ \text{mW}}&amp;=10\log_{10}\frac{P_{tx}}{1\ \text{mW}}+10\log_{10}G_{tx}+10\log_{10}G_{rx}-10\log_{10}L_{path} &amp;&amp; \log(ab/c)=\log a+\log b-\log c\\
+P_{rx,\text{dBm}}&amp;=P_{tx,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}-L_{path,\text{dB}} &amp;&amp; \text{nomi delle grandezze in dB}
+\end{aligned}
+</div><p>Solo le potenze sono in dBm, perché solo loro sono state divise per 1 mW. Guadagni e path loss sono <strong>rapporti</strong> puri: in dB (dBi per le antenne, cioè rispetto all'antenna isotropa).</p>
+<p><strong>(c) La condizione di funzionamento con il margine.</strong> Serve <span class="math inline">P_{rx}\ge P_{rx,min}</span>. Per stare tranquilli si chiede di più: almeno <span class="math inline">L_{margin}</span> dB <strong>sopra</strong> la sensibilità, per coprire attenuazioni impreviste (ostacoli, riflessioni, componenti peggiori del previsto).</p>
+<div class="math block">
+P_{rx,\text{dBm}}\ge P_{rx,min,\text{dBm}}+L_{margin,\text{dB}}
+</div><p><strong>(d) Sostituisco (b) in (c) e isolo il path loss.</strong></p>
+<div class="math block">
+\begin{aligned}
+P_{tx,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}-L_{path,\text{dB}}&amp;\ge P_{rx,min,\text{dBm}}+L_{margin,\text{dB}} &amp;&amp; \text{(b) dentro (c)}\\
+-L_{path,\text{dB}}&amp;\ge P_{rx,min,\text{dBm}}+L_{margin,\text{dB}}-P_{tx,\text{dBm}}-G_{tx,\text{dBi}}-G_{rx,\text{dBi}} &amp;&amp; \text{porto tutto il resto a destra}\\
+L_{path,\text{dB}}&amp;\le P_{tx,\text{dBm}}-P_{rx,min,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}-L_{margin,\text{dB}} &amp;&amp; \text{cambio segno, la disuguaglianza si gira}
+\end{aligned}
+</div><p>Il valore più grande ammesso, con l'uguale, è la formula.</p>
+<p><strong>Lettura dei segni.</strong> Il path loss tollerabile <strong>cresce</strong> se aumento la potenza trasmessa o i guadagni d'antenna, e se la sensibilità è più bassa (più negativa: <span class="math inline">-P_{rx,min}</span> diventa più grande). <strong>Diminuisce</strong> con il margine, che è potenza tenuta da parte e non spesa per la distanza.</p>
+<blockquote class="co conn"><p>💡 Connessione: la stessa disuguaglianza, risolta per <span class="math inline">P_{tx}</span> invece che per <span class="math inline">L_{path}</span>, dà la <strong>minima potenza trasmessa</strong> per coprire una distanza data, <span class="math inline">P_{tx,\text{dBm}}\ge P_{rx,min,\text{dBm}}+L_{margin,\text{dB}}+L_{path,\text{dB}}-G_{tx,\text{dBi}}-G_{rx,\text{dBi}}</span>: è l'altro uso che la slide indica.</p>
+</blockquote>
+<h6 id="link-budget-wlan-passo-8-path-loss-massimo-con-i-numeri">Passo 8 — Path loss massimo con i numeri</h6>
+<div class="math block">
+\begin{aligned}
+P_{tx,\text{dBm}}&amp;=10\log_{10}\frac{100\ \text{mW}}{1\ \text{mW}}=10\log_{10}100=20\ \text{dBm} &amp;&amp; \text{potenza in dBm}\\
+L_{path,\text{dB}}&amp;=20-(-83)+2+2-20 &amp;&amp; \text{formula del passo 7}\\
+&amp;=20+83+4-20=87\ \text{dB} &amp;&amp; \text{il meno davanti a } -83 \text{ diventa } +83
+\end{aligned}
+</div><p>Il segnale può perdere al massimo 87 dB nel tragitto, cioè ridursi di un fattore <span class="math inline">10^{8.7}\approx5\cdot10^8</span>.</p>
+<h6 id="link-budget-wlan-passo-9-dal-path-loss-alla-distanza">Passo 9 — Dal path loss alla distanza</h6>
+<p>Gli appunti legano il path loss alla distanza: <span class="math inline">L_{path}=\big(\frac{4\pi R}{\lambda}\big)^2</span>. Si inverte per <span class="math inline">R</span>.</p>
+<div class="math block">
+\begin{aligned}
+\lambda&amp;=\frac{c}{f_c}=\frac{3\cdot10^8\ \text{m/s}}{5\cdot10^9\ \text{Hz}}=0.06\ \text{m} &amp;&amp; \text{lunghezza d&#x27;onda}\\
+L_{path,\text{dB}}&amp;=10\log_{10}\Big(\frac{4\pi R}{\lambda}\Big)^2=20\log_{10}\frac{4\pi R}{\lambda} &amp;&amp; \text{il quadrato porta fuori un 2}\\
+\frac{4\pi R}{\lambda}&amp;=10^{L_{path,\text{dB}}/20}=10^{87/20}=10^{4.35}=22\,387 &amp;&amp; \text{tolgo il logaritmo}\\
+R&amp;=\frac{\lambda}{4\pi}\,10^{L_{path,\text{dB}}/20}=\frac{0.06\ \text{m}}{12.57}\cdot22\,387 &amp;&amp; \text{isolo } R\\
+&amp;=4.77\cdot10^{-3}\ \text{m}\cdot22\,387\approx107\ \text{m} &amp;&amp; \text{sostituisco}
+\end{aligned}
+</div><p><strong>Risultato (3):</strong> portata circa 107 m in spazio libero.</p>
+<h6 id="link-budget-wlan-verifica">Verifica</h6>
+<ul>
+<li><strong>Inversa:</strong> <span class="math inline">20\log_{10}\frac{4\pi\cdot107}{0.06}=20\log_{10}22\,410\approx87</span> dB ✓.</li>
+<li><strong>Bilancio completo:</strong> a 107 m arrivano <span class="math inline">P_{rx}=20+2-87+2=-63</span> dBm, esattamente 20 dB (il margine) sopra la sensibilità di <span class="math inline">-83</span> dBm. È il disegno del bilancio di potenza della Lezione 12 sul sito.</li>
+<li><strong>Ordine di grandezza:</strong> un access point Wi-Fi a 5 GHz copre decine di metri all'aperto senza ostacoli; 107 m è plausibile.</li>
+</ul>
+<p><strong>Variante con <span class="math inline">(E_b/N_0)_{req}=10.5</span> dB (valore esatto).</strong> <span class="math inline">\text{SNR}_{req}=10.5+1.76\approx12.3</span> dB, sensibilità <span class="math inline">-95+12.3=-82.7</span> dBm, <span class="math inline">L_{path}=20+82.7+4-20=86.7</span> dB, <span class="math inline">R=4.77\cdot10^{-3}\cdot10^{86.7/20}\approx104</span> m. Cambia poco: 0.3 dB in più di SNR costano circa il 3% della portata.</p>
+<p><strong>Ipotesi:</strong> propagazione in spazio libero (collegamento LOS ideale, Friis), rumore AWGN, BER della QPSK ideale senza codifica, banda del canale tutta occupata dagli impulsi.</p>
 <p><strong>Osservazione finale.</strong> Con 16-QAM o 64-QAM nella stessa banda <span class="math inline">R_b</span> ed <span class="math inline">\eta_B</span> salgono, ma l'<span class="math inline">E_b/N_0</span> richiesto per la stessa BER cresce: <span class="math inline">\text{SNR}_{req}</span> aumenta per entrambi i motivi, la sensibilità peggiora e, con lo stesso <span class="math inline">P_{tx}</span>, il path loss ammissibile e la portata diminuiscono.</p>
 <h4 id="link-budget-wlan-trappole">Trappole</h4>
 <ul>
 <li><strong>dB e dBm</strong>: le potenze assolute sono in dBm, i guadagni e le perdite in dB (o dBi). Sommare dBm a dBm non ha senso, sommare dB a dBm sì.</li>
 <li><strong><span class="math inline">R_b/W</span> e non <span class="math inline">R_s/W</span></strong> nell'SNR richiesto: l'<span class="math inline">E_b/N_0</span> è per <strong>bit</strong>.</li>
 <li><strong><span class="math inline">F</span> è in dB</strong>: nella formula lineare compare <span class="math inline">10^{F/10}</span>, in dB si somma direttamente.</li>
+<li><strong>Il segno della sensibilità</strong>: nella formula compare <span class="math inline">-P_{rx,min}</span>, e con <span class="math inline">P_{rx,min}=-83</span> dBm diventa <span class="math inline">+83</span>.</li>
 <li><strong>Il margine si sottrae</strong> dal path loss ammissibile: riduce la portata.</li>
 <li><strong>Inversione di Friis</strong>: <span class="math inline">20\log_{10}</span> (non <span class="math inline">10\log_{10}</span>), perché la distanza è al quadrato.</li>
 </ul>
