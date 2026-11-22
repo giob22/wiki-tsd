@@ -38,7 +38,7 @@ Lezione 12 del corso (33 slide in inglese, con note a mano della docente). Intro
 ## Domande aperte
 
 - Slide 30: l'$E_b/N_0$ richiesto per BER $=10^{-6}$ con QPSK è dato come 10.2 dB; dalla formula $Q(\sqrt{2E_b/N_0})=10^{-6}$ risulta circa 10.5 dB (vedi [[link-budget-wlan]]).
-- Slide 19: nella riga delle ortogonali $\eta_P$ è stampata come $2\log_2M$ con una correzione a mano; il valore coerente con gli esempi è $\frac12\log_2M$.
+- Slide 19: nella riga delle ortogonali $\eta_P$ è stampata come $2\log_2M$ (refuso, senza correzioni a mano né nella copia della docente né negli appunti); il valore coerente con gli esempi è $\frac12\log_2M$.
 - Slide 23: l'ordinata è scritta $R_s/W$, ma nel resto della lezione è l'efficienza spettrale $\eta_B=R_b/W$.
 - Copia annotata, p. 15: «è il canale che fa da filtro, oppure bisogna aggiungerne uno al ricevitore?». La slide 13 indica il filtro di ricezione di banda $W$.
 - Slide 17 rimanda alle «lecture notes» per l'approssimazione della probabilità d'errore: le dispense sulla rivelazione non sono ancora nel wiki.
@@ -56,4 +56,4 @@ Lezione 12 del corso (33 slide in inglese, con note a mano della docente). Intro
 - Descrivere il piano efficienza spettrale – $E_b/N_0$: regioni limitate in banda e in potenza.
 - Descrivere la procedura di link budget e calcolare sensibilità e portata di un collegamento.
 
-_Aggiornato: 2026-11-15 — integrati gli appunti presi a lezione (Confronto new.pdf); creazione da ingest Confronto_new.pdf_
+_Aggiornato: 2026-11-22 — slide 19: il valore $2og_2M$ delle ortogonali è un refuso senza correzione a mano; 2026-11-15 — integrati gli appunti presi a lezione (Confronto new.pdf); creazione da ingest Confronto_new.pdf_

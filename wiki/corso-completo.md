@@ -2212,6 +2212,12 @@ $$P(e)\le\frac{M-1}{2}\text{erfc}\Big(\sqrt{\frac{E_b\log_2M}{2N_0}}\Big)$$
 - La **capacità di canale** (Shannon) è la massima velocità per cui si può ottenere una probabilità d'errore piccola a piacere. È definita **senza vincoli** di complessità o di ritardo. Per il canale AWGN ha un'espressione in forma chiusa particolarmente semplice.
 - Appunti a lezione: superare la capacità significa non poter avere una $P(e)$ arbitrariamente piccola, qualunque sia lo schema di modulazione.
 
+> 🧩 **Cosa vuol dire «senza vincoli di complessità o di ritardo».** La capacità dice quanto si può trasmettere **ammesso di poter usare un ricevitore e un trasmettitore qualsiasi**, per quanto complicati e lenti. 📚 Nella dimostrazione di Shannon la $P(e)$ diventa piccola a piacere solo raggruppando i bit in blocchi (parole di codice) sempre più lunghi, al limite infinitamente lunghi. Questo ha due costi che il teorema ignora:
+> - **complessità**: con blocchi di $n$ simboli a rate $R$ le parole di codice possibili sono $2^{nR}$, e il decodificatore ottimo dovrebbe confrontare quello che riceve con tutte; il numero cresce in modo esponenziale con $n$ (è lo stesso problema dell'MLSE della Lezione 14, che con la forza bruta deve scegliere tra $M^{K+1}$ sequenze);
+> - **ritardo**: il ricevitore può decidere solo dopo aver ricevuto **tutto** il blocco, quindi più il blocco è lungo, più tempo passa tra l'invio di un bit e la sua decisione. È il ritardo di cui parlano gli appunti della slide 10.
+>
+> Un sistema reale ha complessità e ritardo **finiti** (un telefono non può aspettare minuti né fare conti infiniti), quindi resta **sotto** la capacità. Per questo la capacità è un limite che si avvicina ma non si raggiunge: è il «margine di miglioramento» della slide 23, che la codifica di canale riduce.
+
 ### Informazione mutua e capacità
 
 #### Slide 4 — Informazione mutua · slide [[Confronto_new.pdf#page=4|p. 4]] · appunti [[Confronto new.pdf#page=4|p. 4]]
@@ -2366,11 +2372,14 @@ $$P(e)\approx\frac{\bar N_{d_{min}}}{2}\,\text{erfc}\Big(\sqrt{\eta_P\frac{E_b}{
 | QAM | 2 | $\log_2M$ | $\dfrac{3\log_2M}{2(M-1)}$ |
 | Ortogonale | $M$ | $\dfrac{2\log_2M}{M}$ | $\dfrac{\log_2M}{2}$ |
 
-- Note a mano: $\eta_B$ «efficienza in banda», $\eta_P$ «efficienza in potenza»; una graffa sulle righe: «chiaro trade-off banda-potenza». (Nell'ultima riga la slide stampa $\eta_P=2\log_2M$ con un 1 scritto a mano sopra: va letto $\frac12\log_2M$, coerente con l'esempio ortogonale binario $\eta_P=\frac12$.)
+- Note a mano: $\eta_B$ «efficienza in banda», $\eta_P$ «efficienza in potenza»; una graffa sulle righe: «chiaro trade-off banda-potenza».
+
+> ⚠️ Nell'ultima riga la slide stampa $\eta_P=2\log_2M$, senza correzioni a mano. Il valore giusto è $\frac12\log_2M$: con $M$ segnali ortogonali di energia $E$ si ha $d_{min}^2=2E$ ed $E_b=E/\log_2M$, quindi $\eta_P=\frac{2E}{4E/\log_2M}=\frac{\log_2M}{2}$, coerente con l'esempio ortogonale binario della slide 16 ($\eta_P=\frac12$ per $M=2$).
+
 - Per modulazioni la cui dimensionalità **cresce con $M$** (ortogonali), aumentare $M$ migliora l'efficienza in potenza ma riduce quella spettrale.
 - Per modulazioni a **dimensionalità fissa** (PAM, PSK, QAM), aumentare $M$ migliora l'efficienza spettrale ma richiede un $E_b/N_0$ più alto a parità di affidabilità.
 - Poiché la dimensionalità è legata alla banda di trasmissione, il risultato è un compromesso tra **energia e banda**.
-- Appunti a lezione: per PAM, PSK e QAM $\eta_B$ **cresce** con $M$ (più efficienti in banda); per le ortogonali **decresce**, perché a ogni nuovo segnale si aggiunge una dimensione, e la dimensione è legata alla banda dal prodotto tempo-banda: aumenta anche la banda. Per questo le ortogonali sono efficienti in potenza ($\eta_P$ cresce con $M$) e si usano quando la banda è una risorsa a disposizione.
+- Appunti a lezione: per PAM, PSK e QAM $\eta_B$ **cresce** con $M$ (più efficienti in banda); per le ortogonali **decresce**, perché a ogni nuovo segnale si aggiunge una dimensione, e la dimensione è legata alla banda «per il teorema di Shannon» (il prodotto tempo-banda della slide 11): aumenta anche la banda. Sotto la riga delle ortogonali: «capisci perché è efficiente in potenza» ($\eta_P$ cresce con $M$); accanto: si usano quando la banda è una risorsa a disposizione.
 
 ### Il limite di Shannon
 
@@ -2458,6 +2467,8 @@ $$L_{path,\text{dB}}=P_{tx,\text{dBm}}-P_{rx,min,\text{dBm}}+G_{tx,\text{dBi}}+G
 $$\text{SNR}_{req,\text{dB}}=\Big(\frac{E_b}{N_0}\Big)_{req,\text{dB}}+10\log_{10}\frac{R_b}{W}=10.2+10\log_{10}\frac{30}{20}\approx12\ \text{dB}$$
 
 - Con potenza di rumore $-95$ dBm: $P_{rx,min,\text{dBm}}=-95+12=-83$ dBm.
+
+> ⚠️ Con la formula esatta, $Q(\sqrt{2E_b/N_0})=10^{-6}$ dà $\sqrt{2E_b/N_0}\approx4.75$, cioè $E_b/N_0\approx11.3\approx10.5$ dB, non 10.2 dB. Con 10.5 dB si avrebbe $\text{SNR}_{req}\approx12.3$ dB e una sensibilità di circa $-82.7$ dBm: i risultati dell'esempio cambiano di pochi decimi di dB. Il conto è in [[link-budget-wlan]].
 
 #### Slide 31 — Path loss ammissibile e portata · [[Confronto_new.pdf#page=31|p. 31]]
 - $P_{tx}=100$ mW $=20$ dBm. Path loss massimo: $L_{path,\text{dB}}=20-(-83)+2+2-20=87$ dB.

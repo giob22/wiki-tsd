@@ -237,3 +237,10 @@ Filtra ultimi 10: `grep "^## " wiki/log.md | tail -10`
 
 ## [2026-11-20] lint | Lezione 14 (signaling_bandlimited_channel.pdf) | pagine coperte: 1-47
 Revisione della traduzione slide per slide. Corretti: «passband» della slide 20 reso come banda passante del filtro passa-basso (non passa-banda); aggiunti «in banda base» nei titoli e nel criterio delle slide 16–17 e «dopo la downconversion» alla slide 10; «log-likelihood ratio» della slide 37; «in presenza di ISI» della slide 31 riportato come nella slide; livello del BER floor della figura di p. 7 (circa $4\cdot10^{-5}$, non $10^{-4}$); descrizione completa della figura di p. 19; dettagli minori alle slide 11, 15, 18, 23, 27. Aggiornate interferenza-intersimbolica, criterio-di-nyquist, equalizzazione.
+
+## [2026-11-22] lint | Lezione 12 (Confronto_new.pdf, Confronto new.pdf) | pagine coperte: 1-33 slide, 1-35 appunti
+Ricontrollo slide per slide del testo di `corso-completo` contro le slide e contro gli appunti a mano. Testo e formule tornano. Corretti:
+- slide 19: rimossa la «correzione a mano» del valore $\eta_P=2\log_2M$ delle ortogonali, che nel PDF non c'è; ora è un avviso ⚠️ di refuso con la derivazione di $\frac12\log_2M$ (anche in [[parametri-globali-e-capacita]])
+- slide 19, appunti: riportate le note «per il teorema di Shannon» e «capisci perché è efficiente in potenza»
+- slide 30: avviso ⚠️ che il valore esatto per BER $10^{-6}$ è circa 10.5 dB (la slide usa 10.2 dB), già discusso in [[link-budget-wlan]]
+Verificati i numeri: $\ln2=-1.59$ dB, $R_s\approx15$ Msimboli/s, $\text{SNR}_{req}\approx12$ dB, rumore $-95$ dBm, portata $\approx107$ m.
