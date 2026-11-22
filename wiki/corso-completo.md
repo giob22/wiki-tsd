@@ -2443,12 +2443,18 @@ $$P^{\text{dBm}}_{rx,min}=10\log_{10}\Big(\frac{P_{rx,min}}{1\ \text{mW}}\Big)$$
 - Appunti a lezione: $k$ costante di Boltzmann; $F$ cifra di rumore, misura della rumorosità del ricevitore.
 
 #### Slide 26 — Equazione di Friis e path loss · slide [[Confronto_new.pdf#page=26|p. 26]] · appunti [[Confronto new.pdf#page=28|p. 28]]
-- Per un collegamento LOS ideale la potenza ricevuta è
+- Per un collegamento **LOS** (*Line Of Sight*, in visibilità diretta) ideale la potenza ricevuta è
 
 $$P_{rx}=P_{tx}\,G_{tx}\,G_{rx}\,\frac{\lambda^2}{(4\pi R)^2}$$
 
   con $P_{tx}$ potenza trasmessa, $G_{tx}$ e $G_{rx}$ guadagni d'antenna, $\lambda=c/f_c$ lunghezza d'onda, $R$ distanza tra trasmettitore e ricevitore.
 - Appunti a lezione: $\frac{\lambda^2}{(4\pi R)^2}=\frac{1}{L_{path}}$ è il **fattore di attenuazione**. Il canale radio è «aperto»: in un canale wireless il segnale può arrivare anche tramite riflessioni multiple, mentre Friis descrive il collegamento ideale in visibilità.
+
+> 🧩 **Cos'è un collegamento LOS.** LOS sta per *Line Of Sight*, «linea di vista»: tra l'antenna trasmittente e quella ricevente c'è un percorso diretto senza ostacoli, le due antenne «si vedono». **Ideale** vuol dire che il segnale arriva **solo** per quel percorso diretto, come nello spazio libero: niente pareti, suolo o oggetti che lo riflettono, lo assorbono o lo deviano. Solo in queste condizioni vale Friis, in cui la potenza cala come $1/R^2$.
+>
+> 📚 Il motivo del $1/R^2$ (testi di antenne e propagazione): la potenza irradiata si distribuisce sulla superficie di una sfera di raggio $R$, quindi la densità di potenza a distanza $R$ è $\frac{P_{tx}G_{tx}}{4\pi R^2}$ [W/m²]. L'antenna ricevente ne raccoglie una parte pari alla sua area efficace $A_e=\frac{G_{rx}\lambda^2}{4\pi}$ [m²]. Il prodotto dà esattamente $P_{rx}=P_{tx}G_{tx}G_{rx}\frac{\lambda^2}{(4\pi R)^2}$.
+>
+> Il caso opposto è il collegamento **NLOS** (*Non Line Of Sight*): un ostacolo blocca il percorso diretto e il segnale arriva solo per riflessioni e diffrazioni, su più cammini. È il canale «aperto» degli appunti. In quel caso l'attenuazione di solito cresce più in fretta di $R^2$, quindi la portata calcolata con Friis (i circa 107 m dell'esempio WLAN) è un valore **ottimistico**: in parte lo copre il margine di 20 dB.
 
 #### Slide 27 — Link budget in scala logaritmica · slide [[Confronto_new.pdf#page=27|p. 27]] · appunti [[Confronto new.pdf#page=29|p. 29]]
 - Massimo path loss ammissibile:

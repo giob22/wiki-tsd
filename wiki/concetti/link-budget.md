@@ -83,6 +83,12 @@ Il link budget porta i concetti astratti della lezione (capacità, $E_b/N_0$, ef
 
 **Dagli appunti presi a lezione.** In Friis, $\frac{\lambda^2}{(4\pi R)^2}=\frac{1}{L_{path}}$ è il fattore di attenuazione. Vale per il collegamento ideale in visibilità: il canale radio è «aperto», e in un canale wireless il segnale può arrivare anche tramite riflessioni multiple. $F$ misura la rumorosità del ricevitore; $k$ è la costante di Boltzmann.
 
+> 🧩 **Cos'è un collegamento LOS.** LOS sta per *Line Of Sight*, «linea di vista»: tra l'antenna trasmittente e quella ricevente c'è un percorso diretto senza ostacoli, le due antenne «si vedono». **Ideale** vuol dire che il segnale arriva **solo** per quel percorso diretto, come nello spazio libero: niente pareti, suolo o oggetti che lo riflettono, lo assorbono o lo deviano. Solo in queste condizioni vale Friis, in cui la potenza cala come $1/R^2$.
+>
+> 📚 Il motivo del $1/R^2$ (testi di antenne e propagazione): la potenza irradiata si distribuisce sulla superficie di una sfera di raggio $R$, quindi la densità di potenza a distanza $R$ è $\frac{P_{tx}G_{tx}}{4\pi R^2}$ [W/m²]. L'antenna ricevente ne raccoglie una parte pari alla sua area efficace $A_e=\frac{G_{rx}\lambda^2}{4\pi}$ [m²]. Il prodotto dà esattamente $P_{rx}=P_{tx}G_{tx}G_{rx}\frac{\lambda^2}{(4\pi R)^2}$.
+>
+> Il caso opposto è il collegamento **NLOS** (*Non Line Of Sight*): un ostacolo blocca il percorso diretto e il segnale arriva solo per riflessioni e diffrazioni, su più cammini. È il canale «aperto» degli appunti. In quel caso l'attenuazione di solito cresce più in fretta di $R^2$, quindi la portata calcolata con Friis (i circa 107 m di [[link-budget-wlan]]) è un valore **ottimistico**: in parte lo copre il margine di 20 dB.
+
 **Perché in dB.** Tutte le grandezze si moltiplicano (guadagni, perdite, rapporti), quindi in scala logaritmica si sommano: il bilancio diventa una somma di voci con il loro segno. dBm vuol dire dB rispetto a 1 mW, dBi dB rispetto all'antenna isotropa.
 
 **Il compromesso finale (slide 32).** Costellazioni più dense nella stessa banda aumentano bit rate ed efficienza spettrale, ma alzano l'$E_b/N_0$ richiesto, quindi la sensibilità peggiora (diventa meno negativa) e la portata si riduce. È lo stesso compromesso energia-banda di [[parametri-globali-modulazioni]], tradotto in metri.
@@ -104,4 +110,4 @@ Il link budget porta i concetti astratti della lezione (capacità, $E_b/N_0$, ef
 
 [[parametri-globali-e-capacita]] — Confronto_new.pdf, slide 24–27, 32–33.
 
-_Aggiornato: 2026-11-15 — appunti presi a lezione dalla copia annotata Confronto new.pdf; creazione da ingest Confronto_new.pdf_
+_Aggiornato: 2026-11-22 — cos'è un collegamento LOS (e NLOS) e da dove viene il $1/R^2$ di Friis; 2026-11-15 — appunti presi a lezione dalla copia annotata Confronto new.pdf; creazione da ingest Confronto_new.pdf_

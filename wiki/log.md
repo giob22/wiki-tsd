@@ -252,3 +252,6 @@ Verificati i numeri: $\ln2=-1.59$ dB, $R_s\approx15$ Msimboli/s, $\text{SNR}_{re
 
 ## [2026-11-22] update | Lezione 12 (Confronto new.pdf) | pagine coperte: 23
 - lo schizzo ritagliato dagli appunti è sostituito da un grafico ricostruito (`output/grafici/genera_grafici_lezione12.py` → `grafico-l12-ber-limite-shannon.png`): $P_b(e)$ contro $E_b/N_0$ [dB] per la segnalazione ortogonale coerente, $M=2\dots2^{16}$ e $M\to\infty$, verticale a $-1.59$ dB; in [[corso-completo]] e [[limite-di-shannon]]
+
+## [2026-11-22] update | Lezione 12 (Confronto_new.pdf) | pagine coperte: 26
+- slide 26: spiegato cos'è un collegamento LOS (*Line Of Sight*) ideale, da dove viene il $1/R^2$ di Friis (📚) e il caso NLOS; in [[corso-completo]] e [[link-budget]]
