@@ -196,7 +196,6 @@ BREVI = {
     "entropie": "L'intersezione è l'informazione mutua.",
     "costellazioni_etap": "OOK, antipodale, ortogonale: distanze a parità di E_b.",
     "piano_shannon": "Frontiera di Shannon e modulazioni a BER 10⁻⁵.",
-    "bilancio_wlan": "Bilancio di potenza dell'esempio WLAN.",
 }
 
 # ----------------------------------------------------------------------------------------------- immagini

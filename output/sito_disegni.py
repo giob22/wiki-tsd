@@ -869,38 +869,51 @@ def fig_piano_shannon():
 
 
 def fig_bilancio_wlan():
-    s = Svg(400, 300, "bilancio di potenza dell'esempio WLAN")
-    oy0, H = 24, 236
+    s = Svg(400, 304, "bilancio di potenza dell'esempio WLAN")
+    oy0, H = 26, 236
     lv = lambda dbm: oy0 + H * (25 - dbm) / 125     # da +25 a -100 dBm
     ax = 46
-    s.line(ax, lv(-100) + 4, ax, lv(25) - 10, "ax", ar=True)
+    s.line(ax, lv(-100) + 4, ax, lv(25) - 12, "ax", ar=True)
     for d in (20, 0, -20, -40, -60, -80, -100):
         s.line(ax - 3, lv(d), ax + 3, lv(d), "ln")
-        s.t(ax - 6, lv(d) + 4, str(d), "ts", "end")
-    s.t(ax + 4, 12, "dBm", "ts", "start")
-    passi = [(20, "P_{tx}", "20"), (22, "+G_{tx}", "22"), (-65, "−L_{path}", "−65"), (-63, "+G_{rx}", "−63")]
-    xs = [62, 104, 146, 188]
-    prev = None
-    for (val, nome, num), x0 in zip(passi, xs):
-        if prev is not None:
-            s.line(x0, lv(prev), x0, lv(val), "cv dash")
-        s.line(x0, lv(val), x0 + 34, lv(val), "cv ev")
-        s.t(x0 + 17, lv(val) - 6, num, "ts a1")
-        s.t(x0 + 17, lv(-100) + 22, nome, "ts a1")
-        prev = val
-    s.t(138, lv(-22), "−87 dB", "ts a1", "end")
-    s.t(138, lv(-22) + 13, "di propagazione", "ts a1", "end")
-    s.line(ax, lv(-95), 392, lv(-95), "gd")
-    s.t(392, lv(-95) + 14, "rumore P_n = −95", "ts", "end")
+        s.t(ax - 6, lv(d) + 4, str(d).replace("-", "−"), "ts", "end")
+    s.t(ax + 6, 12, "livello di potenza [dBm]", "ts", "start")
+    # scala continua: P_tx, +G_tx, -L_path, +G_rx
+    xs = [58, 102, 146, 190, 234]
+    livelli = [20, 22, -65, -63]
+    pts = []
+    for k, v in enumerate(livelli):
+        pts += [(xs[k], lv(v)), (xs[k + 1], lv(v))]
+    s.poly(pts, "cv ev")
+    for k, (v, nome) in enumerate(zip(livelli, ("P_{tx}", "+G_{tx}", "−L_{path}", "+G_{rx}"))):
+        xc = (xs[k] + xs[k + 1]) / 2
+        s.t(xc, lv(v) - 7, str(v).replace("-", "−"), "ts a1")
+        s.t(xc, lv(-100) + 22, nome, "ts a1")
+    s.t(xs[1] + 3, lv(22) + 16, "+2 dB", "ts a1", "start")
+    s.t(xs[3] + 3, lv(-63) + 16, "+2 dB", "ts a1", "start")
+    s.t(xs[2] - 5, lv(-22), "−87 dB", "ts a1", "end")
+    s.t(xs[2] - 5, lv(-22) + 13, "di path", "ts a1", "end")
+    s.t(xs[2] - 5, lv(-22) + 26, "loss", "ts a1", "end")
+    # livelli di riferimento al ricevitore
+    s.line(xs[4], lv(-63), 392, lv(-63), "gd")
+    s.t(392, lv(-63) - 6, "arrivano −63 dBm", "ts a1", "end")
     s.line(ax, lv(-83), 392, lv(-83), "cv2")
-    s.t(392, lv(-83) - 5, "sensibilità −83", "ts a2", "end")
-    s.line(222, lv(-63), 300, lv(-63), "gd")
-    s.line(276, lv(-95), 276, lv(-83), "ar2", ar=True, ar0=True)
-    s.t(282, lv(-89) + 4, "SNR_{req} 12 dB", "ts", "start")
-    s.line(250, lv(-83), 250, lv(-63), "ar2", ar=True, ar0=True)
-    s.t(256, lv(-73) + 4, "margine 20 dB", "ts", "start")
-    return s.render(), ("🧩 Bilancio dell'esempio in dBm: 20 dBm trasmessi, +2 dB d'antenna, −87 dB di propagazione, +2 dB d'antenna: arrivano −63 dBm. "
-                        "Il ricevitore ha un rumore di −95 dBm e per la BER richiesta servono 12 dB sopra il rumore (sensibilità −83 dBm); i 20 dB restanti sono il margine.")
+    s.t(ax + 6, lv(-83) - 5, "sensibilità −83 dBm", "ts a2", "start")
+    s.line(ax, lv(-95), 392, lv(-95), "gd")
+    s.t(ax + 6, lv(-95) - 4, "rumore P_n −95 dBm", "ts", "start")
+    s.line(300, lv(-63) + 2, 300, lv(-83) - 2, "ar2", ar=True, ar0=True)
+    s.t(306, lv(-73) + 4, "margine 20 dB", "ts", "start")
+    s.line(300, lv(-83) + 2, 300, lv(-95) - 2, "ar2", ar=True, ar0=True)
+    s.t(306, lv(-89) + 4, "SNR_{req} 12 dB", "ts", "start")
+    return s.render(), (
+        "🧩 **Come si legge.** L'asse verticale è la potenza in dBm. La linea blu segue il segnale da sinistra a destra: "
+        "il trasmettitore emette $P_{tx}=20$ dBm (100 mW), l'antenna trasmittente aggiunge 2 dB (22 dBm), "
+        "la propagazione toglie 87 dB (−65 dBm), l'antenna ricevente aggiunge 2 dB: al ricevitore arrivano −63 dBm. "
+        "**Dal basso, i requisiti del ricevitore.** Il rumore in banda vale $P_n=-95$ dBm. Per avere BER $10^{-6}$ con la QPSK "
+        "il segnale deve stare $\text{SNR}_{req}=12$ dB sopra il rumore: la **sensibilità** è $-95+12=-83$ dBm, la potenza minima da ricevere. "
+        "Sopra la sensibilità si tengono 20 dB di **margine** (per attenuazioni impreviste), quindi il segnale deve arrivare a −63 dBm. "
+        "**Il risultato.** Il path loss massimo è quello che fa scendere i 22 dBm irradiati fino a quel livello, contando anche +2 dB dell'antenna ricevente: "
+        "$L_{path}=20+2+2-(-83)-20=87$ dB, che in spazio libero corrisponde a circa 107 m.")
 
 
 # --------------------------------------------------------------------------------------------- Lezioni 8–11
