@@ -21,6 +21,13 @@
 <li>La <strong>capacità di canale</strong> (Shannon) è la massima velocità per cui si può ottenere una probabilità d'errore piccola a piacere. È definita <strong>senza vincoli</strong> di complessità o di ritardo. Per il canale AWGN ha un'espressione in forma chiusa particolarmente semplice.</li>
 <li>Appunti a lezione: superare la capacità significa non poter avere una <span class="math inline">P(e)</span> arbitrariamente piccola, qualunque sia lo schema di modulazione.</li>
 </ul>
+<blockquote class="co mia"><p>🧩 <strong>Cosa vuol dire «senza vincoli di complessità o di ritardo».</strong> La capacità dice quanto si può trasmettere <strong>ammesso di poter usare un ricevitore e un trasmettitore qualsiasi</strong>, per quanto complicati e lenti. 📚 Nella dimostrazione di Shannon la <span class="math inline">P(e)</span> diventa piccola a piacere solo raggruppando i bit in blocchi (parole di codice) sempre più lunghi, al limite infinitamente lunghi. Questo ha due costi che il teorema ignora:</p>
+<ul>
+<li><strong>complessità</strong>: con blocchi di <span class="math inline">n</span> simboli a rate <span class="math inline">R</span> le parole di codice possibili sono <span class="math inline">2^{nR}</span>, e il decodificatore ottimo dovrebbe confrontare quello che riceve con tutte; il numero cresce in modo esponenziale con <span class="math inline">n</span> (è lo stesso problema dell'MLSE della Lezione 14, che con la forza bruta deve scegliere tra <span class="math inline">M^{K+1}</span> sequenze);</li>
+<li><strong>ritardo</strong>: il ricevitore può decidere solo dopo aver ricevuto <strong>tutto</strong> il blocco, quindi più il blocco è lungo, più tempo passa tra l'invio di un bit e la sua decisione. È il ritardo di cui parlano gli appunti.</li>
+</ul>
+<p>Un sistema reale ha complessità e ritardo <strong>finiti</strong> (un telefono non può aspettare minuti né fare conti infiniti), quindi resta <strong>sotto</strong> la capacità. Per questo la capacità è un limite che si avvicina ma non si raggiunge: è il «margine di miglioramento», che la codifica di canale riduce.</p>
+</blockquote>
 <h3 id="informazione-mutua-e-capacita">Informazione mutua e capacità</h3>
 <h4 id="informazione-mutua">Informazione mutua</h4>
 <ul>
@@ -202,11 +209,15 @@ Il primo termine è <span class="math inline">-H(Y\mid X)</span> (entropia condi
 </tbody>
 </table></div>
 <ul>
-<li>Note a mano: <span class="math inline">\eta_B</span> «efficienza in banda», <span class="math inline">\eta_P</span> «efficienza in potenza»; una graffa sulle righe: «chiaro trade-off banda-potenza». (Nell'ultima riga la slide stampa <span class="math inline">\eta_P=2\log_2M</span> con un 1 scritto a mano sopra: va letto <span class="math inline">\frac12\log_2M</span>, coerente con l'esempio ortogonale binario <span class="math inline">\eta_P=\frac12</span>.)</li>
+<li>Note a mano: <span class="math inline">\eta_B</span> «efficienza in banda», <span class="math inline">\eta_P</span> «efficienza in potenza»; una graffa sulle righe: «chiaro trade-off banda-potenza».</li>
+</ul>
+<blockquote class="co avv"><p>⚠️ Nell'ultima riga la slide stampa <span class="math inline">\eta_P=2\log_2M</span>, senza correzioni a mano. Il valore giusto è <span class="math inline">\frac12\log_2M</span>: con <span class="math inline">M</span> segnali ortogonali di energia <span class="math inline">E</span> si ha <span class="math inline">d_{min}^2=2E</span> ed <span class="math inline">E_b=E/\log_2M</span>, quindi <span class="math inline">\eta_P=\frac{2E}{4E/\log_2M}=\frac{\log_2M}{2}</span>, coerente con l'esempio ortogonale binario (<span class="math inline">\eta_P=\frac12</span> per <span class="math inline">M=2</span>).</p>
+</blockquote>
+<ul>
 <li>Per modulazioni la cui dimensionalità <strong>cresce con <span class="math inline">M</span></strong> (ortogonali), aumentare <span class="math inline">M</span> migliora l'efficienza in potenza ma riduce quella spettrale.</li>
 <li>Per modulazioni a <strong>dimensionalità fissa</strong> (PAM, PSK, QAM), aumentare <span class="math inline">M</span> migliora l'efficienza spettrale ma richiede un <span class="math inline">E_b/N_0</span> più alto a parità di affidabilità.</li>
 <li>Poiché la dimensionalità è legata alla banda di trasmissione, il risultato è un compromesso tra <strong>energia e banda</strong>.</li>
-<li>Appunti a lezione: per PAM, PSK e QAM <span class="math inline">\eta_B</span> <strong>cresce</strong> con <span class="math inline">M</span> (più efficienti in banda); per le ortogonali <strong>decresce</strong>, perché a ogni nuovo segnale si aggiunge una dimensione, e la dimensione è legata alla banda dal prodotto tempo-banda: aumenta anche la banda. Per questo le ortogonali sono efficienti in potenza (<span class="math inline">\eta_P</span> cresce con <span class="math inline">M</span>) e si usano quando la banda è una risorsa a disposizione.</li>
+<li>Appunti a lezione: per PAM, PSK e QAM <span class="math inline">\eta_B</span> <strong>cresce</strong> con <span class="math inline">M</span> (più efficienti in banda); per le ortogonali <strong>decresce</strong>, perché a ogni nuovo segnale si aggiunge una dimensione, e la dimensione è legata alla banda «per il teorema di Shannon»: aumenta anche la banda. Sotto la riga delle ortogonali: «capisci perché è efficiente in potenza» (<span class="math inline">\eta_P</span> cresce con <span class="math inline">M</span>); accanto: si usano quando la banda è una risorsa a disposizione.</li>
 </ul>
 <h3 id="il-limite-di-shannon">Il limite di Shannon</h3>
 <h4 id="dai-parametri-globali-al-limite-di-shannon">Dai parametri globali al limite di Shannon</h4>
@@ -298,6 +309,8 @@ Il primo termine è <span class="math inline">-H(Y\mid X)</span> (entropia condi
 <div class="math block">\text{SNR}_{req,\text{dB}}=\Big(\frac{E_b}{N_0}\Big)_{req,\text{dB}}+10\log_{10}\frac{R_b}{W}=10.2+10\log_{10}\frac{30}{20}\approx12\ \text{dB}</div><ul>
 <li>Con potenza di rumore <span class="math inline">-95</span> dBm: <span class="math inline">P_{rx,min,\text{dBm}}=-95+12=-83</span> dBm.</li>
 </ul>
+<blockquote class="co avv"><p>⚠️ Con la formula esatta, <span class="math inline">Q(\sqrt{2E_b/N_0})=10^{-6}</span> dà <span class="math inline">\sqrt{2E_b/N_0}\approx4.75</span>, cioè <span class="math inline">E_b/N_0\approx11.3\approx10.5</span> dB, non 10.2 dB. Con 10.5 dB si avrebbe <span class="math inline">\text{SNR}_{req}\approx12.3</span> dB e una sensibilità di circa <span class="math inline">-82.7</span> dBm: i risultati dell'esempio cambiano di pochi decimi di dB. Il conto è in link budget wlan.</p>
+</blockquote>
 <h4 id="path-loss-ammissibile-e-portata">Path loss ammissibile e portata</h4>
 <ul>
 <li><span class="math inline">P_{tx}=100</span> mW <span class="math inline">=20</span> dBm. Path loss massimo: <span class="math inline">L_{path,\text{dB}}=20-(-83)+2+2-20=87</span> dB.</li>
