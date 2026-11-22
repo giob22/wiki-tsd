@@ -2482,7 +2482,11 @@ $$L_{path,\text{dB}}=P_{tx,\text{dBm}}-P_{rx,min,\text{dBm}}+G_{tx,\text{dBi}}+G
 >
 > $$L_{path,\text{dB}}\le P_{tx,\text{dBm}}-P_{rx,min,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}-L_{margin,\text{dB}}$$
 >
-> Il valore massimo, con l'uguale, è la formula della slide. Risolvendo la stessa disuguaglianza per $P_{tx}$ si ottiene invece la minima potenza trasmessa per una distanza data.
+> Il valore massimo, con l'uguale, è la formula della slide. Raggruppando i termini si legge come un bilancio, **quello che metto in gioco meno quello che deve arrivare**:
+>
+> $$L_{path,\text{dB}}=\underbrace{\big(P_{tx,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}\big)}_{\text{potenza disponibile: }20+2+2=24\ \text{dBm}}-\underbrace{\big(P_{rx,min,\text{dBm}}+L_{margin,\text{dB}}\big)}_{\text{potenza da far arrivare: }-83+20=-63\ \text{dBm}}=24-(-63)=87\ \text{dB}$$
+>
+> Risolvendo la stessa disuguaglianza per $P_{tx}$ si ottiene invece la minima potenza trasmessa per una distanza data.
 
 ### Esempio: collegamento WLAN a 5 GHz
 
