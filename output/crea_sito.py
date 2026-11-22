@@ -194,7 +194,6 @@ BREVI = {
     "rumore": "Rumore in banda: N_0/2, inviluppo N_0, componenti N_0/2.",
     "canale": "Canale senza memoria e canale AWGN.",
     "entropie": "L'intersezione è l'informazione mutua.",
-    "capacita": "Capacità: log in γ, satura in W.",
     "costellazioni_etap": "OOK, antipodale, ortogonale: distanze a parità di E_b.",
     "piano_shannon": "Frontiera di Shannon e modulazioni a BER 10⁻⁵.",
     "bilancio_wlan": "Bilancio di potenza dell'esempio WLAN.",

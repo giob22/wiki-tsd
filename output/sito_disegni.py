@@ -730,7 +730,12 @@ def fig_capacita():
         s.t(ox - 6, cy(c) + 4, str(c), "ts", "end")
     s.t(ox + W + 10, oy + 30, "γ [dB]", "ts", "end")
     s.t(ox + 6, oy - H - 8, "C/W [bit/s/Hz]", "ts", "start")
-    s.t(ox + W / 2, 14, "(a) log in γ", "tx tb a1")
+    s.t(ox + W / 2, 14, "(a) banda fissa", "tx tb a1")
+    # gradino: +3 dB di SNR danno circa +1 bit/s/Hz
+    c20, c23 = math.log2(1 + 10 ** 2), math.log2(1 + 10 ** 2.3)
+    s.line(gx(20), cy(c20), gx(23), cy(c20), "gd")
+    s.line(gx(23), cy(c20), gx(23), cy(c23), "gd")
+    s.t(gx(20) - 4, cy(c20) - 4, "+3 dB → +1", "ts a1", "end")
     # (b) C in funzione di W a P/N0 fisso
     ox2 = 232
     s.line(ox2 - 4, oy, ox2 + W + 10, oy, "ax", ar=True)
@@ -740,11 +745,21 @@ def fig_capacita():
     pts = [(wx(w), ky(w * math.log2(1 + 1 / w))) for w in np.linspace(0.01, 6, 150)]
     s.poly(pts, "cv2")
     s.line(ox2, ky(1 / math.log(2)), ox2 + W, ky(1 / math.log(2)), "gd")
-    s.t(ox2 + W, ky(1 / math.log(2)) - 6, "1.44 P/N_0", "ts a2", "end")
-    s.t(ox2 + W + 10, oy + 30, "W  [unità P/N_0]", "ts", "end")
-    s.t(ox2 + 6, oy - H - 8, "C", "ts", "start")
-    s.t(ox2 + W / 2, 14, "(b) satura in W", "tx tb a2")
-    return s.render(), "🧩 (a) A banda fissa la capacità cresce solo come il logaritmo dell'SNR: a SNR alto +3 dB danno +1 bit/s/Hz. (b) A potenza fissa, allargare la banda fa crescere la capacità quasi linearmente all'inizio, ma il rumore raccolto cresce con $W$ e la capacità satura a $\\frac{P}{N_0}\\log_2e\\approx1.44\\,P/N_0$."
+    s.t(ox2 + W, ky(1 / math.log(2)) - 6, "tetto 1.44 P/N_0", "ts a2", "end")
+    s.t(ox2 + W + 10, oy + 30, "W  [in multipli di P/N_0]", "ts", "end")
+    s.t(ox2 + 6, oy - H - 8, "C [bit/s]", "ts", "start")
+    s.t(ox2 + W / 2, 14, "(b) potenza fissa", "tx tb a2")
+    s.t(wx(3.2), ky(0.62), "più banda = più rumore N_0W:", "ts", "middle")
+    s.t(wx(3.2), ky(0.42), "γ scende e C si ferma", "ts", "middle")
+    return s.render(), ("🧩 Due modi di leggere $C=W\\log_2(1+\\gamma)$, con $\\gamma=\\frac{P}{N_0W}$. "
+        "(a) **Banda fissa, aumento la potenza.** La capacità per hertz cresce solo come il logaritmo di $\\gamma$. "
+        "L'asse orizzontale è in dB, cioè già logaritmico, per questo la curva sembra una retta: a SNR alto ogni +3 dB "
+        "(potenza raddoppiata) aggiungono appena 1 bit/s/Hz. Raddoppiare la potenza costa molto e rende poco. "
+        "(b) **Potenza fissa, aumento la banda.** All'inizio $C$ cresce quasi in proporzione a $W$: più banda, più simboli al secondo. "
+        "Ma il filtro di ricezione largo $W$ raccoglie anche più rumore, $N_0W$: $\\gamma$ scende e la crescita rallenta, "
+        "finché $C$ si ferma sotto il tetto $\\frac{P}{N_0\\ln2}\\approx1.44\\,\\frac{P}{N_0}$. "
+        "Quindi aumentare la banda conviene finché l'SNR è alto; con poca potenza anche la banda infinita ha un limite. "
+        "Quel tetto è lo stesso limite $E_b/N_0\\ge\\ln2$ (−1.59 dB) della frontiera di Shannon: con $R_b=C$ si ha $E_b=P/C$.")
 
 
 def fig_costellazioni_etap():
