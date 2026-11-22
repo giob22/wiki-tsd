@@ -23,7 +23,7 @@ Slide introduttive (in inglese, eccetto le prime tre) del corso *Trasmissione de
    - stima dei parametri e sincronizzazione;
    - comunicazione su canali selettivi in frequenza;
    - teoria dell'informazione e codifica di canale.
-2. Esame: colloquio orale; testo di riferimento Madhow (Cambridge, 2008) più appunti.
+2. Esame: colloquio orale; testo di riferimento Madhow (Cambridge, 2008) più appunti. A lezione la docente ha indicato come riferimento anche il libro di Biglieri (Benedetto-Biglieri, *Principles of Digital Transmission*).
 3. Comunicazione = trasferimento di informazione nello spazio (trasmissione) o nel tempo (memorizzazione).
 4. Tre elementi base: trasmettitore, canale, ricevitore; transceiver = TX + RX.
 5. Il processo di comunicazione è **statistico**.
@@ -60,4 +60,4 @@ Slide introduttive (in inglese, eccetto le prime tre) del corso *Trasmissione de
 - Cosa dice il principio di separazione e quali vantaggi porta?
 - Perché il processo di comunicazione è di natura statistica?
 
-_Aggiornato: 2026-09-23 — ingest iniziale_
+_Aggiornato: 2026-11-22 — libro di Biglieri indicato a lezione; 2026-09-23 — ingest iniziale_

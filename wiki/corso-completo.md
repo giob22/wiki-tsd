@@ -33,6 +33,7 @@ Testo unico di studio del corso (LM Ingegneria Informatica, UNINA, D. Darsena; t
 
 - Docente: Donatella Darsena (DIETI, UNINA); LM Ingegneria Informatica, a.a. 2026-27.
 - Testo: U. Madhow, *Fundamentals of Digital Communication*, Cambridge, 2008 (altri testi per alcuni argomenti), più gli appunti delle lezioni. Lezioni con slide e lavagna.
+- A lezione la docente ha indicato come libro di riferimento quello di **Biglieri** (S. Benedetto, E. Biglieri, *Principles of Digital Transmission*), da cui vengono anche i grafici della Lezione 12.
 - Esame: **colloquio orale**.
 - Argomenti del corso:
   1. rappresentazione complessa in banda base dei segnali;
@@ -2397,7 +2398,10 @@ $$\eta_B\le\log_2\Big(1+\eta_B\frac{E_b}{N_0}\Big)\qquad\Longleftrightarrow\qqua
 $$\lim_{\eta_B\to0}\frac{2^{\eta_B}-1}{\eta_B}=\ln2\qquad\Longrightarrow\qquad\Big(\frac{E_b}{N_0}\Big)_{min}=\ln2\approx-1.59\ \text{dB}$$
 
 - Nota a mano: $\lim_{x\to0}\dfrac{a^x-1}{x}=\ln a$.
-- Appunti a lezione (con uno schizzo delle curve BER che si avvicinano alla verticale di $-1.6$ dB): è un **limite invalicabile**; oltre non è più garantito il teorema di Shannon.
+- Appunti a lezione: è un **limite invalicabile**; oltre non è più garantito il teorema di Shannon. Accanto, la docente schizza le curve BER che si avvicinano alla verticale di $-1.6$ dB:
+
+![[confronto-p23-appunti-limite-shannon.png|260]]
+*Schizzo a mano della docente: curve di probabilità d'errore in funzione di $E_b/N_0$ che, migliorando lo schema, scendono sempre più ripide e più a sinistra, senza poter superare la verticale tratteggiata a $-1.6$ dB.*
 
 #### Slide 22 — Interpretazione fisica del limite · [[Confronto_new.pdf#page=22|p. 22]]
 - Al crescere dell'efficienza spettrale $\eta_B$ cresce anche il minimo $E_b/N_0$ richiesto.

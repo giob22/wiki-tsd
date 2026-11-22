@@ -86,6 +86,9 @@ La capacità dice quanti bit/s passano in un canale con banda $W$ e SNR $\gamma$
 
 **Dagli appunti presi a lezione.** La frontiera è solo un altro modo di scrivere la condizione del secondo teorema di Shannon. Il valore di $-1.6$ dB è un **limite invalicabile**: sotto non vale più il teorema. La figura delle modulazioni viene dal libro di **Biglieri**; la distanza orizzontale tra ogni punto e la curva è il **margine di miglioramento**, che una codifica di canale permette di ridurre spostando i punti verso il limite.
 
+![[confronto-p23-appunti-limite-shannon.png|260]]
+*Schizzo della docente negli appunti: le curve di probabilità d'errore in funzione di $E_b/N_0$ diventano più ripide e si spostano a sinistra man mano che lo schema migliora, ma restano tutte a destra della verticale a $-1.6$ dB.*
+
 > 🎯 Esame: derivazione della frontiera da $R_b\le C$ (tutti i passaggi), limite $\ln2=-1.59$ dB con il limite notevole, significato delle regioni limitate in banda e in potenza, lettura del grafico della slide 23 (anche che la codifica sposta i punti verso sinistra).
 
 ## Perché importa
@@ -102,4 +105,4 @@ La capacità dice quanti bit/s passano in un canale con banda $W$ e SNR $\gamma$
 
 [[parametri-globali-e-capacita]] — Confronto_new.pdf, slide 20–23.
 
-_Aggiornato: 2026-11-15 — appunti presi a lezione dalla copia annotata Confronto new.pdf; creazione da ingest Confronto_new.pdf_
+_Aggiornato: 2026-11-22 — schizzo delle curve BER dagli appunti di p. 23; 2026-11-15 — appunti presi a lezione dalla copia annotata Confronto new.pdf; creazione da ingest Confronto_new.pdf_

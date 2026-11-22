@@ -245,3 +245,7 @@ Ricontrollo slide per slide del testo di `corso-completo` contro le slide e cont
 - slide 30: avviso ⚠️ che il valore esatto per BER $10^{-6}$ è circa 10.5 dB (la slide usa 10.2 dB), già discusso in [[link-budget-wlan]]
 - slide 3: riquadro 🧩 su cosa significa «senza vincoli di complessità o di ritardo»
 Verificati i numeri: $\ln2=-1.59$ dB, $R_s\approx15$ Msimboli/s, $\text{SNR}_{req}\approx12$ dB, rumore $-95$ dBm, portata $\approx107$ m.
+
+## [2026-11-22] update | Lezione 12 (Confronto new.pdf) | pagine coperte: 23
+- slide 21: aggiunto lo schizzo a mano delle curve BER verso $-1.6$ dB (`raw/assets/confronto-p23-appunti-limite-shannon.png`) in [[corso-completo]] e [[limite-di-shannon]]
+- libro di riferimento di Biglieri (Benedetto-Biglieri) indicato a lezione: annotato in [[overview]], [[intro-corso]], [[corso-completo]]
