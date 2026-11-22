@@ -2401,7 +2401,7 @@ $$\lim_{\eta_B\to0}\frac{2^{\eta_B}-1}{\eta_B}=\ln2\qquad\Longrightarrow\qquad\B
 - Appunti a lezione: è un **limite invalicabile**; oltre non è più garantito il teorema di Shannon. Accanto, la docente schizza le curve BER che si avvicinano alla verticale di $-1.6$ dB, ridisegnate qui:
 
 ![[grafico-l12-ber-limite-shannon.png|620]]
-*🧩 Ricostruzione dello schizzo: in ascissa $E_b/N_0$ in dB, in ordinata la probabilità d'errore sul bit $P_b(e)$ in scala logaritmica. Le curve sono quelle della segnalazione ortogonale coerente con $M$ crescente: al crescere di $M$ scendono più ripide e si spostano a sinistra, ma non superano mai la verticale tratteggiata a $\ln2=-1.59$ dB, a cui tendono per $M	o\infty$.*
+*🧩 Ricostruzione dello schizzo: in ascissa $E_b/N_0$ in dB, in ordinata la probabilità d'errore sul bit $P_b(e)$ in scala logaritmica. Le curve sono quelle della segnalazione ortogonale coerente con $M$ crescente: al crescere di $M$ scendono più ripide e si spostano a sinistra, ma non superano mai la verticale tratteggiata a $\ln2=-1.59$ dB, a cui tendono per $M\to\infty$.*
 
 #### Slide 22 — Interpretazione fisica del limite · [[Confronto_new.pdf#page=22|p. 22]]
 - Al crescere dell'efficienza spettrale $\eta_B$ cresce anche il minimo $E_b/N_0$ richiesto.
