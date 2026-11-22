@@ -243,4 +243,5 @@ Ricontrollo slide per slide del testo di `corso-completo` contro le slide e cont
 - slide 19: rimossa la «correzione a mano» del valore $\eta_P=2\log_2M$ delle ortogonali, che nel PDF non c'è; ora è un avviso ⚠️ di refuso con la derivazione di $\frac12\log_2M$ (anche in [[parametri-globali-e-capacita]])
 - slide 19, appunti: riportate le note «per il teorema di Shannon» e «capisci perché è efficiente in potenza»
 - slide 30: avviso ⚠️ che il valore esatto per BER $10^{-6}$ è circa 10.5 dB (la slide usa 10.2 dB), già discusso in [[link-budget-wlan]]
+- slide 3: riquadro 🧩 su cosa significa «senza vincoli di complessità o di ritardo»
 Verificati i numeri: $\ln2=-1.59$ dB, $R_s\approx15$ Msimboli/s, $\text{SNR}_{req}\approx12$ dB, rumore $-95$ dBm, portata $\approx107$ m.
