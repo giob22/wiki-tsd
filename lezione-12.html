@@ -323,7 +323,8 @@ Il primo termine è <span class="math inline">-H(Y\mid X)</span> (entropia condi
 <li><strong>La condizione, con il margine.</strong> Non basta <span class="math inline">P_{rx}\ge P_{rx,min}</span>: si chiede di stare almeno <span class="math inline">L_{margin}</span> dB sopra la sensibilità, per coprire attenuazioni impreviste. Quindi <span class="math inline">P_{rx,\text{dBm}}\ge P_{rx,min,\text{dBm}}+L_{margin,\text{dB}}</span>.</li>
 <li><strong>Isolo il path loss.</strong> Sostituisco il punto 2 nel punto 3 e porto <span class="math inline">L_{path}</span> da solo a sinistra (cambiando segno la disuguaglianza si gira):</li>
 </ol>
-<div class="math block">L_{path,\text{dB}}\le P_{tx,\text{dBm}}-P_{rx,min,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}-L_{margin,\text{dB}}</div><p>Il valore massimo, con l'uguale, è la formula della slide. Risolvendo la stessa disuguaglianza per <span class="math inline">P_{tx}</span> si ottiene invece la minima potenza trasmessa per una distanza data.</p>
+<div class="math block">L_{path,\text{dB}}\le P_{tx,\text{dBm}}-P_{rx,min,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}-L_{margin,\text{dB}}</div><p>Il valore massimo, con l'uguale, è la formula della slide. Raggruppando i termini si legge come un bilancio, <strong>quello che metto in gioco meno quello che deve arrivare</strong>:</p>
+<div class="math block">L_{path,\text{dB}}=\underbrace{\big(P_{tx,\text{dBm}}+G_{tx,\text{dBi}}+G_{rx,\text{dBi}}\big)}_{\text{potenza disponibile: }20+2+2=24\ \text{dBm}}-\underbrace{\big(P_{rx,min,\text{dBm}}+L_{margin,\text{dB}}\big)}_{\text{potenza da far arrivare: }-83+20=-63\ \text{dBm}}=24-(-63)=87\ \text{dB}</div><p>Risolvendo la stessa disuguaglianza per <span class="math inline">P_{tx}</span> si ottiene invece la minima potenza trasmessa per una distanza data.</p>
 </blockquote>
 <h3 id="esempio-collegamento-wlan-a-5-ghz">Esempio: collegamento WLAN a 5 GHz</h3>
 <h4 id="dati-e-bit-rate">Dati e bit rate</h4>
