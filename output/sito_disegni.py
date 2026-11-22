@@ -749,8 +749,8 @@ def fig_capacita():
     s.t(ox2 + W + 10, oy + 30, "W  [in multipli di P/N_0]", "ts", "end")
     s.t(ox2 + 6, oy - H - 8, "C [bit/s]", "ts", "start")
     s.t(ox2 + W / 2, 14, "(b) potenza fissa", "tx tb a2")
-    s.t(wx(3.2), ky(0.62), "più banda = più rumore N_0W:", "ts", "middle")
-    s.t(wx(3.2), ky(0.42), "γ scende e C si ferma", "ts", "middle")
+    s.t(wx(3.6), ky(0.42), "più banda = più rumore N_0W:", "ts", "middle")
+    s.t(wx(3.6), ky(0.24), "γ scende e C si ferma", "ts", "middle")
     return s.render(), ("🧩 Due modi di leggere $C=W\\log_2(1+\\gamma)$, con $\\gamma=\\frac{P}{N_0W}$. "
         "(a) **Banda fissa, aumento la potenza.** La capacità per hertz cresce solo come il logaritmo di $\\gamma$. "
         "L'asse orizzontale è in dB, cioè già logaritmico, per questo la curva sembra una retta: a SNR alto ogni +3 dB "
