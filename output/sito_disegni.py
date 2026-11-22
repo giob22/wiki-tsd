@@ -910,7 +910,7 @@ def fig_bilancio_wlan():
         "il trasmettitore emette $P_{tx}=20$ dBm (100 mW), l'antenna trasmittente aggiunge 2 dB (22 dBm), "
         "la propagazione toglie 87 dB (−65 dBm), l'antenna ricevente aggiunge 2 dB: al ricevitore arrivano −63 dBm. "
         "**Dal basso, i requisiti del ricevitore.** Il rumore in banda vale $P_n=-95$ dBm. Per avere BER $10^{-6}$ con la QPSK "
-        "il segnale deve stare $\text{SNR}_{req}=12$ dB sopra il rumore: la **sensibilità** è $-95+12=-83$ dBm, la potenza minima da ricevere. "
+        "il segnale deve stare $\\mathrm{SNR}_{req}=12$ dB sopra il rumore: la **sensibilità** è $-95+12=-83$ dBm, la potenza minima da ricevere. "
         "Sopra la sensibilità si tengono 20 dB di **margine** (per attenuazioni impreviste), quindi il segnale deve arrivare a −63 dBm. "
         "**Il risultato.** Il path loss massimo è quello che fa scendere i 22 dBm irradiati fino a quel livello, contando anche +2 dB dell'antenna ricevente: "
         "$L_{path}=20+2+2-(-83)-20=87$ dB, che in spazio libero corrisponde a circa 107 m.")
