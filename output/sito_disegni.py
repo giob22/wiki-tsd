@@ -1720,11 +1720,11 @@ def fig_traliccio_viterbi():
 
 def fig_fse_geometria():
     s = Svg(400, 236, "equalizzatore a due campioni per simbolo: c ortogonale a p1")
-    ox, oy, k = 120, 128, 110
+    ox, oy, k = 64, 128, 110
     P = lambda x, y: (ox + k * x, oy - k * y)
-    s.line(ox - 70, oy, ox + 200, oy, "ax", ar=True)
+    s.line(ox - 54, oy, ox + 200, oy, "ax", ar=True)
     s.line(ox, oy + 96, ox, oy - 110, "ax", ar=True)
-    s.t(ox + 200, oy + 16, "1° campione", "ts", "end")
+    s.t(ox + 200, oy - 6, "1° campione", "ts", "end")
     s.t(ox + 6, oy - 100, "2° campione", "ts", "start")
     # direzione di p1 prolungata (tratteggio): c è perpendicolare a questa retta
     a, b = P(-0.35, -0.7), P(0.45, 0.9)
@@ -1741,9 +1741,9 @@ def fig_fse_geometria():
     d = 0.09
     q1, q2, q3 = P(d * u[0], d * u[1]), P(d * (u[0] + v[0]), d * (u[1] + v[1])), P(d * v[0], d * v[1])
     s.poly([q1, q2, q3], "ln")
-    s.t(392, 40, "c ⊥ p_1 → ISI nulla", "ts a3", "end")
-    s.t(392, 56, "c^H p_0 = 1 → guadagno utile 1", "ts a1", "end")
-    s.t(392, 72, "‖c‖² ≈ 2.2 → il rumore cresce", "ts a2", "end")
+    s.t(392, 150, "c ⊥ p_1 → ISI nulla", "ts a3", "end")
+    s.t(392, 166, "c^H p_0 = 1 → guadagno utile 1", "ts a1", "end")
+    s.t(392, 182, "‖c‖² ≈ 2.2 → il rumore cresce", "ts a2", "end")
     return s.render(), ("🧩 Il caso $L=1$, $S=2$ della slide 38, con i numeri del wiki: $\\mathbf p_0=[1,\\ 0.5]^T$ (segnale utile), "
                         "$\\mathbf p_1=[0.2,\\ 0.4]^T$ (ISI del simbolo precedente). Con un solo campione per simbolo il coefficiente è un numero e "
                         "scala allo stesso modo utile e ISI; con due campioni $\\mathbf c$ è un vettore del piano e si può scegliere "

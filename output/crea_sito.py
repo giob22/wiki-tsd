@@ -805,7 +805,13 @@ SCRIPT = r"""
     if (!blocco && !el.closest('summary')) {
       var c = el.closest('p,li,td,th,blockquote,div');
       el.classList.remove('wide');
-      if (c && c.clientWidth && el.getBoundingClientRect().width > c.clientWidth - 8) el.classList.add('wide');
+      var kx = el.querySelector('.katex');
+      if (kx) kx.style.whiteSpace = '';
+      // larghezza naturale: se la formula va a capo, somma i pezzi delle righe invece di prendere il riquadro che li contiene
+      var rs = el.getClientRects(), wn = 0;
+      for (var j = 0; j < rs.length; j++) wn += rs[j].width;
+      if (c && c.clientWidth && wn > c.clientWidth - 8) el.classList.add('wide');
+      else if (kx) kx.style.whiteSpace = 'nowrap';
     }
     if (!blocco && !el.classList.contains('wide')) return;
     if (!el.clientWidth) return;
