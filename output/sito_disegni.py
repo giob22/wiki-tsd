@@ -1718,6 +1718,67 @@ def fig_traliccio_viterbi():
     return s.render(), "🧩 Esempio del wiki: in blu il cammino minimo A→A→B→A, metrica 3."
 
 
+def fig_fse_geometria():
+    s = Svg(400, 236, "equalizzatore a due campioni per simbolo: c ortogonale a p1")
+    ox, oy, k = 120, 128, 110
+    P = lambda x, y: (ox + k * x, oy - k * y)
+    s.line(ox - 70, oy, ox + 200, oy, "ax", ar=True)
+    s.line(ox, oy + 96, ox, oy - 110, "ax", ar=True)
+    s.t(ox + 200, oy + 16, "1° campione", "ts", "end")
+    s.t(ox + 6, oy - 100, "2° campione", "ts", "start")
+    # direzione di p1 prolungata (tratteggio): c è perpendicolare a questa retta
+    a, b = P(-0.35, -0.7), P(0.45, 0.9)
+    s.line(a[0], a[1], b[0], b[1], "gd")
+    for (x, y), cl, nome, dx, dy in (((1.0, 0.5), "cv", "p_0", 8, -4),
+                                     ((0.2, 0.4), "cv2", "p_1", -6, -8),
+                                     ((4 / 3, -2 / 3), "cv3", "c", 8, 4)):
+        X, Y = P(x, y)
+        s.line(ox, oy, X, Y, cl, ar=True)
+        s.t(X + dx, Y + dy, nome, "tx tb " + {"cv": "a1", "cv2": "a2", "cv3": "a3"}[cl], "start" if dx > 0 else "end")
+    # angolo retto tra c e p1
+    u = (0.2 / 0.447, 0.4 / 0.447)
+    v = (0.894, -0.447)
+    d = 0.09
+    q1, q2, q3 = P(d * u[0], d * u[1]), P(d * (u[0] + v[0]), d * (u[1] + v[1])), P(d * v[0], d * v[1])
+    s.poly([q1, q2, q3], "ln")
+    s.t(392, 40, "c ⊥ p_1 → ISI nulla", "ts a3", "end")
+    s.t(392, 56, "c^H p_0 = 1 → guadagno utile 1", "ts a1", "end")
+    s.t(392, 72, "‖c‖² ≈ 2.2 → il rumore cresce", "ts a2", "end")
+    return s.render(), ("🧩 Il caso $L=1$, $S=2$ della slide 38, con i numeri del wiki: $\\mathbf p_0=[1,\\ 0.5]^T$ (segnale utile), "
+                        "$\\mathbf p_1=[0.2,\\ 0.4]^T$ (ISI del simbolo precedente). Con un solo campione per simbolo il coefficiente è un numero e "
+                        "scala allo stesso modo utile e ISI; con due campioni $\\mathbf c$ è un vettore del piano e si può scegliere "
+                        "**perpendicolare** a $\\mathbf p_1$ (retta tratteggiata): l'ISI sparisce, e scalando $\\mathbf c$ si ottiene "
+                        "$\\mathbf c^H\\mathbf p_0=1$. Il prezzo è la lunghezza di $\\mathbf c$, che moltiplica il rumore: è l'amplificazione "
+                        "del rumore dello zero-forcing.")
+
+
+def fig_beta_triangolo():
+    s = Svg(400, 176, "coefficienti beta per impulso rettangolare, L = 3")
+    cx, oy, kx, ky = 200, 132, 50, 30
+    s.line(cx - 175, oy, cx + 180, oy, "ax", ar=True)
+    s.line(cx, oy + 4, cx, oy - 112, "ax", ar=True)
+    s.t(cx + 182, oy + 14, "τ", "tx", "end")
+    s.t(cx + 6, oy - 102, "r_q(τ), β(ℓ)", "ts", "start")
+    s.poly([(cx - 3 * kx, oy), (cx, oy - 3 * ky), (cx + 3 * kx, oy)], "cv")
+    for l in range(-3, 4):
+        h = 3 - abs(l)
+        x = cx + l * kx
+        s.line(x, oy, x, oy - h * ky, "cv2")
+        s.circ(x, oy - h * ky, 3.5, "pt cv2")
+        s.t(x, oy + 16, "0" if l == 0 else f"{l}T".replace("-", "−"), "ts")
+        if l != 0:
+            s.t(x + (10 if l > 0 else -10), oy - h * ky - 6, str(h), "ts a2", "start" if l > 0 else "end")
+    s.t(cx - 10, oy - 3 * ky - 6, "3", "ts a2", "end")
+    s.t(cx + 182, 24, "in unità |A|²T", "ts a2", "end")
+    s.t(cx + 182, 40, "β(±3) = 0: i supporti", "ts", "end")
+    s.t(cx + 182, 54, "si toccano in un punto", "ts", "end")
+    return s.render(), ("🧩 Esempio della slide 56: $q(t)=A$ su $[0,3T]$ ($L=3$). L'uscita del filtro adattato $r_q(\\tau)$ è un triangolo "
+                        "largo $\\pm LT$ (linea blu); i $\\beta(\\ell)$ sono i suoi campioni ogni $T$ (aste arancioni): "
+                        "$\\beta(0)=3\\lvert A\\rvert^2T$, $\\beta(\\pm1)=2\\lvert A\\rvert^2T$, $\\beta(\\pm2)=\\lvert A\\rvert^2T$, "
+                        "$\\beta(\\pm3)=0$. Fuori da $\\lvert\\ell\\rvert<L$ i $\\beta$ sono nulli: per questo nella MLSE ogni simbolo "
+                        "interagisce solo con quelli vicini, e lo stato del traliccio contiene gli ultimi $L$ simboli.")
+
+
 def tutte():
     f = {k[4:]: v for k, v in globals().items() if k.startswith("fig_")}
     return {k: fn() for k, fn in f.items()}

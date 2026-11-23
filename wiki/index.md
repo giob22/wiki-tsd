@@ -72,8 +72,8 @@
 
 **Canali a banda limitata**
 - [[interferenza-intersimbolica]] — ISI, perdita di SNR e BER floor, modello con $p=g\ast h\ast c$ (alta)
-- [[criterio-di-nyquist]] — ISI nulla, sinc, coseno rialzato, radice di Nyquist, $W=(1+\alpha)R_b/\eta_B$ (alta)
-- [[equalizzazione]] — ZF, MMSE, DFE, MLSE con $\alpha(n)$ e $\beta(\ell)$ (alta)
+- [[criterio-di-nyquist]] — ISI nulla, sinc, coseno rialzato, filtri a radice di coseno rialzato (RRC), $W=(1+\alpha)R_b/\eta_B$ (alta)
+- [[equalizzazione]] — equalizzazione frazionaria, ZF e MMSE con formule, DFE, MLSE con $\alpha(n)$ e $\beta(\ell)$ (alta)
 
 **Parametri globali e capacità**
 - [[informazione-mutua-e-capacita]] — $I(X;Y)=H(Y)-H(Y\mid X)$, $C=\max_{p(x)}I$, teorema di Shannon, $C=W\log_2(1+\gamma)$ (alta)
@@ -103,7 +103,7 @@
 - [[appunti-lezione-2-novembre]] — goodnotes/Lezione 11-2.pdf, pp. 1–3
 - [[parametri-globali-e-capacita]] — Confronto_new.pdf, pp. 1–33 (slide con note a mano)
 - [[parameter-estimation-synchronization]] — goodnotes/Synchro_Kay_example (1).pdf, pp. 1–36, e goodnotes/11-9.pdf, pp. 1–2
-- [[signaling-bandlimited-channels]] — goodnotes/signaling_bandlimited_channel.pdf, pp. 1–47
+- [[signaling-bandlimited-channels]] — signaling_bandlimited_channel_NEW.pdf, pp. 1–61 (versione aggiornata del 23/11), con gli appunti di goodnotes/signaling_bandlimited_channel.pdf (versione precedente, 47 pagine)
 - [[appunti-sparsi-lezioni]] — goodnotes/Lezioni.pdf, pp. 1–3 (DFT, ripasso di Rice)
 
 ## Laboratorio (non materia d'esame)

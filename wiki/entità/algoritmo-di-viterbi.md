@@ -5,7 +5,7 @@ categoria: algoritmo
 
 # Algoritmo di Viterbi
 
-## Cos'è · [[signaling_bandlimited_channel.pdf#page=40|p. 40]]–[[signaling_bandlimited_channel.pdf#page=43|43]]
+## Cos'è · [[signaling_bandlimited_channel_NEW.pdf#page=36|p. 36]], [[signaling_bandlimited_channel_NEW.pdf#page=51|51]]–[[signaling_bandlimited_channel_NEW.pdf#page=54|54]]
 
 L'**algoritmo di Viterbi** (VA) trova, tra tutti i cammini che attraversano da sinistra a destra un **traliccio** (trellis) finito, quello con metrica totale massima (o minima). Ogni ramo ha una **metrica di ramo** $m(\sigma_k,\sigma_{k+1})$; le metriche sono additive, e la metrica di un cammino è la somma delle etichette dei suoi rami:
 
@@ -15,15 +15,16 @@ con $\sigma_k\in\{S_1,\dots,S_{N_\sigma}\}$ stato al tempo $k$ e $K$ profondità
 
 - **Forza bruta**: si valutano tutti i cammini, con complessità esponenziale in $K$ e ritardo di decisione $K$ (si decide solo alla fine).
 - **VA**: complessità **lineare in $K$**. La versione **troncata** decide con ritardo molto minore di $K$.
+- Appunti della slide 36: la complessità del VA è lineare in $K$ ed esponenziale nella memoria $L$, e il VA **introduce latenza**, perché la decisione su un simbolo arriva solo dopo aver visto i simboli successivi.
 
-## Come funziona: Add, Compare, Select · [[signaling_bandlimited_channel.pdf#page=43|p. 43]], [[signaling_bandlimited_channel.pdf#page=44|44]]
+## Come funziona: Add, Compare, Select · [[signaling_bandlimited_channel_NEW.pdf#page=54|p. 54]], [[signaling_bandlimited_channel_NEW.pdf#page=55|55]]
 
 Per ogni stato $\sigma_{k+1}$, a ogni passo:
 1. **Add**: per ogni ramo entrante, somma la metrica accumulata nello stato di partenza $\sigma_k$ e la metrica del ramo;
 2. **Compare**: confronta le somme;
 3. **Select**: tiene il ramo migliore (il **sopravvissuto**) e scarta tutti gli altri rami entranti in $\sigma_{k+1}$.
 
-Si ripete dallo stato iniziale a quello finale; alla fine si risale all'indietro lungo i sopravvissuti. La figura di p. 41 mostra un traliccio con $N_\sigma=4$ stati e $K=6$; quella di p. 44 i sopravvissuti passo per passo, fino a un solo cammino a $k=6$.
+Si ripete dallo stato iniziale a quello finale; alla fine si risale all'indietro lungo i sopravvissuti. La figura della slide 51 mostra un traliccio con $N_\sigma=4$ stati e $K=6$; quella della slide 54 i sopravvissuti passo per passo, fino a un solo cammino a $k=6$.
 
 **Perché scartare è lecito:** se il cammino ottimo passa per $\sigma_{k+1}$, il suo tratto iniziale fino a $\sigma_{k+1}$ è per forza il migliore tra quelli che arrivano lì, perché il resto del cammino si somma allo stesso modo a tutti (principio di ottimalità, 🧩 spiegazione mia).
 
@@ -47,9 +48,9 @@ $$
 
 Risalendo i sopravvissuti: A → A → B → A, metrica $1+1+1=3$. **Verifica a forza bruta:** i quattro cammini da A ad A valgono AAAA $=6$, AABA $=3$, ABAA $=7$, ABBA $=7$: il minimo è 3, lo stesso. Il VA ha fatto 3 confronti invece di valutare tutti i cammini; con $K$ grande la differenza diventa enorme.
 
-## Come si usa nel corso · [[signaling_bandlimited_channel.pdf#page=45|p. 45]]–[[signaling_bandlimited_channel.pdf#page=47|47]]
+## Come si usa nel corso · [[signaling_bandlimited_channel_NEW.pdf#page=56|p. 56]]–[[signaling_bandlimited_channel_NEW.pdf#page=58|58]], [[signaling_bandlimited_channel_NEW.pdf#page=60|60]], [[signaling_bandlimited_channel_NEW.pdf#page=61|61]]
 
-Nella [[equalizzazione]] a massima verosimiglianza (MLSE) la log-verosimiglianza della sequenza si scompone come $\lambda(y)=U_L(\sigma_L)+\sum_kV_k$: gli stati sono le ultime $L$ decisioni sui simboli ($M^L$ stati) e le metriche di ramo sono le $V_k$. La MLSE diventa la ricerca del cammino di metrica **massima**, e il VA ne riduce la complessità da $M^{K+1}$ a circa $KM^{L+1}$.
+Nella [[equalizzazione]] a massima verosimiglianza (MLSE) la log-verosimiglianza della sequenza si scompone come $\lambda(y)=U_{L-1}(\sigma_L)+\sum_{k=L}^KV_k(\sigma_k,\sigma_{k+1})$: gli stati $\sigma_\ell=(s(\ell-1),\dots,s(\ell-L))$ sono gli ultimi $L$ simboli ($M^L$ stati), $U_{L-1}$ è la metrica di partenza («metrica aggregata» negli appunti) e le metriche di ramo sono le $V_k$. Il numero di stati dipende dalla memoria del canale perché i coefficienti $\beta(\ell)$ che legano i simboli tra loro sono nulli per $\lvert\ell\rvert\ge L$ (slide 55). La MLSE diventa la ricerca del cammino di metrica **massima**, e il VA ne riduce la complessità da $M^{K+1}$ a circa $KM^{L+1}$.
 
 ## Concetti correlati
 
@@ -57,8 +58,8 @@ Nella [[equalizzazione]] a massima verosimiglianza (MLSE) la log-verosimiglianza
 - [[interferenza-intersimbolica]]: la memoria $L$ del canale fissa il numero di stati.
 - [[rivelazione-map-ml]]: il VA massimizza la stessa verosimiglianza, su sequenze.
 
-## Fonti · [[signaling_bandlimited_channel.pdf#page=39|p. 39]]–[[signaling_bandlimited_channel.pdf#page=47|47]]
+## Fonti · [[signaling_bandlimited_channel_NEW.pdf#page=36|p. 36]], [[signaling_bandlimited_channel_NEW.pdf#page=50|50]]–[[signaling_bandlimited_channel_NEW.pdf#page=58|58]], [[signaling_bandlimited_channel_NEW.pdf#page=60|60]], [[signaling_bandlimited_channel_NEW.pdf#page=61|61]]
 
 - [[signaling-bandlimited-channels]]
 
-_Aggiornato: 2026-11-16 — creazione da ingest signaling_bandlimited_channel.pdf (Lezione 14)_
+_Aggiornato: 2026-11-23 — versione aggiornata delle slide (signaling_bandlimited_channel_NEW.pdf): nuovi indici della scomposizione U/V, latenza dagli appunti, numeri di slide; 2026-11-16 — creazione da ingest signaling_bandlimited_channel.pdf (Lezione 14)_

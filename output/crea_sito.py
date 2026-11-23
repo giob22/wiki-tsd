@@ -81,8 +81,8 @@ LEZIONI = [
          breve="Ritardo e offset dell'oscillatore, timing e portante, stima ML (ampiezza training-based e blind, fase), PLL e Costas loop.",
          concetti=["sincronizzazione", "stima-dei-parametri", "phase-locked-loop"],
          fonte="parameter-estimation-synchronization", esercizi=[]),
-    dict(n=14, slug="lezione-14", data="16/11", titolo="Segnalazione su canali a banda limitata",
-         breve="Interferenza intersimbolica, criterio di Nyquist, coseno rialzato, equalizzazione, MLSE e algoritmo di Viterbi.",
+    dict(n=14, slug="lezione-14", data="16/11 e 23/11", titolo="Segnalazione su canali a banda limitata",
+         breve="Interferenza intersimbolica, criterio di Nyquist, coseno rialzato e filtri RRC, equalizzazione frazionaria, ZF e MMSE, MLSE e algoritmo di Viterbi.",
          concetti=["interferenza-intersimbolica", "criterio-di-nyquist", "equalizzazione", "entità/algoritmo-di-viterbi"],
          fonte="signaling-bandlimited-channels", esercizi=[]),
 ]
@@ -163,8 +163,10 @@ FIGURE = {
     (14, "Slide 26–27 — Raised cosine"): ["coseno_rialzato"],
     (14, "Slide 28–29 — Raised cosine"): ["rc_impulso"],
     (14, "Slide 30 — Osservazioni"): ["radice_nyquist"],
-    (14, "Slide 33–34 — Tipi di equalizzatori"):["equalizzatori"],
-    (14, "Slide 43–44 — I passi chiave"): ["traliccio_viterbi"],
+    (14, "Slide 34–35 — Tipi di equalizzatori"):["equalizzatori"],
+    (14, "Slide 38 — Equalizzazione frazionaria (3/5)"): ["fse_geometria"],
+    (14, "Slide 53–54 — I passi chiave"): ["traliccio_viterbi"],
+    (14, "Slide 56 — Memoria del canale"): ["beta_triangolo"],
 }
 
 # didascalie brevi (una riga) che sostituiscono quelle lunghe dei disegni

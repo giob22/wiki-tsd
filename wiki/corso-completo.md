@@ -2858,31 +2858,31 @@ $$\int_{kT_0}^{(k+1)T_0}y_p(t)\sin(2\pi f_ct+\hat\theta_k)\,dt=\frac12\int_{kT_0
 
 ## Lezione 14 — Segnalazione su canali a banda limitata
 
-*Fonte: signaling_bandlimited_channel.pdf (47 slide «Signaling over bandlimited channels» con appunti a lezione sulle slide 2, 3, 9, 13, 14, 18; in `raw/goodnotes/`). Il numero di pagina coincide con quello della slide. Le equazioni (1)–(16) sono quelle delle slide.*
+*Fonte: signaling_bandlimited_channel_NEW.pdf, versione aggiornata del 23/11 delle slide «Signaling over bandlimited channels»: 59 slide più 2 pagine di soli appunti (61 pagine), con appunti a lezione sulle slide 36, 37, 55, 57, 58, 59 e sulle pagine 38 e 59. Fino a p. 37 il numero di pagina coincide con quello della slide; da p. 39 a p. 58 la slide è la pagina meno 1, e le slide 58–59 sono le pagine 60–61. Gli appunti a mano sulle slide 2, 3, 9, 13, 14, 18 vengono dalla versione precedente (signaling_bandlimited_channel.pdf, 47 slide, in `raw/goodnotes/`), quelli del 19/11 dalla copia (19-11). Le equazioni (1)–(16) sono quelle delle slide.*
 
 ### Canali a banda limitata e interferenza intersimbolica
 
-#### Slide 2 e appunti — Introduzione (1/2) · [[signaling_bandlimited_channel.pdf#page=2|p. 2]]
+#### Slide 2 e appunti — Introduzione (1/2) · [[signaling_bandlimited_channel_NEW.pdf#page=2|p. 2]] · appunti [[signaling_bandlimited_channel.pdf#page=2|p. 2]]
 - Nella trasmissione su canale AWGN non c'è limite sulla banda del canale: $E_b/N_0$ è l'unico fattore che determina le prestazioni del ricevitore.
 - Un canale reale non è solo rumoroso: ha anche **banda finita**. Se un impulso rettangolare, che rappresenta un simbolo, attraversa un canale a banda limitata, all'uscita la sua forma è distorta.
 - Appunti (schizzo): finora il canale era un sommatore, $s(t)+n_p(t)$; adesso è un blocco **canale** seguito dal sommatore del rumore. Il canale non è solo un sommatore: ha una propria risposta impulsiva che modifica lo spettro del segnale in ingresso, e non è un sistema identico.
 
-#### Slide 3 e appunti — Introduzione (2/2) · [[signaling_bandlimited_channel.pdf#page=3|p. 3]]
+#### Slide 3 e appunti — Introduzione (2/2) · [[signaling_bandlimited_channel_NEW.pdf#page=3|p. 3]] · appunti [[signaling_bandlimited_channel.pdf#page=3|p. 3]]
 - I lobi laterali dell'impulso distorto sono una sorgente di distorsione detta **interferenza intersimbolica** (ISI), perché degrada i simboli adiacenti.
 - Differenza fondamentale tra ISI e rumore:
   - il **rumore** è indipendente dal segnale trasmesso: il suo effetto compare all'ingresso del ricevitore appena si accende il sistema;
   - l'**ISI dipende dal segnale**: scompare solo quando si spegne il segnale trasmesso (appunti: dipende dal segnale trasmesso, a differenza del rumore termico).
 
-#### Slide 4–5 — Effetto del rumore: perdita di SNR · [[signaling_bandlimited_channel.pdf#page=4|p. 4]], [[signaling_bandlimited_channel.pdf#page=5|5]]
+#### Slide 4–5 — Effetto del rumore: perdita di SNR · [[signaling_bandlimited_channel_NEW.pdf#page=4|p. 4]], [[signaling_bandlimited_channel_NEW.pdf#page=5|5]]
 - Un sistema ha BER teorica data dalla curva continua in funzione di $E_b/N_0$; se le prestazioni seguono invece la curva tratteggiata, si ha una **perdita di SNR**, causata da perdite di segnale o da un aumento di rumore o interferenza.
 - Per BER $=10^{-5}$ la curva teorica richiede $E_b/N_0=10$ dB; quella tratteggiata 12 dB: servono **2 dB in più**. È un problema soprattutto per i sistemi limitati in potenza.
 - Figura (slide 5): BER da $1$ a $10^{-5}$ in funzione di $E_b/N_0$ da $-10$ a 12 dB; la curva tratteggiata è la continua traslata di 2 dB a destra.
 
-#### Slide 6–7 — Effetto dell'ISI: BER irriducibile · [[signaling_bandlimited_channel.pdf#page=6|p. 6]], [[signaling_bandlimited_channel.pdf#page=7|7]]
+#### Slide 6–7 — Effetto dell'ISI: BER irriducibile · [[signaling_bandlimited_channel_NEW.pdf#page=6|p. 6]], [[signaling_bandlimited_channel_NEW.pdf#page=7|7]]
 - Se il sistema è degradato da rumore **e** ISI (curva tratteggiata della slide 7), nessun aumento di $E_b/N_0$ risolve il problema: la curva presenta un **pavimento** (BER floor, nella figura poco sotto $10^{-4}$, circa $4\cdot10^{-5}$), e aumentare $E_b/N_0$ non serve se il pavimento sta sopra la BER richiesta.
 - Il rimedio è l'**equalizzazione**: poiché l'ISI è causata dal filtraggio nel trasmettitore e nel canale, l'equalizzazione è il processo che inverte questi effetti di filtraggio non ottimi.
 
-#### Slide 8 — Modulazione lineare · [[signaling_bandlimited_channel.pdf#page=8|p. 8]]
+#### Slide 8 — Modulazione lineare · [[signaling_bandlimited_channel_NEW.pdf#page=8|p. 8]]
 - Forma d'onda trasmessa in banda base complessa per modulazione lineare bidimensionale (PSK o QAM):
 
 $$u(t)=\sum_ns(n)\,g(t-nT)=\Big[\sum_ns(n)\,\delta(t-nT)\Big]\ast g(t)\tag{1}$$
@@ -2891,17 +2891,17 @@ $$u(t)=\sum_ns(n)\,g(t-nT)=\Big[\sum_ns(n)\,\delta(t-nT)\Big]\ast g(t)\tag{1}$$
 - Symbol rate (baud rate) $1/T$, con $T=bT_b$ intervallo di simbolo e $T_b$ intervallo di bit; bit rate $R_b=b/T=(\log_2M)/T$ bit/s.
 - La PAM è il caso particolare della (1) con simboli reali (costellazione monodimensionale).
 
-#### Slide 9 e appunti — Modello del sistema · [[signaling_bandlimited_channel.pdf#page=9|p. 9]]
+#### Slide 9 e appunti — Modello del sistema · [[signaling_bandlimited_channel_NEW.pdf#page=9|p. 9]] · appunti [[signaling_bandlimited_channel.pdf#page=9|p. 9]]
 - Schema: $s(n)$ (impulsi distanti $T$) → **filtro di trasmissione** $g(t)$ → $u(t)$ (impulsi sagomati) → **canale** $h(t)$, a cui si somma il **rumore** → **filtro di ricezione** $c(t)$ → campionatore a $t=kT$ → **decisore**.
 - Appunti: si fa riferimento solo agli inviluppi complessi; il canale è un sistema non trasparente; il campionatore in prima ipotesi è perfettamente sincronizzato.
 
-#### Slide 10 — Interferenza intersimbolica (1/4) · [[signaling_bandlimited_channel.pdf#page=10|p. 10]]
+#### Slide 10 — Interferenza intersimbolica (1/4) · [[signaling_bandlimited_channel_NEW.pdf#page=10|p. 10]]
 - Si usa la rappresentazione in banda base complessa di segnali e filtri e si suppone sincronizzazione perfetta.
 - L'inviluppo $u(t)$ è modificato dal canale a banda limitata di risposta impulsiva $h(t)$: il segnale ricevuto in banda base complessa (dopo la downconversion) è $x(t)=u(t)\ast h(t)+n(t)$, con $n(t)$ WGN.
 - In AWGN, con $h(t)=\delta(t)$, il rivelatore ottimo (simbolo per simbolo) è la cascata filtro adattato + campionatore.
 - Su canale a banda limitata si vuole un ricevitore fatto da un filtro lineare (**filtro di ricezione**) di risposta $c(t)$ seguito da un campionatore a rate $1/T$; i campioni di $y(t)$ presi ogni $T$ secondi vanno al decisore.
 
-#### Slide 11–12 — Interferenza intersimbolica (2/4)–(3/4) · [[signaling_bandlimited_channel.pdf#page=11|p. 11]], [[signaling_bandlimited_channel.pdf#page=12|12]]
+#### Slide 11–12 — Interferenza intersimbolica (2/4)–(3/4) · [[signaling_bandlimited_channel_NEW.pdf#page=11|p. 11]], [[signaling_bandlimited_channel_NEW.pdf#page=12|12]]
 - A meno di un fattore di scala, il segnale senza rumore all'uscita del filtro di ricezione è
 
 $$y(t)=\sum_ns(n)\,p(t-nT)=\Big[\sum_ns(n)\,\delta(t-nT)\Big]\ast p(t),\qquad p(t)=g(t)\ast h(t)\ast c(t)\tag{2}$$
@@ -2911,7 +2911,7 @@ $$y(t)=\sum_ns(n)\,p(t-nT)=\Big[\sum_ns(n)\,\delta(t-nT)\Big]\ast p(t),\qquad p(
 
 $$p(t)=g(t)\ast h(t)\ast c(t)\tag{3}\qquad\Longleftrightarrow\qquad P(f)=G(f)\,H(f)\,C(f)$$
 
-#### Slide 13 e appunti — Interferenza intersimbolica (4/4) · [[signaling_bandlimited_channel.pdf#page=13|p. 13]]
+#### Slide 13 e appunti — Interferenza intersimbolica (4/4) · [[signaling_bandlimited_channel_NEW.pdf#page=13|p. 13]] · appunti [[signaling_bandlimited_channel.pdf#page=13|p. 13]]
 - Campionando all'istante $t_k=kT$, $k\in\mathbb Z$ (appunti: si vuole ottenere il simbolo $k$-esimo):
 
 $$y(t_k)=\sum_{n=-\infty}^{+\infty}s(n)\,p[(k-n)T]=s(k)+\sum_{\substack{n=-\infty\\n\neq k}}^{+\infty}s(n)\,p[(k-n)T]$$
@@ -2923,7 +2923,7 @@ $$y(t_k)=\sum_{n=-\infty}^{+\infty}s(n)\,p[(k-n)T]=s(k)+\sum_{\substack{n=-\inft
 
 ### Progetto del segnale a ISI nulla: criterio di Nyquist
 
-#### Slide 14 e appunti — Signal design per ISI nulla (1/2) · [[signaling_bandlimited_channel.pdf#page=14|p. 14]] · appunti del 19/11 [[signaling_bandlimited_channel (19-11).pdf#page=15|p. 15]]
+#### Slide 14 e appunti — Signal design per ISI nulla (1/2) · [[signaling_bandlimited_channel_NEW.pdf#page=14|p. 14]] · appunti [[signaling_bandlimited_channel.pdf#page=14|p. 14]] · appunti del 19/11 [[signaling_bandlimited_channel (19-11).pdf#page=15|p. 15]]
 - Problema: costruire l'impulso complessivo $p(t)$ dell'intero sistema in modo che il ricevitore possa ricostruire esattamente la sequenza di dati in ingresso al trasmettitore. La segnalazione sul canale a banda limitata diventa senza distorsione: è un **problema di progetto del segnale**.
 - Gli impulsi sovrapposti si configurano in modo che all'uscita del ricevitore non interferiscano tra loro negli istanti di campionamento $t_k=kT$.
 - In tal caso la rivelazione simbolo per simbolo, ottima in AWGN, resta ottima anche sul canale a banda limitata.
@@ -2934,16 +2934,16 @@ $$y(t_k)=\sum_{n=-\infty}^{+\infty}s(n)\,p[(k-n)T]=s(k)+\sum_{\substack{n=-\inft
 > - **Equalizzatori**: filtri al ricevitore che compensano la distorsione del canale e riducono l'ISI residua (lineari ZF e MMSE, oppure DFE).
 > - **OFDM**: divide la banda in molte sottoportanti strette, ognuna vista come un canale piatto; i simboli diventano lunghi e l'ISI trascurabile.
 >
-> 🧩 Le descrizioni sono mie: Viterbi ed equalizzatori si vedono alla fine di questa lezione, l'OFDM nelle slide non c'è ancora.
+> 🧩 Le descrizioni sono mie: Viterbi ed equalizzatori si vedono alla fine di questa lezione, l'OFDM nelle slide non c'è.
 
-#### Slide 15 — Signal design per ISI nulla (2/2) · [[signaling_bandlimited_channel.pdf#page=15|p. 15]]
+#### Slide 15 — Signal design per ISI nulla (2/2) · [[signaling_bandlimited_channel_NEW.pdf#page=15|p. 15]]
 - Il criterio usato nel progetto del ricevitore è l'eliminazione dell'ISI dalla sequenza campionata $y(t_k)$. Il **criterio di Nyquist** richiede
 
 $$p(kT-nT)=\begin{cases}1&n=k\\0&n\neq k\end{cases}\tag{4}$$
 
 - Un impulso che soddisfa la (4) si chiama **impulso di Nyquist**. Non è unico: molte forme d'impulso soddisfano il criterio.
 
-#### Slide 16 — Il criterio nel dominio della frequenza (1/2) · [[signaling_bandlimited_channel.pdf#page=16|p. 16]]
+#### Slide 16 — Il criterio nel dominio della frequenza (1/2) · [[signaling_bandlimited_channel_NEW.pdf#page=16|p. 16]]
 - Il titolo di questa slide e della successiva è «impulso di Nyquist ideale per la trasmissione dati **in banda base** senza distorsione».
 - Treno periodico di delta distanti $T$:
 
@@ -2956,14 +2956,14 @@ $$R_s\sum_{k=-\infty}^{+\infty}P(f-kR_s)=1$$
 
   con $R_s=1/T$ symbol rate in simboli/s. (La slide dice «trasformando la (16)»: si riferisce all'uguaglianza appena scritta.)
 
-#### Slide 17 — Il criterio nel dominio della frequenza (2/2) · [[signaling_bandlimited_channel.pdf#page=17|p. 17]]
+#### Slide 17 — Il criterio nel dominio della frequenza (2/2) · [[signaling_bandlimited_channel_NEW.pdf#page=17|p. 17]]
 - La condizione per ISI nulla in frequenza è
 
 $$\sum_{k=-\infty}^{+\infty}P(f-kR_s)=T\tag{6}$$
 
 - **Criterio di Nyquist per la trasmissione in banda base senza distorsione**, nel dominio della frequenza: $P(f)$ elimina l'ISI per campioni presi a intervalli $T$ se soddisfa la (6). $P(f)$ si riferisce all'intero sistema: filtro di trasmissione, canale e filtro di ricezione.
 
-#### Slide 18–19 e appunti — Impulso di Nyquist ideale (1/4)–(2/4) · [[signaling_bandlimited_channel.pdf#page=18|p. 18]], [[signaling_bandlimited_channel.pdf#page=19|19]]
+#### Slide 18–19 e appunti — Impulso di Nyquist ideale (1/4)–(2/4) · [[signaling_bandlimited_channel_NEW.pdf#page=18|p. 18]], [[signaling_bandlimited_channel_NEW.pdf#page=19|19]] · appunti [[signaling_bandlimited_channel.pdf#page=18|p. 18]]
 - Il modo più semplice di soddisfare la (6) è uno spettro rettangolare:
 
 $$P(f)=T\,\text{rect}\Big(\frac{f}{1/T}\Big)\tag{7}$$
@@ -2984,17 +2984,17 @@ $$P(f)=T\,\text{rect}\Big(\frac{f}{1/T}\Big)\tag{7}$$
 > - Lettura con i gradi di libertà (Lezione 12): un segnale di banda $W$ e durata $T_0$ ha $2WT_0$ dimensioni reali, cioè porta al più $2W$ valori indipendenti al secondo; per $\frac1T$ simboli al secondo serve $2W\ge\frac1T$.
 > - Esempio: la sequenza più «veloce», $+1,-1,+1,-1,\dots$, è un'oscillazione di periodo $2T$, cioè di frequenza $\frac1{2T}$: nessuna sequenza chiede frequenze più alte.
 
-#### Slide 20–21 — Impulso di Nyquist ideale (3/4)–(4/4) · [[signaling_bandlimited_channel.pdf#page=20|p. 20]], [[signaling_bandlimited_channel.pdf#page=21|21]]
+#### Slide 20–21 — Impulso di Nyquist ideale (3/4)–(4/4) · [[signaling_bandlimited_channel_NEW.pdf#page=20|p. 20]], [[signaling_bandlimited_channel_NEW.pdf#page=21|21]]
 - $p(t)$ è la risposta impulsiva di un **filtro passa-basso** ideale con risposta in ampiezza $1/(2W_N)$ nella sua banda passante (*passband*, le frequenze che lascia passare: $|f|<W_N$) e banda $W_N$.
 - $p(t)$ ha il picco nell'origine e si annulla nei multipli interi di $T$: se $y(t)$ è campionato in $t=0,\pm T,\pm2T,\dots$, gli impulsi $s(n)\,p(t-nT)$ non interferiscono tra loro.
 - Figura (slide 21): modulazione binaria, somma di sinc per la sequenza di bit 1011010; in ogni istante di campionamento conta solo l'impulso centrato lì.
 
-#### Slide 22 — Difficoltà pratiche (1/3) · [[signaling_bandlimited_channel.pdf#page=22|p. 22]]
+#### Slide 22 — Difficoltà pratiche (1/3) · [[signaling_bandlimited_channel_NEW.pdf#page=22|p. 22]]
 - L'impulso di Nyquist ideale è economico in banda (ISI nulla con la minima banda possibile), ma ha due difficoltà pratiche:
   - richiede $|P(f)|$ piatto da $-W_N$ a $+W_N$ e nullo altrove: è **fisicamente irrealizzabile** (non causale), perché le transizioni brusche a $\pm W_N$ violano il **criterio di Paley-Wiener**;
   - $p(t)$ decresce come $1/|t|$ per $|t|$ grande: decadimento lento, dovuto anch'esso alla discontinuità di $P(f)$ in $\pm W_N$. Non c'è praticamente margine d'errore sugli istanti di campionamento.
 
-#### Slide 23–24 — Difficoltà pratiche (2/3)–(3/3): errore di timing · [[signaling_bandlimited_channel.pdf#page=23|p. 23]], [[signaling_bandlimited_channel.pdf#page=24|24]]
+#### Slide 23–24 — Difficoltà pratiche (2/3)–(3/3): errore di timing · [[signaling_bandlimited_channel_NEW.pdf#page=23|p. 23]], [[signaling_bandlimited_channel_NEW.pdf#page=24|24]]
 - Si campiona in $t_k=kT+\Delta t$, con $\Delta t$ errore di timing; ci si concentra sull'intervallo di simbolo $[0,T)$, cioè $k=0$, e senza rumore:
 
 $$y(t_0)=y(\Delta t)=\sum_{n=-\infty}^{+\infty}s(n)\,p(\Delta t-nT)\tag{8}$$
@@ -3009,14 +3009,14 @@ $$y(\Delta t)=s(0)\,\text{sinc}\Big(\frac{\Delta t}{T}\Big)+\sum_{n\neq0}s(n)\,\
 
 ### Lo spettro a coseno rialzato
 
-#### Slide 25 — Raised cosine (1/5) · [[signaling_bandlimited_channel.pdf#page=25|p. 25]]
+#### Slide 25 — Raised cosine (1/5) · [[signaling_bandlimited_channel_NEW.pdf#page=25|p. 25]]
 - Si superano le difficoltà estendendo la banda dal minimo $W_N=R_s/2=1/(2T)$ a un valore regolabile tra $W_N$ e $2W_N$.
 - Un decadimento più rapido nel tempo implica un decadimento più lento in frequenza ⇒ serve **banda in eccesso** oltre il minimo di Nyquist: si scambia banda per un progetto più robusto agli errori di timing.
 - Si impone a $P(f)$ una condizione più stringente di quella dell'impulso ideale:
 
 $$P(f)+P\Big(f-\frac1T\Big)+P\Big(f+\frac1T\Big)=T,\qquad f\in\Big(-\frac1{2T},\frac1{2T}\Big)\tag{10}$$
 
-#### Slide 26–27 — Raised cosine (2/5)–(3/5) · [[signaling_bandlimited_channel.pdf#page=26|p. 26]], [[signaling_bandlimited_channel.pdf#page=27|27]]
+#### Slide 26–27 — Raised cosine (2/5)–(3/5) · [[signaling_bandlimited_channel_NEW.pdf#page=26|p. 26]], [[signaling_bandlimited_channel_NEW.pdf#page=27|27]]
 - Una forma con molte proprietà desiderabili è lo **spettro a coseno rialzato**: una parte piatta e una parte di roll-off sinusoidale,
 
 $$P(f)=\begin{cases}T,&|f|\le\dfrac{1-\alpha}{2T}\\[2mm]\dfrac T2\Big[1-\sin\Big(\big(|f|-\tfrac1{2T}\big)\dfrac{\pi T}{\alpha}\Big)\Big],&\dfrac{1-\alpha}{2T}\le|f|<\dfrac{1+\alpha}{2T}\\[2mm]0,&|f|\ge\dfrac{1+\alpha}{2T}\end{cases}$$
@@ -3026,41 +3026,147 @@ $$P(f)=\begin{cases}T,&|f|\le\dfrac{1-\alpha}{2T}\\[2mm]\dfrac T2\Big[1-\sin\Big
 
 $$p(t)=\text{sinc}\Big(\frac tT\Big)\,\frac{\cos(\pi\alpha t/T)}{1-(2\alpha t/T)^2}$$
 
-#### Slide 28–29 — Raised cosine (4/5)–(5/5) · [[signaling_bandlimited_channel.pdf#page=28|p. 28]], [[signaling_bandlimited_channel.pdf#page=29|29]]
+#### Slide 28–29 — Raised cosine (4/5)–(5/5) · [[signaling_bandlimited_channel_NEW.pdf#page=28|p. 28]], [[signaling_bandlimited_channel_NEW.pdf#page=29|29]]
 - Figura (slide 28), modulazione binaria ($T=T_b$): (a) risposta in frequenza e (b) risposta impulsiva per diversi roll-off.
 - $p(t)$ è il prodotto di due fattori: $\text{sinc}(t/T)$, che garantisce gli zeri negli istanti $t=kT$, e un secondo fattore che decresce come $1/|t|^2$ per $|t|$ grande e riduce molto le code rispetto all'impulso ideale: la trasmissione diventa relativamente insensibile agli errori di campionamento.
 - Queste due proprietà sono molto utili per estrarre dal segnale ricevuto l'informazione di timing ai fini della sincronizzazione. Il prezzo è una banda maggiore di quella del canale di Nyquist ideale ($\alpha=0$).
 
-#### Slide 30 — Osservazioni: impulso a radice di Nyquist · [[signaling_bandlimited_channel.pdf#page=30|p. 30]]
+#### Slide 30 — Osservazioni: filtri a radice di Nyquist · [[signaling_bandlimited_channel_NEW.pdf#page=30|p. 30]]
 - Il criterio di Nyquist riguarda la cascata di filtro di trasmissione, canale e filtro di ricezione; ma il canale di solito non è sotto controllo.
-- In pratica si progettano trasmettitore e ricevitore in modo che $G(f)\,C(f)$ sia di Nyquist, e l'ISI introdotta dal canale si tratta a parte.
-- Scelta tipica: $G(f)$ e $C(f)$ radici quadrate (in frequenza) di un impulso di Nyquist: **impulso a radice di Nyquist** (square root Nyquist).
+- In pratica si progettano trasmettitore e ricevitore in modo che $G(f)\,C(f)$ sia di Nyquist, e l'ISI introdotta dal canale la tratta separatamente un **equalizzatore**.
+- Scelta tipica: $G(f)$ e $C(f)$ radici quadrate (in frequenza) di uno spettro di Nyquist: **filtri a radice di Nyquist** (square-root Nyquist).
 
-#### Slide 31 — Efficienza di banda con ISI nulla · [[signaling_bandlimited_channel.pdf#page=31|p. 31]]
+#### Slide 31 — Filtri a radice di coseno rialzato · [[signaling_bandlimited_channel_NEW.pdf#page=31|p. 31]]
+- Si sceglie il filtro di ricezione **adattato** al filtro di trasmissione:
+
+$$c(t)=g^\ast(-t)\qquad\Longleftrightarrow\qquad C(f)=G^\ast(f)$$
+
+- La cascata dei due filtri è
+
+$$p_{RC}(t)\triangleq g(t)\ast c(t)\qquad\Longleftrightarrow\qquad P_{RC}(f)=G(f)\,C(f)=\lvert G(f)\rvert^2$$
+
+  e si impone che $P_{RC}(f)$ sia lo spettro a coseno rialzato con roll-off $\alpha$ visto prima.
+- Scrivendo $G(f)=\lvert G(f)\rvert e^{j\phi(f)}$:
+
+$$G(f)=\sqrt{P_{RC}(f)}\,e^{j\phi(f)},\qquad C(f)=\sqrt{P_{RC}(f)}\,e^{-j\phi(f)}$$
+
+  (filtri a **radice di coseno rialzato**, RRC, *root-raised-cosine*). Il filtro adattato cancella la fase, quindi $\phi(f)$ non influenza $P_{RC}(f)$.
+- Scelta usuale: $\phi(f)=0$ ⇒ $g(t)$ reale e pari, $c(t)=g(t)$ (reso causale con un troncamento e un ritardo, cioè una fase lineare).
+- $p_{RC}(t)$ è un impulso di Nyquist; l'impulso RRC $g(t)$ da solo **no**.
+
+#### Slide 32 — Efficienza di banda con ISI nulla · [[signaling_bandlimited_channel_NEW.pdf#page=32|p. 32]]
 - In assenza di ISI l'efficienza di banda è $\eta_B=R_b/W$ (bit/s/Hz): $\eta_B=2\log_2M$ per modulazione lineare monodimensionale, $\eta_B=\log_2M$ per bidimensionale (Lezione 12).
-- Noti $R_b$ ed $\eta_B$, la banda (monolatera) minima richiesta in assenza di ISI è $W=R_b/\eta_B$; in presenza di ISI, dice la slide, questa banda si espande della banda in eccesso, e la banda effettiva è
+- Noti $R_b$ ed $\eta_B$, la banda (monolatera) minima richiesta in assenza di ISI è $W=R_b/\eta_B$; con impulsi a coseno rialzato questa banda si espande della banda in eccesso (roll-off $\alpha$), e la banda effettiva è
 
 $$W_{actual}=(1+\alpha)\,\frac{R_b}{\eta_B}$$
 
 ### Equalizzazione
 
-#### Slide 32 — Problemi nel soddisfare la condizione di ISI nulla · [[signaling_bandlimited_channel.pdf#page=32|p. 32]]
-- Progettare il sistema con il criterio di Nyquist ha tre limiti pratici:
+#### Slide 33 — Problemi nel soddisfare la condizione di ISI nulla · [[signaling_bandlimited_channel_NEW.pdf#page=33|p. 33]]
+- Progettare il sistema con il criterio di Nyquist ha due limiti pratici:
   - la risposta $h(t)$ del canale deve essere nota al trasmettitore, per fare in modo che $g(t)\ast h(t)\ast c(t)$ sia un coseno rialzato; in molti scenari non sono disponibili stime affidabili di $h(t)$ al trasmettitore;
-  - i filtri di trasmissione e ricezione vanno progettati sulla risposta del canale, cosa irragionevole in ambienti tempo-varianti;
-  - in pratica si può rinunciare alla condizione di ISI nulla ⇒ serve un **equalizzatore** al ricevitore.
+  - i filtri di trasmissione e ricezione vanno progettati sulla risposta del canale, cosa irragionevole in ambienti tempo-varianti.
+- In pratica si può rinunciare alla condizione di ISI nulla ⇒ serve un **equalizzatore** al ricevitore.
 - Si chiama **equalizzazione** qualunque tecnica di elaborazione o filtraggio progettata per eliminare o ridurre l'ISI.
 
-#### Slide 33–34 — Tipi di equalizzatori · [[signaling_bandlimited_channel.pdf#page=33|p. 33]], [[signaling_bandlimited_channel.pdf#page=34|34]]
+#### Slide 34–35 — Tipi di equalizzatori · [[signaling_bandlimited_channel_NEW.pdf#page=34|p. 34]], [[signaling_bandlimited_channel_NEW.pdf#page=35|35]]
 - L'equalizzazione si divide in **lineare** e **non lineare**.
 - Le tecniche lineari, come **zero-forcing (ZF)** e **minimum mean-square error (MMSE)**, sono le più semplici da realizzare e da capire, ma in genere soffrono di più **amplificazione del rumore**.
 - Tra le non lineari la più comune è la **decision-feedback equalization (DFE)**, abbastanza semplice e di solito efficace; su canali a basso SNR soffre di **propagazione degli errori** quando i bit sono decisi in modo errato.
 - La tecnica ottima è la **maximum likelihood sequence estimation (MLSE)**, la cui complessità cresce esponenzialmente con la memoria del canale: è impraticabile sulla maggior parte dei canali d'interesse.
-- Figura (slide 34): albero degli equalizzatori. Tipi: lineari e non lineari (DFE, MLSE). Strutture: transversal e lattice (lineari e DFE), transversal channel estimator (MLSE). Algoritmi di aggiornamento dei coefficienti: LMS, RLS, Fast RLS, Square-Root LS (strutture transversal), Gradient RLS (lattice).
+- Figura (slide 35): albero degli equalizzatori. Tipi: lineari e non lineari (DFE, MLSE). Strutture: transversal e lattice (lineari e DFE), transversal channel estimator (MLSE). Algoritmi di aggiornamento dei coefficienti: LMS, RLS, Fast RLS, Square-Root LS (strutture transversal), Gradient RLS (lattice).
+
+### Equalizzazione a spaziatura frazionaria
+
+#### Slide 36 e appunti — Equalizzazione frazionaria (1/5): il sistema · [[signaling_bandlimited_channel_NEW.pdf#page=36|p. 36]]
+- Sistema di trasmissione in banda base: $s(n)$ → filtro di trasmissione $g(t)$ → canale $h(t)$ → $+\,w(t)$ → filtro di ricezione $c(t)$ → $r(t)$ → campionatore → **equalizzatore** (EQ) → $z(k)$.
+- La parte senza rumore di $r(t)$ è
+
+$$y(t)=\sum_{n=-\infty}^{+\infty}s(n)\,p(t-nT),\qquad p(t)\triangleq g(t)\ast h(t)\ast c(t)$$
+
+- $g(t)$ e $c(t)$ sono i filtri RRC, progettati senza conoscere il canale; l'equalizzatore si occupa dell'ISI introdotta da $h(t)$.
+- Appunti: l'EQ «è un filtro digitale»; sulla formula di $y(t)$, «ipotesi di modulazione lineare». Accanto al titolo: la complessità dell'algoritmo di Viterbi introduce latenza, è lineare in $K$ ed esponenziale in $L$.
+
+#### Slide 37 e appunti — Equalizzazione frazionaria (2/5): ISI introdotta dal canale · [[signaling_bandlimited_channel_NEW.pdf#page=37|p. 37]], [[signaling_bandlimited_channel_NEW.pdf#page=38|38]]
+- L'impulso complessivo comprende anche il canale, $p(t)=g(t)\ast h(t)\ast c(t)$: anche se $p_{RC}(t)=g(t)\ast c(t)$ è un impulso di Nyquist, $p(mT)$ non è necessariamente nullo per $m\neq0$.
+- Si suppone $p(t)=0$ fuori da $[0,LT]$: l'impulso complessivo ha **memoria finita** di $L$ intervalli di simbolo (dopo troncamento e un ritardo opportuno). Appunti: «stiamo assumendo che il canale abbia memoria finita».
+- In $t_k=kT$ i termini non nulli soddisfano $0\le(k-n)T\le LT\iff k-L\le n\le k$. Con il cambio d'indice $m=k-n$ ($n=k\Rightarrow m=0$, $n=k-L\Rightarrow m=L$):
+
+$$y(kT)=\sum_{n=k-L}^ks(n)\,p\big((k-n)T\big)=\sum_{m=0}^Ls(k-m)\,p(mT)$$
+
+- Con $y(k)\triangleq y(kT)$ e $p(m)\triangleq p(mT)$, separando il termine $m=0$:
+
+$$y(k)=\underbrace{s(k)p(0)}_{\text{segnale utile}}+\underbrace{\sum_{m=1}^Ls(k-m)\,p(m)}_{\text{ISI}}$$
+
+- Pagina di appunti (p. 38): $y(t)=\sum_ms(m)p(t-mT)$; si campiona il segnale al baud rate, $t_k=kT$: $y(t_k)=y(kT)=\sum_ms(m)\,p[(k-m)T]$; se $p(t)\neq0$ solo per $t\in[0,LT]$, allora $0\le k-m\le L$.
+
+#### Slide 38 — Equalizzazione frazionaria (3/5): perché sovracampionare · [[signaling_bandlimited_channel_NEW.pdf#page=39|p. 39]]
+- Esempio con $L=1$: si cerca un equalizzatore che agisca sui campioni di **un** intervallo di simbolo, con guadagno utile unitario e ISI nulla.
+- **Campionamento al symbol rate ($S=1$)**: $z(k)=c^\ast y(k)=c^\ast p(0)\,s(k)+c^\ast p(1)\,s(k-1)$, con le condizioni $c^\ast p(0)=1$ e $c^\ast p(1)=0$: 1 incognita, 2 equazioni. Si risolve solo se $p(1)=0$: lo scalare $c$ moltiplica segnale utile e ISI per lo **stesso fattore**, quindi il loro rapporto non può cambiare.
+- **Sovracampionamento ($S=2$)**: figura nel piano (1° campione, 2° campione) con i vettori $\mathbf p_0$, $\mathbf p_1$ e $\mathbf c$: $\mathbf c\perp\mathbf p_1$ cancella l'ISI, mentre $\mathbf c^H\mathbf p_0\neq0$.
+- Con $S$ campioni per intervallo, $\mathbf c\in\mathbb C^S$ ha $S$ incognite per $L+1$ equazioni: in generale serve $S\ge L+1$.
+
+#### Slide 39 — Equalizzazione frazionaria (4/5): campionamento frazionario · [[signaling_bandlimited_channel_NEW.pdf#page=40|p. 40]]
+- In un **equalizzatore a spaziatura frazionaria** (*fractionally spaced equalizer*) si prendono $S>1$ campioni per intervallo di simbolo:
+
+$$t_{k,\ell}\triangleq kT+\ell T_c,\qquad\ell=0,1,\dots,S-1,\qquad T_c=\frac TS$$
+
+- Figura ($S=2$): campioni in $0$, $T$, $2T$ e, a metà, i campioni in più in $T_c$ e $T+T_c$.
+- Per $\ell=0,\dots,S-1$:
+
+$$y(kT+\ell T_c)=\sum_{n=k-L}^ks(n)\,p\big((k-n)T+\ell T_c\big)=\sum_{m=0}^Ls(k-m)\,p(mT+\ell T_c)$$
+
+#### Slide 40 — Equalizzazione frazionaria (5/5): modello vettoriale · [[signaling_bandlimited_channel_NEW.pdf#page=41|p. 41]]
+- Si raccolgono gli $S$ campioni nel vettore $\mathbf y(k)\triangleq[y(kT),\ y(kT+T_c),\ \dots,\ y(kT+(S-1)T_c)]^T\in\mathbb C^{S\times1}$.
+- Per $m=0,1,\dots,L$ si definiscono i vettori dell'impulso campionato $\mathbf p_m\triangleq[p(mT),\ p(mT+T_c),\ \dots,\ p(mT+(S-1)T_c)]^T$.
+- Il segnale ricevuto segue il **modello vettoriale dell'ISI**
+
+$$\mathbf y(k)=\underbrace{s(k)\,\mathbf p_0}_{\text{segnale utile}}+\underbrace{\sum_{m=1}^Ls(k-m)\,\mathbf p_m}_{\text{ISI}}$$
+
+### Equalizzatori lineari: zero-forcing e MMSE
+
+#### Slide 41 — Equalizzazione zero-forcing (1/2) · [[signaling_bandlimited_channel_NEW.pdf#page=42|p. 42]]
+- L'equalizzatore usa un vettore di coefficienti $\mathbf c\in\mathbb C^{S\times1}$ e produce
+
+$$z(k)=\mathbf c^H\mathbf y(k)=s(k)\,\mathbf c^H\mathbf p_0+\sum_{m=1}^Ls(k-m)\,\mathbf c^H\mathbf p_m$$
+
+- Il criterio **zero-forcing** (ZF) richiede $\mathbf c^H\mathbf p_0=1$ (guadagno unitario sul segnale utile) e $\mathbf c^H\mathbf p_m=0$, $m=1,\dots,L$ (ISI nulla).
+- Con $\mathbf P\triangleq[\mathbf p_0\ \mathbf p_1\ \cdots\ \mathbf p_L]\in\mathbb C^{S\times(L+1)}$ ed $\mathbf e_1\triangleq[1,0,\dots,0]^T$, i vincoli ZF si scrivono $\mathbf P^H\mathbf c=\mathbf e_1$.
+
+#### Slide 42 — Equalizzazione zero-forcing (2/2) · [[signaling_bandlimited_channel_NEW.pdf#page=43|p. 43]]
+- Tra gli equalizzatori che soddisfano $\mathbf P^H\mathbf c=\mathbf e_1$ si sceglie quello di **norma euclidea minima**: $\min_{\mathbf c}\lVert\mathbf c\rVert^2$ con $\mathbf P^H\mathbf c=\mathbf e_1$.
+- Se $S\ge L+1$ e $\mathbf P$ ha rango pieno per colonne, la soluzione è
+
+$$\mathbf c_{ZF}=(\mathbf P^H)^\dagger\mathbf e_1=\mathbf P(\mathbf P^H\mathbf P)^{-1}\mathbf e_1$$
+
+  dove $\dagger$ indica la pseudoinversa di Moore-Penrose.
+- Con il rumore, $\mathbf r(k)=\mathbf y(k)+\mathbf n(k)$, l'uscita contiene $\mathbf c^H\mathbf n(k)$, di potenza $E\{\lvert\mathbf c^H\mathbf n(k)\rvert^2\}=\mathbf c^H\mathbf R_{nn}\mathbf c$, con $\mathbf R_{nn}\triangleq E\{\mathbf n(k)\mathbf n^H(k)\}$. I vincoli ZF possono portare ad **amplificazione del rumore**.
+
+#### Slide 43 — Equalizzazione MMSE (1/2) · [[signaling_bandlimited_channel_NEW.pdf#page=44|p. 44]]
+- Per tenere conto del rumore si considerano $\mathbf r(k)=\mathbf y(k)+\mathbf n(k)$ e $z(k)=\mathbf c^H\mathbf r(k)$.
+- Il criterio **MMSE** minimizza l'errore quadratico medio di stima
+
+$$J(\mathbf c)\triangleq E\big\{\lvert\mathbf c^H\mathbf r(k)-s(k)\rvert^2\big\}$$
+
+- Sviluppando il modulo quadro:
+
+$$J(\mathbf c)=E\{(\mathbf c^H\mathbf r-s)(\mathbf r^H\mathbf c-s^\ast)\}=\mathbf c^H\mathbf R_{rr}\mathbf c-\mathbf c^HE\{\mathbf rs^\ast\}-E\{s\mathbf r^H\}\mathbf c+\sigma_s^2$$
+
+  con $\mathbf R_{rr}\triangleq E\{\mathbf r(k)\mathbf r^H(k)\}$ e $\sigma_s^2\triangleq E\{\lvert s(k)\rvert^2\}$.
+
+#### Slide 44 — Equalizzazione MMSE (2/2) · [[signaling_bandlimited_channel_NEW.pdf#page=45|p. 45]]
+- Ipotesi: simboli a media nulla, incorrelati nel tempo e indipendenti dal rumore. Allora
+
+$$E\{\mathbf r(k)s^\ast(k)\}=E\Big\{\Big[s(k)\mathbf p_0+\sum_{m=1}^Ls(k-m)\mathbf p_m+\mathbf n(k)\Big]s^\ast(k)\Big\}=\sigma_s^2\,\mathbf p_0$$
+
+- Il costo diventa $J(\mathbf c)=\mathbf c^H\mathbf R_{rr}\mathbf c-2\sigma_s^2\,\text{Re}\{\mathbf c^H\mathbf p_0\}+\sigma_s^2$.
+- Annullando la derivata rispetto a $\mathbf c^\ast$: $\dfrac{\partial J}{\partial\mathbf c^\ast}=\mathbf R_{rr}\mathbf c-\sigma_s^2\mathbf p_0=\mathbf 0$. Se $\mathbf R_{rr}$ è non singolare, l'equalizzatore MMSE è
+
+$$\mathbf c_{MMSE}=\sigma_s^2\,\mathbf R_{rr}^{-1}\mathbf p_0$$
 
 ### Stima di sequenza a massima verosimiglianza
 
-#### Slide 35 — MLSE (1/2) · [[signaling_bandlimited_channel.pdf#page=35|p. 35]]
+#### Slide 45 — MLSE (1/2) · [[signaling_bandlimited_channel_NEW.pdf#page=46|p. 46]]
 - La MLSE evita l'amplificazione del rumore perché non usa un filtro equalizzatore: stima la **sequenza** dei simboli trasmessi.
 - Inviluppo trasmesso $u(t)=\sum_ns(n)\,g(t-nT)$; uscita del canale senza rumore
 
@@ -3069,12 +3175,12 @@ $$y(t)=\sum_ns(n)\,q(t-nT)\tag{11}$$
   con $q(t)=g(t)\ast h(t)$, risposta combinata di sagomatura e canale.
 - In pratica $q(t)$ è causale e a memoria finita: $q(t)\equiv0$ per $t\notin[0,LT]$, con $L$ memoria del canale in intervalli di simbolo.
 
-#### Slide 36 — MLSE (2/2) · [[signaling_bandlimited_channel.pdf#page=36|p. 36]]
+#### Slide 46 — MLSE (2/2) · [[signaling_bandlimited_channel_NEW.pdf#page=47|p. 47]]
 - Noto $q(t)$, la MLSE sceglie la sequenza di simboli che massimizza la verosimiglianza del segnale ricevuto.
 - Lavora su trasmissioni successive viste come un unico «simbolo a blocco»: per un messaggio di $K+1$ simboli di una costellazione di cardinalità $M$ bisogna scegliere tra $M^{K+1}$ messaggi. Con la forza bruta, 1000 simboli QPSK richiedono una complessità $4^{1000}$.
 - Si considera il blocco $\mathbf s=[s(0),s(1),\dots,s(K)]^T$ trasmesso per $t\in[0,KT]$.
 
-#### Slide 37 — Il criterio MLSE (1/3) · [[signaling_bandlimited_channel.pdf#page=37|p. 37]]
+#### Slide 47 — Il criterio MLSE (1/3) · [[signaling_bandlimited_channel_NEW.pdf#page=48|p. 48]]
 - Il logaritmo del rapporto di verosimiglianza (*log-likelihood ratio*) della sequenza $\mathbf s$ è (vedi la rivelazione)
 
 $$\lambda(y)=\text{Re}\big(\langle r(t),y(t)\rangle\big)-\frac12\lVert y(t)\rVert^2\tag{12}$$
@@ -3084,7 +3190,7 @@ $$\lambda(y)=\text{Re}\Big(\int_{\mathcal T}r(t)\,y^\ast(t)\,dt\Big)-\frac12\int
   con $r(t)=y(t)+w(t)$, $w(t)$ rumore gaussiano additivo di PSD $\sigma^2$, e $y(t)=\sum_{n=0}^Ks(n)\,q(t-nT)$ forma d'onda senza rumore associata a $\mathbf s$.
 - L'intervallo d'osservazione $\mathcal T$ è abbastanza lungo da contenere per intero $q(t),q(t-T),\dots,q(t-KT)$.
 
-#### Slide 38 — Il criterio MLSE (2/3) · [[signaling_bandlimited_channel.pdf#page=38|p. 38]]
+#### Slide 48 — Il criterio MLSE (2/3) · [[signaling_bandlimited_channel_NEW.pdf#page=49|p. 49]]
 - Sostituendo $y(t)$:
 
 $$\lambda(y)=\sum_{n=0}^K\text{Re}\Big(s^\ast(n)\int_{\mathcal T}r(t)\,q^\ast(t-nT)\,dt\Big)-\frac12\sum_{n=0}^K\sum_{m=0}^Ks(n)\,s^\ast(m)\int_{\mathcal T}q(t-nT)\,q^\ast(t-mT)\,dt\tag{14}$$
@@ -3093,28 +3199,28 @@ $$\lambda(y)=\sum_{n=0}^K\text{Re}\Big(s^\ast(n)\int_{\mathcal T}r(t)\,q^\ast(t-
 
 $$\alpha(n)\triangleq\int_{\mathcal T}r(t)\,q^\ast(t-nT)\,dt,\qquad\beta_{m,n}\triangleq\int_{\mathcal T}q(t-nT)\,q^\ast(t-mT)\,dt$$
 
-#### Slide 39 — Il criterio MLSE (3/3) · [[signaling_bandlimited_channel.pdf#page=39|p. 39]]
+#### Slide 49 — Il criterio MLSE (3/3) · [[signaling_bandlimited_channel_NEW.pdf#page=50|p. 50]]
 - $\alpha(n)$ si ottiene passando $r(t)$ in un filtro adattato di risposta $q^\ast(-t)$ e campionandone l'uscita in $t_n=nT$.
 - $\beta_{m,n}$ dipende da $m$ e $n$ separatamente, ma con $\mathcal T$ abbastanza lungo $\beta_{m,n}=\beta_{m-n}$.
 - La regola MLSE è
 
-$$\hat{\mathbf s}=\arg\max_{\mathbf s}\Big\{\text{Re}\Big[\sum_{n=0}^Ks^\ast(n)\,\alpha(n)\Big]-\frac12\sum_{n=0}^K\sum_{m=0}^Ks(n)\,s^\ast(m)\,\beta(n-m)\Big\}$$
+$$\hat{\mathbf s}=\arg\max_{\mathbf s}\Big\{\text{Re}\Big[\sum_{n=0}^Ks^\ast(n)\,\alpha(n)\Big]-\frac12\sum_{n=0}^K\sum_{m=0}^Ks(n)\,s^\ast(m)\,\beta(m-n)\Big\}$$
 
 - La complessità cresce esponenzialmente con il numero di simboli trasmessi. L'**algoritmo di Viterbi** la riduce: diventa esponenziale nella memoria del canale ma lineare nel numero (di solito molto maggiore) di simboli.
 
-#### Slide 40 — Il rivelatore di sequenza ML · [[signaling_bandlimited_channel.pdf#page=40|p. 40]]
+#### Slide 50 — Il rivelatore di sequenza ML · [[signaling_bandlimited_channel_NEW.pdf#page=51|p. 51]]
 - Per la regola MLSE serve prima la sequenza $\alpha(n)$, uscita di un unico filtro adattato.
-- Poi bisogna massimizzare $\lambda(y)\triangleq\text{Re}\big[\sum_ns^\ast(n)\alpha(n)\big]-\frac12\sum_n\sum_ms(n)s^\ast(m)\beta(n-m)$ su tutte le sequenze: il filtro adattato è seguito da un processore, il **rivelatore di sequenza ML**, che sceglie tra le $M^{K+1}$ sequenze quella che massimizza $\lambda(y)$.
+- Poi bisogna massimizzare $\lambda(y)\triangleq\text{Re}\big[\sum_ns^\ast(n)\alpha(n)\big]-\frac12\sum_n\sum_ms(n)s^\ast(m)\beta(m-n)$ su tutte le sequenze: il filtro adattato è seguito da un processore, il **rivelatore di sequenza ML**, che sceglie tra le $M^{K+1}$ sequenze quella che massimizza $\lambda(y)$.
 - L'algoritmo di Viterbi fa questa scelta in modo efficiente: si applica ai problemi di massimo (o minimo) formulabili come ricerca del cammino di lunghezza massima (o minima) in un traliccio finito.
 
 ### L'algoritmo di Viterbi
 
-#### Slide 41 — Algoritmo di Viterbi (1/2) · [[signaling_bandlimited_channel.pdf#page=41|p. 41]]
+#### Slide 51 — Algoritmo di Viterbi (1/2) · [[signaling_bandlimited_channel_NEW.pdf#page=52|p. 52]]
 - L'algoritmo di Viterbi (VA) cerca, tra i cammini che attraversano un **traliccio** (trellis) da sinistra a destra, quello di metrica massima o minima.
 - Figura: traliccio con stati $\{S_i\}_{i=1}^{N_\sigma}$, $N_\sigma=4$, e profondità $K=6$ (da $k=0$ a $k=K$).
 - A ogni ramo è associata una **metrica di ramo** (etichetta). Le metriche sono **additive**: la metrica di due rami adiacenti è la somma delle due.
 
-#### Slide 42 — Algoritmo di Viterbi (2/2) · [[signaling_bandlimited_channel.pdf#page=42|p. 42]]
+#### Slide 52 — Algoritmo di Viterbi (2/2) · [[signaling_bandlimited_channel_NEW.pdf#page=53|p. 53]]
 - La metrica totale di un cammino è la somma delle etichette dei suoi rami; si cerca il cammino di metrica totale massima (o minima).
 - Con $\sigma_k$ stato al tempo $k$ (valori in $\{S_i\}_{i=1}^{N_\sigma}$) e $m(\sigma_k,\sigma_{k+1})$ metrica del ramo $\sigma_k\to\sigma_{k+1}$, si massimizza (o minimizza)
 
@@ -3123,36 +3229,78 @@ $$\lambda(\sigma_0,\sigma_1,\dots,\sigma_K)\triangleq\sum_{k=0}^{K-1}m(\sigma_k,
   su tutte le $(\sigma_0,\dots,\sigma_K)$.
 - Forza bruta: si valutano tutti i valori possibili e si sceglie il massimo: complessità alta (esponenziale in $K$) e ritardo di decisione alto (si decide solo dopo aver calcolato tutta la sequenza, ritardo $K$).
 
-#### Slide 43–44 — I passi chiave: add, compare, select · [[signaling_bandlimited_channel.pdf#page=43|p. 43]], [[signaling_bandlimited_channel.pdf#page=44|44]]
+#### Slide 53–54 — I passi chiave: add, compare, select · [[signaling_bandlimited_channel_NEW.pdf#page=54|p. 54]], [[signaling_bandlimited_channel_NEW.pdf#page=55|55]]
 - Il VA riduce molto la complessità, che diventa **lineare in $K$**. Una versione detta **VA troncato** permette ritardi molto minori di $K$.
 - I passi chiave sono **Add, Compare, Select (ACS)**. Per ogni stato $\sigma_{k+1}$:
   - **add**: somma la metrica accumulata nello stato $\sigma_k$ e la metrica del ramo;
   - **compare**: confronta queste somme;
   - **select**: tiene il ramo con il valore massimo (o minimo), il **sopravvissuto**, e scarta tutti gli altri rami entranti in $\sigma_{k+1}$.
-- Ogni passo ACS si ripete dallo stato iniziale a quello finale del traliccio. Figura (slide 44): esempio di applicazione, con il traliccio etichettato e i sopravvissuti passo per passo da $k=1$ a $k=6$, dove resta un solo cammino.
+- Ogni passo ACS si ripete dallo stato iniziale a quello finale del traliccio. Figura (slide 54): esempio di applicazione, con il traliccio etichettato e i sopravvissuti passo per passo da $k=1$ a $k=6$, dove resta un solo cammino.
 
-#### Slide 45 — Il VA applicato alla MLSE (1/3) · [[signaling_bandlimited_channel.pdf#page=45|p. 45]]
+### Memoria del canale e coefficienti β(ℓ)
+
+#### Slide 55 e appunti — Memoria del canale e coefficienti β(ℓ) (1/2) · [[signaling_bandlimited_channel_NEW.pdf#page=56|p. 56]]
+- Appunti accanto al titolo: si tratta di interpretare il problema in termini dell'algoritmo di Viterbi.
+- Con il cambio di variabile $u=t-nT$:
+
+$$\beta_{m,n}=\int_{-\infty}^{+\infty}q(t-nT)\,q^\ast(t-mT)\,dt=\int_{-\infty}^{+\infty}q(u)\,q^\ast\big(u-(m-n)T\big)\,du=\beta(m-n),\qquad\beta(\ell)\triangleq\int_{-\infty}^{+\infty}q(t)\,q^\ast(t-\ell T)\,dt$$
+
+- Convoluzione di $q(t)$ con il suo filtro adattato $q^\ast(-t)$:
+
+$$r_q(\tau)\triangleq q(\tau)\ast q^\ast(-\tau)=\int_{-\infty}^{+\infty}q(t)\,q^\ast(t-\tau)\,dt\qquad\Longrightarrow\qquad\beta(\ell)=r_q(\ell T)$$
+
+  cioè i $\beta(\ell)$ sono i campioni, presi ogni $T$ secondi, dell'uscita del filtro adattato quando l'ingresso è $q(t)$.
+- Il supporto di una convoluzione è la somma dei supporti: $\underbrace{[0,LT]}_{q(\tau)}+\underbrace{[-LT,0]}_{q^\ast(-\tau)}=[-LT,LT]$ ⇒ $\beta(\ell)=0$ per $\lvert\ell\rvert\ge L$.
+- Inoltre $r_q(-\tau)=r_q^\ast(\tau)$, quindi $\beta(-\ell)=\beta^\ast(\ell)$.
+
+#### Slide 56 — Memoria del canale e coefficienti β(ℓ) (2/2) · [[signaling_bandlimited_channel_NEW.pdf#page=57|p. 57]]
+- Esempio: impulso rettangolare $q(t)=A$ per $0\le t\le LT$ e nullo altrove.
+- La convoluzione di due impulsi rettangolari di durata $LT$ è un triangolo di semiampiezza $LT$: per $0\le\tau\le LT$ i due impulsi si sovrappongono su $[\tau,LT]$, quindi
+
+$$r_q(\tau)=\lvert A\rvert^2(LT-\lvert\tau\rvert),\quad\lvert\tau\rvert\le LT,\qquad\beta(\ell)=\lvert A\rvert^2T(L-\lvert\ell\rvert),\quad\lvert\ell\rvert\le L$$
+
+- Figura: il triangolo $r_q(\tau)$ tra $-3T$ e $3T$ e i suoi campioni $\beta(\ell)$. Caso $L=3$: $\beta(0)=3\lvert A\rvert^2T$, $\beta(\pm1)=2\lvert A\rvert^2T$, $\beta(\pm2)=\lvert A\rvert^2T$, $\beta(\pm3)=0$.
+- La sovrapposizione è necessaria ma non sufficiente: per un $q(t)$ generico, $\beta(\ell)$ può annullarsi anche per qualche $\lvert\ell\rvert<L$.
+
+### Il VA applicato alla MLSE
+
+#### Slide 57 e appunti — Il VA applicato alla MLSE (1/3) · [[signaling_bandlimited_channel_NEW.pdf#page=58|p. 58]], [[signaling_bandlimited_channel_NEW.pdf#page=59|59]]
 - Si riscrive $\lambda(y)$ separando i termini con l'ultimo simbolo $s(K)$:
 
-$$\lambda(y)=\text{Re}\Big[\sum_{n=0}^{K-1}s^\ast(n)\alpha(n)\Big]-\frac12\sum_{n=0}^{K-1}\sum_{m=0}^{K-1}s(n)s^\ast(m)\beta(n-m)+\text{Re}[s^\ast(K)\alpha(K)]-\text{Re}\Big[s(K)\sum_{n=0}^{K-1}s^\ast(n)\beta(K-n)\Big]+|s(K)|^2\beta(0)\tag{15}$$
+$$\lambda(y)=\text{Re}\Big[\sum_{n=0}^{K-1}s^\ast(n)\alpha(n)\Big]-\frac12\sum_{n=0}^{K-1}\sum_{m=0}^{K-1}s(n)s^\ast(m)\beta(m-n)+\text{Re}[s^\ast(K)\alpha(K)]-\text{Re}\Big[s(K)\sum_{n=0}^{K-1}s^\ast(n)\beta(n-K)\Big]-\frac12|s(K)|^2\beta(0)\tag{15}$$
 
-- Poiché $q(t)\equiv0$ per $t\notin[0,LT]$, $\beta(\ell)\neq0$ solo per $\ell\in\{-L,\dots,L\}$, e la somma su $n$ dell'ultimo termine misto si restringe a $n=K-L,\dots,K-1$ (16).
-- ⚠️ Nella (15)–(16) delle slide l'ultimo termine è $+|s(K)|^2\beta(0)$; separando il termine $n=m=K$ dalla doppia somma con il suo $-\frac12$ si ottiene $-\frac12|s(K)|^2\beta(0)$. Lo stesso vale per l'ultimo termine di $V_k$. La struttura della ricorsione non cambia.
+- Poiché $\beta(\ell)=0$ per $\lvert\ell\rvert\ge L$, la (15) diventa la (16): la somma su $n$ dell'ultimo termine misto si restringe a $n=K-L,\dots,K-1$.
 
-#### Slide 46–47 — Il VA applicato alla MLSE (2/3)–(3/3) · [[signaling_bandlimited_channel.pdf#page=46|p. 46]], [[signaling_bandlimited_channel.pdf#page=47|47]]
-- Si definiscono lo **stato** $\sigma_\ell\triangleq(s(\ell-1),s(\ell-2),\dots,s(\ell-L))$, $\ell=L,\dots,K$, e
+$$\lambda(y)=\text{Re}\Big[\sum_{n=0}^{K-1}s^\ast(n)\alpha(n)\Big]-\frac12\sum_{n=0}^{K-1}\sum_{m=0}^{K-1}s(n)s^\ast(m)\beta(m-n)+\text{Re}[s^\ast(K)\alpha(K)]-\text{Re}\Big[s(K)\sum_{n=K-L}^{K-1}s^\ast(n)\beta(n-K)\Big]-\frac12|s(K)|^2\beta(0)\tag{16}$$
 
-$$U_k(\sigma_L,\dots,\sigma_k)\triangleq\text{Re}\Big[\sum_{\ell=0}^ks^\ast(\ell)\alpha(\ell)\Big]-\frac12\sum_{\ell=0}^k\sum_{m=0}^ks(\ell)s^\ast(m)\beta(\ell-m)$$
+- Appunti sulla slide: $\beta(\ell)=0$ per $\lvert\ell\rvert\ge L$; posto $\ell=m-K$, $\beta(m-K)\neq0$ per $-L<\ell<L$, cioè $-L<m-K<L$, cioè $K-L<m<L+K$.
+- Pagina di appunti (p. 59): la docente separa la doppia somma, $\sum_{n=0}^K\sum_{m=0}^{K-1}s(n)s^\ast(m)\beta(m-n)+\sum_{n=0}^Ks(n)s^\ast(K)\beta(K-n)=\sum_{n=0}^{K-1}\sum_{m=0}^{K-1}s(n)s^\ast(m)\beta(m-n)+\sum_{m=0}^{K-1}s(K)s^\ast(m)\beta(m-K)+\sum_{n=0}^{K-1}s(n)s^\ast(K)\beta(K-n)+|s(K)|^2\beta(0)$. I due termini misti sono uno il coniugato dell'altro ($\beta(K-n)=\beta^\ast(n-K)$): insieme valgono $2\,\text{Re}[\cdot]$, e moltiplicati per $-\frac12$ danno i due ultimi termini della (15).
+- Rispetto alla versione precedente delle slide, l'ultimo termine è $-\frac12|s(K)|^2\beta(0)$ (prima era scritto $+|s(K)|^2\beta(0)$) e gli argomenti di $\beta$ seguono la definizione $\beta_{m,n}=\beta(m-n)$.
 
-$$V_k(\sigma_{k-1},\sigma_k)\triangleq\text{Re}[s^\ast(k)\alpha(k)]-\text{Re}\Big[s(k)\sum_{m=k-L}^{k-1}s^\ast(m)\beta(k-m)\Big]+|s(k)|^2\beta(0)$$
+#### Slide 58 e appunti — Il VA applicato alla MLSE (2/3) · [[signaling_bandlimited_channel_NEW.pdf#page=60|p. 60]]
+- Si definiscono
 
-  per $k=L,\dots,K$.
-- Poiché $\lambda(y)=U_K(\sigma_L,\dots,\sigma_K)$, la (16) diventa la ricorsione $U_K=U_{K-1}(\sigma_L,\dots,\sigma_{K-1})+V_K(\sigma_{K-1},\sigma_K)$, e ripetendo
+$$\sigma_\ell\triangleq\big(s(\ell-1),s(\ell-2),\dots,s(\ell-L)\big),\qquad\ell=L,\dots,K+1$$
 
-$$\lambda(y)=U_L(\sigma_L)+V_{L+1}(\sigma_L,\sigma_{L+1})+V_{L+2}(\sigma_{L+1},\sigma_{L+2})+\dots+V_K(\sigma_{K-1},\sigma_K)$$
+$$U_k(\sigma_L,\dots,\sigma_{k+1})\triangleq\text{Re}\Big[\sum_{\ell=0}^ks^\ast(\ell)\alpha(\ell)\Big]-\frac12\sum_{\ell=0}^k\sum_{m=0}^ks(\ell)s^\ast(m)\beta(m-\ell),\qquad k=L-1,\dots,K$$
 
-- Questa scomposizione si presta al VA: ogni $\sigma_\ell$ è uno stato del traliccio e $V_{\ell+1}(\sigma_\ell,\sigma_{\ell+1})$ è la metrica (etichetta) del ramo tra $\sigma_\ell$ e $\sigma_{\ell+1}$. La MLSE diventa la ricerca del cammino di metrica massima nel traliccio.
+$$V_k(\sigma_k,\sigma_{k+1})\triangleq\text{Re}[s^\ast(k)\alpha(k)]-\text{Re}\Big[s(k)\sum_{m=k-L}^{k-1}s^\ast(m)\beta(m-k)\Big]-\frac12|s(k)|^2\beta(0),\qquad k=L,\dots,K$$
+
+- Appunti: $\sigma_\ell$ rappresenta lo **stato**, in particolare una sequenza di simboli.
+- Poiché $\lambda(y)=U_K(\sigma_L,\dots,\sigma_{K+1})$, la (16) si scrive
+
+$$U_K(\sigma_L,\dots,\sigma_{K+1})=U_{K-1}(\sigma_L,\dots,\sigma_K)+V_K(\sigma_K,\sigma_{K+1})$$
+
+- Appunti: $U_{K-1}$ dipende dagli stati fino al $K$-esimo ⇒ posso reiterare il ragionamento.
+
+#### Slide 59 e appunti — Il VA applicato alla MLSE (3/3) · [[signaling_bandlimited_channel_NEW.pdf#page=61|p. 61]]
+- Ripetendo il ragionamento:
+
+$$\lambda(y)=U_{L-1}(\sigma_L)+V_L(\sigma_L,\sigma_{L+1})+V_{L+1}(\sigma_{L+1},\sigma_{L+2})+\dots+V_K(\sigma_K,\sigma_{K+1})$$
+
+- Questa scomposizione si presta al VA: ogni $\sigma_\ell$ è uno degli stati possibili del traliccio e $V_\ell(\sigma_\ell,\sigma_{\ell+1})$ è la metrica (etichetta) del ramo che unisce gli stati $\sigma_\ell$ e $\sigma_{\ell+1}$. La MLSE diventa la ricerca del cammino di metrica massima nel traliccio.
+- Appunti: abbiamo reinterpretato il problema in una forma adatta all'algoritmo di Viterbi; sotto $U_{L-1}$ «metrica aggregata», sotto $V_L$ «metrica».
 
 ---
 
-*Approfondimenti nel wiki (derivazioni passo per passo, grafici, esempio di Viterbi svolto): [[interferenza-intersimbolica]], [[criterio-di-nyquist]], [[equalizzazione]], [[algoritmo-di-viterbi]].*
+*Approfondimenti nel wiki (derivazioni passo per passo di ZF, MMSE, β(ℓ) e della ricorsione, grafici, esempio di Viterbi svolto): [[interferenza-intersimbolica]], [[criterio-di-nyquist]], [[equalizzazione]], [[algoritmo-di-viterbi]].*
