@@ -223,6 +223,22 @@
 <li>La regola di decisione ML della rivelazione si interpreta come la MLE di un parametro a <span class="math inline">M</span> valori:</li>
 </ul>
 <span class="ea" id="eq-9"></span><div class="math block" data-eq="9">\hat H_k=\arg\max_k\Lambda_k(y)=\arg\max_k\lambda_k(y)\tag{9}</div><p>con <span class="math inline">\lambda_k(y)=\log\Lambda_k(y)</span>, realizzata con un banco di correlatori (o di filtri adattati seguiti da campionatori).</p>
+<blockquote class="co mia"><p>🧩 <strong>Da dove viene la <a class="eqref" href="#eq-8" data-eq="8">(8)</a>, passo per passo.</strong></p>
+<ol>
+<li><strong>Verosimiglianza di <span class="math inline">H_k</span>.</strong> Se vale <span class="math inline">H_k</span>, il rumore deve valere esattamente <span class="math inline">y-s_k</span>. Il rumore è gaussiano complesso con varianza <span class="math inline">\sigma^2</span> per componente reale; proiettando su una base ortonormale come nella Lezione 9, la densità è</li>
+</ol>
+<div class="math block">f(y\mid H_k)\propto\exp\Big(-\frac{1}{2\sigma^2}\lVert y-s_k\rVert^2\Big)</div><ol start="2">
+<li><strong>Quadrato di una differenza complessa.</strong> Per un complesso <span class="math inline">\lvert a\rvert^2=a\,a^\ast</span>, quindi</li>
+</ol>
+<div class="math block">(y-s_k)(y-s_k)^\ast=yy^\ast-\underbrace{y\,s_k^\ast}_{z}-\underbrace{y^\ast s_k}_{z^\ast}+s_ks_k^\ast=\lvert y\rvert^2-2\,\text{Re}(y\,s_k^\ast)+\lvert s_k\rvert^2</div><p>perché i due termini incrociati sono uno il coniugato dell'altro e <span class="math inline">z+z^\ast=2\,\text{Re}(z)</span>. Integrando nel tempo, con <span class="math inline">\langle y,s_k\rangle=\int y(t)\,s_k^\ast(t)\,dt</span>:</p>
+<div class="math block">\lVert y-s_k\rVert^2=\lVert y\rVert^2-2\,\text{Re}\langle y,s_k\rangle+\lVert s_k\rVert^2</div><ol start="3">
+<li><strong>Rapporto con l'ipotesi «solo rumore».</strong> <span class="math inline">\Lambda_k</span> è un rapporto di verosimiglianza: si divide per <span class="math inline">f(y\mid H_0)\propto\exp\big(-\lVert y\rVert^2/(2\sigma^2)\big)</span>, con <span class="math inline">H_0:\ y=n</span>. Le costanti davanti e il termine <span class="math inline">\lVert y\rVert^2</span>, uguale per tutte le ipotesi, si cancellano:</li>
+</ol>
+<div class="math block">\Lambda_k=\frac{f(y\mid H_k)}{f(y\mid H_0)}=\exp\Big[-\frac{1}{2\sigma^2}\Big(-2\,\text{Re}\langle y,s_k\rangle+\lVert s_k\rVert^2\Big)\Big]</div><ol start="4">
+<li><strong>Si raccoglie il <span class="math inline">-2</span>:</strong> <span class="math inline">-\frac{1}{2\sigma^2}\big(-2\,\text{Re}\langle y,s_k\rangle+\lVert s_k\rVert^2\big)=\frac{1}{\sigma^2}\big(\text{Re}\langle y,s_k\rangle-\frac12\lVert s_k\rVert^2\big)</span>, che è l'esponente della <a class="eqref" href="#eq-8" data-eq="8">(8)</a>.</li>
+</ol>
+<p><strong>Significato.</strong> Massimizzare <span class="math inline">\Lambda_k</span> equivale a minimizzare <span class="math inline">\lVert y-s_k\rVert</span>: si sceglie il segnale candidato più vicino al ricevuto. <span class="math inline">\text{Re}\langle y,s_k\rangle</span> è il correlatore (quanto <span class="math inline">y</span> somiglia a <span class="math inline">s_k</span>); <span class="math inline">-\frac12\lVert s_k\rVert^2</span> toglie metà dell'energia del candidato, così i segnali più energetici non vincono solo perché «grandi». <strong>Controllo:</strong> nel caso reale binario, con <span class="math inline">N_0=2\sigma^2</span>, si ritrova la (I.9) della Lezione 9, perché <span class="math inline">\frac{2}{N_0}=\frac{1}{\sigma^2}</span>. La stessa struttura torna nella MLSE della Lezione 14, con l'intera sequenza al posto del singolo simbolo.</p>
+</blockquote>
 <h3 id="stima-ml-della-fase">Stima ML della fase</h3>
 <h4 id="il-modello-e-l-origine-della-fase">Il modello e l'origine della fase</h4>
 <ul>
@@ -459,6 +475,23 @@ f(y;A)&amp;=\frac{1}{2\sqrt{2\pi\sigma^2}}\Big[e^{-\frac{(y+A)^2}{2\sigma^2}}+e^
 </details>
 <details class="der"><summary>Derivazione — Indipendenza e somma dei logaritmi</summary>
 <p>Con campioni indipendenti <span class="math inline">f(\mathbf y;A)=\prod_kf(y(k);A)</span>, e il logaritmo trasforma il prodotto in somma: <span class="math inline">\log f(\mathbf y;A)=\sum_k\log f(y(k);A)</span>. Il logaritmo è crescente, quindi non sposta il massimo. Lo annotano gli appunti.</p>
+</details>
+<details class="der"><summary>Derivazione — Verosimiglianza della segnalazione M-aria (8)</summary>
+<p><strong>Si parte da:</strong> <span class="math inline">H_k:\ y(t)=s_k(t)+n(t)</span>, rumore gaussiano complesso con varianza <span class="math inline">\sigma^2</span> per componente reale; ipotesi ausiliaria <span class="math inline">H_0:\ y=n</span> come nella rivelazione.</p>
+<blockquote class="co mia"><p>🧩 Derivazione mia.</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+f(y\mid H_k)&amp;\propto\exp\Big(-\frac{1}{2\sigma^2}\lVert y-s_k\rVert^2\Big) &amp;&amp; \text{sotto } H_k \text{ il rumore vale } y-s_k\\
+\lvert y-s_k\rvert^2&amp;=yy^\ast-y\,s_k^\ast-y^\ast s_k+s_ks_k^\ast &amp;&amp; \lvert a\rvert^2=a\,a^\ast\\
+&amp;=\lvert y\rvert^2-2\,\text{Re}(y\,s_k^\ast)+\lvert s_k\rvert^2 &amp;&amp; z+z^\ast=2\,\text{Re}(z)\text{ con } z=y\,s_k^\ast\\
+\lVert y-s_k\rVert^2&amp;=\lVert y\rVert^2-2\,\text{Re}\langle y,s_k\rangle+\lVert s_k\rVert^2 &amp;&amp; \text{integro nel tempo, } \langle y,s_k\rangle=\textstyle\int y\,s_k^\ast\,dt\\
+\Lambda_k&amp;=\frac{f(y\mid H_k)}{f(y\mid H_0)}=\exp\Big[-\frac{1}{2\sigma^2}\big(\lVert y-s_k\rVert^2-\lVert y\rVert^2\big)\Big] &amp;&amp; f(y\mid H_0)\propto e^{-\lVert y\rVert^2/(2\sigma^2)}\text{, costanti cancellate}\\
+&amp;=\exp\Big[\frac{1}{\sigma^2}\Big(\text{Re}\langle y,s_k\rangle-\frac12\lVert s_k\rVert^2\Big)\Big] &amp;&amp; \text{raccolgo } -2
+\end{aligned}
+</div><p><strong>Sanity check:</strong> nel caso reale binario, con <span class="math inline">N_0=2\sigma^2</span>, il logaritmo dà <span class="math inline">\frac{2}{N_0}\int ys\,dt-\frac{1}{N_0}\int s^2dt</span>, la (I.9) della rivelazione binaria.
+<strong>Ipotesi:</strong> rumore gaussiano bianco complesso, circolare, indipendente dal segnale; segnali <span class="math inline">s_k</span> noti al ricevitore.
+<strong>Lettura:</strong> <span class="math inline">\arg\max_k\Lambda_k</span> equivale a <span class="math inline">\arg\min_k\lVert y-s_k\rVert</span>, cioè decisione a minima distanza; <span class="math inline">\text{Re}\langle y,s_k\rangle</span> è il correlatore, <span class="math inline">-\frac12\lVert s_k\rVert^2</span> la correzione per l'energia.</p>
 </details>
 </div></details>
 <details class="conc"><summary><span class="n">Phase-locked loop (PLL) e inseguimento della fase</span></summary><div class="cb"><h4 id="phase-locked-loop-spiegazione">Spiegazione</h4>
