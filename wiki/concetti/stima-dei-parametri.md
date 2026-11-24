@@ -95,6 +95,27 @@ $$
 ### Derivazione — Indipendenza e somma dei logaritmi · [[Synchro_Kay_example (1).pdf#page=19|p. 19]]
 Con campioni indipendenti $f(\mathbf y;A)=\prod_kf(y(k);A)$, e il logaritmo trasforma il prodotto in somma: $\log f(\mathbf y;A)=\sum_k\log f(y(k);A)$. Il logaritmo è crescente, quindi non sposta il massimo. Lo annotano gli appunti di p. 19.
 
+### Derivazione — Verosimiglianza della segnalazione M-aria (8) · [[Synchro_Kay_example (1).pdf#page=24|p. 24]]
+**Fonte:** la (8) è data senza passaggi.
+**Si parte da:** $H_k:\ y(t)=s_k(t)+n(t)$, rumore gaussiano complesso con varianza $\sigma^2$ per componente reale; ipotesi ausiliaria $H_0:\ y=n$ come nella [[ricevitore-ottimo-awgn|rivelazione]].
+
+> 🧩 Derivazione mia.
+
+$$
+\begin{aligned}
+f(y\mid H_k)&\propto\exp\Big(-\frac{1}{2\sigma^2}\lVert y-s_k\rVert^2\Big) && \text{sotto } H_k \text{ il rumore vale } y-s_k\\
+\lvert y-s_k\rvert^2&=yy^\ast-y\,s_k^\ast-y^\ast s_k+s_ks_k^\ast && \lvert a\rvert^2=a\,a^\ast\\
+&=\lvert y\rvert^2-2\,\text{Re}(y\,s_k^\ast)+\lvert s_k\rvert^2 && z+z^\ast=2\,\text{Re}(z)\text{ con } z=y\,s_k^\ast\\
+\lVert y-s_k\rVert^2&=\lVert y\rVert^2-2\,\text{Re}\langle y,s_k\rangle+\lVert s_k\rVert^2 && \text{integro nel tempo, } \langle y,s_k\rangle=\textstyle\int y\,s_k^\ast\,dt\\
+\Lambda_k&=\frac{f(y\mid H_k)}{f(y\mid H_0)}=\exp\Big[-\frac{1}{2\sigma^2}\big(\lVert y-s_k\rVert^2-\lVert y\rVert^2\big)\Big] && f(y\mid H_0)\propto e^{-\lVert y\rVert^2/(2\sigma^2)}\text{, costanti cancellate}\\
+&=\exp\Big[\frac{1}{\sigma^2}\Big(\text{Re}\langle y,s_k\rangle-\frac12\lVert s_k\rVert^2\Big)\Big] && \text{raccolgo } -2
+\end{aligned}
+$$
+
+**Sanity check:** nel caso reale binario, con $N_0=2\sigma^2$, il logaritmo dà $\frac{2}{N_0}\int ys\,dt-\frac{1}{N_0}\int s^2dt$, la (I.9) della rivelazione binaria.
+**Ipotesi:** rumore gaussiano bianco complesso, circolare, indipendente dal segnale; segnali $s_k$ noti al ricevitore.
+**Lettura:** $\arg\max_k\Lambda_k$ equivale a $\arg\min_k\lVert y-s_k\rVert$, cioè decisione a minima distanza; $\text{Re}\langle y,s_k\rangle$ è il correlatore, $-\frac12\lVert s_k\rVert^2$ la correzione per l'energia.
+
 ## Spiegazione · [[Synchro_Kay_example (1).pdf#page=17|p. 17]], [[Synchro_Kay_example (1).pdf#page=23|23]], [[Synchro_Kay_example (1).pdf#page=24|24]]
 
 - **Rivelazione come stima.** La rivelazione ML della Lezione 9 è una stima ML in cui il parametro (il simbolo trasmesso) può assumere solo $M$ valori: la massimizzazione è un confronto tra $M$ numeri, fatto con un banco di correlatori. Nella stima il parametro è continuo e si massimizza annullando la derivata.
@@ -116,4 +137,4 @@ Le stime di ampiezza, fase, ritardo e frequenza servono al ricevitore per riport
 
 - [[parameter-estimation-synchronization]]
 
-_Aggiornato: 2026-11-16 — creazione da ingest Synchro_Kay_example (1).pdf (Lezione 13)_
+_Aggiornato: 2026-11-25 — derivazione della verosimiglianza M-aria (8); 2026-11-16 — creazione da ingest Synchro_Kay_example (1).pdf (Lezione 13)_

@@ -2745,6 +2745,27 @@ $$\hat H_k=\arg\max_k\Lambda_k(y)=\arg\max_k\lambda_k(y)\tag{9}$$
 
   con $\lambda_k(y)=\log\Lambda_k(y)$, realizzata con un banco di correlatori (o di filtri adattati seguiti da campionatori).
 
+> 🧩 **Da dove viene la (8), passo per passo.**
+> 1. **Verosimiglianza di $H_k$.** Se vale $H_k$, il rumore deve valere esattamente $y-s_k$. Il rumore è gaussiano complesso con varianza $\sigma^2$ per componente reale; proiettando su una base ortonormale come nella Lezione 9, la densità è
+>
+> $$f(y\mid H_k)\propto\exp\Big(-\frac{1}{2\sigma^2}\lVert y-s_k\rVert^2\Big)$$
+>
+> 2. **Quadrato di una differenza complessa.** Per un complesso $\lvert a\rvert^2=a\,a^\ast$, quindi
+>
+> $$(y-s_k)(y-s_k)^\ast=yy^\ast-\underbrace{y\,s_k^\ast}_{z}-\underbrace{y^\ast s_k}_{z^\ast}+s_ks_k^\ast=\lvert y\rvert^2-2\,\text{Re}(y\,s_k^\ast)+\lvert s_k\rvert^2$$
+>
+> perché i due termini incrociati sono uno il coniugato dell'altro e $z+z^\ast=2\,\text{Re}(z)$. Integrando nel tempo, con $\langle y,s_k\rangle=\int y(t)\,s_k^\ast(t)\,dt$:
+>
+> $$\lVert y-s_k\rVert^2=\lVert y\rVert^2-2\,\text{Re}\langle y,s_k\rangle+\lVert s_k\rVert^2$$
+>
+> 3. **Rapporto con l'ipotesi «solo rumore».** $\Lambda_k$ è un rapporto di verosimiglianza: si divide per $f(y\mid H_0)\propto\exp\big(-\lVert y\rVert^2/(2\sigma^2)\big)$, con $H_0:\ y=n$. Le costanti davanti e il termine $\lVert y\rVert^2$, uguale per tutte le ipotesi, si cancellano:
+>
+> $$\Lambda_k=\frac{f(y\mid H_k)}{f(y\mid H_0)}=\exp\Big[-\frac{1}{2\sigma^2}\Big(-2\,\text{Re}\langle y,s_k\rangle+\lVert s_k\rVert^2\Big)\Big]$$
+>
+> 4. **Si raccoglie il $-2$:** $-\frac{1}{2\sigma^2}\big(-2\,\text{Re}\langle y,s_k\rangle+\lVert s_k\rVert^2\big)=\frac{1}{\sigma^2}\big(\text{Re}\langle y,s_k\rangle-\frac12\lVert s_k\rVert^2\big)$, che è l'esponente della (8).
+>
+> **Significato.** Massimizzare $\Lambda_k$ equivale a minimizzare $\lVert y-s_k\rVert$: si sceglie il segnale candidato più vicino al ricevuto. $\text{Re}\langle y,s_k\rangle$ è il correlatore (quanto $y$ somiglia a $s_k$); $-\frac12\lVert s_k\rVert^2$ toglie metà dell'energia del candidato, così i segnali più energetici non vincono solo perché «grandi». **Controllo:** nel caso reale binario, con $N_0=2\sigma^2$, si ritrova la (I.9) della Lezione 9, perché $\frac{2}{N_0}=\frac{1}{\sigma^2}$. La stessa struttura torna nella MLSE della Lezione 14, con l'intera sequenza al posto del singolo simbolo.
+
 ### Stima ML della fase
 
 #### Slide 22 e appunti — Il modello e l'origine della fase · [[Synchro_Kay_example (1).pdf#page=25|p. 25]]

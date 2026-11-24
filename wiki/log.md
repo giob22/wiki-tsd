@@ -270,3 +270,5 @@ Verificati i numeri: $\ln2=-1.59$ dB, $R_s\approx15$ Msimboli/s, $\text{SNR}_{re
 ## [2026-11-24] update | Lezione 14, MLSE: riquadri 🧩 su verosimiglianza (slide 47), filtro di ricezione e rivelatore di sequenza come blocco unico (slide 50), lettura di U_k, stati ed estremi degli indici (slide 58), perché Viterbi non ripercorre la storia (slide 59); stessi chiarimenti in equalizzazione.md
 
 ## [2026-11-24] update | Lezione 14, slide 58: riquadro 🧩 separato «gli L precedenti non indicano quali simboli si scelgono, ma cosa serve guardare a ogni passo»
+
+## [2026-11-25] update | Lezione 13, slide 21: derivazione 🧩 della verosimiglianza M-aria (8) (quadrato della differenza complessa, rapporto con H0); stessa derivazione in stima-dei-parametri.md
