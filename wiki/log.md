@@ -268,3 +268,5 @@ Verificati i numeri: $\ln2=-1.59$ dB, $R_s\approx15$ Msimboli/s, $\text{SNR}_{re
 - [[corso-completo]] Lezione 14 riscritta nell'ordine del nuovo PDF; [[equalizzazione]] riscritta con le derivazioni di ZF (norma minima, rumore), MMSE, β(ℓ) e la nuova ricorsione; [[criterio-di-nyquist]] con la derivazione dei filtri RRC; [[interferenza-intersimbolica]], [[algoritmo-di-viterbi]], [[signaling-bandlimited-channels]], [[lezioni]], [[index]] con i riferimenti al nuovo PDF
 
 ## [2026-11-24] update | Lezione 14, MLSE: riquadri 🧩 su verosimiglianza (slide 47), filtro di ricezione e rivelatore di sequenza come blocco unico (slide 50), lettura di U_k, stati ed estremi degli indici (slide 58), perché Viterbi non ripercorre la storia (slide 59); stessi chiarimenti in equalizzazione.md
+
+## [2026-11-24] update | Lezione 14, slide 58: riquadro 🧩 separato «gli L precedenti non indicano quali simboli si scelgono, ma cosa serve guardare a ogni passo»
