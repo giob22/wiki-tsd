@@ -3190,6 +3190,12 @@ $$\lambda(y)=\text{Re}\Big(\int_{\mathcal T}r(t)\,y^\ast(t)\,dt\Big)-\frac12\int
   con $r(t)=y(t)+w(t)$, $w(t)$ rumore gaussiano additivo di PSD $\sigma^2$, e $y(t)=\sum_{n=0}^Ks(n)\,q(t-nT)$ forma d'onda senza rumore associata a $\mathbf s$.
 - L'intervallo d'osservazione $\mathcal T$ è abbastanza lungo da contenere per intero $q(t),q(t-T),\dots,q(t-KT)$.
 
+> 🧩 **Cosa vuol dire «massimizzare la verosimiglianza».** Il ricevuto $r(t)$ è fissato: per ogni sequenza candidata $\mathbf s$ ci si chiede quanto sarebbe probabile ricevere proprio questo $r(t)$ se fosse stata trasmessa $\mathbf s$, e si sceglie la candidata che lo rende più probabile. Con rumore gaussiano bianco la verosimiglianza è $\propto\exp\big(-\lVert r-y\rVert^2/(2\sigma^2)\big)$: è massima per la forma d'onda candidata $y(t)$ **più vicina** a $r(t)$. Sviluppando il quadrato
+>
+> $$\lVert r-y\rVert^2=\lVert r\rVert^2-2\,\text{Re}\langle r,y\rangle+\lVert y\rVert^2$$
+>
+> e notando che $\lVert r\rVert^2$ è lo stesso per tutte le candidate, minimizzare la distanza equivale a massimizzare la (12). Il termine $\text{Re}\langle r,y\rangle$ premia le sequenze la cui forma d'onda somiglia al ricevuto; $-\frac12\lVert y\rVert^2$ penalizza quelle molto energetiche, che altrimenti vincerebbero solo perché «grandi». È la rivelazione a minima distanza, con l'intera sequenza al posto del singolo simbolo e l'ISI già dentro $y(t)$ tramite $q(t)$; con sequenze equiprobabili è anche la regola che minimizza la probabilità di sbagliare la sequenza.
+
 #### Slide 48 — Il criterio MLSE (2/3) · [[signaling_bandlimited_channel_NEW.pdf#page=49|p. 49]]
 - Sostituendo $y(t)$:
 
@@ -3212,6 +3218,10 @@ $$\hat{\mathbf s}=\arg\max_{\mathbf s}\Big\{\text{Re}\Big[\sum_{n=0}^Ks^\ast(n)\
 - Per la regola MLSE serve prima la sequenza $\alpha(n)$, uscita di un unico filtro adattato.
 - Poi bisogna massimizzare $\lambda(y)\triangleq\text{Re}\big[\sum_ns^\ast(n)\alpha(n)\big]-\frac12\sum_n\sum_ms(n)s^\ast(m)\beta(m-n)$ su tutte le sequenze: il filtro adattato è seguito da un processore, il **rivelatore di sequenza ML**, che sceglie tra le $M^{K+1}$ sequenze quella che massimizza $\lambda(y)$.
 - L'algoritmo di Viterbi fa questa scelta in modo efficiente: si applica ai problemi di massimo (o minimo) formulabili come ricerca del cammino di lunghezza massima (o minima) in un traliccio finito.
+
+> 🧩 **Dov'è il filtro di ricezione $c(t)$, e perché non c'è un decisore separato.** Nello schema dell'equalizzazione (slide 36) la catena è: filtro di ricezione $c(t)$ fisso (RRC, adattato solo a $g$) → campionatore → equalizzatore → decisore. Nella MLSE:
+> - il filtro di ricezione c'è ancora, ma è il filtro adattato $q^\ast(-t)$, cioè adattato a $q(t)=g(t)\ast h(t)$: dipende dal canale, che quindi va conosciuto (per questo l'albero della slide 35 associa alla MLSE uno stimatore del canale). Nelle (12)–(13) $r(t)$ è il segnale **prima** di qualsiasi filtro, con rumore bianco, perché la verosimiglianza in quella forma vale per rumore bianco; il filtro compare dopo, dentro $\alpha(n)$;
+> - equalizzatore e decisore diventano un **unico blocco**, il rivelatore di sequenza. Nel caso lineare sono due blocchi perché fanno due cose diverse: l'equalizzatore è un filtro e produce una somma pesata dei campioni, cioè un numero qualsiasi (per esempio $z(k)=0.93$ in BPSK); il decisore lo arrotonda al simbolo più vicino ($+1$), operazione non lineare che un filtro non può fare. Il rivelatore di sequenza confronta direttamente sequenze di simboli della costellazione: gestisce l'ISI senza cancellarla, mettendola nella metrica tramite i $\beta$, e la sua uscita è già una decisione. Per questo nella slide 35 la MLSE sta tra gli equalizzatori non lineari, e non amplifica il rumore: nessun filtro cerca di invertire il canale.
 
 ### L'algoritmo di Viterbi
 
@@ -3293,6 +3303,18 @@ $$U_K(\sigma_L,\dots,\sigma_{K+1})=U_{K-1}(\sigma_L,\dots,\sigma_K)+V_K(\sigma_K
 
 - Appunti: $U_{K-1}$ dipende dagli stati fino al $K$-esimo ⇒ posso reiterare il ragionamento.
 
+> 🧩 **Come si leggono queste definizioni, pezzo per pezzo.**
+> - **$k$** è l'ultimo simbolo incluso: $U_k$ è la $\lambda(y)$ calcolata sui soli simboli $s(0),\dots,s(k)$, un «totale parziale». Con $k=K$ li include tutti, quindi $U_K=\lambda(y)$; con $k=K-1$ le somme vanno da 0 a $K-1$ e sono i primi due termini della (16). La formula di $U_k$ non si ricava: è una definizione, scritta con $k$ generico perché serve a ogni gradino della ricorsione.
+> - **$\ell$ dentro le somme** di $U_k$ è un indice muto che scorre sui simboli (nella (16) si chiamava $n$): non è l'indice degli stati né la memoria $L$.
+> - **Gli argomenti** $(\sigma_L,\dots,\sigma_{k+1})$ sono la stessa sequenza $s(0),\dots,s(k)$ scritta come cammino di stati: $\sigma_L=(s(L-1),\dots,s(0))$ contiene i primi $L$ simboli e ogni stato successivo ne aggiunge uno, fino a $\sigma_{k+1}=(s(k),\dots,s(k-L+1))$. Il pedice indica l'istante, non l'ultimo simbolo contenuto: $\sigma_{k+1}$ è lo stato subito dopo la trasmissione di $s(k)$, non contiene $s(k+1)$, ed è l'unico stato che contiene $s(k)$; per questo $U_k$ arriva fino a lui.
+> - **Si scelgono tutti i simboli, anche quelli di $\sigma_L$.** La MLSE stima l'intera sequenza $s(0),\dots,s(K)$; gli «$L$ precedenti» dicono solo che cosa serve guardare per calcolare il ramo $V_k$, non quali simboli si decidono. Anche lo stato iniziale $\sigma_L$, con $s(0),\dots,s(L-1)$, è sconosciuto: Viterbi parte da tutti gli $M^L$ stati iniziali possibili, ciascuno con metrica $U_{L-1}(\sigma_L)$, e alla fine, risalendo il cammino migliore, legge tutti i simboli, $s(0)$ compreso.
+> - **Perché gli stati non compaiono nella formula.** Gli stati sono fatti dei simboli che compaiono: scrivere $U_k(\sigma_L,\dots,\sigma_{k+1})$ dice solo che, fissati quegli stati, sono fissati tutti i simboli $s(0),\dots,s(k)$, e quindi il valore di $U_k$ ($\alpha$ e $\beta$ sono numeri già noti, dal ricevuto e dal canale). È come scrivere $f(P)=x^2+y^2$ per un punto $P=(x,y)$: a destra compaiono le coordinate, non $P$. Con $L=2$, $k=2$: $\sigma_2=(s(1),s(0))$ e $\sigma_3=(s(2),s(1))$ forniscono i simboli $s(0),s(1),s(2)$ che compaiono in $U_2$. La notazione con gli stati serve per il traliccio: $V_k(\sigma_k,\sigma_{k+1})$ dichiara che quel termine dipende solo da due stati consecutivi, cioè da un ramo.
+> - **Perché $\ell=L,\dots,K+1$ negli stati.** Dentro $\sigma_\ell$ gli indici vanno da $\ell-L$ a $\ell-1$ e devono stare tra 0 e $K$: $\ell-L\ge0$ dà $\ell\ge L$ ($\sigma_{L-1}$ conterrebbe $s(-1)$), $\ell-1\le K$ dà $\ell\le K+1$ ($\sigma_{K+2}$ conterrebbe $s(K+1)$). Gli stati sono $K-L+2$ e i rami tra loro $K-L+1$, uno per ciascun simbolo $s(L),\dots,s(K)$; i primi $L$ simboli stanno nello stato iniziale.
+> - **Primo termine di $U_k$,** $\text{Re}\big[\sum s^\ast(\ell)\alpha(\ell)\big]$: somiglianza tra i simboli ipotizzati e il ricevuto, perché $\alpha(\ell)$ è l'uscita del filtro adattato in $\ell T$.
+> - **Secondo termine,** $-\frac12\sum\sum s(\ell)s^\ast(m)\beta(m-\ell)$: metà dell'energia della forma d'onda candidata fino al simbolo $k$. Sulla diagonale ($\ell=m$) c'è l'energia di ciascun impulso, fuori diagonale la sovrapposizione tra impulsi diversi, cioè l'ISI, nulla per $\lvert m-\ell\rvert\ge L$.
+> - **Perché $U_K=U_{K-1}+V_K$.** Le coppie $(\ell,m)$ della doppia somma formano una tabella quadrata. Con 3 simboli ($K=2$), $U_2$ prende tutta la tabella $3\times3$ e $U_1$ il quadrato $2\times2$ dei simboli 0 e 1. Manca tutto ciò che contiene $s(2)$: il termine $\text{Re}[s^\ast(2)\alpha(2)]$, la riga e la colonna 2 della tabella (coniugate tra loro, insieme danno $-\text{Re}\big[s(2)\sum_ms^\ast(m)\beta(m-2)\big]$) e l'angolo $-\frac12\lvert s(2)\rvert^2\beta(0)$. Questi tre pezzi sono $V_2$.
+> - **Perché $V_k$ parte da $k-L$ e $U_k$ da 0.** Poiché $\beta(\ell)=0$ per $\lvert\ell\rvert\ge L$, le caselle non nulle della tabella sono una fascia attorno alla diagonale: il simbolo nuovo interagisce solo con i vicini, e la somma di $V_k$ parte da $k-L$. Quella di $U_k$ parte da 0 perché il totale parziale conta tutti i simboli trasmessi finora.
+
 #### Slide 59 e appunti — Il VA applicato alla MLSE (3/3) · [[signaling_bandlimited_channel_NEW.pdf#page=61|p. 61]]
 - Ripetendo il ragionamento:
 
@@ -3300,6 +3322,8 @@ $$\lambda(y)=U_{L-1}(\sigma_L)+V_L(\sigma_L,\sigma_{L+1})+V_{L+1}(\sigma_{L+1},\
 
 - Questa scomposizione si presta al VA: ogni $\sigma_\ell$ è uno degli stati possibili del traliccio e $V_\ell(\sigma_\ell,\sigma_{\ell+1})$ è la metrica (etichetta) del ramo che unisce gli stati $\sigma_\ell$ e $\sigma_{\ell+1}$. La MLSE diventa la ricerca del cammino di metrica massima nel traliccio.
 - Appunti: abbiamo reinterpretato il problema in una forma adatta all'algoritmo di Viterbi; sotto $U_{L-1}$ «metrica aggregata», sotto $V_L$ «metrica».
+
+> 🧩 **Perché la catena dei simboli non va ripercorsa all'indietro.** $s(k)$ interagisce con i simboli precedenti, che a loro volta interagiscono con i loro precedenti, fino a $s(0)$: sembrerebbe che per decidere un simbolo serva tutta la storia. Ma la MLSE non decide un simbolo alla volta in base a quelli già decisi: sceglie l'**intera sequenza** che massimizza $\lambda(y)$, e la dipendenza tra simboli (l'ISI) sta dentro la funzione da massimizzare, nei termini con $\beta$. Viterbi non conosce nessun simbolo, li ipotizza: per ogni stato possibile tiene la metrica accumulata del cammino migliore che vi arriva, che riassume già tutto il passato più vecchio dello stato. A ogni passo gli basta $V_k(\sigma_k,\sigma_{k+1})$; procede solo in avanti ($k=L,\dots,K$) e alla fine risale il sopravvissuto dello stato finale migliore. Esempio: BPSK con $L=2$, stati $(s(k-1),s(k-2))\in\{(+,+),(+,-),(-,+),(-,-)\}$: restano vive al più 4 storie anche dopo 1000 simboli, contro le $2^{1000}$ sequenze della forza bruta. In sintesi, la MLSE dice **cosa** cercare (la sequenza di massima verosimiglianza), Viterbi **come** trovarla sfruttando la memoria corta del canale.
 
 ---
 
