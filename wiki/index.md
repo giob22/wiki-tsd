@@ -4,6 +4,7 @@
 - [[overview]] — panoramica del corso, programma, copertura
 - [[lezioni]] — elenco lezioni con gli argomenti in ordine di PDF
 - [[corso-completo]] — il corso in un unico file schematico, lezioni 1–7 nell'ordine delle slide (solo contenuto dei PDF; PDF di studio con `output/crea_pdf.py`)
+- [[mie-considerazioni]] — ragionamenti personali salvati durante lo studio, non detti a lezione (pagina separata anche sul sito)
 
 ## Concetti
 

@@ -584,6 +584,7 @@ def pagina_indice(out):
 <div class="cards strade">
 <a class="card hero" href="intercorso.html"><span class="num">Percorso</span><strong>Prima prova intercorso</strong><span class="b">Dalla quantizzazione alla rappresentazione di Rice dei processi aleatori: solo gli argomenti della prova, nell'ordine delle lezioni.</span></a>
 <a class="card hero" href="#lezioni"><span class="num">Percorso</span><strong>Tutte le lezioni</strong><span class="b">Le lezioni una per una, nell'ordine in cui sono state svolte.</span></a>
+<a class="card hero" href="considerazioni.html"><span class="num">Note personali</span><strong>Le mie considerazioni</strong><span class="b">Ragionamenti miei nati durante lo studio, tenuti separati dal materiale delle lezioni.</span></a>
 </div>
 <h2 class="ps" id="lezioni">Le lezioni</h2>
 <div class="cards">{"".join(card)}</div>
@@ -623,6 +624,31 @@ def pagina_intercorso(out):
 </ul>
 """
     return pagina("Prima prova intercorso · Trasmissione dei Segnali Digitali", corpo, "intercorso")
+
+
+def pagina_considerazioni(out):
+    """Pagina staccata dalle lezioni: i ragionamenti personali salvati durante lo studio (wiki/mie-considerazioni.md)."""
+    md = rimuovi_frontmatter((WIKI / "mie-considerazioni.md").read_text(encoding="utf-8"))
+    titolo = re.search(r"(?m)^# (.+)$", md).group(1).strip()
+    md = re.sub(r"(?m)^# .*\n", "", md)
+    md = re.sub(r"(?ms)^_Aggiornato.*", "", md)
+    md = re.sub(r"(?m)^Collegamenti:.*\n?", "", md)
+    intro, _, resto = md.partition("\n## ")
+    resto = "## " + resto if resto else ""
+    usati, toc = set(), []
+    h = post_html(render_md(wikilink_testo(demota(resto, 1), out)))
+    h = con_id(h, usati, toc)
+    voci = "".join(f'<li class="l{liv}"><a href="#{i}">{t}</a></li>' for liv, i, t in toc if liv == 3)
+    corpo = f"""
+<p class="crumb"><a href="index.html">Home</a> · Le mie considerazioni</p>
+<h1>{html.escape(titolo)}</h1>
+<div class="breve">{post_html(render_md(wikilink_testo(intro.strip(), out)))}</div>
+<details class="toc" open><summary>Indice delle considerazioni</summary><ul>{voci}</ul></details>
+<section id="considerazioni">
+{h}
+</section>
+"""
+    return pagina(f"{titolo} · Trasmissione dei Segnali Digitali", corpo, "considerazioni")
 
 
 # ----------------------------------------------------------------------------------------------- pagina, stile, script
@@ -949,6 +975,7 @@ def costruisci(out):
         print("scritto", c["slug"])
     (out / "index.html").write_text(pagina_indice(out), encoding="utf-8")
     (out / "intercorso.html").write_text(pagina_intercorso(out), encoding="utf-8")
+    (out / "considerazioni.html").write_text(pagina_considerazioni(out), encoding="utf-8")
     print("scritto index, immagini:", len(COPIATE))
     # pagine aggiuntive tenute fuori dal repository e non collegate dall'indice (facoltative)
     extra = ROOT.parent / "extra_sito.py"

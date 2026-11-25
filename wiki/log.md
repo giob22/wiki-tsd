@@ -272,3 +272,5 @@ Verificati i numeri: $\ln2=-1.59$ dB, $R_s\approx15$ Msimboli/s, $\text{SNR}_{re
 ## [2026-11-24] update | Lezione 14, slide 58: riquadro 🧩 separato «gli L precedenti non indicano quali simboli si scelgono, ma cosa serve guardare a ogni passo»
 
 ## [2026-11-25] update | Lezione 13, slide 21: derivazione 🧩 della verosimiglianza M-aria (8) (quadrato della differenza complessa, rapporto con H0); stessa derivazione in stima-dei-parametri.md
+
+## [2026-11-25] update | nuova pagina wiki/mie-considerazioni.md (considerazioni personali, separate dalle lezioni; pagina considerazioni.html sul sito): verosimiglianza come scelta della media della gaussiana, con grafico grafico-cons-verosimiglianza-media.png (y fisso, medie H1, H2 e H0)
