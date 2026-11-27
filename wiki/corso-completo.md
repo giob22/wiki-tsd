@@ -22,6 +22,7 @@ Testo unico di studio del corso (LM Ingegneria Informatica, UNINA, D. Darsena; t
 | 12 | [[#Lezione 12 — Parametri globali delle modulazioni e capacità di canale\|Parametri globali delle modulazioni e capacità di canale]] | Confronto_new.pdf |
 | 13 | [[#Lezione 13 — Stima dei parametri per la sincronizzazione\|Stima dei parametri per la sincronizzazione]] | 11-9.pdf, Synchro_Kay_example (1).pdf |
 | 14 | [[#Lezione 14 — Segnalazione su canali a banda limitata\|Segnalazione su canali a banda limitata]] | signaling_bandlimited_channel.pdf |
+| 15 | [[#Lezione 15 — Segnalazione su canali a banda limitata: OFDM\|Segnalazione su canali a banda limitata: OFDM]] | ofdm_goldsmith_slides.pdf |
 
 
 
@@ -3353,3 +3354,486 @@ $$\lambda(y)=U_{L-1}(\sigma_L)+V_L(\sigma_L,\sigma_{L+1})+V_{L+1}(\sigma_{L+1},\
 ---
 
 *Approfondimenti nel wiki (derivazioni passo per passo di ZF, MMSE, β(ℓ) e della ricorsione, grafici, esempio di Viterbi svolto): [[interferenza-intersimbolica]], [[criterio-di-nyquist]], [[equalizzazione]], [[algoritmo-di-viterbi]].*
+
+## Lezione 15 — Segnalazione su canali a banda limitata: OFDM
+
+*Fonte: ofdm_goldsmith_slides.pdf (lezione del 27/11, slide «Signaling over bandlimited channels: OFDM», basate su Goldsmith, cap. 12): 53 slide con appunti a lezione più 5 pagine di soli appunti (p. 4, 9, 10, 13, 14), 58 pagine in tutto. Corrispondenza: slide 1–3 = p. 1–3, slide 4–7 = p. 5–8, slide 8–9 = p. 11–12, slide 10–53 = p. 15–58.*
+
+### Trasmissione multiportante
+
+#### Slide 1 — Titolo · [[ofdm_goldsmith_slides.pdf#page=1|p. 1]]
+- «Signaling over bandlimited channels: OFDM», corso di Trasmissione dei segnali digitali, D. Darsena, a.a. 2026-27.
+
+#### Slide 2 e appunti — Perché la trasmissione multiportante · [[ofdm_goldsmith_slides.pdf#page=2|p. 2]]
+- Nelle lezioni precedenti un canale a banda limitata con memoria era modellato dalla convoluzione tra la forma d'onda trasmessa e la risposta impulsiva del canale; in ricezione contributi di simboli diversi possono sovrapporsi e generare ISI.
+- In un sistema multiportante il flusso in ingresso si divide in più flussi a rate più basso, trasmessi a frequenze distinte. Appunti: dal flusso a $R_b$ si ricavano sottoflussi a rate minore, $R_b/N$, con portanti scelte in modo che gli spettri non si sovrappongano (FDM); se si sovrappongono si ha l'OFDM.
+- Una scelta opportuna delle frequenze rende questi segnali **ortogonali** anche quando gli spettri si sovrappongono: FDM a bande separate → OFDM a bande ortogonali e sovrapposte.
+
+#### Slide 3 — FDM convenzionale · [[ofdm_goldsmith_slides.pdf#page=3|p. 3]]
+- Una sorgente seriale emette il flusso di bit $d[\ell]$ a bit rate $R_b=1/T_b$. Un convertitore serie/parallelo (S/P) distribuisce gruppi di $N$ bit su $N$ flussi più lenti; per segnalazione binaria
+
+$$d_i[n]=d[nN+i],\qquad i=0,\dots,N-1,\qquad R_{b,i}=\frac{R_b}{N}$$
+
+- L'$i$-esimo flusso è mappato in simboli, sagomato da un impulso $g(t)$ e traslato alla frequenza $f_i$. Nella FDM ordinaria filtri passa-banda isolano i flussi assegnando loro intervalli di frequenza non sovrapposti.
+
+#### Appunti — Il convertitore S/P come decomposizione polifase · [[ofdm_goldsmith_slides.pdf#page=4|p. 4]]
+- $d(mN+i)=d_i(m)$, $m\in\mathbb Z$, $i=0,1,\dots,N-1$: il convertitore S/P realizza la **decomposizione polifase** del flusso $\dots d(N)\,d(N-1)\dots d(2)\,d(1)\,d(0)$.
+- Ogni uscita ha rate $R_b/N$, dovuto al fatto che si deve attendere che il blocco sia completo. Si ottiene $d_0(0)=d(0)$, $d_1(0)=d(1)$, …, $d_{N-1}(0)=d(N-1)$ sulle $N$ uscite; al secondo istante di tempo $d_0(1)=d(N)$, $d_1(1)=d(N+1)$, …
+
+#### Slide 4 e appunti — Trasmettitore FDM convenzionale · [[ofdm_goldsmith_slides.pdf#page=5|p. 5]]
+- Schema: $d[\ell]$ → S/P → per ogni ramo mapper → $g(t)$ → $e^{j2\pi f_it}$ ($i=0,\dots,N-1$) → somma → $x(t)$.
+- Appunti: $x(t)$ è il **segnale multiportante in banda base**; $e^{j2\pi f_it}$ non è ancora la portante finale: si costruisce un segnale multiportante, che poi l'upconverter trasla alla radiofrequenza, cioè alla portante.
+- La FDM ordinaria sceglie le $f_i$ abbastanza separate da evitare la sovrapposizione spettrale; l'OFDM abbandona deliberatamente questo requisito e lo sostituisce con l'**ortogonalità su un intervallo di simbolo**. Appunti: FDM, l'ortogonalità è garantita dalla non sovrapposizione; OFDM, le bande si sovrappongono ⇒ la demodulazione è più difficile.
+
+![[ofdm-p5-trasmettitore-fdm.png|620]]
+
+#### Slide 5 e appunti — Ricevitore FDM convenzionale · [[ofdm_goldsmith_slides.pdf#page=6|p. 6]]
+- Schema: un **banco di filtri** (appunti) passa-banda attorno a $f_0,\dots,f_{N-1}$, un demodulatore per ramo, P/S → $\hat d[\ell]$.
+- Ogni filtro estrae una banda individuale non sovrapposta; ogni ramo è demodulato e rivelato separatamente e i flussi si ricombinano con la conversione P/S.
+- L'OFDM permetterà di sostituire i filtri con un **banco di proiezioni ortogonali, realizzato in modo efficiente con una FFT**.
+
+![[ofdm-p6-ricevitore-fdm.png|620]]
+
+#### Slide 6 e appunti — FDM e OFDM a confronto · [[ofdm_goldsmith_slides.pdf#page=7|p. 7]]
+- Figura: in alto la FDM, bande separate da intervalli di guardia (*guard*); in basso l'OFDM, sottoportanti sovrapposte e ortogonali a distanza $\Delta f=1/T_u$, ognuna con il picco dove le altre passano per zero.
+- FDM: spettri non sovrapposti, servono guardie in frequenza. OFDM: spettri delle sottoportanti sovrapposti, separabili con demodulazione coerente e ortogonale.
+- L'ortogonalità è una proprietà delle **forme d'onda su un intervallo di osservazione finito**, non della non sovrapposizione degli spettri. Appunti: serve una forma di ortogonalità che agisca anche nel dominio del tempo.
+
+![[ofdm-p7-fdm-ofdm-spettri.png|560]]
+
+#### Slide 7 e appunti — Flussi paralleli e forma d'onda multiportante · [[ofdm_goldsmith_slides.pdf#page=8|p. 8]]
+- Schema: $d[\ell]$ → S/P → mapper → $a_i[n]$ → $\phi_i(t)$ → somma → $x(t)$. Appunti: $\phi_0(t),\dots,\phi_{N-1}(t)$ in generale possono essere diversi; in alcuni casi non si può proprio usare lo stesso impulso di base.
+
+$$f_n(t)=\sum_{i=0}^{N-1}a_i[n]\,\phi_i(t-nT_u),\qquad x(t)=\sum_{n\in\mathbb Z}f_n(t)$$
+
+- $f_n(t)$ è la **frame multicanale** (appunti: la frame prodotta nell'$n$-esimo intervallo di simbolo); $a_i[n]$ è il simbolo portato dalla sottoportante $i$ nel blocco OFDM $n$. Nel modello presente un blocco dura $T_u$, prima di aggiungere un prefisso ciclico.
+
+![[ofdm-p8-flussi-paralleli.png|620]]
+
+#### Appunti — Schema con i mapper e perché il sistema rallentato aiuta · [[ofdm_goldsmith_slides.pdf#page=9|p. 9]]
+- Lo S/P manda $\dots d(N)\,d(0)$ sul primo filo (flusso sul filo $i$-esimo: $d_0(m)$), $d_1(m)$ sul secondo, …, $d_{N-1}(m)$ sull'ultimo; ogni mapper produce $a_i(m)$ (per esempio simboli QPSK), che modula $\phi_i(t-mT_u)$ alla frequenza $f_i$.
+- Quanto devono durare gli impulsi? Non $T_b$ ma $T_u$, e il bit rate è diminuito: $T_u=NT_b$ è l'**intervallo di blocco**, $R_b/N=1/(NT_b)$.
+- Si è rallentato il sistema ⇒ si lotta con l'ISI. Se il segnale ha $R_b$ alto, varia rapidamente ⇒ aumenta la banda del segnale trasmesso ⇒ più ISI. Con lo S/P invece ogni ramo ha un rate più basso ⇒ banda minore.
+
+#### Appunti — Il canale visto dalle sottoportanti · [[ofdm_goldsmith_slides.pdf#page=10|p. 10]]
+- Si supponga di dover trasmettere un segnale con spettro più largo della banda del canale (disegno: banda del canale in rosso, spettro del segnale in blu).
+- Con la trasmissione multiportante lo spettro è fatto di tante sottoportanti strette (disegno in verde): su ciascuna il canale è approssimabile **piatto** ⇒ maggiore robustezza all'ISI, perché la banda del singolo ramo è minore.
+
+![[ofdm-p10-appunti-canale-piatto.png|420]]
+
+### Impulsi ortogonali, ISI e ICI
+
+#### Slide 8 e appunti — Impulsi OFDM ortogonali · [[ofdm_goldsmith_slides.pdf#page=11|p. 11]]
+- Appunti: si deve imporre una biortogonalità ⇒ le $\phi$ devono avere una forma particolare.
+- Finestra rettangolare di energia unitaria e impulsi:
+
+$$R_{T_u}(t)=\begin{cases}\dfrac{1}{\sqrt{T_u}}, & 0\le t<T_u\\[4pt] 0 & \text{altrove}\end{cases}\qquad\phi_i(t)=R_{T_u}(t)\,e^{j2\pi it/T_u}$$
+
+- Le $N$ sottoportanti usano, nel modello in banda base complessa, le frequenze $f_i=i\Delta f$ con $\Delta f=1/T_u$, $i=0,\dots,N-1$. Appunti: non sono le frequenze finali, si deve ancora passare per l'upconverter.
+- **Due forme separate di ortogonalità:** sottoportanti diverse ($i\neq k$) sono ortogonali dentro un blocco; blocchi diversi ($n\neq m$) non si sovrappongono nel tempo nel modello ideale senza CP.
+
+#### Slide 9 e appunti — ISI e ICI · [[ofdm_goldsmith_slides.pdf#page=12|p. 12]]
+- Il segnale multiportante ha **due indici indipendenti**: $x(t)=\sum_{n\in\mathbb Z}\sum_{k=0}^{N-1}a_k[n]\,\phi_k(t-nT_u)$.
+- La statistica di decisione per la portante $i$ e il blocco $m$ (appunti: si vuole ricavare il simbolo trasmesso nell'$m$-esimo intervallo sull'$i$-esimo ramo) contiene
+
+$$r_i[m]=\sum_{n\in\mathbb Z}\sum_{k=0}^{N-1}a_k[n]\,\langle\phi_k(t-nT_u),\phi_i(t-mT_u)\rangle+w_i[m]$$
+
+- Termini con $n\neq m$: **ISI**, interferenza da altri intervalli di simbolo. Termini con $n=m$ e $k\neq i$: **ICI**, interferenza da altre sottoportanti. Il termine desiderato è $n=m$, $k=i$; tutti gli altri si annullano se gli impulsi sono ortonormali.
+
+#### Appunti — Due fonti di interferenza · [[ofdm_goldsmith_slides.pdf#page=13|p. 13]]
+- Sulle uscite dello S/P: $d(N)\,d(0)=d_0(1)\,d_0(0)$, $d(N+1)\,d(1)=d_1(1)\,d_1(0)$, …, $d(N-1)$. Il simbolo $d_1(0)$ subisce l'interferenza di simboli dello stesso stream e di fili diversi.
+- Due fonti di interferenza: ISI; ICI, interferenza generata da ciò che è stato trasmesso su rami differenti.
+- Si deve imporre che il prodotto scalare sia diverso da zero solo per $n=m$ (ortogonalità temporale) e $i=k$ (ortogonalità fra gli impulsi).
+
+#### Appunti — Calcolo dell'ortogonalità · [[ofdm_goldsmith_slides.pdf#page=14|p. 14]]
+
+$$\int_{-\infty}^{+\infty}R_T(t-mT_u)\,e^{j2\pi\frac{k}{T_u}(t-mT_u)}\,R_T(t-nT_u)\,e^{-j2\pi\frac{i}{T_u}(t-nT_u)}\,dt$$
+
+- Se $m\neq n$ le finestre non si sovrappongono nel tempo (disegno: $[mT,(m+1)T]$ e $[nT,(n+1)T]$ disgiunti). Per $m=n$:
+
+$$\int_{mT_u}^{(m+1)T_u}e^{j2\pi\frac{k}{T_u}t}\,e^{-j2\pi\frac{i}{T_u}t}\,dt=\begin{cases}1, & k=i\\[2pt] \dfrac{e^{j2\pi(k-i)}-1}{j2\pi(k-i)}=\dots\ (\text{sinc}), & k\neq i\end{cases}$$
+
+- Basta una minima variazione della frequenza perché si abbia ICI ⇒ motivo per cui prima l'OFDM non era di uso pubblico ⇒ erano necessari banchi di oscillatori molto precisi ⇒ la FFT ha risolto questi problemi ⇒ alla base del 5G.
+
+#### Slide 10 — Ortogonalità delle sottoportanti · [[ofdm_goldsmith_slides.pdf#page=15|p. 15]]
+- Per uno stesso blocco OFDM:
+
+$$\langle\phi_k,\phi_i\rangle=\int_{-\infty}^{+\infty}\phi_k(t)\phi_i^\ast(t)\,dt=\frac{1}{T_u}\int_0^{T_u}e^{j2\pi(k-i)t/T_u}dt=\begin{cases}1, & k=i\\[2pt] \dfrac{e^{j2\pi(k-i)}-1}{j2\pi(k-i)}, & k\neq i\end{cases}$$
+
+- Poiché $k-i$ è intero, $e^{j2\pi(k-i)}=1$, e quindi
+
+$$\langle\phi_k(t-mT_u),\phi_i(t-nT_u)\rangle=\delta_{k-i}\,\delta_{m-n}$$
+
+- Per $m\neq n$ i supporti temporali sono disgiunti (a meno degli estremi); per $m=n$ e $k\neq i$ gli esponenziali complessi integrati si cancellano esattamente.
+
+#### Slide 11 — Spaziatura delle sottoportanti: la condizione sinc · [[ofdm_goldsmith_slides.pdf#page=16|p. 16]]
+- Due impulsi a frequenze generiche $f_k$, $f_i$, $\nu=f_k-f_i$; su un intervallo utile OFDM
+
+$$\langle\phi_k,\phi_i\rangle=\frac{1}{T_u}\int_0^{T_u}e^{j2\pi\nu t}dt=\frac{e^{j2\pi\nu T_u}-1}{j2\pi\nu T_u}=e^{j\pi\nu T_u}\,\text{sinc}(\nu T_u)$$
+
+  con $\text{sinc}(u)=\sin(\pi u)/(\pi u)$, $\text{sinc}(0)=1$ (il secondo passaggio raccoglie $e^{j\pi\nu T_u}$ e usa Eulero).
+- Per $k\neq i$ il prodotto scalare si annulla se $(f_k-f_i)T_u$ è un intero non nullo: la **spaziatura uniforme positiva più piccola** è $\Delta f=1/T_u$.
+- Figura: quattro sinc centrate in $f_0,\dots,f_3$ a distanza $1/T_u$; in ogni frequenza di sottoportante (•) tutti gli altri spettri sono nulli (○).
+
+![[ofdm-p16-condizione-sinc.png|560]]
+
+#### Slide 12 — Il banco di correlatori OFDM · [[ofdm_goldsmith_slides.pdf#page=17|p. 17]]
+- Schema: $r(t)$ → $N$ rami, ciascuno $\times\,\phi_i^\ast(t-nT_u)$ e $\int dt$ → $r_0[n],\dots,r_{N-1}[n]$. L'$i$-esimo correlatore calcola
+
+$$r_i[n]=\int_{-\infty}^{+\infty}r(t)\,\phi_i^\ast(t-nT_u)\,dt$$
+
+- Con gli impulsi ortonormali questo solo calcolo estrae l'$i$-esimo simbolo trasmesso, in assenza di distorsione del canale (a parte il rumore).
+
+![[ofdm-p17-banco-correlatori.png|560]]
+
+#### Slide 13 — Ricevitore ideale in AWGN: né ISI né ICI · [[ofdm_goldsmith_slides.pdf#page=18|p. 18]]
+- Con $r(t)=x(t)+w(t)$:
+
+$$r_i[n]=\sum_{m\in\mathbb Z}\sum_{k=0}^{N-1}a_k[m]\,\langle\phi_k(t-mT_u),\phi_i(t-nT_u)\rangle+w_i[n]=a_i[n]+w_i[n]$$
+
+- **Ipotesi:** sincronizzazione ideale di tempo e di frequenza della portante, canale non dispersivo, impulsi di ricezione ortonormali. Per AWGN complesso con PSD bilatera $N_0$: $w_i[n]\sim\mathcal{CN}(0,N_0)$.
+- ISI: interferenza dai blocchi $m\neq n$; ICI: dalle sottoportanti $k\neq i$.
+
+#### Slide 14 — L'ortogonalità semplifica anche il rumore in uscita · [[ofdm_goldsmith_slides.pdf#page=19|p. 19]]
+- Rumore $w(t)$ gaussiano complesso bianco a media nulla, $E\{w(t)w^\ast(u)\}=N_0\delta(t-u)$; uscita dell'$i$-esimo correlatore $w_i[n]=\int w(t)\phi_i^\ast(t-nT_u)dt$.
+- Media nulla; correlazione mutua (la $\delta$ riduce l'integrale doppio a uno solo)
+
+$$E\{w_i[n]w_k^\ast[m]\}=N_0\int_{-\infty}^{+\infty}\phi_i^\ast(t-nT_u)\,\phi_k(t-mT_u)\,dt=N_0\,\delta_{i-k}\,\delta_{n-m}$$
+
+- I campioni di rumore alle uscite dei correlatori sono incorrelati con la stessa varianza $N_0$; essendo gaussiani, sono anche indipendenti.
+
+### Spettro del segnale OFDM
+
+#### Slide 15 — Autocorrelazione del segnale OFDM · [[ofdm_goldsmith_slides.pdf#page=20|p. 20]]
+- Per lo spettro medio di potenza si assumono simboli indipendenti a media nulla con $E\{a_i[n]a_k^\ast[m]\}=E_s\,\delta_{i-k}\,\delta_{n-m}$. Allora
+
+$$R_{xx}(t,\tau)=E\{x(t)x^\ast(t-\tau)\}=E_s\sum_{n\in\mathbb Z}\sum_{i=0}^{N-1}\phi_i(t-nT_u)\,\phi_i^\ast(t-\tau-nT_u)$$
+
+- $R_{xx}(t,\tau)$ dipende da $t$ oltre che da $\tau$ ed è periodica in $t$ di periodo $T_u$: il segnale OFDM è **ciclostazionario**. La si media su un periodo prima della trasformata di Fourier.
+
+#### Slide 16 — PSD di un segnale OFDM ideale · [[ofdm_goldsmith_slides.pdf#page=21|p. 21]]
+- Autocorrelazione media:
+
+$$\bar R_{xx}(\tau)=\frac{1}{T_u}\int_0^{T_u}R_{xx}(t,\tau)\,dt=\frac{E_s}{T_u}\sum_{i=0}^{N-1}\int_{-\infty}^{+\infty}\phi_i(u)\phi_i^\ast(u-\tau)\,du=\frac{E_s}{T_u}\sum_{i=0}^{N-1}R_{\phi_i\phi_i}(\tau)$$
+
+  (con $u=t-nT_u$ gli intervalli $[-nT_u,(1-n)T_u)$ coprono tutta la retta).
+- Per Wiener-Khinchin, e poiché $\lvert\Phi_i(f)\rvert^2=T_u\,\text{sinc}^2[T_u(f-i/T_u)]$,
+
+$$S_{xx}(f)=\frac{E_s}{T_u}\sum_{i=0}^{N-1}\lvert\Phi_i(f)\rvert^2=E_s\sum_{i=0}^{N-1}\text{sinc}^2\Big[T_u\Big(f-\frac{i}{T_u}\Big)\Big]$$
+
+- La PSD è una somma di sinc² traslate, una per sottoportante. Le sottoportanti ortogonali si sovrappongono in frequenza; con simboli indipendenti le loro PSD semplicemente si sommano.
+
+#### Slide 17 — Esempio: risparmio di banda con la sovrapposizione · [[ofdm_goldsmith_slides.pdf#page=22|p. 22]]
+- $N$ sottocanali con tempo di simbolo $T_u$; per sottocanali illustrativi a coseno rialzato, $\beta$ roll-off ed $\varepsilon$ piccolo margine ai bordi:
+
+$$B_{FDM}\simeq\frac{N(1+\beta+\varepsilon)}{T_u},\qquad B_{overlap}\simeq\frac{N+\beta+\varepsilon}{T_u}\ \ \text{(contributo dei bordi contato una sola volta)}$$
+
+- Per $N=128$, $T_u=0.2$ ms, $\beta=1$, $\varepsilon=0.1$: $B_{FDM}=128\cdot2.1/0.2\ \text{ms}=1.344$ MHz, $B_{overlap}\simeq129.1/0.2\ \text{ms}\simeq0.646$ MHz: la sovrapposizione dimezza circa la banda richiesta.
+- Basato su Goldsmith, cap. 12, esempi 12.2–12.3: confronto illustrativo per il multiportante sovrapposto, non una formula esatta di banda occupata per l'OFDM a finestra rettangolare (che ha lobi laterali sinc).
+
+### Canale dispersivo e prefisso ciclico
+
+#### Slide 18 — Un canale LTI dispersivo introduce memoria · [[ofdm_goldsmith_slides.pdf#page=23|p. 23]]
+- $h(\tau)$ risposta impulsiva di un canale LTI causale, non nulla per $0\le\tau\le T_h$. Il segnale ricevuto è la convoluzione lineare
+
+$$r(t)=\int_0^{T_h}h(\tau)\,x(t-\tau)\,d\tau+w(t)$$
+
+- Figura: blocchi $n$ in $[nT,(n+1)T)$ e $n+1$; la coda ritardata del blocco $n$ (larga $T_h$) entra nel blocco successivo: **ISI**.
+- I termini ritardati possono anche rovinare l'ortogonalità vista da un ricevitore che non usa un intervallo di osservazione adatto.
+
+![[ofdm-p23-canale-dispersivo-isi.png|520]]
+
+#### Slide 19 — Intervallo di guardia e prefisso ciclico · [[ofdm_goldsmith_slides.pdf#page=24|p. 24]]
+- Durata complessiva del blocco $T=T_u+T_g$, con $T_g$ **intervallo di guardia**.
+- Una guardia vuota può evitare la sovrapposizione tra blocchi vicini, ma in generale non ripristina l'ortogonalità delle sottoportanti ritardate sull'intera finestra FFT lunga $T_u$.
+- Invece si copiano gli ultimi $T_g$ secondi di ogni blocco utile al suo inizio: è il **prefisso ciclico** (CP). Figura: CP (durata $T_g$) davanti al blocco OFDM utile (durata $T_u$), con la freccia dalla coda copiata.
+
+![[ofdm-p24-prefisso-ciclico.png|520]]
+
+#### Slide 20 — Estensione ciclica a tempo continuo · [[ofdm_goldsmith_slides.pdf#page=25|p. 25]]
+- Blocco utile per $0\le t<T_u$ e sua versione estesa per $-T_g\le t<T_u$:
+
+$$f_n(t)=\frac{1}{\sqrt{T_u}}\sum_{i=0}^{N-1}a_i[n]\,e^{j2\pi it/T_u},\qquad\tilde f_n(t)=f_n(t\bmod T_u)$$
+
+- La forma d'onda trasmessa è fatta di blocchi estesi distanziati di $T=T_u+T_g$: $x_{cp}(t)=\sum_{n\in\mathbb Z}\tilde f_n(t-nT-T_g)$, e il blocco $n$ occupa $nT\le t<(n+1)T$: il CP in $[nT,nT+T_g)$, la parte utile in $[nT+T_g,(n+1)T)$.
+- **Proprietà chiave:** tutti gli esponenziali delle sottoportanti sono $T_u$-periodici perché $i$ è intero; il prefisso è quindi una vera estensione periodica della forma d'onda utile.
+
+#### Slide 21 — Finestra utile del ricevitore e condizione sul CP · [[ofdm_goldsmith_slides.pdf#page=26|p. 26]]
+- Figura: blocco precedente, CP ($T_g$), intervallo FFT ($T_u$), con l'inizio della finestra FFT alla fine del CP.
+- Per un canale con supporto $0\le\tau\le T_h$ si richiede
+
+$$T_g\ge T_h$$
+
+- Si scarta il prefisso e si demodulano esattamente $T_u$ secondi, liberi dall'interferenza del blocco precedente. Poiché il canale è LTI, i campioni utili subiranno una convoluzione **circolare**, e ogni sottoportante si può elaborare separatamente.
+
+![[ofdm-p26-finestra-fft.png|520]]
+
+#### Slide 22 — I campioni ritardati nell'intervallo utile · [[ofdm_goldsmith_slides.pdf#page=27|p. 27]]
+- Il blocco $n$ occupa $nT\le t<(n+1)T$, prefisso compreso; tolto il prefisso, il ricevitore osserva $t=nT+T_g+u$, $0\le u<T_u$.
+- Per ogni ritardo $0\le\tau\le T_h$, se $T_g\ge T_h$ allora $nT\le nT+T_g+u-\tau<(n+1)T$ (il minimo si ha per $u=0$, $\tau=T_h$; il massimo per $\tau=0$, $u\to T_u$).
+- La disuguaglianza garantisce che ogni contributo ritardato nella finestra di osservazione appartiene al blocco $n$; i campioni del blocco $n-1$ sono esclusi: niente interferenza dal blocco OFDM precedente.
+- Il CP deve essere abbastanza lungo da coprire la **memoria del canale**, non una frazione arbitraria del tempo di simbolo.
+
+#### Slide 23 — Perché il CP elimina l'ISI: separazione dei blocchi · [[ofdm_goldsmith_slides.pdf#page=28|p. 28]]
+- Per $0\le u<T_u$ si osserva il blocco $n$ in $t=nT+T_g+u$:
+
+$$y_n(u)=\int_0^{T_h}h(\tau)\,x_{cp}(nT+T_g+u-\tau)\,d\tau+w_n(u)$$
+
+- Con $T_g\ge T_h$ l'argomento $nT+T_g+u-\tau$ appartiene sempre allo stesso blocco esteso $n$, per $0\le u<T_u$:
+
+$$y_n(u)=\int_0^{T_h}h(\tau)\,f_n\big((u-\tau)\bmod T_u\big)\,d\tau+w_n(u)$$
+
+- I contributi di $a_i[n-1]$ si annullano: **niente ISI tra blocchi**. Il canale LTI agisce su una forma d'onda utile estesa periodicamente, ed è per questo che segue un semplice modello nel dominio di Fourier.
+
+#### Slide 24 — Richiamo: le sinusoidi complesse sono autofunzioni di un canale LTI · [[ofdm_goldsmith_slides.pdf#page=29|p. 29]]
+- Canale LTI con risposta impulsiva $h(t)$: $y(t)=h(t)\ast x(t)$, $H(f)=\mathcal F\{h(t)\}$.
+- Una sinusoide complessa $e^{j2\pi ft}$ è autofunzione di ogni sistema LTI: $h(t)\ast e^{j2\pi ft}=H(f)\,e^{j2\pi ft}$. Ogni componente sinusoidale è moltiplicata per il numero complesso $H(f)$, che può dipendere dalla sua frequenza (figura: $e^{j2\pi ft}$ → canale LTI $h(t)$ → $H(f)e^{j2\pi ft}$).
+- Grazie al CP, nell'intervallo utile ogni sottoportante è esattamente una tale sinusoide complessa: è la chiave del calcolo seguente.
+
+#### Slide 25 — Calcolo a tempo continuo: perché non resta ICI · [[ofdm_goldsmith_slides.pdf#page=30|p. 30]]
+- Applicando la proprietà a ogni sottoportante dell'estensione periodica:
+
+$$\int_0^{T_h}h(\tau)\,e^{j2\pi k(u-\tau)/T_u}d\tau=H\Big(\frac{k}{T_u}\Big)e^{j2\pi ku/T_u}\quad\Rightarrow\quad y_n(u)=\frac{1}{\sqrt{T_u}}\sum_{k=0}^{N-1}a_k[n]\,H\Big(\frac{k}{T_u}\Big)e^{j2\pi ku/T_u}+w_n(u)$$
+
+- Proiettando sull'$i$-esima sottoportante:
+
+$$r_i[n]=\frac{1}{\sqrt{T_u}}\int_0^{T_u}y_n(u)\,e^{-j2\pi iu/T_u}du=\sum_{k=0}^{N-1}a_k[n]\,H\Big(\frac{k}{T_u}\Big)\frac{1}{T_u}\int_0^{T_u}e^{j2\pi(k-i)u/T_u}du+w_i[n]$$
+
+- Poiché l'ultimo integrale vale $\delta_{k-i}$: $r_i[n]=H(i/T_u)\,a_i[n]+w_i[n]$, **niente ICI**.
+
+#### Slide 26 — Nota sulla normalizzazione degli impulsi OFDM · [[ofdm_goldsmith_slides.pdf#page=31|p. 31]]
+- Negli appunti a mano della lezione gli impulsi trasmessi e ricevuti possono essere normalizzati sulla durata completa del blocco $T=T_u+T_g$ invece che su quella utile $T_u$.
+- Un'ampiezza $1/\sqrt T$ in trasmissione e in ricezione introduce il fattore $\frac1T\int_0^{T_u}e^{j2\pi(k-i)u/T_u}du=\frac{T_u}{T}\delta_{k-i}$, e la statistica di decisione diventa
+
+$$r_i[n]=\frac{T_u}{T}\,H\Big(\frac{i}{T_u}\Big)a_i[n]+w_i[n]$$
+
+- Nella derivazione presente gli impulsi utili hanno energia unitaria su $T_u$ e il fattore vale 1: le due formule differiscono solo per la normalizzazione, non per la proprietà OFDM.
+
+#### Slide 27 — L'equalizzazione in frequenza segue direttamente · [[ofdm_goldsmith_slides.pdf#page=32|p. 32]]
+- Dopo la rimozione di un CP sufficiente: $r_i[n]=H(i/T_u)a_i[n]+w_i[n]$. Per un coefficiente di canale noto e non nullo, **una sola divisione complessa** compensa il canale sulla sottoportante $i$:
+
+$$\hat a_i[n]=\frac{r_i[n]}{H(i/T_u)}=a_i[n]+\frac{w_i[n]}{H(i/T_u)}$$
+
+- Il ricevitore non ha bisogno di un equalizzatore multicanale o di sequenza dentro questo modello ideale. Se $\lvert H(i/T_u)\rvert$ è piccolo la divisione amplifica il rumore.
+- Prossimo passo: ottenere queste $N$ proiezioni con una sola FFT invece che con $N$ correlatori analogici.
+
+### Realizzazione con IFFT e FFT
+
+#### Slide 28 — Il campionamento uniforme rivela la IFFT · [[ofdm_goldsmith_slides.pdf#page=33|p. 33]]
+- Si campiona l'$n$-esima forma d'onda utile in $u=qT_c$, $q=0,\dots,N-1$, con $T_c=T_u/N$, $f_s=1/T_c=N/T_u$. Dopo un aggiustamento di guadagno costante ($f_n(qT_c)=x_n[q]/\sqrt{T_c}$, perché $e^{j2\pi iqT_c/T_u}=e^{j2\pi iq/N}$):
+
+$$x_n[q]=\frac{1}{\sqrt N}\sum_{i=0}^{N-1}a_i[n]\,e^{j2\pi iq/N}=\text{IDFT}\{a_i[n]\}[q]$$
+
+- $\{a_i[n]\}$: gli $N$ simboli d'ingresso nel dominio della frequenza; $\{x_n[q]\}$: gli $N$ campioni nel tempo del blocco OFDM utile.
+- Una IFFT veloce realizza la IDFT in $O(N\log N)$ operazioni, invece di $N$ oscillatori separati nel tempo. La normalizzazione $1/\sqrt N$ rende DFT e IDFT unitarie; il guadagno analogico di trasmissione assorbe la costante tra $f_n(t)$ campionata e $x_n[q]$.
+
+#### Slide 29 — Rappresentazione matriciale di DFT e IDFT · [[ofdm_goldsmith_slides.pdf#page=34|p. 34]]
+- $\mathbf a_n=[a_0[n],\dots,a_{N-1}[n]]^T$, $\mathbf x_n=[x_n[0],\dots,x_n[N-1]]^T$:
+
+$$[\mathbf F_N]_{k,q}=\frac{1}{\sqrt N}e^{-j2\pi kq/N},\qquad\mathbf F_N\mathbf F_N^H=\mathbf I_N,\qquad\mathbf x_n=\mathbf F_N^H\mathbf a_n\ \text{(IDFT)},\qquad\mathbf a_n=\mathbf F_N\mathbf x_n\ \text{(DFT)}$$
+
+  ($\mathbf F_N\mathbf F_N^H=\mathbf I_N$ perché $\frac1N\sum_qe^{-j2\pi(k-k')q/N}$ è una serie geometrica che vale $1$ per $k=k'$ e $0$ altrimenti.)
+- **Conservazione dell'energia (Parseval):** $\sum_{q=0}^{N-1}\lvert x_n[q]\rvert^2=\sum_{i=0}^{N-1}\lvert a_i[n]\rvert^2$.
+- FFT e IFFT sono algoritmi veloci per la DFT e la IDFT, non trasformate diverse.
+
+#### Slide 30 — Serializzazione dell'uscita IFFT e ricostruzione di x(t) · [[ofdm_goldsmith_slides.pdf#page=35|p. 35]]
+- La IFFT crea i blocchi $x_n[0],\dots,x_n[N-1]$. Senza prefisso il flusso seriale è indicizzato da $A[\ell]=x_n[q]$, $\ell=nN+q$, $0\le q<N$. Se $p_{DAC}(t)$ è la risposta impulsiva dello stadio DAC/ricostruzione:
+
+$$x(t)=\sum_{\ell\in\mathbb Z}A[\ell]\,p_{DAC}(t-\ell T_c)$$
+
+- IFFT → serializzazione → ricostruzione è la controparte numerica di un banco di modulatori di sottoportante a tempo continuo. Con il CP ogni blocco contiene invece $P=N+L_{cp}$ campioni e l'indicizzazione seriale cambia di conseguenza.
+
+#### Slide 31 — Costruzione del prefisso ciclico a tempo discreto · [[ofdm_goldsmith_slides.pdf#page=36|p. 36]]
+- Il blocco utile è $x_n[0],\dots,x_n[N-1]$; si prendono gli ultimi $L_{cp}$ campioni e si mettono prima del blocco (figura: prefisso ciclico $x[N-L_{cp}],\dots,x[N-1]$, poi il blocco utile $x[0],\dots,x[N-1]$):
+
+$$\tilde x_n[q]=x_n[q\bmod N],\qquad q=-L_{cp},\dots,N-1,\qquad P=N+L_{cp}$$
+
+- $P$ è il numero di campioni trasmessi per blocco e $T_g=L_{cp}T_c$.
+
+![[ofdm-p36-cp-discreto.png|560]]
+
+#### Slide 32 — Esempio numerico di inserimento del CP · [[ofdm_goldsmith_slides.pdf#page=37|p. 37]]
+- $N=8$, $L_{cp}=3$. Sequenza utile (8 campioni) $x[0],\dots,x[7]$; si copiano gli ultimi tre all'inizio: $x[5],x[6],x[7],x[0],x[1],x[2],x[3],x[4],x[5],x[6],x[7]$.
+- Per $q=-3,\dots,7$: $\tilde x[q]=x[(q)_8]$, $(q)_8=q\bmod8$. Il blocco trasmesso ha $P=11$ campioni; in ricezione si scartano i primi 3 e si tengono gli 8 successivi.
+
+#### Slide 33 — La convoluzione lineare diventa circolare · [[ofdm_goldsmith_slides.pdf#page=38|p. 38]]
+- Canale campionato: $h[\ell]=0$ per $\ell\notin\{0,1,\dots,L_h\}$, con $L_{cp}\ge L_h$. Tolto il CP, per $q=0,\dots,N-1$ ($q-\ell\ge-L_h\ge-L_{cp}$, quindi l'indice resta nel blocco esteso):
+
+$$y_n[q]=\sum_{\ell=0}^{L_h}h[\ell]\,\tilde x_n[q-\ell]+w_n[q]=\sum_{\ell=0}^{L_h}h[\ell]\,x_n[(q-\ell)\bmod N]+w_n[q]$$
+
+- **Proprietà fondamentale del CP:** il canale fisico fa una convoluzione lineare; estensione ciclica e rimozione del CP rendono gli $N$ campioni utili in uscita uguali a una convoluzione circolare su $N$ punti.
+
+#### Slide 34 — Il teorema della convoluzione circolare · [[ofdm_goldsmith_slides.pdf#page=39|p. 39]]
+- Con DFT/IDFT unitarie su $N$ punti, sia $y[q]=\sum_{\ell=0}^{N-1}h[\ell]\,x[(q-\ell)_N]$. Prendendo la DFT (scambio delle somme e sostituzione $p=(q-\ell)_N$, con $e^{-j2\pi kq/N}=e^{-j2\pi k\ell/N}e^{-j2\pi kp/N}$):
+
+$$Y[k]=\frac{1}{\sqrt N}\sum_{q=0}^{N-1}\sum_{\ell=0}^{N-1}h[\ell]\,x[(q-\ell)_N]\,e^{-j2\pi kq/N}=\Big(\sum_{\ell=0}^{N-1}h[\ell]\,e^{-j2\pi k\ell/N}\Big)X[k]$$
+
+- Con la DFT **non unitaria** su $N$ punti dei tap del canale, $H[k]=\sum_{\ell=0}^{N-1}h[\ell]e^{-j2\pi k\ell/N}$, si ottiene $Y[k]=H[k]X[k]$: il canale non mescola mai valori diversi di $k$.
+
+#### Slide 35 — La relazione ingresso-uscita in frequenza · [[ofdm_goldsmith_slides.pdf#page=40|p. 40]]
+- DFT su $N$ punti di $y_n[q]$:
+
+$$Y_n[k]=\frac{1}{\sqrt N}\sum_{q=0}^{N-1}y_n[q]e^{-j2\pi kq/N}=\underbrace{\sum_{\ell=0}^{L_h}h[\ell]e^{-j2\pi k\ell/N}}_{H[k]}\ \underbrace{\frac{1}{\sqrt N}\sum_{p=0}^{N-1}x_n[p]e^{-j2\pi kp/N}}_{a_k[n]}+W_n[k]$$
+
+$$Y_n[k]=H[k]\,a_k[n]+W_n[k]$$
+
+- $H[k]$ è la risposta in frequenza del canale campionato in $f_k=k/T_u$: la controparte discreta di $H(k/T_u)$ trovata a tempo continuo.
+
+### Equalizzazione, codifica e sistema completo
+
+#### Slide 36 — Relazioni scalari indipendenti dopo la DFT · [[ofdm_goldsmith_slides.pdf#page=41|p. 41]]
+
+$$\underbrace{\begin{bmatrix}Y_n[0]\\Y_n[1]\\ \vdots\\Y_n[N-1]\end{bmatrix}}_{\mathbf Y_n}=\underbrace{\begin{bmatrix}H[0]&0&\cdots&0\\0&H[1]&\cdots&0\\ \vdots&\vdots&\ddots&\vdots\\0&0&\cdots&H[N-1]\end{bmatrix}}_{\boldsymbol\Lambda_H}\underbrace{\begin{bmatrix}a_0[n]\\a_1[n]\\ \vdots\\a_{N-1}[n]\end{bmatrix}}_{\mathbf a_n}+\mathbf W_n$$
+
+- I coefficienti $H[k]$ non devono essere uguali sulle diverse sottoportanti; tuttavia la matrice in frequenza è **diagonale**: l'equalizzazione si può fare indipendentemente su ogni sottoportante.
+- Questo modello diagonale si basa sulle ipotesi dette: CP, sincronizzazione e canale LTI.
+
+#### Slide 37 — Un esempio elementare a due prese · [[ofdm_goldsmith_slides.pdf#page=42|p. 42]]
+- Canale $h[0]=1$, $h[1]=\alpha$, $h[\ell]=0$ ($\ell\ge2$). Allora $H[k]=1+\alpha e^{-j2\pi k/N}$, $k=0,\dots,N-1$, e con $L_{cp}\ge1$
+
+$$Y_n[k]=\big(1+\alpha e^{-j2\pi k/N}\big)a_k[n]+W_n[k]$$
+
+- Sottoportanti diverse possono avere coefficienti complessi $H[k]$ diversi, ma restano relazioni scalari separate: ogni coefficiente si compensa indipendentemente.
+- Non serve descrivere un particolare modello di propagazione radio: basta la risposta impulsiva elementare di un sistema LTI.
+
+#### Slide 38 — Un canale LTI può attenuare fortemente alcune sottoportanti · [[ofdm_goldsmith_slides.pdf#page=43|p. 43]]
+- Canale a due prese $h[0]=h[1]=1$, $N=16$ ($\lvert1+e^{-j\theta}\rvert^2=2+2\cos\theta=4\cos^2(\theta/2)$):
+
+$$H[k]=1+e^{-j2\pi k/16},\qquad\lvert H[k]\rvert^2=4\cos^2\Big(\frac{\pi k}{16}\Big)$$
+
+- Figura: $\lvert H[k]\rvert^2$ per $k=0,\dots,15$ sulla risposta in frequenza continua del canale (tratteggiata), da 4 in $k=0$ a zero in $k=8$ (nullo spettrale $H[8]=0$) e di nuovo verso 4.
+- In $k=8$, $H[8]=0$: il simbolo portato da quella sottoportante non raggiunge il ricevitore e nessun equalizzatore può recuperarlo. Il CP elimina l'interferenza, **non** i nulli spettrali.
+
+![[ofdm-p43-nullo-spettrale.png|560]]
+
+#### Slide 39 — Equalizzazione a una presa nel dominio della frequenza · [[ofdm_goldsmith_slides.pdf#page=44|p. 44]]
+- Per una sottoportante fissata: $Y[k]=H[k]a[k]+W[k]$.
+- **Zero forcing (ZF):** $\hat a_{ZF}[k]=Y[k]/H[k]$, $H[k]\neq0$. Compensa esattamente il guadagno del canale, ma la varianza del rumore equalizzato è $N_0/\lvert H[k]\rvert^2$.
+- **MMSE lineare** (simboli indipendenti, risposta del canale nota):
+
+$$\hat a_{LMMSE}[k]=\frac{E_sH^\ast[k]}{E_s\lvert H[k]\rvert^2+N_0}\,Y[k]$$
+
+  Limita l'amplificazione del rumore al prezzo di una stima lineare polarizzata (per $N_0\to0$ ritorna lo ZF).
+- La rivelazione coerente pratica richiede anche la stima di canale; codifica e interleaving sono importanti vicino alle forti attenuazioni.
+
+#### Slide 40 — Codifica e interleaving sulle sottoportanti · [[ofdm_goldsmith_slides.pdf#page=45|p. 45]]
+- Se $\lvert H[k]\rvert$ è piccolo su alcuni toni, i simboli rivelati lì sono meno affidabili. La codifica di canale introduce ridondanza; un interleaver distribuisce i bit codificati su sottoportanti e blocchi OFDM diversi. Il decodificatore sfrutta i bit ricevuti in modo affidabile per correggere gli errori sui toni ricevuti male: è un motivo semplice per combinare l'OFDM con codifica e interleaving in frequenza.
+- Figura: griglia tempo (orizzontale) – sottoportante $k$ (verticale), i bit codificati sono sparsi sulla griglia. Concetto adattato da Goldsmith, par. 12.3.1; le celle colorate sono uno schema di interleaving, non un codice specifico.
+
+![[ofdm-p45-interleaving.png|320]]
+
+#### Slide 41 — Trasmettitore OFDM completo in banda base · [[ofdm_goldsmith_slides.pdf#page=46|p. 46]]
+- Schema: bit → S/P → mapping QAM/PSK → IFFT su $N$ punti ($N$ campioni) → aggiunta del prefisso ciclico ($P=N+L_{cp}$) → P/S → DAC → $x(t)$.
+1. Mappare i bit in $N$ simboli complessi $a_i[n]$ (alcune posizioni possono essere riservate a toni nulli o piloti).
+2. IFFT: generare gli $N$ campioni utili nel tempo $x_n[q]$.
+3. Anteporre $L_{cp}$ campioni ciclici; serializzare, convertire in analogico, filtrare e convertire in alto (upconversion).
+
+![[ofdm-p46-trasmettitore-ofdm.png|640]]
+
+#### Slide 42 — Ricevitore OFDM completo in banda base · [[ofdm_goldsmith_slides.pdf#page=47|p. 47]]
+- Schema: $r(t)$ → ADC → S/P → rimozione del prefisso ciclico ($P\to N$) → FFT su $N$ punti → equalizzazione a una presa (per sottoportante) → decisione e P/S → bit.
+1. Ottenere $P$ campioni nel tempo per blocco; allineare la finestra FFT e rimuovere il CP.
+2. FFT: ottenere $Y_n[k]$, l'osservazione in frequenza su ogni sottoportante.
+3. Stimare $H[k]$, equalizzare gli $N$ canali scalari e decidere i simboli.
+
+![[ofdm-p47-ricevitore-ofdm.png|640]]
+
+#### Slide 43 — Il prezzo del prefisso ciclico · [[ofdm_goldsmith_slides.pdf#page=48|p. 48]]
+- $N$ campioni utili richiedono $P=N+L_{cp}$ campioni trasmessi:
+
+$$\eta_{cp}=\frac{N}{N+L_{cp}}=\frac{T_u}{T_u+T_g}$$
+
+- Figura: CP ($L_{cp}$ campioni) seguito dai campioni utili ($N$).
+- L'overhead si paga in tempo e in energia trasmessa, non nel numero di sottoportanti che portano informazione. Il rate netto dipende anche dalle sottoportanti attive, dall'allocazione dei piloti, dalla dimensione della costellazione e dalla codifica di canale.
+
+#### Slide 44 — Esempio numerico di Goldsmith: scelta del prefisso · [[ofdm_goldsmith_slides.pdf#page=49|p. 49]]
+- Canale LTI campionato con $T_c=1\ \mu$s e memoria massima di $5\ \mu$s; si sceglie $N=128$, $L_{cp}=8$ campioni:
+
+$$T_u=NT_c=128\ \mu\text{s},\quad T_g=L_{cp}T_c=8\ \mu\text{s}>5\ \mu\text{s},\quad T=T_u+T_g=136\ \mu\text{s},\quad\eta_{CP}=\frac{128}{136}\simeq94.1\%$$
+
+- Con tutti i 128 toni in 16-QAM non codificata il rate lordo è $R_b=128\log_2(16)/136\ \mu\text{s}\simeq3.76$ Mbit/s.
+- Adattato numericamente da Goldsmith, esempio 12.4. Numero di toni dati, codifica, piloti e guardie spettrali possono ridurre il throughput pratico.
+
+#### Slide 45 — L'overhead del CP nel bit rate · [[ofdm_goldsmith_slides.pdf#page=50|p. 50]]
+- Se $N_d$ sottoportanti portano dati, ciascuna con una costellazione $M$-aria, un blocco contiene $N_b=N_d\log_2(M)$ bit non codificati. Un simbolo OFDM trasmesso occupa $T_u+T_g$ secondi:
+
+$$R_b=\frac{N_d\log_2(M)}{T_u+T_g}=\frac{N_d\log_2(M)}{T_u}\,\frac{N}{N+L_{cp}}$$
+
+- Aggiungere un prefisso riduce il symbol rate del fattore $N/(N+L_{cp})$. Il rate si riduce anche quando alcune portanti sono riservate invece che usate per i dati; il rate netto dipende inoltre dal tasso del codice correttore (se c'è codifica).
+
+#### Slide 46 — IEEE 802.11a: i parametri temporali · [[ofdm_goldsmith_slides.pdf#page=51|p. 51]]
+- Canale da 20 MHz e $N=64$ punti di IFFT: $T_c=1/20\ \text{MHz}=0.05\ \mu$s, $\Delta f=20\ \text{MHz}/64=312.5$ kHz; durata utile $T_u=NT_c=3.2\ \mu$s.
+- Un prefisso di $L_{cp}=16$ aggiunge $T_g=16T_c=0.8\ \mu$s; $T=T_u+T_g=4\ \mu$s.
+- Il prefisso è il $16/80=20\%$ dei campioni trasmessi, la frazione di campioni utili $64/80=80\%$.
+
+#### Slide 47 — IEEE 802.11a: bit rate non codificati · [[ofdm_goldsmith_slides.pdf#page=52|p. 52]]
+- 48 sottoportanti portano dati per simbolo OFDM; con simbolo di $4\ \mu$s:
+
+| Modulazione | Bit per portante dati | Bit rate non codificato |
+|---|---|---|
+| BPSK | 1 | $48/4\ \mu\text{s}=12$ Mbit/s |
+| QPSK | 2 | $96/4\ \mu\text{s}=24$ Mbit/s |
+| 16-QAM | 4 | $192/4\ \mu\text{s}=48$ Mbit/s |
+| 64-QAM | 6 | $288/4\ \mu\text{s}=72$ Mbit/s |
+
+- Sono bit rate fisici grezzi, prima dell'overhead di codifica: per esempio un codice di tasso 1/2 dimezza il rate netto (BPSK: 6 Mbit/s).
+
+#### Slide 48 — Modulazione adattativa: costellazioni diverse su toni diversi · [[ofdm_goldsmith_slides.pdf#page=53|p. 53]]
+- Quando i guadagni $H[k]$ sono noti al trasmettitore, ordine di modulazione o potenza trasmessa possono variare con $k$: i toni deboli possono usare costellazioni robuste (o non portare dati), i toni forti più bit.
+- Figura: toni $0,\dots,6$ con QPSK, QPSK, 16-QAM, 64-QAM, nessun dato, 16-QAM, QPSK.
+
+$$R_{gross}=\frac1T\sum_{k\in\mathcal D}\log_2M_k\qquad(M_k\ge2)$$
+
+  con $\mathcal D$ insieme dei toni dati attivi. Goldsmith, par. 12.3.4. Il caricamento adattativo richiede informazione sulla qualità del canale al trasmettitore; non è obbligatorio in tutti gli standard OFDM.
+
+![[ofdm-p53-modulazione-adattativa.png|520]]
+
+### Limiti dell'OFDM
+
+#### Slide 49 — Rapporto potenza di picco / potenza media (PAPR) · [[ofdm_goldsmith_slides.pdf#page=54|p. 54]]
+- L'OFDM somma molte sinusoidi complesse, che occasionalmente si allineano in modo costruttivo:
+
+$$\text{PAPR}=\frac{\max_{0\le t<T_u}\lvert f_n(t)\rvert^2}{\frac{1}{T_u}\int_0^{T_u}\lvert f_n(t)\rvert^2dt}$$
+
+- Figura: $\lvert f_n(t)\rvert^2$ normalizzato alla media, per un blocco OFDM con $N=16$ simboli QPSK casuali; picco $\text{PAPR}=8.0$ dB.
+- Un PAPR grande richiede amplificazione di potenza lineare / back-off e può abbassare l'efficienza in potenza; picchi alti possono causare clipping e distorsione non lineare, comprese emissioni fuori banda.
+
+![[ofdm-p54-papr.png|520]]
+
+#### Slide 50 — Perché il segnale OFDM può avere picchi grandi · [[ofdm_goldsmith_slides.pdf#page=55|p. 55]]
+- IFFT unitaria di $N$ simboli: $x[q]=\frac{1}{\sqrt N}\sum_{k=0}^{N-1}a[k]e^{j2\pi kq/N}$.
+- Se tutti i simboli hanno la stessa fase e $\lvert a[k]\rvert=1$: $x[0]=N/\sqrt N=\sqrt N$, $\lvert x[0]\rvert^2=N$. Poiché la IFFT è unitaria, $\frac1N\sum_{q=0}^{N-1}\lvert x[q]\rvert^2=1$.
+- Il PAPR campionato vale quindi $N$ per questo blocco ($10\log_{10}N$ dB): mostra come sottoportanti allineate producano una grande ampiezza istantanea.
+
+#### Slide 51 — Un piccolo errore di frequenza rompe l'ortogonalità · [[ofdm_goldsmith_slides.pdf#page=56|p. 56]]
+- Con un errore di frequenza della portante $\delta f$ al ricevitore, il segnale ricevuto contiene il fattore $e^{j2\pi\delta ft}$. La proiezione dell'$i$-esimo correlatore sulla $k$-esima sottoportante ideale è proporzionale a
+
+$$\frac{1}{T_u}\int_0^{T_u}e^{j2\pi[(k-i)/T_u+\delta f]t}dt$$
+
+- L'integrale è in generale non nullo anche per $k\neq i$ (è la condizione sinc con $\nu T_u=k-i+\delta fT_u$): la variabile di decisione $i$ contiene contributi delle altre sottoportanti (ICI).
+- L'ortogonalità delle sottoportanti si basa su una spaziatura **esatta** $\Delta f=1/T_u$: l'OFDM è sensibile agli errori nella frequenza dell'oscillatore.
+
+#### Slide 52 — Offset di frequenza e di tempo: il modello a tempo discreto · [[ofdm_goldsmith_slides.pdf#page=57|p. 57]]
+- A tempo discreto, sia $\epsilon_f=\delta f/\Delta f$ l'offset normalizzato alla spaziatura delle sottoportanti. Dopo la FFT
+
+$$Y[k]=\underbrace{C_0(\epsilon_f)H[k]a[k]}_{\text{utile}}+\underbrace{\sum_{i\neq k}C_{k-i}(\epsilon_f)H[i]a[i]}_{\text{ICI}}+W[k],\qquad C_m(\epsilon_f)=\frac1N\sum_{q=0}^{N-1}e^{j2\pi(\epsilon_f-m)q/N}$$
+
+  (il fattore campionato è $e^{j2\pi\delta f\,qT_c}=e^{j2\pi\epsilon_fq/N}$; per $\epsilon_f=0$, $C_0=1$ e $C_{m\neq0}=0$).
+- Un errore di timing **dentro** il CP, se la finestra FFT contiene ancora campioni periodici validi, provoca soprattutto una rampa di fase lungo le sottoportanti; errori oltre il CP possono causare ISI e ICI.
+- Lo sviluppo presente assume un canale LTI per tutta la trasmissione considerata.
+
+#### Slide 53 — Scelta del numero di sottoportanti: compromessi di base · [[ofdm_goldsmith_slides.pdf#page=58|p. 58]]
+- Periodo di campionamento $T_c$ fisso e CP di $L_{cp}=8$ campioni:
+
+| Dimensione IFFT $N$ | $T_u$ | Frazione di CP | Spaziatura $\Delta f$ |
+|---|---|---|---|
+| 16 | $16T_c$ | $8/24=33.3\%$ | $1/(16T_c)$ |
+| 64 | $64T_c$ | $8/72=11.1\%$ | $1/(64T_c)$ |
+| 128 | $128T_c$ | $8/136=5.9\%$ | $1/(128T_c)$ |
+
+- $N$ più grande riduce l'overhead **frazionario** del CP a parità di memoria del canale; però riduce la spaziatura $\Delta f=1/T_u$ e aumenta la sensibilità a un errore fisso di offset di frequenza. Anche il PAPR possibile cresce con $N$, e questo complica il progetto dell'amplificatore di potenza.
+- Basato sui compromessi descritti in Goldsmith, par. 12.4–12.5. $N$ più piccolo non è sempre meglio né sempre peggio: si sceglie insieme alla memoria del canale, all'overhead di guardia e alla precisione di sincronizzazione.
+
+---
+
+*Approfondimenti nel wiki (derivazioni passo per passo, grafici della PSD, dell'ICI da offset di frequenza e del PAPR, esercizi di dimensionamento): [[ofdm]], [[prefisso-ciclico]], [[ofdm-con-fft]], [[equalizzazione-ofdm]], [[limiti-dell-ofdm]], [[ieee-802-11a]], [[fft]], [[dimensionamento-ofdm]]. Approfondimento facoltativo, non d'esame: [[multiportante-ofdm-dmt-gelli]] (note di G. Gelli).*

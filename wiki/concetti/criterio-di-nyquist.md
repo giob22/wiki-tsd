@@ -151,9 +151,10 @@ Il coseno rialzato è la forma d'impulso usata in pratica nella modulazione line
 - [[teorema-del-campionamento]]: stessa struttura (repliche spettrali ogni $1/T$) e stessa sinc.
 - [[parametri-globali-modulazioni]]: efficienza di banda $\eta_B$.
 - [[equalizzazione]]: cosa fare quando il canale rompe la condizione di Nyquist.
+- [[ofdm]]: anche l'OFDM usa impulsi ortogonali, ma tra sottoportanti diverse (in frequenza) oltre che tra blocchi successivi (nel tempo); l'esempio di banda della slide 17 della Lezione 15 usa sottocanali a coseno rialzato.
 
 ## Fonti · [[signaling_bandlimited_channel_NEW.pdf#page=14|p. 14]]–[[signaling_bandlimited_channel_NEW.pdf#page=32|32]] · appunti [[signaling_bandlimited_channel.pdf#page=14|p. 14]], [[signaling_bandlimited_channel.pdf#page=18|18]]
 
 - [[signaling-bandlimited-channels]]
 
-_Aggiornato: 2026-11-23 — versione aggiornata delle slide (signaling_bandlimited_channel_NEW.pdf): filtri a radice di coseno rialzato (slide 31), banda effettiva «con impulsi a coseno rialzato»; 2026-11-20 — revisione della traduzione delle slide (banda base, banda passante del filtro, log-likelihood ratio, livello del BER floor); 2026-11-16 — creazione da ingest signaling_bandlimited_channel.pdf (Lezione 14)_
+_Aggiornato: 2026-11-27 — collegamento alla Lezione 15 (OFDM); 2026-11-23 — versione aggiornata delle slide (signaling_bandlimited_channel_NEW.pdf): filtri a radice di coseno rialzato (slide 31), banda effettiva «con impulsi a coseno rialzato»; 2026-11-20 — revisione della traduzione delle slide (banda base, banda passante del filtro, log-likelihood ratio, livello del BER floor); 2026-11-16 — creazione da ingest signaling_bandlimited_channel.pdf (Lezione 14)_

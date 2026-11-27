@@ -76,6 +76,13 @@
 - [[criterio-di-nyquist]] — ISI nulla, sinc, coseno rialzato, filtri a radice di coseno rialzato (RRC), $W=(1+\alpha)R_b/\eta_B$ (alta)
 - [[equalizzazione]] — equalizzazione frazionaria, ZF e MMSE con formule, DFE, MLSE con $\alpha(n)$ e $\beta(\ell)$ (alta)
 
+**OFDM (Lezione 15)**
+- [[ofdm]] — multiportante, FDM e OFDM, impulsi $\phi_i(t)$ ortonormali, $\Delta f=1/T_u$, ISI e ICI, correlatori, PSD somma di sinc² (alta)
+- [[prefisso-ciclico]] — $T_g\ge T_h$, niente ISI né ICI, convoluzione circolare, $Y_n[k]=H[k]a_k[n]+W_n[k]$, prezzo del CP (alta)
+- [[ofdm-con-fft]] — campionamento a $T_u/N$ = IDFT, matrice DFT unitaria, trasmettitore e ricevitore completi (alta)
+- [[equalizzazione-ofdm]] — matrice diagonale, ZF e MMSE a una presa, nulli spettrali, codifica e interleaving, modulazione adattativa (alta)
+- [[limiti-dell-ofdm]] — PAPR, offset di frequenza ($C_m(\epsilon_f)$) e di tempo, scelta di $N$ (media)
+
 **Parametri globali e capacità**
 - [[informazione-mutua-e-capacita]] — $I(X;Y)=H(Y)-H(Y\mid X)$, $C=\max_{p(x)}I$, teorema di Shannon, $C=W\log_2(1+\gamma)$ (alta)
 - [[parametri-globali-modulazioni]] — banda di Shannon, $E_b$, $\text{SNR}=\frac{E_b}{N_0}\eta_B$, $\eta_B$, $\eta_P$, tabella PAM/PSK/QAM/ortogonali (alta)
@@ -89,6 +96,8 @@
 - [[legge-a]] — algoritmo di compressione (A = 87.6)
 - [[algoritmo-lloyd-max]] — quantizzatore ottimo MMSE
 - [[algoritmo-di-viterbi]] — cammino ottimo in un traliccio (ACS), usato per la MLSE
+- [[ieee-802-11a]] — standard Wi-Fi OFDM: $N=64$, $L_{cp}=16$, 48 portanti dati, 12–72 Mbit/s non codificati
+- [[fft]] — algoritmo veloce per DFT/IDFT, $O(N\log N)$: il cuore dell'OFDM
 
 ## Fonti
 - [[intro-corso]] — Intro.pdf, pp. 1–21
@@ -105,7 +114,13 @@
 - [[parametri-globali-e-capacita]] — Confronto_new.pdf, pp. 1–33 (slide con note a mano)
 - [[parameter-estimation-synchronization]] — goodnotes/Synchro_Kay_example (1).pdf, pp. 1–36, e goodnotes/11-9.pdf, pp. 1–2
 - [[signaling-bandlimited-channels]] — signaling_bandlimited_channel_NEW.pdf, pp. 1–61 (versione aggiornata del 23/11), con gli appunti di goodnotes/signaling_bandlimited_channel.pdf (versione precedente, 47 pagine)
+- [[signaling-ofdm]] — ofdm_goldsmith_slides.pdf, pp. 1–58 (53 slide della Lezione 15 con appunti, più 5 pagine di soli appunti)
+- [[note-gelli-multiportante]] — Note 2001 Gelli G.pdf, pp. 1–24 (dispensa di G. Gelli, **approfondimento, non d'esame**)
 - [[appunti-sparsi-lezioni]] — goodnotes/Lezioni.pdf, pp. 1–3 (DFT, ripasso di Rice)
+
+## Approfondimenti (non materia d'esame)
+Letture facoltative fornite a lezione, tenute separate dalle pagine d'esame (cartella `wiki/approfondimenti/`, pagina «Approfondimenti» sul sito).
+- [[multiportante-ofdm-dmt-gelli]] — note di G. Gelli (2001): multiportante, OFDM e DMT, prestazioni QAM, tempo di guardia, DFT, prefisso ciclico, bit loading e water filling; notazioni a confronto con la Lezione 15
 
 ## Laboratorio (non materia d'esame)
 Esperimenti Matlab per vedere la teoria all'opera; un macroblocco per pagina.
@@ -122,6 +137,7 @@ Esperimenti Matlab per vedere la teoria all'opera; un macroblocco per pagina.
 - [[dimensionamento-quantizzatore]] — bit, SNR, $k_c$, bit rate, companding (media)
 - [[calcolo-densita-spettrale]] — PSD con Wiener-Khinchin; segnale modulato linearmente (media)
 - [[link-budget-wlan]] — bit rate, sensibilità e portata di un collegamento WLAN (media)
+- [[dimensionamento-ofdm]] — spaziatura, prefisso, efficienza e bit rate di un sistema OFDM; 802.11a (bassa)
 
 ## Esame
 _nessun materiale ancora — lancia `prepara esame`_
@@ -136,6 +152,7 @@ Grafici 🧩 dei processi aleatori — script `genera_grafici_random_processes.p
 Grafici 🧩 della lezione sulla banda base — script `genera_grafici_rappresentazione_rice.py`: catena degli spettri $S_p \to S_p^+ \to S$, componenti I/Q nel tempo, animazione della downconversion (`grafico-rice-downconversion.gif`).
 Grafici di funzione generati (🧩) in `output/grafici/` — script `genera_grafici_campionamento.py`: pdf di Laplace, Laplace/gauss/uniforme, Lloyd-Max M=8, SNR vs bit, errore di quantizzazione, Chebyshev vs esatto, $|H_r(f)|$ interpolatori, SNR vs livello (uniforme/µ/A), soglie equivalenti della µ-law (companding), ripiegamento della frequenza ricostruita. Animazioni GIF (🧩): `grafico-aliasing-animazione.gif` (tempo + spettro, 6 passi), `grafico-aliasing-stroboscopio.gif` (fasori).
 Grafici 🧩 delle Lezioni 13–14 — script `genera_grafici_lezioni13_14.py`: verosimiglianza blind, curva d'errore del PLL, coseno rialzato, ISI da errore di timing.
+Grafici 🧩 della Lezione 15 — script `genera_grafici_lezione15.py`: PSD dell'OFDM (somma di sinc²), potenza utile e ICI con offset di frequenza, CCDF del PAPR per $N=16,64,256$. Grafico 🧩 dell'approfondimento di Gelli — script `genera_grafici_approfondimenti.py`: water filling su 8 sottoportanti.
 
 Copie GoodNotes di tutti i PDF delle lezioni (versioni annotate più recenti, tranne Intercorso.pdf) in `raw/goodnotes/`: i file già presenti in `raw/` hanno il suffisso « (GoodNotes)»; la cartella `matlab/` contiene gli script del laboratorio.
 Ambiente Python per rigenerarli: venv in `C:\Users\giova\.venvs\wiki-tsd` (fuori da OneDrive e dalla repo).

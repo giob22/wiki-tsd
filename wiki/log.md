@@ -274,3 +274,16 @@ Verificati i numeri: $\ln2=-1.59$ dB, $R_s\approx15$ Msimboli/s, $\text{SNR}_{re
 ## [2026-11-25] update | Lezione 13, slide 21: derivazione 🧩 della verosimiglianza M-aria (8) (quadrato della differenza complessa, rapporto con H0); stessa derivazione in stima-dei-parametri.md
 
 ## [2026-11-25] update | nuova pagina wiki/mie-considerazioni.md (considerazioni personali, separate dalle lezioni; pagina considerazioni.html sul sito): verosimiglianza come scelta della media della gaussiana, con grafico grafico-cons-verosimiglianza-media.png (y fisso, medie H1, H2 e H0)
+
+## [2026-11-27] ingest | Signaling over bandlimited channels: OFDM (ofdm_goldsmith_slides.pdf) | pagine coperte: 1-58
+- Lezione 15 (27/11): 53 slide con appunti a lezione e 5 pagine di soli appunti (p. 4, 9, 10, 13, 14)
+- nuove pagine: [[ofdm]], [[prefisso-ciclico]], [[ofdm-con-fft]], [[equalizzazione-ofdm]], [[limiti-dell-ofdm]]; entità [[ieee-802-11a]], [[fft]]; esercizio [[dimensionamento-ofdm]]; fonte [[signaling-ofdm]]
+- derivazioni espanse: ortonormalità e condizione sinc, ISI/ICI, rumore i.i.d., PSD ciclostazionaria, risparmio di banda, condizione $T_g\ge T_h$, autofunzioni e niente ICI, convoluzione circolare e teorema, ZF/LMMSE a una presa, nullo spettrale, IDFT dal campionamento, DFT unitaria e Parseval, PAPR = N, coefficienti $C_m(\epsilon_f)$, rampa di fase da offset di tempo
+- grafici 🧩 (`output/grafici/genera_grafici_lezione15.py`): PSD dell'OFDM, potenza utile e ICI con offset di frequenza, CCDF del PAPR; 17 figure ritagliate dalle slide in `raw/assets/ofdm-p*.png`
+- [[corso-completo]], [[lezioni]], [[index]], [[overview]] (tema 5 completato); collegamenti da [[interferenza-intersimbolica]], [[equalizzazione]], [[criterio-di-nyquist]], [[modulazione-ortogonale]]
+
+## [2026-11-27] ingest | Note di G. Gelli, Modulazione multiportante, sistemi OFDM e DMT (Note 2001 Gelli G.pdf) | pagine coperte: 1-24 | approfondimento, non d'esame
+- nuova cartella `wiki/approfondimenti/` con [[multiportante-ofdm-dmt-gelli]]; fonte [[note-gelli-multiportante]]; sezione «Approfondimenti» in [[lezioni]] e [[index]]; sul sito pagina approfondimenti.html con card in home e rinvio dalla Lezione 15
+- tabella delle notazioni a confronto con le slide ($T$ contro $T_u$, IDFT $1/N$ contro unitaria, rumore $2N_0$ contro $N_0$, energia RF)
+- derivazioni espanse: biortogonalità, banda $(N+1)/T$, potenza QAM $(M-1)d^2/6$, $P_{QAM}$, tempo di guardia e fattore $T_u/T$, convertitori ideali, varianza del rumore dopo la DFT, prefisso ciclico, bit loading, SNR gap (con esempi numerici 🧩), water filling con Lagrange; grafico 🧩 `grafico-gelli-water-filling.png`
+- segnalati con ⚠️ tre probabili refusi delle note (p. 1 «minore attenuazione»; (53)–(54) senza $\lvert H_i\rvert^2$; fase della (57))

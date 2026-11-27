@@ -62,9 +62,10 @@ Nelle modulazioni lineari i punti della costellazione stanno in poche dimensioni
 - [[inviluppo-complesso]] — $\langle u_p,v_p\rangle=\text{Re}\langle u,v\rangle$, da cui la condizione di ortogonalità sugli inviluppi.
 - [[probabilita-errore-binaria]] — ortogonale binaria, $P(e)=\frac12\text{erfc}\sqrt{E_s/(2N_0)}$.
 - [[probabilita-errore-m-aria]] — union bound per $M$ ortogonali.
+- [[ofdm]] — le sottoportanti OFDM sono esponenziali complessi ortogonali su $T_u$ con spaziatura minima $1/T_u$, la stessa idea dell'ortogonalità in frequenza della FSK (Lezione 15).
 
 ## Fonti · [[Modulazione.pdf#page=38|p. 38]], [[Modulazione.pdf#page=39|39]]
 
 [[principles-of-modulation]] — Modulazione.pdf, slide 22–23.
 
-_Aggiornato: 2026-11-16 — creazione da ingest Modulazione.pdf_
+_Aggiornato: 2026-11-27 — collegamento alla Lezione 15 (OFDM); 2026-11-16 — creazione da ingest Modulazione.pdf_

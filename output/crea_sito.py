@@ -85,10 +85,16 @@ LEZIONI = [
          breve="Interferenza intersimbolica, criterio di Nyquist, coseno rialzato e filtri RRC, equalizzazione frazionaria, ZF e MMSE, MLSE e algoritmo di Viterbi.",
          concetti=["interferenza-intersimbolica", "criterio-di-nyquist", "equalizzazione", "entità/algoritmo-di-viterbi"],
          fonte="signaling-bandlimited-channels", esercizi=[]),
+    dict(n=15, slug="lezione-15", data="27/11", titolo="Segnalazione su canali a banda limitata: OFDM",
+         breve="Trasmissione multiportante, FDM e OFDM, sottoportanti ortogonali, prefisso ciclico e convoluzione circolare, IFFT/FFT, equalizzazione a una presa, PAPR e offset.",
+         concetti=["ofdm", "prefisso-ciclico", "ofdm-con-fft", "equalizzazione-ofdm", "limiti-dell-ofdm", "entità/ieee-802-11a", "entità/fft"],
+         fonte="signaling-ofdm", esercizi=["dimensionamento-ofdm"],
+         approfondimento=("multiportante-ofdm-dmt-gelli", "le note di G. Gelli su multiportante, OFDM e DMT (prestazioni QAM, bit loading, water filling)")),
 ]
 for _c in LEZIONI:
     _c.setdefault("inizio", None)
     _c.setdefault("domande_filtro", None)
+    _c.setdefault("approfondimento", None)
 
 # sezioni del corso completo che il sito non mostra (organizzazione del corso, non argomenti): (lezione, inizio del titolo)
 ESCLUDI = [(1, "Organizzazione e programma")]
@@ -538,6 +544,12 @@ def pagina_lezione(cfg, corso, out, precedente, successiva):
     for e in cfg["esercizi"]:
         conc += "\n" + esercizio_html(e, out, usati)
     dom = domande_html(cfg, out)
+    apr = ""
+    if cfg["approfondimento"]:
+        nome, descr = cfg["approfondimento"]
+        apr = (f'<blockquote class="co mia"><p>📚 <strong>Approfondimento facoltativo, non d\'esame:</strong> '
+               f'<a href="approfondimenti.html#{slug(nome)}">{html.escape(descr)}</a>. '
+               f'Sta in una pagina a parte, separata dal materiale delle lezioni.</p></blockquote>')
     voci = []
     for liv, i, t in toc:
         voci.append(f'<li class="l{liv}"><a href="#{i}">{t}</a></li>')
@@ -563,6 +575,7 @@ def pagina_lezione(cfg, corso, out, precedente, successiva):
 <section id="domande"><h2 class="ps">Domande da esame</h2>
 {dom}
 </section>
+{apr}
 {nav}
 """
     return pagina(f"Lezione {cfg['n']} · {cfg['titolo']}", corpo_pagina, cfg["slug"])
@@ -584,6 +597,7 @@ def pagina_indice(out):
 <div class="cards strade">
 <a class="card hero" href="intercorso.html"><span class="num">Percorso</span><strong>Prima prova intercorso</strong><span class="b">Dalla quantizzazione alla rappresentazione di Rice dei processi aleatori: solo gli argomenti della prova, nell'ordine delle lezioni.</span></a>
 <a class="card hero" href="#lezioni"><span class="num">Percorso</span><strong>Tutte le lezioni</strong><span class="b">Le lezioni una per una, nell'ordine in cui sono state svolte.</span></a>
+<a class="card hero" href="approfondimenti.html"><span class="num">Non d'esame</span><strong>Approfondimenti</strong><span class="b">Letture facoltative fornite a lezione (note di G. Gelli su OFDM e DMT), tenute separate dal materiale d'esame.</span></a>
 <a class="card hero" href="considerazioni.html"><span class="num">Note personali</span><strong>Le mie considerazioni</strong><span class="b">Ragionamenti miei nati durante lo studio, tenuti separati dal materiale delle lezioni.</span></a>
 </div>
 <h2 class="ps" id="lezioni">Le lezioni</h2>
@@ -649,6 +663,31 @@ def pagina_considerazioni(out):
 </section>
 """
     return pagina(f"{titolo} · Trasmissione dei Segnali Digitali", corpo, "considerazioni")
+
+
+def pagina_approfondimenti(out):
+    """Pagina staccata dalle lezioni: le letture facoltative (wiki/approfondimenti/*.md), non materia d'esame."""
+    usati, toc, blocchi = set(), [], []
+    for f in sorted((WIKI / "approfondimenti").glob("*.md")):
+        md = rimuovi_frontmatter(f.read_text(encoding="utf-8"))
+        titolo = re.search(r"(?m)^# (.+)$", md).group(1).strip()
+        md = re.sub(r"(?m)^# .*\n", "", md)
+        md = re.sub(r"(?ms)^_Aggiornato.*", "", md)
+        md = re.sub(r"(?ms)^## Collegamenti.*?(?=^## |\Z)", "", md)
+        h = post_html(render_md(wikilink_testo(demota(md, 1), out)))
+        h = con_id(h, usati, toc, prefisso=slug(f.stem) + "-")
+        voce = f'<li class="l2"><a href="#{slug(f.stem)}">{html.escape(titolo)}</a></li>'
+        voce += "".join(f'<li class="l3"><a href="#{i}">{t}</a></li>' for liv, i, t in toc if liv == 3)
+        toc.clear()
+        blocchi.append((voce, f'<section id="{slug(f.stem)}"><h2 class="ps">{html.escape(titolo)}</h2>\n{h}\n</section>'))
+    corpo = f"""
+<p class="crumb"><a href="index.html">Home</a> · Approfondimenti</p>
+<h1>Approfondimenti</h1>
+<div class="breve"><p><strong>Materiale non d'esame.</strong> Letture facoltative fornite a lezione, utili per capire meglio gli argomenti ma da non confondere con le slide: per l'esame valgono le pagine delle lezioni. I calcoli delle dispense sono svolti passo per passo (🧩 = passaggio ricostruito da me, ⚠️ = probabile refuso della dispensa).</p></div>
+<details class="toc" open><summary>Indice degli approfondimenti</summary><ul>{"".join(v for v, _ in blocchi)}</ul></details>
+{"".join(b for _, b in blocchi)}
+"""
+    return pagina("Approfondimenti · Trasmissione dei Segnali Digitali", corpo, "approfondimenti")
 
 
 # ----------------------------------------------------------------------------------------------- pagina, stile, script
@@ -976,6 +1015,7 @@ def costruisci(out):
     (out / "index.html").write_text(pagina_indice(out), encoding="utf-8")
     (out / "intercorso.html").write_text(pagina_intercorso(out), encoding="utf-8")
     (out / "considerazioni.html").write_text(pagina_considerazioni(out), encoding="utf-8")
+    (out / "approfondimenti.html").write_text(pagina_approfondimenti(out), encoding="utf-8")
     print("scritto index, immagini:", len(COPIATE))
     # pagine aggiuntive tenute fuori dal repository e non collegate dall'indice (facoltative)
     extra = ROOT.parent / "extra_sito.py"

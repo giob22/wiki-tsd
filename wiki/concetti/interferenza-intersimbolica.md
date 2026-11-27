@@ -69,9 +69,10 @@ L'ISI è il limite principale della trasmissione veloce su canali a banda limita
 - [[equalizzazione]]: come trattarla quando il canale non si controlla.
 - [[modulazione-lineare]]: il modello (1) è quello della Lezione 8.
 - [[probabilita-errore-binaria]]: le curve di BER senza ISI sono quelle della Lezione 10.
+- [[ofdm]], [[prefisso-ciclico]]: la terza strada (Lezione 15): dividere il flusso su tante sottoportanti lente, su cui il canale è quasi piatto, ed eliminare l'ISI residua tra blocchi con il prefisso ciclico.
 
 ## Fonti · [[signaling_bandlimited_channel_NEW.pdf#page=2|p. 2]]–[[signaling_bandlimited_channel_NEW.pdf#page=13|13]] · appunti [[signaling_bandlimited_channel.pdf#page=2|p. 2]], [[signaling_bandlimited_channel.pdf#page=3|3]], [[signaling_bandlimited_channel.pdf#page=9|9]], [[signaling_bandlimited_channel.pdf#page=13|13]]
 
 - [[signaling-bandlimited-channels]]
 
-_Aggiornato: 2026-11-23 — riferimenti alla versione aggiornata delle slide (signaling_bandlimited_channel_NEW.pdf), modello a memoria finita della slide 37; 2026-11-20 — revisione della traduzione delle slide (banda base, banda passante del filtro, log-likelihood ratio, livello del BER floor); 2026-11-16 — creazione da ingest signaling_bandlimited_channel.pdf (Lezione 14)_
+_Aggiornato: 2026-11-27 — collegamento alla Lezione 15 (OFDM); 2026-11-23 — riferimenti alla versione aggiornata delle slide (signaling_bandlimited_channel_NEW.pdf), modello a memoria finita della slide 37; 2026-11-20 — revisione della traduzione delle slide (banda base, banda passante del filtro, log-likelihood ratio, livello del BER floor); 2026-11-16 — creazione da ingest signaling_bandlimited_channel.pdf (Lezione 14)_

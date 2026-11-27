@@ -258,9 +258,10 @@ Su canali dispersivi (multipath, cavi lunghi) l'ISI non si può evitare con il s
 - [[algoritmo-di-viterbi]]: realizza la MLSE.
 - [[ricevitore-ottimo-awgn]], [[rivelazione-map-ml]]: la MLSE è la rivelazione ML applicata alle sequenze.
 - [[quantizzazione-non-uniforme]]: lo stesso criterio MMSE (minimo errore quadratico medio) del quantizzatore di Lloyd-Max, qui applicato ai coefficienti di un filtro.
+- [[equalizzazione-ofdm]]: nella Lezione 15 ZF e MMSE diventano scalari, un coefficiente per sottoportante, perché dopo prefisso ciclico e FFT la matrice del canale è diagonale.
 
 ## Fonti · [[signaling_bandlimited_channel_NEW.pdf#page=33|p. 33]]–[[signaling_bandlimited_channel_NEW.pdf#page=51|51]], [[signaling_bandlimited_channel_NEW.pdf#page=56|56]]–[[signaling_bandlimited_channel_NEW.pdf#page=61|61]]
 
 - [[signaling-bandlimited-channels]]
 
-_Aggiornato: 2026-11-24 — chiarimenti 🧩 sulla MLSE (filtro di ricezione, un solo blocco, verosimiglianza, lettura di U_k e degli stati, perché Viterbi non ripercorre la storia); 2026-11-23 — versione aggiornata delle slide (signaling_bandlimited_channel_NEW.pdf): equalizzazione frazionaria, ZF e MMSE con derivazioni, coefficienti β(ℓ) e memoria del canale, (15)–(16) corrette e nuovi indici della ricorsione U/V, appunti a lezione; 2026-11-20 — revisione della traduzione delle slide; 2026-11-16 — creazione da ingest signaling_bandlimited_channel.pdf (Lezione 14)_
+_Aggiornato: 2026-11-27 — collegamento alla Lezione 15 (OFDM); 2026-11-24 — chiarimenti 🧩 sulla MLSE (filtro di ricezione, un solo blocco, verosimiglianza, lettura di U_k e degli stati, perché Viterbi non ripercorre la storia); 2026-11-23 — versione aggiornata delle slide (signaling_bandlimited_channel_NEW.pdf): equalizzazione frazionaria, ZF e MMSE con derivazioni, coefficienti β(ℓ) e memoria del canale, (15)–(16) corrette e nuovi indici della ricorsione U/V, appunti a lezione; 2026-11-20 — revisione della traduzione delle slide; 2026-11-16 — creazione da ingest signaling_bandlimited_channel.pdf (Lezione 14)_
