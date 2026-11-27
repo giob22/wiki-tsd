@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Approfondimenti · Trasmissione dei Segnali Digitali</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="style.css">
+<script>try{var t=localStorage.getItem('tsd-tema');if(t==='chiaro')document.documentElement.setAttribute('data-theme','light');else if(t==='scuro')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="app.js"></script></head>
+<body><header class="top"><nav><a href="index.html" class="home" aria-label="indice">⌂</a><a href="lezione-1.html">L1</a><a href="lezione-2.html">L2</a><a href="lezione-3.html">L3</a><a href="lezione-4.html">L4</a><a href="lezione-5.html">L5</a><a href="lezione-6.html">L6</a><a href="lezione-7.html">L7</a><a href="lezione-8.html">L8</a><a href="lezione-9.html">L9</a><a href="lezione-10.html">L10</a><a href="lezione-11.html">L11</a><a href="lezione-12.html">L12</a><a href="lezione-13.html">L13</a><a href="lezione-14.html">L14</a><a href="lezione-15.html">L15</a></nav><span class="ctl"><span class="tm" role="group" aria-label="tema"><button data-t="sistema" title="Tema del sistema" aria-label="tema del sistema"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor" stroke="none"/></svg></button><button data-t="chiaro" title="Tema chiaro" aria-label="tema chiaro"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="3" fill="currentColor"/><path d="M8 1.2v2M8 12.8v2M1.2 8h2M12.8 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4M3.2 12.8l1.4-1.4M11.4 4.6l1.4-1.4"/></svg></button><button data-t="scuro" title="Tema scuro" aria-label="tema scuro"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M13.2 9.6A5.8 5.8 0 1 1 6.4 2.8a4.6 4.6 0 0 0 6.8 6.8z" fill="currentColor"/></svg></button></span><span class="fs"><button id="fm" aria-label="testo più piccolo">A−</button><button id="fp" aria-label="testo più grande">A+</button></span></span></header>
+<main>
+<p class="crumb"><a href="index.html">Home</a> · Approfondimenti</p>
+<h1>Approfondimenti</h1>
+<div class="breve"><p><strong>Materiale non d'esame.</strong> Letture facoltative fornite a lezione, utili per capire meglio gli argomenti ma da non confondere con le slide: per l'esame valgono le pagine delle lezioni. I calcoli delle dispense sono svolti passo per passo (🧩 = passaggio ricostruito da me, ⚠️ = probabile refuso della dispensa).</p></div>
+<details class="toc" open><summary>Indice degli approfondimenti</summary><ul><li class="l2"><a href="#multiportante-ofdm-dmt-gelli">Modulazione multiportante, OFDM e DMT — note di G. Gelli</a></li><li class="l3"><a href="#multiportante-ofdm-dmt-gelli-come-si-lega-alla-lezione-15">Come si lega alla Lezione 15</a></li><li class="l3"><a href="#multiportante-ofdm-dmt-gelli-1-introduzione-cos-e-la-modulazione-multiportant">1. Introduzione: cos'è la modulazione multiportante</a></li><li class="l3"><a href="#multiportante-ofdm-dmt-gelli-2-principio-della-modulazione-multiportante">2. Principio della modulazione multiportante</a></li><li class="l3"><a href="#multiportante-ofdm-dmt-gelli-3-prestazioni-in-awgn">3. Prestazioni in AWGN</a></li><li class="l3"><a href="#multiportante-ofdm-dmt-gelli-4-effetti-del-canale-e-tempi-di-guardia">4. Effetti del canale e tempi di guardia</a></li><li class="l3"><a href="#multiportante-ofdm-dmt-gelli-5-realizzazione-mediante-fft">5. Realizzazione mediante FFT</a></li><li class="l3"><a href="#multiportante-ofdm-dmt-gelli-6-bit-loading">6. Bit loading</a></li><li class="l3"><a href="#multiportante-ofdm-dmt-gelli-riferimenti-e-indice-delle-note">Riferimenti e indice delle note</a></li></ul></details>
+<section id="multiportante-ofdm-dmt-gelli"><h2 class="ps">Modulazione multiportante, OFDM e DMT — note di G. Gelli</h2>
+<blockquote class="co mia"><p>📚 <strong>Approfondimento, non materia d'esame.</strong> Dispensa di Giacinto Gelli (maggio 2001, 24 pagine), da leggere dopo la Lezione 15. Per l'esame valgono le slide della prof. Darsena e le pagine ofdm, prefisso ciclico, ofdm con fft, equalizzazione ofdm, limiti dell ofdm. Questa pagina riassume le note e ne espande i calcoli; non viene richiamata nel corso completo.</p>
+</blockquote>
+<h3 id="multiportante-ofdm-dmt-gelli-come-si-lega-alla-lezione-15">Come si lega alla Lezione 15</h3>
+<p>Le note seguono lo stesso percorso delle slide (impulsi ortogonali, spettro, canale e tempo di guardia, realizzazione con DFT, prefisso ciclico) e aggiungono due parti che le slide non hanno: le <strong>prestazioni</strong> QAM per sottoportante e il <strong>bit loading</strong> ottimo (<em>water filling</em>). Le notazioni però sono diverse, e conviene saperlo prima di confrontare le formule:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Grandezza</th>
+<th>Note di Gelli</th>
+<th>Slide della Lezione 15</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>durata del blocco senza guardia</td>
+<td><span class="math inline">T</span> (spaziatura <span class="math inline">1/T</span>)</td>
+<td><span class="math inline">T_u</span> (spaziatura <span class="math inline">1/T_u</span>)</td>
+</tr>
+<tr>
+<td>blocco con guardia</td>
+<td><span class="math inline">T=T_g+T_u</span>, impulsi normalizzati su <span class="math inline">T</span> (<span class="math inline">R_T=1/\sqrt T</span>)</td>
+<td><span class="math inline">T=T_u+T_g</span>, impulsi normalizzati su <span class="math inline">T_u</span></td>
+</tr>
+<tr>
+<td>guadagno sulla sottoportante</td>
+<td><span class="math inline">\frac{T_u}{T}H(i/T_u)</span></td>
+<td><span class="math inline">H(i/T_u)</span> (il fattore <span class="math inline">T_u/T</span> è nella nota)</td>
+</tr>
+<tr>
+<td>IDFT / DFT</td>
+<td><span class="math inline">A_k=\frac1N\sum_ia_ie^{j2\pi ik/N}</span>, DFT senza fattore</td>
+<td>entrambe unitarie, <span class="math inline">1/\sqrt N</span></td>
+</tr>
+<tr>
+<td>rumore in banda base</td>
+<td><span class="math inline">r_n(\tau)=2N_0\delta(\tau)</span> (passa-banda <span class="math inline">N_0/2</span>)</td>
+<td><span class="math inline">E\{w(t)w^\ast(u)\}=N_0\delta(t-u)</span></td>
+</tr>
+<tr>
+<td>energia</td>
+<td><span class="math inline">\mathcal E</span> = energia a radiofrequenza, <span class="math inline">E=2\mathcal E</span> quella dell'equivalente passabasso</td>
+<td>inviluppo con <span class="math inline">\sqrt2</span>, stesse energie</td>
+</tr>
+<tr>
+<td>campioni del prefisso</td>
+<td><span class="math inline">L</span>, canale lungo <span class="math inline">M</span> campioni</td>
+<td><span class="math inline">L_{cp}</span>, canale con tap <span class="math inline">0,\dots,L_h</span></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote class="co conn"><p>💡 Connessione: la slide dice che &quot;negli appunti a mano della lezione&quot; gli impulsi possono essere normalizzati su <span class="math inline">T</span> invece che su <span class="math inline">T_u</span>, e allora <span class="math inline">r_i[n]=\frac{T_u}{T}H(i/T_u)a_i[n]+w_i[n]</span>: è esattamente la (46)–(48) di queste note.</p>
+</blockquote>
+<h3 id="multiportante-ofdm-dmt-gelli-1-introduzione-cos-e-la-modulazione-multiportant">1. Introduzione: cos'è la modulazione multiportante</h3>
+<ul>
+<li>La <strong>modulazione multiportante</strong> trasporta un flusso di bit con segnali modulati a portanti diverse: è la somma di <span class="math inline">N</span> segnali indipendenti con la stessa banda e portanti <span class="math inline">f_i</span>, <span class="math inline">i=0,\dots,N-1</span>, detti <strong>sottoportanti</strong> o <strong>sottocanali</strong>, modulati di solito PSK o QAM.</li>
+<li>A differenza della FDM convenzionale si può assegnare un numero diverso di bit a ogni sottoportante (<strong>bit loading</strong>) per ottimizzare le prestazioni.</li>
+</ul>
+<blockquote class="co avv"><p>⚠️ Contraddizione (refuso nelle note): si legge che si fa in modo che le sottoportanti che incontrano una <strong>minore</strong> attenuazione e/o maggior rumore trasportino meno bit. Dalla (112) il numero di bit cresce con <span class="math inline">\mathcal E_i\lvert H_i\rvert^2/\sigma_i^2</span>: sono le sottoportanti con <strong>maggiore</strong> attenuazione (o più rumore) a portare meno bit.</p>
+</blockquote>
+<ul>
+<li><strong>Vantaggi</strong> (sezione 1.1): con il bit loading si arriva con relativa semplicità a velocità vicine ai limiti della teoria dell'informazione; abbassando il tasso di simbolo sul canale si riduce molto l'ISI e quindi la complessità degli equalizzatori. Più complessa della portante singola, introdotta più di 40 anni prima nei primi modem (sistema <strong>Kineplex</strong>), è diventata interessante solo con le realizzazioni numeriche a bassa complessità (FFT).</li>
+<li><strong>Due realizzazioni</strong> (sezione 1.2): <strong>OFDM</strong> per applicazioni punto-multipunto (broadcast), in genere senza allocazione ottima dei bit; <strong>DMT</strong> (<em>discrete multitone</em>) per applicazioni punto-punto, tipicamente DSL, con bit loading.</li>
+<li><strong>Svantaggi</strong> (sezione 1.3): oltre alla complessità, (1) l'elevato rapporto tra potenza di picco e potenza media: l'ampiezza, somma di molti contributi indipendenti, tende ad avere distribuzione <strong>gaussiana</strong> e quindi un fattore di cresta elevato, che mette alla prova la linearità degli amplificatori; (2) la sensibilità agli errori di sincronizzazione nel tempo e in frequenza (anche per effetto Doppler), che introducono ISI e ICI.</li>
+<li><strong>Applicazioni</strong> (sezione 1.4, situazione del 2001): DMT in HDSL e ADSL per l'accesso a larga banda nel local loop, proposto anche per le power line; OFDM nel DAB e nel DVB-T (circa 20 Mbit/s), proposto per i sistemi radiomobili di terza generazione, HIPERLAN/2 e un'evoluzione di IEEE 802.11 fino a 54 Mbit/s; sistemi ibridi OFDM/CDMA (MC-CDMA), in cui più utenti condividono le sottoportanti.</li>
+</ul>
+<h3 id="multiportante-ofdm-dmt-gelli-2-principio-della-modulazione-multiportante">2. Principio della modulazione multiportante</h3>
+<p>Flusso binario <span class="math inline">d(n)</span> a <span class="math inline">R_b=1/T_b</span>, periodo di simbolo multiportante <span class="math inline">T\gg T_b</span>. Un buffer (S/P) accumula <span class="math inline">B=R_bT</span> bit nell'intervallo <span class="math inline">[nT,(n+1)T]</span>, formando il blocco <span class="math inline">\mathbf d(n)=[d_0(n),\dots,d_{B-1}(n)]^T</span> con <span class="math inline">d_i(n)=d(nB+i)</span>. Un <strong>codificatore</strong> (mapping) trasforma il blocco nel vettore <span class="math inline">\mathbf a(n)=[a_0(n),\dots,a_{N-1}(n)]^T</span> di <span class="math inline">N\le B</span> simboli complessi, uno per sottocanale. Figura 1: S/P, codificatore, <span class="math inline">N</span> rami con impulsi <span class="math inline">p_i(t-nT)</span>, somma <span class="math inline">x(t)</span>, canale con rumore <span class="math inline">n(t)</span>, banco di correlatori con <span class="math inline">p_i^\ast(t-nT)</span>, decisione, decodificatore, P/S.</p>
+<p>Con modulazione lineare la <strong>frame multicanale</strong> e il segnale sono</p>
+<div class="math block">f_n(t)=\sum_{i=0}^{N-1}a_i(n)\,p_i(t-nT)\quad(1),\qquad x(t)=\sum_{n=-\infty}^{\infty}\sum_{i=0}^{N-1}a_i(n)\,p_i(t-nT)\quad(2)</div><p>Correlando con <span class="math inline">p_i(t-nT)</span> (sistema ideale, senza canale né rumore):</p>
+<div class="math block">r_i(n)=\sum_{m}\sum_{k}a_k(m)\int_{-\infty}^{\infty}p_k(t-mT)\,p_i^\ast(t-nT)\,dt\quad(3)</div><p>A <span class="math inline">r_i(n)</span> contribuiscono, oltre a <span class="math inline">a_i(n)</span>, i simboli <span class="math inline">a_i(m)</span> con <span class="math inline">m\neq n</span> (<strong>ISI</strong>) e <span class="math inline">a_k(m)</span> con <span class="math inline">k\neq i</span> (<strong>ICI</strong>, interferenza intercanale); la loro entità dipende dal prodotto scalare tra gli impulsi. Con la <strong>condizione di biortogonalità</strong></p>
+<div class="math block">\langle p_k(t-mT),p_i(t-nT)\rangle=\delta_{k-i}\,\delta_{m-n}\quad(4)\qquad\Rightarrow\qquad r_i(n)=a_i(n)\quad(5)</div><p>si annullano ISI e ICI: un sistema multicanale ideale. La (4) implica impulsi a energia unitaria. Nota 1: poiché <span class="math inline">p_i(t)</span> è un equivalente passabasso, la sua energia è in genere il doppio di quella dell'impulso a radiofrequenza; nelle note <span class="math inline">\mathcal E_i</span> indica quest'ultima, quindi <span class="math inline">E_i=2\mathcal E_i</span>.</p>
+<h4 id="multiportante-ofdm-dmt-gelli-derivazione-impulsi-rettangolari-biortogonali-6-">Derivazione — Impulsi rettangolari biortogonali, (6)–(13)</h4>
+<p><strong>Si parte da:</strong> <span class="math inline">R_T(t)=1/\sqrt T</span> per <span class="math inline">t\in[0,T]</span>, <span class="math inline">0</span> altrove (6), e <span class="math inline">p_i(t)=R_T(t)e^{j2\pi f_it}</span> (7).</p>
+<div class="math block">
+\begin{aligned}
+\langle p_k(t-mT),p_i(t-nT)\rangle&amp;=\int R_T(t-mT)e^{j2\pi f_k(t-mT)}R_T(t-nT)e^{-j2\pi f_i(t-nT)}dt &amp;&amp; \text{definizione}\\
+&amp;=\frac1T\,\delta_{n-m}\int_{nT}^{(n+1)T}e^{j2\pi f_k(t-nT)}e^{-j2\pi f_i(t-nT)}dt &amp;&amp; \text{le finestre si sovrappongono solo per } m=n\\
+&amp;=\frac1T\,\delta_{n-m}\,e^{-j2\pi(f_k-f_i)nT}\int_{nT}^{(n+1)T}e^{j2\pi(f_k-f_i)t}dt &amp;&amp; (8)\\
+&amp;=\delta_{n-m}\,e^{j\pi(f_k-f_i)T}\,\text{sinc}\big((f_k-f_i)T\big) &amp;&amp; \text{🧩 integrale come}
+\end{aligned}
+</div><p>L'ultima riga si annulla se la spaziatura è un multiplo non nullo di <span class="math inline">1/T</span>; il valore minimo è <span class="math inline">1/T</span>, che dà la massima efficienza spettrale: <span class="math inline">p_i(t)=R_T(t)e^{j2\pi\frac iTt}</span> (9). Poiché <span class="math inline">e^{-j2\pi in}=1</span>, <span class="math inline">p_i(t-nT)=R_T(t-nT)e^{j2\pi\frac iTt}</span> (10), quindi</p>
+<div class="math block">x(t)=\sum_n\Big[\sum_{i=0}^{N-1}a_i(n)e^{j2\pi\frac iTt}\Big]R_T(t-nT)\quad(11),\qquad r_i(n)=\int x(t)R_T(t-nT)e^{-j2\pi\frac iTt}dt=a_i(n)\quad(12)\text{–}(13)</div><p><strong>Sanity check:</strong> è la derivazione con <span class="math inline">T</span> al posto di <span class="math inline">T_u</span>.</p>
+<h4 id="multiportante-ofdm-dmt-gelli-2-1-struttura-del-codificatore">2.1 Struttura del codificatore</h4>
+<p>Il blocco di <span class="math inline">B</span> bit si divide in <span class="math inline">N</span> sottoblocchi <span class="math inline">\mathbf d_i(n)</span> di <span class="math inline">b_i</span> bit, con <span class="math inline">B=\sum_ib_i</span> (14). Il sottoblocco <span class="math inline">i</span> assume uno di <span class="math inline">M_i=2^{b_i}</span> valori, quindi la sottoportante <span class="math inline">i</span> usa una modulazione a <span class="math inline">M_i</span> livelli (PSK o QAM). In mancanza di altre informazioni si sceglie <span class="math inline">b_i=B/N</span> e <span class="math inline">M_i=2^{B/N}</span>, con potenze uguali: è il caso tipico dell'<strong>OFDM</strong>, usato nel punto-multipunto, dove non c'è canale di ritorno e non si può ottimizzare per più utenti. Allocare bit e potenze in modo diverso (<strong>bit loading</strong>) serve quando alcune sottoportanti sono più sfavorite: è usato nei <strong>DMT</strong>, punto-punto, dove c'è un canale di ritorno (sezione 6).</p>
+<h4 id="multiportante-ofdm-dmt-gelli-2-2-spettro-di-un-sistema-multiportante">2.2 Spettro di un sistema multiportante</h4>
+<p>Con bit i.i.d. in ingresso, i simboli <span class="math inline">a_i(n)</span> e <span class="math inline">a_j(n)</span> (<span class="math inline">i\neq j</span>) sono indipendenti (sottoblocchi diversi dello stesso blocco), e così <span class="math inline">a_i(n)</span>, <span class="math inline">a_j(m)</span> con <span class="math inline">n\neq m</span> (blocchi diversi): ogni sequenza è i.i.d. e sequenze diverse sono indipendenti. Con media nulla vale la biortogonalità statistica <span class="math inline">E[a_i(n)a_j^\ast(m)]=\sigma_{a_i}^2\delta_{i-j}\delta_{n-m}</span> (16).</p>
+<div class="math block">
+\begin{aligned}
+r_x(t,\tau)&amp;=E[x(t)x^\ast(t-\tau)]=\sum_{i=0}^{N-1}\sigma_{a_i}^2\sum_np_i(t-nT)p_i^\ast(t-\tau-nT)=\sum_i\sigma_{a_i}^2\,\text{rep}_T\big[p_i(t)p_i^\ast(t-\tau)\big] &amp;&amp; (17)\\
+r_x(\tau)&amp;=\langle r_x(t,\tau)\rangle=\frac1T\sum_i\sigma_{a_i}^2\,r_{p_i}(\tau),\qquad r_{p_i}(\tau)=\int p_i(t)p_i^\ast(t-\tau)dt &amp;&amp; (18)\text{–}(19)\\
+S_x(f)&amp;=\frac1T\sum_i\sigma_{a_i}^2\lvert P_i(f)\rvert^2,\qquad P_i(f)=\sqrt T\,\text{sinc}(fT-i)\,e^{-j\pi(fT-i)} &amp;&amp; (20)\text{–}(22)\\
+S_x(f)&amp;=\sum_{i=0}^{N-1}\sigma_{a_i}^2\,\text{sinc}^2(fT-i) &amp;&amp; (23)
+\end{aligned}
+</div><p><span class="math inline">\text{rep}_T</span> è la replicazione con passo <span class="math inline">T</span>: <span class="math inline">r_x(t,\tau)</span> è periodica in <span class="math inline">t</span>, il segnale è <strong>ciclostazionario</strong> di periodo <span class="math inline">T</span> e si media su <span class="math inline">t</span>. La figura 2 mostra la PSD per <span class="math inline">N=8</span> con simboli di valore quadratico medio unitario: spettro complessivo continuo, sottoportanti tratteggiate.</p>
+<h4 id="multiportante-ofdm-dmt-gelli-derivazione-occupazione-di-banda-24">Derivazione — Occupazione di banda (24)</h4>
+<div class="math block">
+\begin{aligned}
+B_T&amp;=\frac{N-1}{T}+\frac2T &amp;&amp; \text{dal centro della prima a quello dell&#x27;ultima: }(N-1)/T;\ \text{più mezzo lobo principale } (1/T) \text{ per lato}\\
+&amp;=\frac{N+1}{T}\simeq\frac NT &amp;&amp; N\gg1\ (\text{valori tipici da } 64)
+\end{aligned}
+</div><p>Gli spettri si sovrappongono molto: l'efficienza spettrale è molto maggiore (circa doppia) di una FDM convenzionale. Il prezzo è l'elevata sensibilità agli errori di sincronizzazione, nel tempo e in frequenza, che distruggono l'ortogonalità.</p>
+<h3 id="multiportante-ofdm-dmt-gelli-3-prestazioni-in-awgn">3. Prestazioni in AWGN</h3>
+<p>Rumore AWGN con PSD <span class="math inline">N_0/2</span>; il suo equivalente passabasso <span class="math inline">n(t)</span> è SSL a media nulla con <span class="math inline">r_n(\tau)=E[n(t)n^\ast(t-\tau)]=2N_0\delta(\tau)</span> (26) e autocorrelazione coniugata nulla (simmetria circolare). Il correlatore dà <span class="math inline">r_i(n)=a_i(n)+n_i(n)</span> (27), con <span class="math inline">n_i(n)=\int n(t)R_T(t-nT)e^{-j2\pi\frac iTt}dt</span> (28).</p>
+<h4 id="multiportante-ofdm-dmt-gelli-derivazione-correlazione-del-rumore-29">Derivazione — Correlazione del rumore (29)</h4>
+<div class="math block">
+\begin{aligned}
+E[n_i(n)n_j^\ast(k)]&amp;=\iint E[n(t)n^\ast(u)]\,R_T(t-nT)R_T(u-kT)\,e^{-j2\pi\frac iTt}e^{j2\pi\frac jTu}\,dt\,du &amp;&amp; \text{linearità}\\
+&amp;=2N_0\int R_T(t-nT)R_T(t-kT)\,e^{-j2\pi\frac{i-j}{T}t}dt &amp;&amp; E[n(t)n^\ast(u)]=2N_0\delta(t-u)\\
+&amp;=2N_0\,\delta_{n-k}\,\delta_{i-j} &amp;&amp; \text{biortogonalità}
+\end{aligned}
+</div><p>Rumori gaussiani, incorrelati e quindi indipendenti, con varianza <span class="math inline">\sigma^2=2N_0</span>. Decisione <span class="math inline">\hat a_i(n)=\mathcal D_i[a_i(n)+n_i(n)]</span> (30); nota 2: con ISI e ICI la decisione ottima userebbe congiuntamente più simboli e più canali, ma nelle condizioni ideali i canali sono indipendenti e si decide simbolo per simbolo. Con QAM su ogni sottoportante il sistema ideale equivale a <strong><span class="math inline">N</span> canali QAM a portante singola indipendenti</strong>.</p>
+<blockquote class="co conn"><p>💡 Connessione: con la convenzione delle slide il rumore ha varianza <span class="math inline">N_0</span>; qui <span class="math inline">2N_0</span> perché la PSD passa-banda è <span class="math inline">N_0/2</span> e l'equivalente passabasso definito senza <span class="math inline">\sqrt2</span> la moltiplica per 4. I rapporti segnale/rumore finali coincidono, perché anche l'energia dei simboli è raddoppiata (<span class="math inline">E=2\mathcal E</span>).</p>
+</blockquote>
+<h4 id="multiportante-ofdm-dmt-gelli-3-1-qam-a-portante-singola">3.1 QAM a portante singola</h4>
+<p>Modello <span class="math inline">r(n)=Ha(n)+n(n)</span> (31), figura 3, con guadagno complesso <span class="math inline">H</span> del canale e rumore bianco di potenza <span class="math inline">\sigma^2=2N_0</span>. Costellazione QAM quadrata con <span class="math inline">M=2^b</span> punti (<span class="math inline">b</span> pari), distanza <span class="math inline">d</span> tra simboli adiacenti (figura 4: 64-QAM), simboli equiprobabili.</p>
+<h4 id="multiportante-ofdm-dmt-gelli-derivazione-potenza-della-costellazione-32">Derivazione — Potenza della costellazione (32)</h4>
+<div class="math block">
+\begin{aligned}
+L&amp;=\sqrt M &amp;&amp; \text{livelli per asse (QAM} = \text{due ASK in quadratura)}\\
+E[(\text{Re}\,a)^2]&amp;=\frac{d^2}{4}\cdot\frac{2}{L}\sum_{k=1}^{L/2}(2k-1)^2=\frac{d^2}{4}\cdot\frac{L^2-1}{3}=\frac{(L^2-1)d^2}{12} &amp;&amp; \text{livelli } \pm\tfrac d2,\pm\tfrac{3d}2,\dots;\ \textstyle\sum_{k=1}^{m}(2k-1)^2=\tfrac{m(4m^2-1)}3\\
+\sigma_a^2&amp;=E[\lvert a\rvert^2]=2\cdot\frac{(M-1)d^2}{12}=\frac{M-1}{6}\,d^2 &amp;&amp; \text{due assi, } L^2=M
+\end{aligned}
+</div><p><strong>Sanity check:</strong> 4-QAM (<span class="math inline">M=4</span>): punti <span class="math inline">(\pm\frac d2,\pm\frac d2)</span>, <span class="math inline">\lvert a\rvert^2=\frac{d^2}{2}=\frac{3}{6}d^2</span> ✓. Vale esattamente per <span class="math inline">M</span> potenza di 4 (4, 16, 64, 256, 1024-QAM); per <span class="math inline">b</span> dispari è solo un'approssimazione.</p>
+<h4 id="multiportante-ofdm-dmt-gelli-derivazione-probabilita-d-errore-qam-34-39">Derivazione — Probabilità d'errore QAM (34)–(39)</h4>
+<p><strong>Si parte da:</strong> QAM = due ASK in quadratura, ciascuna con <span class="math inline">\sqrt M</span> livelli e metà dell'energia; i due flussi si separano perfettamente.</p>
+<div class="math block">
+\begin{aligned}
+P_{QAM}&amp;=1-(1-P_{ASK})^2\simeq2P_{ASK} &amp;&amp; (34):\ \text{corretto solo se entrambe giuste}; P_{ASK}\ll1\\
+P_{ASK}&amp;=2\Big(1-\frac{1}{\sqrt M}\Big)Q\Big(\frac{d\lvert H\rvert/2}{\sqrt{\sigma^2/2}}\Big) &amp;&amp; \text{🧩 ASK: errore se il rumore di un asse supera metà distanza}\\
+\frac{d\lvert H\rvert/2}{\sqrt{\sigma^2/2}}&amp;=\frac{d\lvert H\rvert}{\sqrt2\,\sigma}=\sqrt{\frac{3}{M-1}\frac{\lvert H\rvert^2\mathcal E}{N_0}} &amp;&amp; 2\mathcal E=\tfrac{M-1}6d^2\ (37),\ \sigma^2=2N_0\\
+P_{QAM}&amp;\simeq4\Big(1-\frac1{\sqrt M}\Big)Q\Big(\sqrt{\frac{3}{M-1}\frac{\lvert H\rvert^2\mathcal E}{N_0}}\Big)=4\Big(1-\frac1{\sqrt M}\Big)Q\Big(\frac{d\lvert H\rvert}{\sqrt2\sigma}\Big) &amp;&amp; (36),\ (38)\\
+\text{BER}_{QAM}&amp;\simeq\frac{P_{QAM}}{\log_2M} &amp;&amp; (39):\ \text{codifica di Gray, un bit sbagliato per simbolo sbagliato}
+\end{aligned}
+</div><p>Il fattore <span class="math inline">2(1-1/\sqrt M)</span> conta che i livelli interni hanno due vicini e quelli esterni uno solo. La (36) è comunque un limite superiore per QAM con <span class="math inline">b</span> qualsiasi. Nota 3: le note di Proakis usano <span class="math inline">\text{erfc}</span>, con <span class="math inline">Q(x)=\frac12\text{erfc}(x/\sqrt2)</span>.</p>
+<p><strong>Sanity check:</strong> <span class="math inline">M=4</span>: <span class="math inline">P_{QAM}\simeq2Q\big(\sqrt{\lvert H\rvert^2\mathcal E/N_0}\big)</span>, cioè ogni asse è una BPSK con energia <span class="math inline">\mathcal E/2</span> per bit, come la QPSK della Lezione 10.</p>
+<h4 id="multiportante-ofdm-dmt-gelli-3-2-qam-multiportante">3.2 QAM multiportante</h4>
+<p>Senza effetti del canale (<span class="math inline">H=1</span>) e con rumore bianco, ha senso usare la stessa QAM (<span class="math inline">M=2^b</span>) e la stessa energia <span class="math inline">\mathcal E/N</span> su ogni sottoportante, come nell'OFDM: tutte hanno la stessa probabilità d'errore, quella del sistema,</p>
+<div class="math block">P_M\simeq4\Big(1-\frac1{\sqrt M}\Big)Q\Big(\sqrt{\frac{3}{M-1}\frac{\mathcal E}{NN_0}}\Big)\quad(40),\qquad\text{BER}_M=\frac{4}{\log_2M}\Big(1-\frac1{\sqrt M}\Big)Q(\cdot)\quad(41)</div><p>Con il canale, le probabilità sulle sottoportanti differiscono: il sistema ha una probabilità media o è dominato dalla peggiore, e non ha più senso usare modulatori uguali (sezione 6).</p>
+<h3 id="multiportante-ofdm-dmt-gelli-4-effetti-del-canale-e-tempi-di-guardia">4. Effetti del canale e tempi di guardia</h3>
+<p>Ridurre il tasso di simbolo per sottoportante mitiga l'ISI, ma ne resta un residuo, e c'è l'ICI. Si divide allora <span class="math inline">T</span> in un <strong>tempo di guardia</strong> <span class="math inline">T_g</span> e un tempo utile <span class="math inline">T_u</span> (<span class="math inline">T=T_g+T_u</span>) e la spaziatura diventa <span class="math inline">1/T_u</span> invece di <span class="math inline">1/T</span>. Tre conseguenze: (1) gli impulsi sono biortogonali su <span class="math inline">T_u</span>, non più su <span class="math inline">T</span>; (2) la banda aumenta perché aumenta la spaziatura; (3) l'energia per la rivelazione si riduce, perché una frazione <span class="math inline">T_g/T</span> si spende nella guardia.</p>
+<p>Segnale trasmesso <span class="math inline">x(t)=\sum_n\big[\sum_ia_i(n)e^{j2\pi\frac{i}{T_u}t}\big]R_T(t-nT)</span> (42), canale LTI causale <span class="math inline">r(t)=x(t)\ast h(t)+n(t)</span> (43) con risposta di durata <span class="math inline">T_h\le T</span>: ISI solo dalla frame precedente. Il ricevitore integra su <span class="math inline">[nT+T_g,(n+1)T]</span>, di ampiezza <span class="math inline">T_u</span>, dove arrivano solo la frame <span class="math inline">n</span> e la <span class="math inline">n-1</span> (44).</p>
+<h4 id="multiportante-ofdm-dmt-gelli-derivazione-uscita-del-correlatore-con-tempo-di-">Derivazione — Uscita del correlatore con tempo di guardia (45)–(48)</h4>
+<div class="math block">
+\begin{aligned}
+r_i(n)&amp;=\int_{nT+T_g}^{(n+1)T}r(t)\,R_T(t-nT)\,e^{-j2\pi\frac{i}{T_u}t}dt &amp;&amp; \text{finestra utile, ampiezza } 1/\sqrt T\\
+&amp;=\frac{1}{\sqrt T}\sum_ka_k(n)\int_{nT+T_g}^{(n+1)T}\!\!\int_0^{T_h}h(\tau)e^{-j2\pi\frac{k}{T_u}\tau}e^{j2\pi\frac{k-i}{T_u}t}R_T(t-\tau-nT)\,d\tau\,dt+(\text{termine in } a_k(n-1)) &amp;&amp; (45)\\
+&amp;t-\tau\in[nT+T_g-T_h,(n+1)T]\subseteq[nT,(n+1)T]\ \text{se } T_g\ge T_h\ \Rightarrow\ R_T(t-\tau-nT)=1/\sqrt T &amp;&amp; \text{primo integrale}\\
+&amp;R_T(t-\tau-(n-1)T)\neq0\iff(n-1)T+\tau&lt;t&lt;nT+\tau\le nT+T_g &amp;&amp; \text{nessuna intersezione con } [nT+T_g,(n+1)T]\\
+r_i(n)&amp;=\sum_ka_k(n)\underbrace{\int_0^{T_h}h(\tau)e^{-j2\pi\frac{k}{T_u}\tau}d\tau}_{H(k/T_u)}\cdot\frac1T\int_{nT+T_g}^{(n+1)T}e^{j2\pi\frac{k-i}{T_u}t}dt &amp;&amp; \text{il secondo integrale si annulla}\\
+\frac1T\int_{nT+T_g}^{(n+1)T}e^{j2\pi\frac{k-i}{T_u}t}dt&amp;=\frac{T_u}{T}\,\delta_{k-i} &amp;&amp; (47):\ \text{intervallo lungo } T_u,\ k-i \text{ periodi interi}\\
+r_i(n)&amp;=\frac{T_u}{T}\,a_i(n)\,H\Big(\frac{i}{T_u}\Big)+n_i(n) &amp;&amp; (46),\ (48)
+\end{aligned}
+</div><p>Il sistema equivale a <strong><span class="math inline">N</span> canali AWGN indipendenti</strong> con fattori di scala diversi, i campioni di <span class="math inline">H(f)</span> a passo <span class="math inline">1/T_u</span>. Con <span class="math inline">H_i=H(i/T_u)</span> e <span class="math inline">\gamma=T_g/T</span> (in pratica tipicamente <span class="math inline">0.25</span>): <span class="math inline">r_i(n)=(1-\gamma)H_ia_i(n)+n_i(n)</span> (49).</p>
+<h4 id="multiportante-ofdm-dmt-gelli-derivazione-energia-rumore-e-probabilita-d-error">Derivazione — Energia, rumore e probabilità d'errore con la guardia (50)–(55)</h4>
+<div class="math block">
+\begin{aligned}
+2\mathcal E_i&amp;=\sigma_{a_i}^2 &amp;&amp; (50):\ \text{energia trasmessa per la portante } i\\
+\text{segnale utile}&amp;\to(1-\gamma)^2\lvert H_i\rvert^2\,\sigma_{a_i}^2 &amp;&amp; \text{dalla (49)}\\
+E[\lvert n_i(n)\rvert^2]&amp;=2N_0\,\frac{T_u}{T}=2N_0(1-\gamma) &amp;&amp; (51):\ \text{si integra su } T_u \text{ con ampiezza } 1/\sqrt T\\
+\frac{\text{segnale}}{\text{rumore}}&amp;\ \propto\ \frac{(1-\gamma)^2\lvert H_i\rvert^2}{(1-\gamma)}=\lvert H_i\rvert^2(1-\gamma) &amp;&amp; (52)\\
+P_i&amp;=4\Big(1-\frac{1}{\sqrt{M_i}}\Big)Q\Big(\sqrt{\frac{3}{M_i-1}\frac{\mathcal E_i(1-\gamma)}{N_0}}\Big) &amp;&amp; (53)\\
+\text{BER}&amp;=\frac1N\sum_{i=0}^{N-1}\text{BER}_i &amp;&amp; (55),\ \text{con } \text{BER}_i \text{ come la (54)}
+\end{aligned}
+</div><blockquote class="co avv"><p>⚠️ Contraddizione (nelle note): la (52) dice che il contrasto di energia si modifica del fattore <span class="math inline">\lvert H_i\rvert^2(1-\gamma)</span>, ma la (53) e la (54) riportano sotto radice solo <span class="math inline">\mathcal E_i(1-\gamma)/N_0</span>, senza <span class="math inline">\lvert H_i\rvert^2</span>. Coerentemente con la (36) e con la (52) l'argomento dovrebbe essere <span class="math inline">\frac{3}{M_i-1}\frac{\lvert H_i\rvert^2\mathcal E_i(1-\gamma)}{N_0}</span> (a meno che <span class="math inline">\mathcal E_i</span> indichi già l'energia ricevuta, cosa che il testo non dice).</p>
+</blockquote>
+<p>Nota 4: si potrebbe non trasmettere affatto durante la guardia, ma la trasmissione discontinua darebbe seri problemi di compatibilità elettromagnetica. Con BER diverse sulle portanti, la BER complessiva è dominata dalle peggiori: in un sistema ottimizzato la BER è la stessa su tutte, e per BER e potenza fissate si assegnano i bit per massimizzare la velocità (sezione 6).</p>
+<h3 id="multiportante-ofdm-dmt-gelli-5-realizzazione-mediante-fft">5. Realizzazione mediante FFT</h3>
+<p>Proposta già negli anni '50 (Kineplex), la tecnica non si è diffusa per la difficoltà di realizzarla in analogico: era impossibile costruire oscillatori abbastanza stabili da garantire l'ortogonalità. Il problema è stato superato dalle tecnologie numeriche e dalla FFT.</p>
+<h4 id="multiportante-ofdm-dmt-gelli-derivazione-spettro-della-frame-e-campionamento-">Derivazione — Spettro della frame e campionamento (56)–(59)</h4>
+<p><strong>Si parte da:</strong> la frame <span class="math inline">f_n(t)=\sum_ia_i(n)e^{j2\pi\frac iTt}R_T(t-nT)</span> (56), con i simboli trattati come deterministici.</p>
+<div class="math block">
+\begin{aligned}
+\mathcal F\{R_T(t)\}&amp;=\frac{1}{\sqrt T}\int_0^Te^{-j2\pi ft}dt=\sqrt T\,\text{sinc}(fT)\,e^{-j\pi fT} &amp;&amp; \text{finestra}\\
+\mathcal F\{R_T(t-nT)e^{j2\pi\frac iTt}\}&amp;=\sqrt T\,\text{sinc}(fT-i)\,e^{-j\pi(fT-i)}\,e^{-j2\pi(fT-i)n} &amp;&amp; \text{ritardo } nT \text{ e traslazione di } i/T\\
+F_n(f)&amp;=\sum_ia_i(n)\sqrt T\,\text{sinc}(fT-i)\,e^{-j\pi(fT-i)(2n+1)} &amp;&amp; \text{🧩 forma che ricavo}
+\end{aligned}
+</div><blockquote class="co avv"><p>⚠️ Contraddizione (refuso probabile nella (57)): le note scrivono la fase come <span class="math inline">e^{-j\pi(fT-i)(n-0.5)}</span>; dal calcolo sopra viene <span class="math inline">e^{-j\pi(fT-i)(2n+1)}=e^{-j2\pi(fT-i)(n+0.5)}</span>. Il modulo, l'unica cosa che serve per la banda, è lo stesso.</p>
+</blockquote>
+<p>La banda non è limitata (sinc), ma in pratica è circa <span class="math inline">2W=N/T</span> per <span class="math inline">N\gg1</span>: per il teorema del campionamento basta il passo <span class="math inline">T_c=1/(2W)=T/N</span>, e in <span class="math inline">[nT,(n+1)T]</span> ci sono esattamente <span class="math inline">N</span> campioni:</p>
+<div class="math block">
+\begin{aligned}
+f_n(nT+kT_c)&amp;=\frac{1}{\sqrt T}\sum_ia_i(n)e^{j2\pi\frac iT(nT+k\frac TN)}=\frac{1}{\sqrt T}\sum_ia_i(n)e^{j2\pi\frac{ik}N} &amp;&amp; e^{j2\pi in}=1\\
+&amp;=\frac{N}{\sqrt T}A_k(n),\qquad A_k(n)=\text{IDFT}[a_i(n)]=\frac1N\sum_{i=0}^{N-1}a_i(n)e^{j2\pi\frac{ik}N} &amp;&amp; (58)\text{–}(59)
+\end{aligned}
+</div><p>Si genera quindi il segnale con la IDFT, una conversione P/S e un D/A a passo <span class="math inline">T_c=T/N</span> (figura 5): con <span class="math inline">h_{D/A}(t)</span> risposta del convertitore (idealmente una sinc, serie di Shannon) <span class="math inline">x(t)=\frac{N}{\sqrt T}\sum_n\sum_kA_k(n)h_{D/A}(t-nT-kT_c)</span> (60). Con <span class="math inline">A_k(n)=A(nN+k)</span> (61), la <strong>decomposizione polifase</strong> di <span class="math inline">A(n)</span>, diventa <span class="math inline">x(t)=\frac N{\sqrt T}\sum_nA(n)h_{D/A}(t-nT_c)</span> (62).</p>
+<h4 id="multiportante-ofdm-dmt-gelli-derivazione-ricezione-ideale-con-convertitori-si">Derivazione — Ricezione ideale con convertitori sinc (63)–(73)</h4>
+<div class="math block">
+\begin{aligned}
+r_{filt}(t)&amp;=x(t)\ast h_{A/D}(t)=\frac N{\sqrt T}\sum_nA(n)\,h_{conv}(t-nT_c),\quad h_{conv}=h_{D/A}\ast h_{A/D} &amp;&amp; (63)\\
+r_k(n)&amp;=r_{filt}(nT+kT_c)=\sum_mA(m)\,h_{conv}(nN+k-m),\quad h_{conv}(n)\triangleq\tfrac{N}{\sqrt T}h_{conv}(nT_c) &amp;&amp; (64)\text{–}(66),\ T=NT_c\\
+h_{D/A}&amp;=\text{sinc}(t/T_c),\quad h_{A/D}=\tfrac1{\sqrt T}\text{sinc}(t/T_c) &amp;&amp; (67)\text{–}(68)\\
+h_{conv}(t)&amp;=\frac1{\sqrt T}\,T_c\,\text{sinc}(t/T_c)=\frac{\sqrt T}{N}\text{sinc}(t/T_c) &amp;&amp; (69):\ \text{🧩 } \mathcal F\{\text{sinc}(t/T_c)\}=T_c\Pi(fT_c),\ \text{prodotto } T_c^2\Pi\\
+h_{conv}(n)&amp;=\frac N{\sqrt T}\cdot\frac{\sqrt T}{N}\,\text{sinc}(n)=\delta(n) &amp;&amp; (70)\\
+r_k(n)&amp;=A(nN+k)=A_k(n),\qquad s_i(n)=\text{DFT}[r_k(n)]=\sum_kr_k(n)e^{-j2\pi\frac{ik}N}=a_i(n) &amp;&amp; (71)\text{–}(73)
+\end{aligned}
+</div><p>ISI e ICI si eliminano del tutto: basta una DFT per riavere i simboli.</p>
+<h4 id="multiportante-ofdm-dmt-gelli-derivazione-varianza-del-rumore-dopo-la-dft-74-8">Derivazione — Varianza del rumore dopo la DFT (74)–(86)</h4>
+<div class="math block">
+\begin{aligned}
+S_{n_{filt}}(f)&amp;=2N_0\lvert H_{A/D}(f)\rvert^2=2N_0\frac{T_c^2}{T}\Pi(fT_c) &amp;&amp; (75),\ (82)\text{–}(83):\ H_{A/D}=\tfrac{T_c}{\sqrt T}\Pi(fT_c)\\
+r_{n_{filt}}(\tau)&amp;=2N_0\frac{T_c}{T}\,\text{sinc}(\tau/T_c)\ \Rightarrow\ r_{n_{filt}}[(k-h)T_c]=2N_0\frac{T_c}{T}\delta_{k-h} &amp;&amp; (84)\text{–}(85):\ \text{campioni incorrelati}\\
+\text{VAR}[w_i(n)]&amp;=\sum_{k,h}E[n_k(n)n_h^\ast(n)]e^{-j2\pi\frac{i(k-h)}N}=\sum_{k=0}^{N-1}2N_0\frac{T_c}{T}=2N_0\frac{T_c}{T}N=2N_0 &amp;&amp; (79),\ (86):\ T=NT_c
+\end{aligned}
+</div><p>È la stessa varianza del ricevitore a tempo continuo (29): con convertitori ideali la realizzazione con DFT non peggiora le prestazioni rispetto al banco di oscillatori analogici. <span class="math inline">s_i(n)=a_i(n)+w_i(n)</span> (78), con <span class="math inline">w_i(n)</span> gaussiano a media nulla.</p>
+<h4 id="multiportante-ofdm-dmt-gelli-5-2-prefisso-ciclico">5.2 Prefisso ciclico</h4>
+<p>Con la DFT il tempo di guardia si realizza con il <strong>prefisso ciclico</strong>: al prodotto delle DFT corrisponde la convoluzione <strong>circolare</strong>, mentre il canale fa una convoluzione lineare; premettendo agli <span class="math inline">N</span> campioni della IDFT la copia degli ultimi <span class="math inline">L\le N</span>, il canale &quot;vede&quot; periodica la sequenza e la convoluzione lineare coincide con quella circolare. Con <span class="math inline">P=N+L</span>:</p>
+<div class="math block">
+\begin{aligned}
+\tilde A_p(n)&amp;=\begin{cases}A_{p+N}(n), &amp; p=-L,\dots,-1\\ A_p(n), &amp; p=0,\dots,N-1\end{cases}\ \Rightarrow\ \tilde A_p(n)=\frac1N\sum_ia_i(n)e^{j2\pi\frac{ip}N},\ p=-L,\dots,N-1 &amp;&amp; (88)\text{–}(90):\ e^{j2\pi i(p+N)/N}=e^{j2\pi ip/N}\\
+\tilde A_p(n)&amp;=\tilde A(nP+p),\quad T_c=T/P,\quad x(t)=\tfrac N{\sqrt T}\textstyle\sum_n\tilde A(n)h_{D/A}(t-nT_c) &amp;&amp; (91)\text{–}(92)\\
+r_p(n)&amp;=\sum_{m=0}^{M-1}h_{tot}(m)\,\tilde A(nP+p-m),\quad h_{tot}=h_{D/A}\ast h\ast h_{A/D},\ M=\lceil T_h/T_c\rceil &amp;&amp; (93)\text{–}(97)\\
+r_p(n)&amp;=\underbrace{\sum_{m=0}^{p+L}h_{tot}(m)\tilde A_{p-m}(n)}_{\text{frame } n}+\underbrace{\sum_{m=p+L+1}^{M-1}h_{tot}(m)\tilde A_{P+p-m}(n-1)}_{\text{ISI dalla frame } n-1} &amp;&amp; (98)\text{–}(100):\ p-m\ge-L \text{ oppure } &lt;-L
+\end{aligned}
+</div><p>Scartando i primi <span class="math inline">L</span> valori (<span class="math inline">p=0,\dots,N-1</span>, cioè <strong>rimozione del prefisso</strong>) la seconda somma è vuota purché <span class="math inline">L\ge M</span>, perché <span class="math inline">h_{tot}(m)=0</span> per <span class="math inline">m\ge M</span> (101): è la condizione <span class="math inline">T_g\ge T_h</span> del tempo di guardia. 🧩 Per <span class="math inline">p=0</span> la somma va da <span class="math inline">m=L+1</span> a <span class="math inline">M-1</span> ed è vuota già con <span class="math inline">L\ge M-1</span>: è la condizione <span class="math inline">L_{cp}\ge L_h</span> delle slide, con <span class="math inline">L_h=M-1</span> ultimo tap; le note usano la condizione appena più forte <span class="math inline">L\ge M</span>.</p>
+<div class="math block">
+\begin{aligned}
+r_p(n)&amp;=\sum_{m}h_{tot}(m)\frac1N\sum_ia_i(n)e^{j2\pi\frac{i(p-m)}N}=\frac1N\sum_ia_i(n)e^{j2\pi\frac{ip}N}\underbrace{\sum_{m=0}^{M-1}h_{tot}(m)e^{-j2\pi\frac{im}N}}_{H_{tot}(i)} &amp;&amp; (102)\text{–}(104)\\
+r_p(n)&amp;=\text{IDFT}[a_i(n)H_{tot}(i)]\ \Rightarrow\ s_i(n)=\text{DFT}[r_p(n)]=a_i(n)\,H_{tot}(i) &amp;&amp; (105)\text{–}(107)
+\end{aligned}
+</div><p>Si riottengono i simboli a meno di un fattore complesso, che si compensa con un <strong>equalizzatore a una sola presa</strong>. In AWGN il contrasto di energia per sottoportante si modifica del fattore <span class="math inline">\lvert H_{tot}(i)\rvert^2(1-\gamma)</span> con <span class="math inline">\gamma=L/P</span>, la frazione di campioni spesi per il prefisso.</p>
+<h3 id="multiportante-ofdm-dmt-gelli-6-bit-loading">6. Bit loading</h3>
+<p>Se il canale non è ideale o il rumore cambia da sottoportante a sottoportante (rumore non bianco: nei DSL domina la diafonia NEXT/FEXT, nota 5), conviene allocare un numero diverso di bit alle sottoportanti: <strong>bit loading</strong> o precodifica. Si usa nel punto-punto, dove un canale di ritorno permette al ricevitore di comunicare al trasmettitore una stima dell'SNR per sottoportante (per esempio nei modem ADSL in downstream). Con guardia o CP il sistema è ricondotto a <span class="math inline">N</span> canali AWGN indipendenti (figura 6), con guadagno <span class="math inline">H_i</span> e rumore di potenza <span class="math inline">\sigma_i^2</span>.</p>
+<h4 id="multiportante-ofdm-dmt-gelli-derivazione-bit-per-sottoportante-a-probabilita-">Derivazione — Bit per sottoportante a probabilità d'errore fissata (108)–(113)</h4>
+<p><strong>Si parte da:</strong> la (38) con <span class="math inline">M_i\gg1</span>, cioè <span class="math inline">1-1/\sqrt{M_i}\simeq1</span>.</p>
+<div class="math block">
+\begin{aligned}
+P_i&amp;=4Q\Big(\frac{d_i\lvert H_i\rvert}{\sqrt2\,\sigma_i}\Big) &amp;&amp; (108)\\
+2\mathcal E_i&amp;=\frac{M_i-1}{6}d_i^2\ \Rightarrow\ d_i^2=\frac{12\mathcal E_i}{M_i-1} &amp;&amp; (109)\\
+P_i&amp;=4Q\Big(\sqrt{\frac{12\mathcal E_i\lvert H_i\rvert^2}{(M_i-1)2\sigma_i^2}}\Big) &amp;&amp; (110)\\
+\frac{12\mathcal E_i\lvert H_i\rvert^2}{(M_i-1)2\sigma_i^2}&amp;=\Big[Q^{-1}\Big(\frac P4\Big)\Big]^2=\text{cost} &amp;&amp; (111):\ \text{stessa } P \text{ su tutte}\\
+M_i-1&amp;=\frac{6\mathcal E_i\lvert H_i\rvert^2}{\sigma_i^2}\cdot\frac{1}{[Q^{-1}(P/4)]^2} &amp;&amp; \text{🧩 risolvo per } M_i\ (12/2=6)\\
+b_i&amp;=\log_2M_i=\log_2\Big(1+\frac{6\mathcal E_i\lvert H_i\rvert^2}{\sigma_i^2}\frac{1}{[Q^{-1}(P/4)]^2}\Big) &amp;&amp; (112)\\
+R_b&amp;=\frac BT=\frac1T\sum_{i=0}^{N-1}b_i &amp;&amp; (113)
+\end{aligned}
+</div><p>La (108) è esatta per <span class="math inline">b_i</span> pari (QAM quadrata) con <span class="math inline">M_i\gg1</span>, e un limite superiore per <span class="math inline">b_i</span> qualsiasi.</p>
+<h4 id="multiportante-ofdm-dmt-gelli-derivazione-snr-gap-e-confronto-con-la-capacita-">Derivazione — SNR gap e confronto con la capacità (114)–(116)</h4>
+<p>La capacità di <span class="math inline">N</span> canali AWGN indipendenti in parallelo è <span class="math inline">C=\frac1T\sum_i\log_2\big(1+\frac{\mathcal E_i\lvert H_i\rvert^2}{\sigma_i^2}\big)</span> (114). Ponendo</p>
+<div class="math block">\Gamma=\frac16\Big[Q^{-1}\Big(\frac P4\Big)\Big]^2\quad(115)\qquad\Rightarrow\qquad R_b=\frac1T\sum_{i=0}^{N-1}\log_2\Big(1+\frac1\Gamma\frac{\mathcal E_i\lvert H_i\rvert^2}{\sigma_i^2}\Big)\quad(116)</div><p>il bit rate ha la forma della capacità con il contrasto di energia diviso per <span class="math inline">\Gamma</span>: per arrivare alla capacità ideale bisognerebbe aumentare il contrasto di un fattore <span class="math inline">\Gamma</span>, lo <strong>SNR gap</strong>. Più <span class="math inline">\Gamma</span> è piccolo, più il sistema è vicino all'ideale.</p>
+<p><strong>Numeri (🧩, con le definizioni delle note):</strong> <span class="math inline">P=10^{-6}</span>: <span class="math inline">Q^{-1}(2.5\cdot10^{-7})\approx5.03</span>, <span class="math inline">\Gamma\approx25.3/6\approx4.2</span>, cioè <span class="math inline">6.2</span> dB; <span class="math inline">P=10^{-3}</span>: <span class="math inline">Q^{-1}(2.5\cdot10^{-4})\approx3.48</span>, <span class="math inline">\Gamma\approx2.0</span> (<span class="math inline">3.1</span> dB). Il gap cresce lentamente con l'affidabilità richiesta.</p>
+<blockquote class="co conn"><p>💡 Connessione: è la capacità <span class="math inline">\log_2(1+\text{SNR})</span> della Lezione 12 (informazione mutua e capacita, limite di shannon) applicata a <span class="math inline">N</span> canali in parallelo; la QAM non codificata ne resta lontana di <span class="math inline">\Gamma</span>, e la codifica di canale serve a ridurre questo gap.</p>
+</blockquote>
+<h4 id="multiportante-ofdm-dmt-gelli-derivazione-distribuzione-ottima-dell-energia-wa">Derivazione — Distribuzione ottima dell'energia: water filling (117)–(121)</h4>
+<p><strong>Problema:</strong> massimizzare <span class="math inline">R_b</span> (116) con energia totale assegnata <span class="math inline">\mathcal E=\sum_i\mathcal E_i</span> (117). Pongo <span class="math inline">n_i=\Gamma\sigma_i^2/\lvert H_i\rvert^2</span> (il &quot;fondo&quot; della sottoportante <span class="math inline">i</span>).</p>
+<div class="math block">
+\begin{aligned}
+\mathcal L&amp;=\sum_i\log_2\Big(1+\frac{\mathcal E_i}{n_i}\Big)-\lambda\Big(\sum_i\mathcal E_i-\mathcal E\Big) &amp;&amp; \text{🧩 Lagrangiana}\\
+\frac{\partial\mathcal L}{\partial\mathcal E_i}&amp;=\frac{1}{\ln2}\,\frac{1}{n_i+\mathcal E_i}-\lambda=0\ \Rightarrow\ n_i+\mathcal E_i=\frac{1}{\lambda\ln2}\triangleq K &amp;&amp; (118):\ \frac{\sigma_i^2\Gamma}{\lvert H_i\rvert^2}+\mathcal E_i=K\\
+\mathcal E_i&amp;=\begin{cases}K-\dfrac{\sigma_i^2\Gamma}{\lvert H_i\rvert^2}, &amp; K-\dfrac{\sigma_i^2\Gamma}{\lvert H_i\rvert^2}\ge0\\[4pt]0 &amp; \text{altrimenti}\end{cases} &amp;&amp; (119):\ \mathcal E_i\ge0\\
+\sum_i(K-n_i)&amp;=\mathcal E\ \Rightarrow\ K=\frac1N\Big(\mathcal E+\sum_in_i\Big) &amp;&amp; (120):\ \text{tutte attive}\\
+\mathcal E_i&amp;=\frac{\mathcal E}N+\Gamma\Big(\frac1N\sum_j\frac{\sigma_j^2}{\lvert H_j\rvert^2}-\frac{\sigma_i^2}{\lvert H_i\rvert^2}\Big) &amp;&amp; (121)
+\end{aligned}
+</div><p>Alla distribuzione uniforme <span class="math inline">\mathcal E/N</span> si aggiunge un termine che misura quanto la sottoportante <span class="math inline">i</span> si scosta dalla media delle condizioni di tutte. Il nome <strong>water filling</strong> (o <em>water pouring</em>) viene dall'analogia idraulica della figura 7: il profilo del canale <span class="math inline">\sigma_i^2\Gamma/\lvert H_i\rvert^2</span> è il fondo di un recipiente, si versa l'energia totale come acqua, il pelo libero si porta al livello <span class="math inline">K</span> e la profondità dell'acqua sopra la sottoportante <span class="math inline">i</span> è <span class="math inline">\mathcal E_i</span>. 🧩 La (120) vale se tutte le sottoportanti sono attive; se qualcuna risulta con <span class="math inline">\mathcal E_i&lt;0</span> va spenta e <span class="math inline">K</span> si ricalcola con le sole attive.</p>
+<img class="zoom" src="img/grafico-gelli-water-filling.png" alt="" loading="lazy">
+<p><em>🧩 Water filling su <span class="math inline">N=8</span> sottoportanti di un canale a due prese <span class="math inline">h=[1,\,0.6]</span>, con <span class="math inline">\Gamma\sigma^2=0.25</span> ed energia totale <span class="math inline">2</span> (script <code>output/grafici/genera_grafici_approfondimenti.py</code>). Le sottoportanti con il fondo basso (canale buono) ricevono più energia e portano più bit; la 4, sul minimo di <span class="math inline">\lvert H_i\rvert^2</span>, ha il fondo sopra il livello <span class="math inline">K\approx0.52</span> e viene spenta. I bit <span class="math inline">b_i=\log_2(1+\mathcal E_i/n_i)</span> non sono interi: vanno arrotondati, come dicono le note.</em></p>
+<p><strong>Algoritmo di bit loading ideale</strong>:</p>
+<ol>
+<li>per una probabilità d'errore <span class="math inline">P</span> fissata si calcola lo SNR gap <span class="math inline">\Gamma</span> con la (115);</li>
+<li>per un'energia <span class="math inline">\mathcal E</span> fissata si calcola <span class="math inline">K</span> con la (120) e le <span class="math inline">\mathcal E_i</span> con la (119);</li>
+<li>se <span class="math inline">\mathcal E_i=0</span> per ogni <span class="math inline">i</span>, la probabilità <span class="math inline">P</span> non si può garantire con l'energia <span class="math inline">\mathcal E</span>: si aumenta l'energia o si rilassa <span class="math inline">P</span> e si ripetono i passi 1 e 2;</li>
+<li>si calcolano i <span class="math inline">b_i</span>, e quindi le costellazioni, con la (112).</li>
+</ol>
+<p>Nulla garantisce che i <span class="math inline">b_i</span> siano interi: si arrotonda e si aggiustano le energie per rispettare vincolo e <span class="math inline">P</span> obiettivo; in alternativa esistono algoritmi di ottimizzazione discreta che risolvono direttamente il problema vincolato. La formulazione non è l'unica: a bit rate ed energia fissati si può minimizzare la probabilità d'errore, oppure a bit rate e probabilità fissati minimizzare l'energia.</p>
+<h3 id="multiportante-ofdm-dmt-gelli-riferimenti-e-indice-delle-note">Riferimenti e indice delle note</h3>
+<p>Le note citano dieci riferimenti: tra gli altri il lavoro sul Kineplex (Doelz, Heald e Martin, 1957), gli algoritmi di loading di Chow-Cioffi-Bingham e di Fischer-Huber, il &quot;multicarrier primer&quot; di Cioffi, l'articolo di Bingham del 1990 (&quot;an idea whose time has come&quot;), Proakis per le probabilità d'errore QAM e Gallager per la capacità. Pagina 24: indice delle sezioni (1 Introduzione, 2 Principio, 3 Prestazioni, 4 Canale e tempi di guardia, 5 FFT, 6 Bit loading).</p>
+
+</section>
+</main>
+<footer>Appunti personali del corso di Trasmissione dei Segnali Digitali (LM Ingegneria Informatica, UNINA). Generato dal wiki con <code>output/crea_sito.py</code>.</footer>
+<div id="lb" hidden></div><a id="su" href="#" hidden aria-label="torna su">↑</a>
+</body></html>

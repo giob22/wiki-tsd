@@ -1,0 +1,1066 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lezione 15 · Segnalazione su canali a banda limitata: OFDM</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="style.css">
+<script>try{var t=localStorage.getItem('tsd-tema');if(t==='chiaro')document.documentElement.setAttribute('data-theme','light');else if(t==='scuro')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="app.js"></script></head>
+<body><header class="top"><nav><a href="index.html" class="home" aria-label="indice">⌂</a><a href="lezione-1.html">L1</a><a href="lezione-2.html">L2</a><a href="lezione-3.html">L3</a><a href="lezione-4.html">L4</a><a href="lezione-5.html">L5</a><a href="lezione-6.html">L6</a><a href="lezione-7.html">L7</a><a href="lezione-8.html">L8</a><a href="lezione-9.html">L9</a><a href="lezione-10.html">L10</a><a href="lezione-11.html">L11</a><a href="lezione-12.html">L12</a><a href="lezione-13.html">L13</a><a href="lezione-14.html">L14</a><a href="lezione-15.html" aria-current="page">L15</a></nav><span class="ctl"><span class="tm" role="group" aria-label="tema"><button data-t="sistema" title="Tema del sistema" aria-label="tema del sistema"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor" stroke="none"/></svg></button><button data-t="chiaro" title="Tema chiaro" aria-label="tema chiaro"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="3" fill="currentColor"/><path d="M8 1.2v2M8 12.8v2M1.2 8h2M12.8 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4M3.2 12.8l1.4-1.4M11.4 4.6l1.4-1.4"/></svg></button><button data-t="scuro" title="Tema scuro" aria-label="tema scuro"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M13.2 9.6A5.8 5.8 0 1 1 6.4 2.8a4.6 4.6 0 0 0 6.8 6.8z" fill="currentColor"/></svg></button></span><span class="fs"><button id="fm" aria-label="testo più piccolo">A−</button><button id="fp" aria-label="testo più grande">A+</button></span></span></header>
+<main>
+<p class="crumb"><a href="index.html">Home</a> · <a href="index.html#lezioni">Lezioni</a> · Lezione 15 · 27/11</p>
+<h1>Segnalazione su canali a banda limitata: OFDM</h1>
+<p class="breve">Trasmissione multiportante, FDM e OFDM, sottoportanti ortogonali, prefisso ciclico e convoluzione circolare, IFFT/FFT, equalizzazione a una presa, PAPR e offset.</p>
+<details class="toc"><summary>Indice della lezione</summary><ul><li class="l3"><a href="#trasmissione-multiportante">Trasmissione multiportante</a></li><li class="l4"><a href="#titolo">Titolo</a></li><li class="l4"><a href="#perche-la-trasmissione-multiportante">Perché la trasmissione multiportante</a></li><li class="l4"><a href="#fdm-convenzionale">FDM convenzionale</a></li><li class="l4"><a href="#il-convertitore-s-p-come-decomposizione-polifase">Il convertitore S/P come decomposizione polifase</a></li><li class="l4"><a href="#trasmettitore-fdm-convenzionale">Trasmettitore FDM convenzionale</a></li><li class="l4"><a href="#ricevitore-fdm-convenzionale">Ricevitore FDM convenzionale</a></li><li class="l4"><a href="#fdm-e-ofdm-a-confronto">FDM e OFDM a confronto</a></li><li class="l4"><a href="#flussi-paralleli-e-forma-d-onda-multiportante">Flussi paralleli e forma d'onda multiportante</a></li><li class="l4"><a href="#schema-con-i-mapper-e-perche-il-sistema-rallenta">Schema con i mapper e perché il sistema rallentato aiuta</a></li><li class="l4"><a href="#il-canale-visto-dalle-sottoportanti">Il canale visto dalle sottoportanti</a></li><li class="l3"><a href="#impulsi-ortogonali-isi-e-ici">Impulsi ortogonali, ISI e ICI</a></li><li class="l4"><a href="#impulsi-ofdm-ortogonali">Impulsi OFDM ortogonali</a></li><li class="l4"><a href="#isi-e-ici">ISI e ICI</a></li><li class="l4"><a href="#due-fonti-di-interferenza">Due fonti di interferenza</a></li><li class="l4"><a href="#calcolo-dell-ortogonalita">Calcolo dell'ortogonalità</a></li><li class="l4"><a href="#ortogonalita-delle-sottoportanti">Ortogonalità delle sottoportanti</a></li><li class="l4"><a href="#spaziatura-delle-sottoportanti-la-condizione-sin">Spaziatura delle sottoportanti: la condizione sinc</a></li><li class="l4"><a href="#il-banco-di-correlatori-ofdm">Il banco di correlatori OFDM</a></li><li class="l4"><a href="#ricevitore-ideale-in-awgn-ne-isi-ne-ici">Ricevitore ideale in AWGN: né ISI né ICI</a></li><li class="l4"><a href="#l-ortogonalita-semplifica-anche-il-rumore-in-usc">L'ortogonalità semplifica anche il rumore in uscita</a></li><li class="l3"><a href="#spettro-del-segnale-ofdm">Spettro del segnale OFDM</a></li><li class="l4"><a href="#autocorrelazione-del-segnale-ofdm">Autocorrelazione del segnale OFDM</a></li><li class="l4"><a href="#psd-di-un-segnale-ofdm-ideale">PSD di un segnale OFDM ideale</a></li><li class="l4"><a href="#esempio-risparmio-di-banda-con-la-sovrapposizion">Esempio: risparmio di banda con la sovrapposizione</a></li><li class="l3"><a href="#canale-dispersivo-e-prefisso-ciclico">Canale dispersivo e prefisso ciclico</a></li><li class="l4"><a href="#un-canale-lti-dispersivo-introduce-memoria">Un canale LTI dispersivo introduce memoria</a></li><li class="l4"><a href="#intervallo-di-guardia-e-prefisso-ciclico">Intervallo di guardia e prefisso ciclico</a></li><li class="l4"><a href="#estensione-ciclica-a-tempo-continuo">Estensione ciclica a tempo continuo</a></li><li class="l4"><a href="#finestra-utile-del-ricevitore-e-condizione-sul-c">Finestra utile del ricevitore e condizione sul CP</a></li><li class="l4"><a href="#i-campioni-ritardati-nell-intervallo-utile">I campioni ritardati nell'intervallo utile</a></li><li class="l4"><a href="#perche-il-cp-elimina-l-isi-separazione-dei-blocc">Perché il CP elimina l'ISI: separazione dei blocchi</a></li><li class="l4"><a href="#richiamo-le-sinusoidi-complesse-sono-autofunzion">Richiamo: le sinusoidi complesse sono autofunzioni di un canale LTI</a></li><li class="l4"><a href="#calcolo-a-tempo-continuo-perche-non-resta-ici">Calcolo a tempo continuo: perché non resta ICI</a></li><li class="l4"><a href="#nota-sulla-normalizzazione-degli-impulsi-ofdm">Nota sulla normalizzazione degli impulsi OFDM</a></li><li class="l4"><a href="#l-equalizzazione-in-frequenza-segue-direttamente">L'equalizzazione in frequenza segue direttamente</a></li><li class="l3"><a href="#realizzazione-con-ifft-e-fft">Realizzazione con IFFT e FFT</a></li><li class="l4"><a href="#il-campionamento-uniforme-rivela-la-ifft">Il campionamento uniforme rivela la IFFT</a></li><li class="l4"><a href="#rappresentazione-matriciale-di-dft-e-idft">Rappresentazione matriciale di DFT e IDFT</a></li><li class="l4"><a href="#serializzazione-dell-uscita-ifft-e-ricostruzione">Serializzazione dell'uscita IFFT e ricostruzione di x(t)</a></li><li class="l4"><a href="#costruzione-del-prefisso-ciclico-a-tempo-discret">Costruzione del prefisso ciclico a tempo discreto</a></li><li class="l4"><a href="#esempio-numerico-di-inserimento-del-cp">Esempio numerico di inserimento del CP</a></li><li class="l4"><a href="#la-convoluzione-lineare-diventa-circolare">La convoluzione lineare diventa circolare</a></li><li class="l4"><a href="#il-teorema-della-convoluzione-circolare">Il teorema della convoluzione circolare</a></li><li class="l4"><a href="#la-relazione-ingresso-uscita-in-frequenza">La relazione ingresso-uscita in frequenza</a></li><li class="l3"><a href="#equalizzazione-codifica-e-sistema-completo">Equalizzazione, codifica e sistema completo</a></li><li class="l4"><a href="#relazioni-scalari-indipendenti-dopo-la-dft">Relazioni scalari indipendenti dopo la DFT</a></li><li class="l4"><a href="#un-esempio-elementare-a-due-prese">Un esempio elementare a due prese</a></li><li class="l4"><a href="#un-canale-lti-puo-attenuare-fortemente-alcune-so">Un canale LTI può attenuare fortemente alcune sottoportanti</a></li><li class="l4"><a href="#equalizzazione-a-una-presa-nel-dominio-della-fre">Equalizzazione a una presa nel dominio della frequenza</a></li><li class="l4"><a href="#codifica-e-interleaving-sulle-sottoportanti">Codifica e interleaving sulle sottoportanti</a></li><li class="l4"><a href="#trasmettitore-ofdm-completo-in-banda-base">Trasmettitore OFDM completo in banda base</a></li><li class="l4"><a href="#ricevitore-ofdm-completo-in-banda-base">Ricevitore OFDM completo in banda base</a></li><li class="l4"><a href="#il-prezzo-del-prefisso-ciclico">Il prezzo del prefisso ciclico</a></li><li class="l4"><a href="#esempio-numerico-di-goldsmith-scelta-del-prefiss">Esempio numerico di Goldsmith: scelta del prefisso</a></li><li class="l4"><a href="#l-overhead-del-cp-nel-bit-rate">L'overhead del CP nel bit rate</a></li><li class="l4"><a href="#ieee-802-11a-i-parametri-temporali">IEEE 802.11a: i parametri temporali</a></li><li class="l4"><a href="#ieee-802-11a-bit-rate-non-codificati">IEEE 802.11a: bit rate non codificati</a></li><li class="l4"><a href="#modulazione-adattativa-costellazioni-diverse-su-">Modulazione adattativa: costellazioni diverse su toni diversi</a></li><li class="l3"><a href="#limiti-dell-ofdm">Limiti dell'OFDM</a></li><li class="l4"><a href="#rapporto-potenza-di-picco-potenza-media-papr">Rapporto potenza di picco / potenza media (PAPR)</a></li><li class="l4"><a href="#perche-il-segnale-ofdm-puo-avere-picchi-grandi">Perché il segnale OFDM può avere picchi grandi</a></li><li class="l4"><a href="#un-piccolo-errore-di-frequenza-rompe-l-ortogonal">Un piccolo errore di frequenza rompe l'ortogonalità</a></li><li class="l4"><a href="#offset-di-frequenza-e-di-tempo-il-modello-a-temp">Offset di frequenza e di tempo: il modello a tempo discreto</a></li><li class="l4"><a href="#scelta-del-numero-di-sottoportanti-compromessi-d">Scelta del numero di sottoportanti: compromessi di base</a></li><li class="l3"><a href="#approfondimenti">Spiegazioni e dimostrazioni passo-passo</a></li><li class="l3"><a href="#domande">Domande da esame</a></li></ul></details>
+<section id="corso"><h2 class="ps">Il corso, slide per slide</h2>
+<h3 id="trasmissione-multiportante">Trasmissione multiportante</h3>
+<h4 id="titolo">Titolo</h4>
+<ul>
+<li>«Signaling over bandlimited channels: OFDM», corso di Trasmissione dei segnali digitali, D. Darsena, a.a. 2026-27.</li>
+</ul>
+<h4 id="perche-la-trasmissione-multiportante">Perché la trasmissione multiportante</h4>
+<ul>
+<li>Nelle lezioni precedenti un canale a banda limitata con memoria era modellato dalla convoluzione tra la forma d'onda trasmessa e la risposta impulsiva del canale; in ricezione contributi di simboli diversi possono sovrapporsi e generare ISI.</li>
+<li>In un sistema multiportante il flusso in ingresso si divide in più flussi a rate più basso, trasmessi a frequenze distinte. Appunti: dal flusso a <span class="math inline">R_b</span> si ricavano sottoflussi a rate minore, <span class="math inline">R_b/N</span>, con portanti scelte in modo che gli spettri non si sovrappongano (FDM); se si sovrappongono si ha l'OFDM.</li>
+<li>Una scelta opportuna delle frequenze rende questi segnali <strong>ortogonali</strong> anche quando gli spettri si sovrappongono: FDM a bande separate → OFDM a bande ortogonali e sovrapposte.</li>
+</ul>
+<h4 id="fdm-convenzionale">FDM convenzionale</h4>
+<ul>
+<li>Una sorgente seriale emette il flusso di bit <span class="math inline">d[\ell]</span> a bit rate <span class="math inline">R_b=1/T_b</span>. Un convertitore serie/parallelo (S/P) distribuisce gruppi di <span class="math inline">N</span> bit su <span class="math inline">N</span> flussi più lenti; per segnalazione binaria</li>
+</ul>
+<div class="math block">d_i[n]=d[nN+i],\qquad i=0,\dots,N-1,\qquad R_{b,i}=\frac{R_b}{N}</div><ul>
+<li>L'<span class="math inline">i</span>-esimo flusso è mappato in simboli, sagomato da un impulso <span class="math inline">g(t)</span> e traslato alla frequenza <span class="math inline">f_i</span>. Nella FDM ordinaria filtri passa-banda isolano i flussi assegnando loro intervalli di frequenza non sovrapposti.</li>
+</ul>
+<h4 id="il-convertitore-s-p-come-decomposizione-polifase">Il convertitore S/P come decomposizione polifase</h4>
+<ul>
+<li><span class="math inline">d(mN+i)=d_i(m)</span>, <span class="math inline">m\in\mathbb Z</span>, <span class="math inline">i=0,1,\dots,N-1</span>: il convertitore S/P realizza la <strong>decomposizione polifase</strong> del flusso <span class="math inline">\dots d(N)\,d(N-1)\dots d(2)\,d(1)\,d(0)</span>.</li>
+<li>Ogni uscita ha rate <span class="math inline">R_b/N</span>, dovuto al fatto che si deve attendere che il blocco sia completo. Si ottiene <span class="math inline">d_0(0)=d(0)</span>, <span class="math inline">d_1(0)=d(1)</span>, …, <span class="math inline">d_{N-1}(0)=d(N-1)</span> sulle <span class="math inline">N</span> uscite; al secondo istante di tempo <span class="math inline">d_0(1)=d(N)</span>, <span class="math inline">d_1(1)=d(N+1)</span>, …</li>
+</ul>
+<h4 id="trasmettitore-fdm-convenzionale">Trasmettitore FDM convenzionale</h4>
+<ul>
+<li>Schema: <span class="math inline">d[\ell]</span> → S/P → per ogni ramo mapper → <span class="math inline">g(t)</span> → <span class="math inline">e^{j2\pi f_it}</span> (<span class="math inline">i=0,\dots,N-1</span>) → somma → <span class="math inline">x(t)</span>.</li>
+<li>Appunti: <span class="math inline">x(t)</span> è il <strong>segnale multiportante in banda base</strong>; <span class="math inline">e^{j2\pi f_it}</span> non è ancora la portante finale: si costruisce un segnale multiportante, che poi l'upconverter trasla alla radiofrequenza, cioè alla portante.</li>
+<li>La FDM ordinaria sceglie le <span class="math inline">f_i</span> abbastanza separate da evitare la sovrapposizione spettrale; l'OFDM abbandona deliberatamente questo requisito e lo sostituisce con l'<strong>ortogonalità su un intervallo di simbolo</strong>. Appunti: FDM, l'ortogonalità è garantita dalla non sovrapposizione; OFDM, le bande si sovrappongono ⇒ la demodulazione è più difficile.</li>
+</ul>
+<img class="zoom" src="img/ofdm-p5-trasmettitore-fdm.png" alt="" loading="lazy">
+<h4 id="ricevitore-fdm-convenzionale">Ricevitore FDM convenzionale</h4>
+<ul>
+<li>Schema: un <strong>banco di filtri</strong> (appunti) passa-banda attorno a <span class="math inline">f_0,\dots,f_{N-1}</span>, un demodulatore per ramo, P/S → <span class="math inline">\hat d[\ell]</span>.</li>
+<li>Ogni filtro estrae una banda individuale non sovrapposta; ogni ramo è demodulato e rivelato separatamente e i flussi si ricombinano con la conversione P/S.</li>
+<li>L'OFDM permetterà di sostituire i filtri con un <strong>banco di proiezioni ortogonali, realizzato in modo efficiente con una FFT</strong>.</li>
+</ul>
+<img class="zoom" src="img/ofdm-p6-ricevitore-fdm.png" alt="" loading="lazy">
+<h4 id="fdm-e-ofdm-a-confronto">FDM e OFDM a confronto</h4>
+<ul>
+<li>Figura: in alto la FDM, bande separate da intervalli di guardia (<em>guard</em>); in basso l'OFDM, sottoportanti sovrapposte e ortogonali a distanza <span class="math inline">\Delta f=1/T_u</span>, ognuna con il picco dove le altre passano per zero.</li>
+<li>FDM: spettri non sovrapposti, servono guardie in frequenza. OFDM: spettri delle sottoportanti sovrapposti, separabili con demodulazione coerente e ortogonale.</li>
+<li>L'ortogonalità è una proprietà delle <strong>forme d'onda su un intervallo di osservazione finito</strong>, non della non sovrapposizione degli spettri. Appunti: serve una forma di ortogonalità che agisca anche nel dominio del tempo.</li>
+</ul>
+<img class="zoom" src="img/ofdm-p7-fdm-ofdm-spettri.png" alt="" loading="lazy">
+<h4 id="flussi-paralleli-e-forma-d-onda-multiportante">Flussi paralleli e forma d'onda multiportante</h4>
+<ul>
+<li>Schema: <span class="math inline">d[\ell]</span> → S/P → mapper → <span class="math inline">a_i[n]</span> → <span class="math inline">\phi_i(t)</span> → somma → <span class="math inline">x(t)</span>. Appunti: <span class="math inline">\phi_0(t),\dots,\phi_{N-1}(t)</span> in generale possono essere diversi; in alcuni casi non si può proprio usare lo stesso impulso di base.</li>
+</ul>
+<div class="math block">f_n(t)=\sum_{i=0}^{N-1}a_i[n]\,\phi_i(t-nT_u),\qquad x(t)=\sum_{n\in\mathbb Z}f_n(t)</div><ul>
+<li><span class="math inline">f_n(t)</span> è la <strong>frame multicanale</strong> (appunti: la frame prodotta nell'<span class="math inline">n</span>-esimo intervallo di simbolo); <span class="math inline">a_i[n]</span> è il simbolo portato dalla sottoportante <span class="math inline">i</span> nel blocco OFDM <span class="math inline">n</span>. Nel modello presente un blocco dura <span class="math inline">T_u</span>, prima di aggiungere un prefisso ciclico.</li>
+</ul>
+<img class="zoom" src="img/ofdm-p8-flussi-paralleli.png" alt="" loading="lazy">
+<h4 id="schema-con-i-mapper-e-perche-il-sistema-rallenta">Schema con i mapper e perché il sistema rallentato aiuta</h4>
+<ul>
+<li>Lo S/P manda <span class="math inline">\dots d(N)\,d(0)</span> sul primo filo (flusso sul filo <span class="math inline">i</span>-esimo: <span class="math inline">d_0(m)</span>), <span class="math inline">d_1(m)</span> sul secondo, …, <span class="math inline">d_{N-1}(m)</span> sull'ultimo; ogni mapper produce <span class="math inline">a_i(m)</span> (per esempio simboli QPSK), che modula <span class="math inline">\phi_i(t-mT_u)</span> alla frequenza <span class="math inline">f_i</span>.</li>
+<li>Quanto devono durare gli impulsi? Non <span class="math inline">T_b</span> ma <span class="math inline">T_u</span>, e il bit rate è diminuito: <span class="math inline">T_u=NT_b</span> è l'<strong>intervallo di blocco</strong>, <span class="math inline">R_b/N=1/(NT_b)</span>.</li>
+<li>Si è rallentato il sistema ⇒ si lotta con l'ISI. Se il segnale ha <span class="math inline">R_b</span> alto, varia rapidamente ⇒ aumenta la banda del segnale trasmesso ⇒ più ISI. Con lo S/P invece ogni ramo ha un rate più basso ⇒ banda minore.</li>
+</ul>
+<h4 id="il-canale-visto-dalle-sottoportanti">Il canale visto dalle sottoportanti</h4>
+<ul>
+<li>Si supponga di dover trasmettere un segnale con spettro più largo della banda del canale (disegno: banda del canale in rosso, spettro del segnale in blu).</li>
+<li>Con la trasmissione multiportante lo spettro è fatto di tante sottoportanti strette (disegno in verde): su ciascuna il canale è approssimabile <strong>piatto</strong> ⇒ maggiore robustezza all'ISI, perché la banda del singolo ramo è minore.</li>
+</ul>
+<img class="zoom" src="img/ofdm-p10-appunti-canale-piatto.png" alt="" loading="lazy">
+<h3 id="impulsi-ortogonali-isi-e-ici">Impulsi ortogonali, ISI e ICI</h3>
+<h4 id="impulsi-ofdm-ortogonali">Impulsi OFDM ortogonali</h4>
+<ul>
+<li>Appunti: si deve imporre una biortogonalità ⇒ le <span class="math inline">\phi</span> devono avere una forma particolare.</li>
+<li>Finestra rettangolare di energia unitaria e impulsi:</li>
+</ul>
+<div class="math block">R_{T_u}(t)=\begin{cases}\dfrac{1}{\sqrt{T_u}}, &amp; 0\le t&lt;T_u\\[4pt] 0 &amp; \text{altrove}\end{cases}\qquad\phi_i(t)=R_{T_u}(t)\,e^{j2\pi it/T_u}</div><ul>
+<li>Le <span class="math inline">N</span> sottoportanti usano, nel modello in banda base complessa, le frequenze <span class="math inline">f_i=i\Delta f</span> con <span class="math inline">\Delta f=1/T_u</span>, <span class="math inline">i=0,\dots,N-1</span>. Appunti: non sono le frequenze finali, si deve ancora passare per l'upconverter.</li>
+<li><strong>Due forme separate di ortogonalità:</strong> sottoportanti diverse (<span class="math inline">i\neq k</span>) sono ortogonali dentro un blocco; blocchi diversi (<span class="math inline">n\neq m</span>) non si sovrappongono nel tempo nel modello ideale senza CP.</li>
+</ul>
+<h4 id="isi-e-ici">ISI e ICI</h4>
+<ul>
+<li>Il segnale multiportante ha <strong>due indici indipendenti</strong>: <span class="math inline">x(t)=\sum_{n\in\mathbb Z}\sum_{k=0}^{N-1}a_k[n]\,\phi_k(t-nT_u)</span>.</li>
+<li>La statistica di decisione per la portante <span class="math inline">i</span> e il blocco <span class="math inline">m</span> (appunti: si vuole ricavare il simbolo trasmesso nell'<span class="math inline">m</span>-esimo intervallo sull'<span class="math inline">i</span>-esimo ramo) contiene</li>
+</ul>
+<div class="math block">r_i[m]=\sum_{n\in\mathbb Z}\sum_{k=0}^{N-1}a_k[n]\,\langle\phi_k(t-nT_u),\phi_i(t-mT_u)\rangle+w_i[m]</div><ul>
+<li>Termini con <span class="math inline">n\neq m</span>: <strong>ISI</strong>, interferenza da altri intervalli di simbolo. Termini con <span class="math inline">n=m</span> e <span class="math inline">k\neq i</span>: <strong>ICI</strong>, interferenza da altre sottoportanti. Il termine desiderato è <span class="math inline">n=m</span>, <span class="math inline">k=i</span>; tutti gli altri si annullano se gli impulsi sono ortonormali.</li>
+</ul>
+<h4 id="due-fonti-di-interferenza">Due fonti di interferenza</h4>
+<ul>
+<li>Sulle uscite dello S/P: <span class="math inline">d(N)\,d(0)=d_0(1)\,d_0(0)</span>, <span class="math inline">d(N+1)\,d(1)=d_1(1)\,d_1(0)</span>, …, <span class="math inline">d(N-1)</span>. Il simbolo <span class="math inline">d_1(0)</span> subisce l'interferenza di simboli dello stesso stream e di fili diversi.</li>
+<li>Due fonti di interferenza: ISI; ICI, interferenza generata da ciò che è stato trasmesso su rami differenti.</li>
+<li>Si deve imporre che il prodotto scalare sia diverso da zero solo per <span class="math inline">n=m</span> (ortogonalità temporale) e <span class="math inline">i=k</span> (ortogonalità fra gli impulsi).</li>
+</ul>
+<h4 id="calcolo-dell-ortogonalita">Calcolo dell'ortogonalità</h4>
+<div class="math block">\int_{-\infty}^{+\infty}R_T(t-mT_u)\,e^{j2\pi\frac{k}{T_u}(t-mT_u)}\,R_T(t-nT_u)\,e^{-j2\pi\frac{i}{T_u}(t-nT_u)}\,dt</div><ul>
+<li>Se <span class="math inline">m\neq n</span> le finestre non si sovrappongono nel tempo (disegno: <span class="math inline">[mT,(m+1)T]</span> e <span class="math inline">[nT,(n+1)T]</span> disgiunti). Per <span class="math inline">m=n</span>:</li>
+</ul>
+<div class="math block">\int_{mT_u}^{(m+1)T_u}e^{j2\pi\frac{k}{T_u}t}\,e^{-j2\pi\frac{i}{T_u}t}\,dt=\begin{cases}1, &amp; k=i\\[2pt] \dfrac{e^{j2\pi(k-i)}-1}{j2\pi(k-i)}=\dots\ (\text{sinc}), &amp; k\neq i\end{cases}</div><ul>
+<li>Basta una minima variazione della frequenza perché si abbia ICI ⇒ motivo per cui prima l'OFDM non era di uso pubblico ⇒ erano necessari banchi di oscillatori molto precisi ⇒ la FFT ha risolto questi problemi ⇒ alla base del 5G.</li>
+</ul>
+<h4 id="ortogonalita-delle-sottoportanti">Ortogonalità delle sottoportanti</h4>
+<ul>
+<li>Per uno stesso blocco OFDM:</li>
+</ul>
+<div class="math block">\langle\phi_k,\phi_i\rangle=\int_{-\infty}^{+\infty}\phi_k(t)\phi_i^\ast(t)\,dt=\frac{1}{T_u}\int_0^{T_u}e^{j2\pi(k-i)t/T_u}dt=\begin{cases}1, &amp; k=i\\[2pt] \dfrac{e^{j2\pi(k-i)}-1}{j2\pi(k-i)}, &amp; k\neq i\end{cases}</div><ul>
+<li>Poiché <span class="math inline">k-i</span> è intero, <span class="math inline">e^{j2\pi(k-i)}=1</span>, e quindi</li>
+</ul>
+<div class="math block">\langle\phi_k(t-mT_u),\phi_i(t-nT_u)\rangle=\delta_{k-i}\,\delta_{m-n}</div><ul>
+<li>Per <span class="math inline">m\neq n</span> i supporti temporali sono disgiunti (a meno degli estremi); per <span class="math inline">m=n</span> e <span class="math inline">k\neq i</span> gli esponenziali complessi integrati si cancellano esattamente.</li>
+</ul>
+<h4 id="spaziatura-delle-sottoportanti-la-condizione-sin">Spaziatura delle sottoportanti: la condizione sinc</h4>
+<ul>
+<li>Due impulsi a frequenze generiche <span class="math inline">f_k</span>, <span class="math inline">f_i</span>, <span class="math inline">\nu=f_k-f_i</span>; su un intervallo utile OFDM</li>
+</ul>
+<div class="math block">\langle\phi_k,\phi_i\rangle=\frac{1}{T_u}\int_0^{T_u}e^{j2\pi\nu t}dt=\frac{e^{j2\pi\nu T_u}-1}{j2\pi\nu T_u}=e^{j\pi\nu T_u}\,\text{sinc}(\nu T_u)</div><p>con <span class="math inline">\text{sinc}(u)=\sin(\pi u)/(\pi u)</span>, <span class="math inline">\text{sinc}(0)=1</span> (il secondo passaggio raccoglie <span class="math inline">e^{j\pi\nu T_u}</span> e usa Eulero).</p>
+<ul>
+<li>Per <span class="math inline">k\neq i</span> il prodotto scalare si annulla se <span class="math inline">(f_k-f_i)T_u</span> è un intero non nullo: la <strong>spaziatura uniforme positiva più piccola</strong> è <span class="math inline">\Delta f=1/T_u</span>.</li>
+<li>Figura: quattro sinc centrate in <span class="math inline">f_0,\dots,f_3</span> a distanza <span class="math inline">1/T_u</span>; in ogni frequenza di sottoportante (•) tutti gli altri spettri sono nulli (○).</li>
+</ul>
+<img class="zoom" src="img/ofdm-p16-condizione-sinc.png" alt="" loading="lazy">
+<h4 id="il-banco-di-correlatori-ofdm">Il banco di correlatori OFDM</h4>
+<ul>
+<li>Schema: <span class="math inline">r(t)</span> → <span class="math inline">N</span> rami, ciascuno <span class="math inline">\times\,\phi_i^\ast(t-nT_u)</span> e <span class="math inline">\int dt</span> → <span class="math inline">r_0[n],\dots,r_{N-1}[n]</span>. L'<span class="math inline">i</span>-esimo correlatore calcola</li>
+</ul>
+<div class="math block">r_i[n]=\int_{-\infty}^{+\infty}r(t)\,\phi_i^\ast(t-nT_u)\,dt</div><ul>
+<li>Con gli impulsi ortonormali questo solo calcolo estrae l'<span class="math inline">i</span>-esimo simbolo trasmesso, in assenza di distorsione del canale (a parte il rumore).</li>
+</ul>
+<img class="zoom" src="img/ofdm-p17-banco-correlatori.png" alt="" loading="lazy">
+<h4 id="ricevitore-ideale-in-awgn-ne-isi-ne-ici">Ricevitore ideale in AWGN: né ISI né ICI</h4>
+<ul>
+<li>Con <span class="math inline">r(t)=x(t)+w(t)</span>:</li>
+</ul>
+<div class="math block">r_i[n]=\sum_{m\in\mathbb Z}\sum_{k=0}^{N-1}a_k[m]\,\langle\phi_k(t-mT_u),\phi_i(t-nT_u)\rangle+w_i[n]=a_i[n]+w_i[n]</div><ul>
+<li><strong>Ipotesi:</strong> sincronizzazione ideale di tempo e di frequenza della portante, canale non dispersivo, impulsi di ricezione ortonormali. Per AWGN complesso con PSD bilatera <span class="math inline">N_0</span>: <span class="math inline">w_i[n]\sim\mathcal{CN}(0,N_0)</span>.</li>
+<li>ISI: interferenza dai blocchi <span class="math inline">m\neq n</span>; ICI: dalle sottoportanti <span class="math inline">k\neq i</span>.</li>
+</ul>
+<h4 id="l-ortogonalita-semplifica-anche-il-rumore-in-usc">L'ortogonalità semplifica anche il rumore in uscita</h4>
+<ul>
+<li>Rumore <span class="math inline">w(t)</span> gaussiano complesso bianco a media nulla, <span class="math inline">E\{w(t)w^\ast(u)\}=N_0\delta(t-u)</span>; uscita dell'<span class="math inline">i</span>-esimo correlatore <span class="math inline">w_i[n]=\int w(t)\phi_i^\ast(t-nT_u)dt</span>.</li>
+<li>Media nulla; correlazione mutua (la <span class="math inline">\delta</span> riduce l'integrale doppio a uno solo)</li>
+</ul>
+<div class="math block">E\{w_i[n]w_k^\ast[m]\}=N_0\int_{-\infty}^{+\infty}\phi_i^\ast(t-nT_u)\,\phi_k(t-mT_u)\,dt=N_0\,\delta_{i-k}\,\delta_{n-m}</div><ul>
+<li>I campioni di rumore alle uscite dei correlatori sono incorrelati con la stessa varianza <span class="math inline">N_0</span>; essendo gaussiani, sono anche indipendenti.</li>
+</ul>
+<h3 id="spettro-del-segnale-ofdm">Spettro del segnale OFDM</h3>
+<h4 id="autocorrelazione-del-segnale-ofdm">Autocorrelazione del segnale OFDM</h4>
+<ul>
+<li>Per lo spettro medio di potenza si assumono simboli indipendenti a media nulla con <span class="math inline">E\{a_i[n]a_k^\ast[m]\}=E_s\,\delta_{i-k}\,\delta_{n-m}</span>. Allora</li>
+</ul>
+<div class="math block">R_{xx}(t,\tau)=E\{x(t)x^\ast(t-\tau)\}=E_s\sum_{n\in\mathbb Z}\sum_{i=0}^{N-1}\phi_i(t-nT_u)\,\phi_i^\ast(t-\tau-nT_u)</div><ul>
+<li><span class="math inline">R_{xx}(t,\tau)</span> dipende da <span class="math inline">t</span> oltre che da <span class="math inline">\tau</span> ed è periodica in <span class="math inline">t</span> di periodo <span class="math inline">T_u</span>: il segnale OFDM è <strong>ciclostazionario</strong>. La si media su un periodo prima della trasformata di Fourier.</li>
+</ul>
+<h4 id="psd-di-un-segnale-ofdm-ideale">PSD di un segnale OFDM ideale</h4>
+<ul>
+<li>Autocorrelazione media:</li>
+</ul>
+<div class="math block">\bar R_{xx}(\tau)=\frac{1}{T_u}\int_0^{T_u}R_{xx}(t,\tau)\,dt=\frac{E_s}{T_u}\sum_{i=0}^{N-1}\int_{-\infty}^{+\infty}\phi_i(u)\phi_i^\ast(u-\tau)\,du=\frac{E_s}{T_u}\sum_{i=0}^{N-1}R_{\phi_i\phi_i}(\tau)</div><p>(con <span class="math inline">u=t-nT_u</span> gli intervalli <span class="math inline">[-nT_u,(1-n)T_u)</span> coprono tutta la retta).</p>
+<ul>
+<li>Per Wiener-Khinchin, e poiché <span class="math inline">\lvert\Phi_i(f)\rvert^2=T_u\,\text{sinc}^2[T_u(f-i/T_u)]</span>,</li>
+</ul>
+<div class="math block">S_{xx}(f)=\frac{E_s}{T_u}\sum_{i=0}^{N-1}\lvert\Phi_i(f)\rvert^2=E_s\sum_{i=0}^{N-1}\text{sinc}^2\Big[T_u\Big(f-\frac{i}{T_u}\Big)\Big]</div><ul>
+<li>La PSD è una somma di sinc² traslate, una per sottoportante. Le sottoportanti ortogonali si sovrappongono in frequenza; con simboli indipendenti le loro PSD semplicemente si sommano.</li>
+</ul>
+<h4 id="esempio-risparmio-di-banda-con-la-sovrapposizion">Esempio: risparmio di banda con la sovrapposizione</h4>
+<ul>
+<li><span class="math inline">N</span> sottocanali con tempo di simbolo <span class="math inline">T_u</span>; per sottocanali illustrativi a coseno rialzato, <span class="math inline">\beta</span> roll-off ed <span class="math inline">\varepsilon</span> piccolo margine ai bordi:</li>
+</ul>
+<div class="math block">B_{FDM}\simeq\frac{N(1+\beta+\varepsilon)}{T_u},\qquad B_{overlap}\simeq\frac{N+\beta+\varepsilon}{T_u}\ \ \text{(contributo dei bordi contato una sola volta)}</div><ul>
+<li>Per <span class="math inline">N=128</span>, <span class="math inline">T_u=0.2</span> ms, <span class="math inline">\beta=1</span>, <span class="math inline">\varepsilon=0.1</span>: <span class="math inline">B_{FDM}=128\cdot2.1/0.2\ \text{ms}=1.344</span> MHz, <span class="math inline">B_{overlap}\simeq129.1/0.2\ \text{ms}\simeq0.646</span> MHz: la sovrapposizione dimezza circa la banda richiesta.</li>
+<li>Basato su Goldsmith, cap. 12, esempi 12.2–12.3: confronto illustrativo per il multiportante sovrapposto, non una formula esatta di banda occupata per l'OFDM a finestra rettangolare (che ha lobi laterali sinc).</li>
+</ul>
+<h3 id="canale-dispersivo-e-prefisso-ciclico">Canale dispersivo e prefisso ciclico</h3>
+<h4 id="un-canale-lti-dispersivo-introduce-memoria">Un canale LTI dispersivo introduce memoria</h4>
+<ul>
+<li><span class="math inline">h(\tau)</span> risposta impulsiva di un canale LTI causale, non nulla per <span class="math inline">0\le\tau\le T_h</span>. Il segnale ricevuto è la convoluzione lineare</li>
+</ul>
+<div class="math block">r(t)=\int_0^{T_h}h(\tau)\,x(t-\tau)\,d\tau+w(t)</div><ul>
+<li>Figura: blocchi <span class="math inline">n</span> in <span class="math inline">[nT,(n+1)T)</span> e <span class="math inline">n+1</span>; la coda ritardata del blocco <span class="math inline">n</span> (larga <span class="math inline">T_h</span>) entra nel blocco successivo: <strong>ISI</strong>.</li>
+<li>I termini ritardati possono anche rovinare l'ortogonalità vista da un ricevitore che non usa un intervallo di osservazione adatto.</li>
+</ul>
+<img class="zoom" src="img/ofdm-p23-canale-dispersivo-isi.png" alt="" loading="lazy">
+<h4 id="intervallo-di-guardia-e-prefisso-ciclico">Intervallo di guardia e prefisso ciclico</h4>
+<ul>
+<li>Durata complessiva del blocco <span class="math inline">T=T_u+T_g</span>, con <span class="math inline">T_g</span> <strong>intervallo di guardia</strong>.</li>
+<li>Una guardia vuota può evitare la sovrapposizione tra blocchi vicini, ma in generale non ripristina l'ortogonalità delle sottoportanti ritardate sull'intera finestra FFT lunga <span class="math inline">T_u</span>.</li>
+<li>Invece si copiano gli ultimi <span class="math inline">T_g</span> secondi di ogni blocco utile al suo inizio: è il <strong>prefisso ciclico</strong> (CP). Figura: CP (durata <span class="math inline">T_g</span>) davanti al blocco OFDM utile (durata <span class="math inline">T_u</span>), con la freccia dalla coda copiata.</li>
+</ul>
+<img class="zoom" src="img/ofdm-p24-prefisso-ciclico.png" alt="" loading="lazy">
+<h4 id="estensione-ciclica-a-tempo-continuo">Estensione ciclica a tempo continuo</h4>
+<ul>
+<li>Blocco utile per <span class="math inline">0\le t&lt;T_u</span> e sua versione estesa per <span class="math inline">-T_g\le t&lt;T_u</span>:</li>
+</ul>
+<div class="math block">f_n(t)=\frac{1}{\sqrt{T_u}}\sum_{i=0}^{N-1}a_i[n]\,e^{j2\pi it/T_u},\qquad\tilde f_n(t)=f_n(t\bmod T_u)</div><ul>
+<li>La forma d'onda trasmessa è fatta di blocchi estesi distanziati di <span class="math inline">T=T_u+T_g</span>: <span class="math inline">x_{cp}(t)=\sum_{n\in\mathbb Z}\tilde f_n(t-nT-T_g)</span>, e il blocco <span class="math inline">n</span> occupa <span class="math inline">nT\le t&lt;(n+1)T</span>: il CP in <span class="math inline">[nT,nT+T_g)</span>, la parte utile in <span class="math inline">[nT+T_g,(n+1)T)</span>.</li>
+<li><strong>Proprietà chiave:</strong> tutti gli esponenziali delle sottoportanti sono <span class="math inline">T_u</span>-periodici perché <span class="math inline">i</span> è intero; il prefisso è quindi una vera estensione periodica della forma d'onda utile.</li>
+</ul>
+<h4 id="finestra-utile-del-ricevitore-e-condizione-sul-c">Finestra utile del ricevitore e condizione sul CP</h4>
+<ul>
+<li>Figura: blocco precedente, CP (<span class="math inline">T_g</span>), intervallo FFT (<span class="math inline">T_u</span>), con l'inizio della finestra FFT alla fine del CP.</li>
+<li>Per un canale con supporto <span class="math inline">0\le\tau\le T_h</span> si richiede</li>
+</ul>
+<div class="math block">T_g\ge T_h</div><ul>
+<li>Si scarta il prefisso e si demodulano esattamente <span class="math inline">T_u</span> secondi, liberi dall'interferenza del blocco precedente. Poiché il canale è LTI, i campioni utili subiranno una convoluzione <strong>circolare</strong>, e ogni sottoportante si può elaborare separatamente.</li>
+</ul>
+<img class="zoom" src="img/ofdm-p26-finestra-fft.png" alt="" loading="lazy">
+<h4 id="i-campioni-ritardati-nell-intervallo-utile">I campioni ritardati nell'intervallo utile</h4>
+<ul>
+<li>Il blocco <span class="math inline">n</span> occupa <span class="math inline">nT\le t&lt;(n+1)T</span>, prefisso compreso; tolto il prefisso, il ricevitore osserva <span class="math inline">t=nT+T_g+u</span>, <span class="math inline">0\le u&lt;T_u</span>.</li>
+<li>Per ogni ritardo <span class="math inline">0\le\tau\le T_h</span>, se <span class="math inline">T_g\ge T_h</span> allora <span class="math inline">nT\le nT+T_g+u-\tau&lt;(n+1)T</span> (il minimo si ha per <span class="math inline">u=0</span>, <span class="math inline">\tau=T_h</span>; il massimo per <span class="math inline">\tau=0</span>, <span class="math inline">u\to T_u</span>).</li>
+<li>La disuguaglianza garantisce che ogni contributo ritardato nella finestra di osservazione appartiene al blocco <span class="math inline">n</span>; i campioni del blocco <span class="math inline">n-1</span> sono esclusi: niente interferenza dal blocco OFDM precedente.</li>
+<li>Il CP deve essere abbastanza lungo da coprire la <strong>memoria del canale</strong>, non una frazione arbitraria del tempo di simbolo.</li>
+</ul>
+<h4 id="perche-il-cp-elimina-l-isi-separazione-dei-blocc">Perché il CP elimina l'ISI: separazione dei blocchi</h4>
+<ul>
+<li>Per <span class="math inline">0\le u&lt;T_u</span> si osserva il blocco <span class="math inline">n</span> in <span class="math inline">t=nT+T_g+u</span>:</li>
+</ul>
+<div class="math block">y_n(u)=\int_0^{T_h}h(\tau)\,x_{cp}(nT+T_g+u-\tau)\,d\tau+w_n(u)</div><ul>
+<li>Con <span class="math inline">T_g\ge T_h</span> l'argomento <span class="math inline">nT+T_g+u-\tau</span> appartiene sempre allo stesso blocco esteso <span class="math inline">n</span>, per <span class="math inline">0\le u&lt;T_u</span>:</li>
+</ul>
+<div class="math block">y_n(u)=\int_0^{T_h}h(\tau)\,f_n\big((u-\tau)\bmod T_u\big)\,d\tau+w_n(u)</div><ul>
+<li>I contributi di <span class="math inline">a_i[n-1]</span> si annullano: <strong>niente ISI tra blocchi</strong>. Il canale LTI agisce su una forma d'onda utile estesa periodicamente, ed è per questo che segue un semplice modello nel dominio di Fourier.</li>
+</ul>
+<h4 id="richiamo-le-sinusoidi-complesse-sono-autofunzion">Richiamo: le sinusoidi complesse sono autofunzioni di un canale LTI</h4>
+<ul>
+<li>Canale LTI con risposta impulsiva <span class="math inline">h(t)</span>: <span class="math inline">y(t)=h(t)\ast x(t)</span>, <span class="math inline">H(f)=\mathcal F\{h(t)\}</span>.</li>
+<li>Una sinusoide complessa <span class="math inline">e^{j2\pi ft}</span> è autofunzione di ogni sistema LTI: <span class="math inline">h(t)\ast e^{j2\pi ft}=H(f)\,e^{j2\pi ft}</span>. Ogni componente sinusoidale è moltiplicata per il numero complesso <span class="math inline">H(f)</span>, che può dipendere dalla sua frequenza (figura: <span class="math inline">e^{j2\pi ft}</span> → canale LTI <span class="math inline">h(t)</span> → <span class="math inline">H(f)e^{j2\pi ft}</span>).</li>
+<li>Grazie al CP, nell'intervallo utile ogni sottoportante è esattamente una tale sinusoide complessa: è la chiave del calcolo seguente.</li>
+</ul>
+<h4 id="calcolo-a-tempo-continuo-perche-non-resta-ici">Calcolo a tempo continuo: perché non resta ICI</h4>
+<ul>
+<li>Applicando la proprietà a ogni sottoportante dell'estensione periodica:</li>
+</ul>
+<div class="math block">\int_0^{T_h}h(\tau)\,e^{j2\pi k(u-\tau)/T_u}d\tau=H\Big(\frac{k}{T_u}\Big)e^{j2\pi ku/T_u}\quad\Rightarrow\quad y_n(u)=\frac{1}{\sqrt{T_u}}\sum_{k=0}^{N-1}a_k[n]\,H\Big(\frac{k}{T_u}\Big)e^{j2\pi ku/T_u}+w_n(u)</div><ul>
+<li>Proiettando sull'<span class="math inline">i</span>-esima sottoportante:</li>
+</ul>
+<div class="math block">r_i[n]=\frac{1}{\sqrt{T_u}}\int_0^{T_u}y_n(u)\,e^{-j2\pi iu/T_u}du=\sum_{k=0}^{N-1}a_k[n]\,H\Big(\frac{k}{T_u}\Big)\frac{1}{T_u}\int_0^{T_u}e^{j2\pi(k-i)u/T_u}du+w_i[n]</div><ul>
+<li>Poiché l'ultimo integrale vale <span class="math inline">\delta_{k-i}</span>: <span class="math inline">r_i[n]=H(i/T_u)\,a_i[n]+w_i[n]</span>, <strong>niente ICI</strong>.</li>
+</ul>
+<h4 id="nota-sulla-normalizzazione-degli-impulsi-ofdm">Nota sulla normalizzazione degli impulsi OFDM</h4>
+<ul>
+<li>Negli appunti a mano della lezione gli impulsi trasmessi e ricevuti possono essere normalizzati sulla durata completa del blocco <span class="math inline">T=T_u+T_g</span> invece che su quella utile <span class="math inline">T_u</span>.</li>
+<li>Un'ampiezza <span class="math inline">1/\sqrt T</span> in trasmissione e in ricezione introduce il fattore <span class="math inline">\frac1T\int_0^{T_u}e^{j2\pi(k-i)u/T_u}du=\frac{T_u}{T}\delta_{k-i}</span>, e la statistica di decisione diventa</li>
+</ul>
+<div class="math block">r_i[n]=\frac{T_u}{T}\,H\Big(\frac{i}{T_u}\Big)a_i[n]+w_i[n]</div><ul>
+<li>Nella derivazione presente gli impulsi utili hanno energia unitaria su <span class="math inline">T_u</span> e il fattore vale 1: le due formule differiscono solo per la normalizzazione, non per la proprietà OFDM.</li>
+</ul>
+<h4 id="l-equalizzazione-in-frequenza-segue-direttamente">L'equalizzazione in frequenza segue direttamente</h4>
+<ul>
+<li>Dopo la rimozione di un CP sufficiente: <span class="math inline">r_i[n]=H(i/T_u)a_i[n]+w_i[n]</span>. Per un coefficiente di canale noto e non nullo, <strong>una sola divisione complessa</strong> compensa il canale sulla sottoportante <span class="math inline">i</span>:</li>
+</ul>
+<div class="math block">\hat a_i[n]=\frac{r_i[n]}{H(i/T_u)}=a_i[n]+\frac{w_i[n]}{H(i/T_u)}</div><ul>
+<li>Il ricevitore non ha bisogno di un equalizzatore multicanale o di sequenza dentro questo modello ideale. Se <span class="math inline">\lvert H(i/T_u)\rvert</span> è piccolo la divisione amplifica il rumore.</li>
+<li>Prossimo passo: ottenere queste <span class="math inline">N</span> proiezioni con una sola FFT invece che con <span class="math inline">N</span> correlatori analogici.</li>
+</ul>
+<h3 id="realizzazione-con-ifft-e-fft">Realizzazione con IFFT e FFT</h3>
+<h4 id="il-campionamento-uniforme-rivela-la-ifft">Il campionamento uniforme rivela la IFFT</h4>
+<ul>
+<li>Si campiona l'<span class="math inline">n</span>-esima forma d'onda utile in <span class="math inline">u=qT_c</span>, <span class="math inline">q=0,\dots,N-1</span>, con <span class="math inline">T_c=T_u/N</span>, <span class="math inline">f_s=1/T_c=N/T_u</span>. Dopo un aggiustamento di guadagno costante (<span class="math inline">f_n(qT_c)=x_n[q]/\sqrt{T_c}</span>, perché <span class="math inline">e^{j2\pi iqT_c/T_u}=e^{j2\pi iq/N}</span>):</li>
+</ul>
+<div class="math block">x_n[q]=\frac{1}{\sqrt N}\sum_{i=0}^{N-1}a_i[n]\,e^{j2\pi iq/N}=\text{IDFT}\{a_i[n]\}[q]</div><ul>
+<li><span class="math inline">\{a_i[n]\}</span>: gli <span class="math inline">N</span> simboli d'ingresso nel dominio della frequenza; <span class="math inline">\{x_n[q]\}</span>: gli <span class="math inline">N</span> campioni nel tempo del blocco OFDM utile.</li>
+<li>Una IFFT veloce realizza la IDFT in <span class="math inline">O(N\log N)</span> operazioni, invece di <span class="math inline">N</span> oscillatori separati nel tempo. La normalizzazione <span class="math inline">1/\sqrt N</span> rende DFT e IDFT unitarie; il guadagno analogico di trasmissione assorbe la costante tra <span class="math inline">f_n(t)</span> campionata e <span class="math inline">x_n[q]</span>.</li>
+</ul>
+<h4 id="rappresentazione-matriciale-di-dft-e-idft">Rappresentazione matriciale di DFT e IDFT</h4>
+<ul>
+<li><span class="math inline">\mathbf a_n=[a_0[n],\dots,a_{N-1}[n]]^T</span>, <span class="math inline">\mathbf x_n=[x_n[0],\dots,x_n[N-1]]^T</span>:</li>
+</ul>
+<div class="math block">[\mathbf F_N]_{k,q}=\frac{1}{\sqrt N}e^{-j2\pi kq/N},\qquad\mathbf F_N\mathbf F_N^H=\mathbf I_N,\qquad\mathbf x_n=\mathbf F_N^H\mathbf a_n\ \text{(IDFT)},\qquad\mathbf a_n=\mathbf F_N\mathbf x_n\ \text{(DFT)}</div><p>(<span class="math inline">\mathbf F_N\mathbf F_N^H=\mathbf I_N</span> perché <span class="math inline">\frac1N\sum_qe^{-j2\pi(k-k&#x27;)q/N}</span> è una serie geometrica che vale <span class="math inline">1</span> per <span class="math inline">k=k&#x27;</span> e <span class="math inline">0</span> altrimenti.)</p>
+<ul>
+<li><strong>Conservazione dell'energia (Parseval):</strong> <span class="math inline">\sum_{q=0}^{N-1}\lvert x_n[q]\rvert^2=\sum_{i=0}^{N-1}\lvert a_i[n]\rvert^2</span>.</li>
+<li>FFT e IFFT sono algoritmi veloci per la DFT e la IDFT, non trasformate diverse.</li>
+</ul>
+<h4 id="serializzazione-dell-uscita-ifft-e-ricostruzione">Serializzazione dell'uscita IFFT e ricostruzione di x(t)</h4>
+<ul>
+<li>La IFFT crea i blocchi <span class="math inline">x_n[0],\dots,x_n[N-1]</span>. Senza prefisso il flusso seriale è indicizzato da <span class="math inline">A[\ell]=x_n[q]</span>, <span class="math inline">\ell=nN+q</span>, <span class="math inline">0\le q&lt;N</span>. Se <span class="math inline">p_{DAC}(t)</span> è la risposta impulsiva dello stadio DAC/ricostruzione:</li>
+</ul>
+<div class="math block">x(t)=\sum_{\ell\in\mathbb Z}A[\ell]\,p_{DAC}(t-\ell T_c)</div><ul>
+<li>IFFT → serializzazione → ricostruzione è la controparte numerica di un banco di modulatori di sottoportante a tempo continuo. Con il CP ogni blocco contiene invece <span class="math inline">P=N+L_{cp}</span> campioni e l'indicizzazione seriale cambia di conseguenza.</li>
+</ul>
+<h4 id="costruzione-del-prefisso-ciclico-a-tempo-discret">Costruzione del prefisso ciclico a tempo discreto</h4>
+<ul>
+<li>Il blocco utile è <span class="math inline">x_n[0],\dots,x_n[N-1]</span>; si prendono gli ultimi <span class="math inline">L_{cp}</span> campioni e si mettono prima del blocco (figura: prefisso ciclico <span class="math inline">x[N-L_{cp}],\dots,x[N-1]</span>, poi il blocco utile <span class="math inline">x[0],\dots,x[N-1]</span>):</li>
+</ul>
+<div class="math block">\tilde x_n[q]=x_n[q\bmod N],\qquad q=-L_{cp},\dots,N-1,\qquad P=N+L_{cp}</div><ul>
+<li><span class="math inline">P</span> è il numero di campioni trasmessi per blocco e <span class="math inline">T_g=L_{cp}T_c</span>.</li>
+</ul>
+<img class="zoom" src="img/ofdm-p36-cp-discreto.png" alt="" loading="lazy">
+<h4 id="esempio-numerico-di-inserimento-del-cp">Esempio numerico di inserimento del CP</h4>
+<ul>
+<li><span class="math inline">N=8</span>, <span class="math inline">L_{cp}=3</span>. Sequenza utile (8 campioni) <span class="math inline">x[0],\dots,x[7]</span>; si copiano gli ultimi tre all'inizio: <span class="math inline">x[5],x[6],x[7],x[0],x[1],x[2],x[3],x[4],x[5],x[6],x[7]</span>.</li>
+<li>Per <span class="math inline">q=-3,\dots,7</span>: <span class="math inline">\tilde x[q]=x[(q)_8]</span>, <span class="math inline">(q)_8=q\bmod8</span>. Il blocco trasmesso ha <span class="math inline">P=11</span> campioni; in ricezione si scartano i primi 3 e si tengono gli 8 successivi.</li>
+</ul>
+<h4 id="la-convoluzione-lineare-diventa-circolare">La convoluzione lineare diventa circolare</h4>
+<ul>
+<li>Canale campionato: <span class="math inline">h[\ell]=0</span> per <span class="math inline">\ell\notin\{0,1,\dots,L_h\}</span>, con <span class="math inline">L_{cp}\ge L_h</span>. Tolto il CP, per <span class="math inline">q=0,\dots,N-1</span> (<span class="math inline">q-\ell\ge-L_h\ge-L_{cp}</span>, quindi l'indice resta nel blocco esteso):</li>
+</ul>
+<div class="math block">y_n[q]=\sum_{\ell=0}^{L_h}h[\ell]\,\tilde x_n[q-\ell]+w_n[q]=\sum_{\ell=0}^{L_h}h[\ell]\,x_n[(q-\ell)\bmod N]+w_n[q]</div><ul>
+<li><strong>Proprietà fondamentale del CP:</strong> il canale fisico fa una convoluzione lineare; estensione ciclica e rimozione del CP rendono gli <span class="math inline">N</span> campioni utili in uscita uguali a una convoluzione circolare su <span class="math inline">N</span> punti.</li>
+</ul>
+<h4 id="il-teorema-della-convoluzione-circolare">Il teorema della convoluzione circolare</h4>
+<ul>
+<li>Con DFT/IDFT unitarie su <span class="math inline">N</span> punti, sia <span class="math inline">y[q]=\sum_{\ell=0}^{N-1}h[\ell]\,x[(q-\ell)_N]</span>. Prendendo la DFT (scambio delle somme e sostituzione <span class="math inline">p=(q-\ell)_N</span>, con <span class="math inline">e^{-j2\pi kq/N}=e^{-j2\pi k\ell/N}e^{-j2\pi kp/N}</span>):</li>
+</ul>
+<div class="math block">Y[k]=\frac{1}{\sqrt N}\sum_{q=0}^{N-1}\sum_{\ell=0}^{N-1}h[\ell]\,x[(q-\ell)_N]\,e^{-j2\pi kq/N}=\Big(\sum_{\ell=0}^{N-1}h[\ell]\,e^{-j2\pi k\ell/N}\Big)X[k]</div><ul>
+<li>Con la DFT <strong>non unitaria</strong> su <span class="math inline">N</span> punti dei tap del canale, <span class="math inline">H[k]=\sum_{\ell=0}^{N-1}h[\ell]e^{-j2\pi k\ell/N}</span>, si ottiene <span class="math inline">Y[k]=H[k]X[k]</span>: il canale non mescola mai valori diversi di <span class="math inline">k</span>.</li>
+</ul>
+<h4 id="la-relazione-ingresso-uscita-in-frequenza">La relazione ingresso-uscita in frequenza</h4>
+<ul>
+<li>DFT su <span class="math inline">N</span> punti di <span class="math inline">y_n[q]</span>:</li>
+</ul>
+<div class="math block">Y_n[k]=\frac{1}{\sqrt N}\sum_{q=0}^{N-1}y_n[q]e^{-j2\pi kq/N}=\underbrace{\sum_{\ell=0}^{L_h}h[\ell]e^{-j2\pi k\ell/N}}_{H[k]}\ \underbrace{\frac{1}{\sqrt N}\sum_{p=0}^{N-1}x_n[p]e^{-j2\pi kp/N}}_{a_k[n]}+W_n[k]</div><div class="math block">Y_n[k]=H[k]\,a_k[n]+W_n[k]</div><ul>
+<li><span class="math inline">H[k]</span> è la risposta in frequenza del canale campionato in <span class="math inline">f_k=k/T_u</span>: la controparte discreta di <span class="math inline">H(k/T_u)</span> trovata a tempo continuo.</li>
+</ul>
+<h3 id="equalizzazione-codifica-e-sistema-completo">Equalizzazione, codifica e sistema completo</h3>
+<h4 id="relazioni-scalari-indipendenti-dopo-la-dft">Relazioni scalari indipendenti dopo la DFT</h4>
+<div class="math block">\underbrace{\begin{bmatrix}Y_n[0]\\Y_n[1]\\ \vdots\\Y_n[N-1]\end{bmatrix}}_{\mathbf Y_n}=\underbrace{\begin{bmatrix}H[0]&amp;0&amp;\cdots&amp;0\\0&amp;H[1]&amp;\cdots&amp;0\\ \vdots&amp;\vdots&amp;\ddots&amp;\vdots\\0&amp;0&amp;\cdots&amp;H[N-1]\end{bmatrix}}_{\boldsymbol\Lambda_H}\underbrace{\begin{bmatrix}a_0[n]\\a_1[n]\\ \vdots\\a_{N-1}[n]\end{bmatrix}}_{\mathbf a_n}+\mathbf W_n</div><ul>
+<li>I coefficienti <span class="math inline">H[k]</span> non devono essere uguali sulle diverse sottoportanti; tuttavia la matrice in frequenza è <strong>diagonale</strong>: l'equalizzazione si può fare indipendentemente su ogni sottoportante.</li>
+<li>Questo modello diagonale si basa sulle ipotesi dette: CP, sincronizzazione e canale LTI.</li>
+</ul>
+<h4 id="un-esempio-elementare-a-due-prese">Un esempio elementare a due prese</h4>
+<ul>
+<li>Canale <span class="math inline">h[0]=1</span>, <span class="math inline">h[1]=\alpha</span>, <span class="math inline">h[\ell]=0</span> (<span class="math inline">\ell\ge2</span>). Allora <span class="math inline">H[k]=1+\alpha e^{-j2\pi k/N}</span>, <span class="math inline">k=0,\dots,N-1</span>, e con <span class="math inline">L_{cp}\ge1</span></li>
+</ul>
+<div class="math block">Y_n[k]=\big(1+\alpha e^{-j2\pi k/N}\big)a_k[n]+W_n[k]</div><ul>
+<li>Sottoportanti diverse possono avere coefficienti complessi <span class="math inline">H[k]</span> diversi, ma restano relazioni scalari separate: ogni coefficiente si compensa indipendentemente.</li>
+<li>Non serve descrivere un particolare modello di propagazione radio: basta la risposta impulsiva elementare di un sistema LTI.</li>
+</ul>
+<h4 id="un-canale-lti-puo-attenuare-fortemente-alcune-so">Un canale LTI può attenuare fortemente alcune sottoportanti</h4>
+<ul>
+<li>Canale a due prese <span class="math inline">h[0]=h[1]=1</span>, <span class="math inline">N=16</span> (<span class="math inline">\lvert1+e^{-j\theta}\rvert^2=2+2\cos\theta=4\cos^2(\theta/2)</span>):</li>
+</ul>
+<div class="math block">H[k]=1+e^{-j2\pi k/16},\qquad\lvert H[k]\rvert^2=4\cos^2\Big(\frac{\pi k}{16}\Big)</div><ul>
+<li>Figura: <span class="math inline">\lvert H[k]\rvert^2</span> per <span class="math inline">k=0,\dots,15</span> sulla risposta in frequenza continua del canale (tratteggiata), da 4 in <span class="math inline">k=0</span> a zero in <span class="math inline">k=8</span> (nullo spettrale <span class="math inline">H[8]=0</span>) e di nuovo verso 4.</li>
+<li>In <span class="math inline">k=8</span>, <span class="math inline">H[8]=0</span>: il simbolo portato da quella sottoportante non raggiunge il ricevitore e nessun equalizzatore può recuperarlo. Il CP elimina l'interferenza, <strong>non</strong> i nulli spettrali.</li>
+</ul>
+<img class="zoom" src="img/ofdm-p43-nullo-spettrale.png" alt="" loading="lazy">
+<h4 id="equalizzazione-a-una-presa-nel-dominio-della-fre">Equalizzazione a una presa nel dominio della frequenza</h4>
+<ul>
+<li>Per una sottoportante fissata: <span class="math inline">Y[k]=H[k]a[k]+W[k]</span>.</li>
+<li><strong>Zero forcing (ZF):</strong> <span class="math inline">\hat a_{ZF}[k]=Y[k]/H[k]</span>, <span class="math inline">H[k]\neq0</span>. Compensa esattamente il guadagno del canale, ma la varianza del rumore equalizzato è <span class="math inline">N_0/\lvert H[k]\rvert^2</span>.</li>
+<li><strong>MMSE lineare</strong> (simboli indipendenti, risposta del canale nota):</li>
+</ul>
+<div class="math block">\hat a_{LMMSE}[k]=\frac{E_sH^\ast[k]}{E_s\lvert H[k]\rvert^2+N_0}\,Y[k]</div><p>Limita l'amplificazione del rumore al prezzo di una stima lineare polarizzata (per <span class="math inline">N_0\to0</span> ritorna lo ZF).</p>
+<ul>
+<li>La rivelazione coerente pratica richiede anche la stima di canale; codifica e interleaving sono importanti vicino alle forti attenuazioni.</li>
+</ul>
+<h4 id="codifica-e-interleaving-sulle-sottoportanti">Codifica e interleaving sulle sottoportanti</h4>
+<ul>
+<li>Se <span class="math inline">\lvert H[k]\rvert</span> è piccolo su alcuni toni, i simboli rivelati lì sono meno affidabili. La codifica di canale introduce ridondanza; un interleaver distribuisce i bit codificati su sottoportanti e blocchi OFDM diversi. Il decodificatore sfrutta i bit ricevuti in modo affidabile per correggere gli errori sui toni ricevuti male: è un motivo semplice per combinare l'OFDM con codifica e interleaving in frequenza.</li>
+<li>Figura: griglia tempo (orizzontale) – sottoportante <span class="math inline">k</span> (verticale), i bit codificati sono sparsi sulla griglia. Concetto adattato da Goldsmith, par. 12.3.1; le celle colorate sono uno schema di interleaving, non un codice specifico.</li>
+</ul>
+<img class="zoom" src="img/ofdm-p45-interleaving.png" alt="" loading="lazy">
+<h4 id="trasmettitore-ofdm-completo-in-banda-base">Trasmettitore OFDM completo in banda base</h4>
+<ul>
+<li>Schema: bit → S/P → mapping QAM/PSK → IFFT su <span class="math inline">N</span> punti (<span class="math inline">N</span> campioni) → aggiunta del prefisso ciclico (<span class="math inline">P=N+L_{cp}</span>) → P/S → DAC → <span class="math inline">x(t)</span>.</li>
+</ul>
+<ol>
+<li>Mappare i bit in <span class="math inline">N</span> simboli complessi <span class="math inline">a_i[n]</span> (alcune posizioni possono essere riservate a toni nulli o piloti).</li>
+<li>IFFT: generare gli <span class="math inline">N</span> campioni utili nel tempo <span class="math inline">x_n[q]</span>.</li>
+<li>Anteporre <span class="math inline">L_{cp}</span> campioni ciclici; serializzare, convertire in analogico, filtrare e convertire in alto (upconversion).</li>
+</ol>
+<img class="zoom" src="img/ofdm-p46-trasmettitore-ofdm.png" alt="" loading="lazy">
+<h4 id="ricevitore-ofdm-completo-in-banda-base">Ricevitore OFDM completo in banda base</h4>
+<ul>
+<li>Schema: <span class="math inline">r(t)</span> → ADC → S/P → rimozione del prefisso ciclico (<span class="math inline">P\to N</span>) → FFT su <span class="math inline">N</span> punti → equalizzazione a una presa (per sottoportante) → decisione e P/S → bit.</li>
+</ul>
+<ol>
+<li>Ottenere <span class="math inline">P</span> campioni nel tempo per blocco; allineare la finestra FFT e rimuovere il CP.</li>
+<li>FFT: ottenere <span class="math inline">Y_n[k]</span>, l'osservazione in frequenza su ogni sottoportante.</li>
+<li>Stimare <span class="math inline">H[k]</span>, equalizzare gli <span class="math inline">N</span> canali scalari e decidere i simboli.</li>
+</ol>
+<img class="zoom" src="img/ofdm-p47-ricevitore-ofdm.png" alt="" loading="lazy">
+<h4 id="il-prezzo-del-prefisso-ciclico">Il prezzo del prefisso ciclico</h4>
+<ul>
+<li><span class="math inline">N</span> campioni utili richiedono <span class="math inline">P=N+L_{cp}</span> campioni trasmessi:</li>
+</ul>
+<div class="math block">\eta_{cp}=\frac{N}{N+L_{cp}}=\frac{T_u}{T_u+T_g}</div><ul>
+<li>Figura: CP (<span class="math inline">L_{cp}</span> campioni) seguito dai campioni utili (<span class="math inline">N</span>).</li>
+<li>L'overhead si paga in tempo e in energia trasmessa, non nel numero di sottoportanti che portano informazione. Il rate netto dipende anche dalle sottoportanti attive, dall'allocazione dei piloti, dalla dimensione della costellazione e dalla codifica di canale.</li>
+</ul>
+<h4 id="esempio-numerico-di-goldsmith-scelta-del-prefiss">Esempio numerico di Goldsmith: scelta del prefisso</h4>
+<ul>
+<li>Canale LTI campionato con <span class="math inline">T_c=1\ \mu</span>s e memoria massima di <span class="math inline">5\ \mu</span>s; si sceglie <span class="math inline">N=128</span>, <span class="math inline">L_{cp}=8</span> campioni:</li>
+</ul>
+<div class="math block">T_u=NT_c=128\ \mu\text{s},\quad T_g=L_{cp}T_c=8\ \mu\text{s}&gt;5\ \mu\text{s},\quad T=T_u+T_g=136\ \mu\text{s},\quad\eta_{CP}=\frac{128}{136}\simeq94.1\%</div><ul>
+<li>Con tutti i 128 toni in 16-QAM non codificata il rate lordo è <span class="math inline">R_b=128\log_2(16)/136\ \mu\text{s}\simeq3.76</span> Mbit/s.</li>
+<li>Adattato numericamente da Goldsmith, esempio 12.4. Numero di toni dati, codifica, piloti e guardie spettrali possono ridurre il throughput pratico.</li>
+</ul>
+<h4 id="l-overhead-del-cp-nel-bit-rate">L'overhead del CP nel bit rate</h4>
+<ul>
+<li>Se <span class="math inline">N_d</span> sottoportanti portano dati, ciascuna con una costellazione <span class="math inline">M</span>-aria, un blocco contiene <span class="math inline">N_b=N_d\log_2(M)</span> bit non codificati. Un simbolo OFDM trasmesso occupa <span class="math inline">T_u+T_g</span> secondi:</li>
+</ul>
+<div class="math block">R_b=\frac{N_d\log_2(M)}{T_u+T_g}=\frac{N_d\log_2(M)}{T_u}\,\frac{N}{N+L_{cp}}</div><ul>
+<li>Aggiungere un prefisso riduce il symbol rate del fattore <span class="math inline">N/(N+L_{cp})</span>. Il rate si riduce anche quando alcune portanti sono riservate invece che usate per i dati; il rate netto dipende inoltre dal tasso del codice correttore (se c'è codifica).</li>
+</ul>
+<h4 id="ieee-802-11a-i-parametri-temporali">IEEE 802.11a: i parametri temporali</h4>
+<ul>
+<li>Canale da 20 MHz e <span class="math inline">N=64</span> punti di IFFT: <span class="math inline">T_c=1/20\ \text{MHz}=0.05\ \mu</span>s, <span class="math inline">\Delta f=20\ \text{MHz}/64=312.5</span> kHz; durata utile <span class="math inline">T_u=NT_c=3.2\ \mu</span>s.</li>
+<li>Un prefisso di <span class="math inline">L_{cp}=16</span> aggiunge <span class="math inline">T_g=16T_c=0.8\ \mu</span>s; <span class="math inline">T=T_u+T_g=4\ \mu</span>s.</li>
+<li>Il prefisso è il <span class="math inline">16/80=20\%</span> dei campioni trasmessi, la frazione di campioni utili <span class="math inline">64/80=80\%</span>.</li>
+</ul>
+<h4 id="ieee-802-11a-bit-rate-non-codificati">IEEE 802.11a: bit rate non codificati</h4>
+<ul>
+<li>48 sottoportanti portano dati per simbolo OFDM; con simbolo di <span class="math inline">4\ \mu</span>s:</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Modulazione</th>
+<th>Bit per portante dati</th>
+<th>Bit rate non codificato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BPSK</td>
+<td>1</td>
+<td><span class="math inline">48/4\ \mu\text{s}=12</span> Mbit/s</td>
+</tr>
+<tr>
+<td>QPSK</td>
+<td>2</td>
+<td><span class="math inline">96/4\ \mu\text{s}=24</span> Mbit/s</td>
+</tr>
+<tr>
+<td>16-QAM</td>
+<td>4</td>
+<td><span class="math inline">192/4\ \mu\text{s}=48</span> Mbit/s</td>
+</tr>
+<tr>
+<td>64-QAM</td>
+<td>6</td>
+<td><span class="math inline">288/4\ \mu\text{s}=72</span> Mbit/s</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Sono bit rate fisici grezzi, prima dell'overhead di codifica: per esempio un codice di tasso 1/2 dimezza il rate netto (BPSK: 6 Mbit/s).</li>
+</ul>
+<h4 id="modulazione-adattativa-costellazioni-diverse-su-">Modulazione adattativa: costellazioni diverse su toni diversi</h4>
+<ul>
+<li>Quando i guadagni <span class="math inline">H[k]</span> sono noti al trasmettitore, ordine di modulazione o potenza trasmessa possono variare con <span class="math inline">k</span>: i toni deboli possono usare costellazioni robuste (o non portare dati), i toni forti più bit.</li>
+<li>Figura: toni <span class="math inline">0,\dots,6</span> con QPSK, QPSK, 16-QAM, 64-QAM, nessun dato, 16-QAM, QPSK.</li>
+</ul>
+<div class="math block">R_{gross}=\frac1T\sum_{k\in\mathcal D}\log_2M_k\qquad(M_k\ge2)</div><p>con <span class="math inline">\mathcal D</span> insieme dei toni dati attivi. Goldsmith, par. 12.3.4. Il caricamento adattativo richiede informazione sulla qualità del canale al trasmettitore; non è obbligatorio in tutti gli standard OFDM.</p>
+<img class="zoom" src="img/ofdm-p53-modulazione-adattativa.png" alt="" loading="lazy">
+<h3 id="limiti-dell-ofdm">Limiti dell'OFDM</h3>
+<h4 id="rapporto-potenza-di-picco-potenza-media-papr">Rapporto potenza di picco / potenza media (PAPR)</h4>
+<ul>
+<li>L'OFDM somma molte sinusoidi complesse, che occasionalmente si allineano in modo costruttivo:</li>
+</ul>
+<div class="math block">\text{PAPR}=\frac{\max_{0\le t&lt;T_u}\lvert f_n(t)\rvert^2}{\frac{1}{T_u}\int_0^{T_u}\lvert f_n(t)\rvert^2dt}</div><ul>
+<li>Figura: <span class="math inline">\lvert f_n(t)\rvert^2</span> normalizzato alla media, per un blocco OFDM con <span class="math inline">N=16</span> simboli QPSK casuali; picco <span class="math inline">\text{PAPR}=8.0</span> dB.</li>
+<li>Un PAPR grande richiede amplificazione di potenza lineare / back-off e può abbassare l'efficienza in potenza; picchi alti possono causare clipping e distorsione non lineare, comprese emissioni fuori banda.</li>
+</ul>
+<img class="zoom" src="img/ofdm-p54-papr.png" alt="" loading="lazy">
+<h4 id="perche-il-segnale-ofdm-puo-avere-picchi-grandi">Perché il segnale OFDM può avere picchi grandi</h4>
+<ul>
+<li>IFFT unitaria di <span class="math inline">N</span> simboli: <span class="math inline">x[q]=\frac{1}{\sqrt N}\sum_{k=0}^{N-1}a[k]e^{j2\pi kq/N}</span>.</li>
+<li>Se tutti i simboli hanno la stessa fase e <span class="math inline">\lvert a[k]\rvert=1</span>: <span class="math inline">x[0]=N/\sqrt N=\sqrt N</span>, <span class="math inline">\lvert x[0]\rvert^2=N</span>. Poiché la IFFT è unitaria, <span class="math inline">\frac1N\sum_{q=0}^{N-1}\lvert x[q]\rvert^2=1</span>.</li>
+<li>Il PAPR campionato vale quindi <span class="math inline">N</span> per questo blocco (<span class="math inline">10\log_{10}N</span> dB): mostra come sottoportanti allineate producano una grande ampiezza istantanea.</li>
+</ul>
+<h4 id="un-piccolo-errore-di-frequenza-rompe-l-ortogonal">Un piccolo errore di frequenza rompe l'ortogonalità</h4>
+<ul>
+<li>Con un errore di frequenza della portante <span class="math inline">\delta f</span> al ricevitore, il segnale ricevuto contiene il fattore <span class="math inline">e^{j2\pi\delta ft}</span>. La proiezione dell'<span class="math inline">i</span>-esimo correlatore sulla <span class="math inline">k</span>-esima sottoportante ideale è proporzionale a</li>
+</ul>
+<div class="math block">\frac{1}{T_u}\int_0^{T_u}e^{j2\pi[(k-i)/T_u+\delta f]t}dt</div><ul>
+<li>L'integrale è in generale non nullo anche per <span class="math inline">k\neq i</span> (è la condizione sinc con <span class="math inline">\nu T_u=k-i+\delta fT_u</span>): la variabile di decisione <span class="math inline">i</span> contiene contributi delle altre sottoportanti (ICI).</li>
+<li>L'ortogonalità delle sottoportanti si basa su una spaziatura <strong>esatta</strong> <span class="math inline">\Delta f=1/T_u</span>: l'OFDM è sensibile agli errori nella frequenza dell'oscillatore.</li>
+</ul>
+<h4 id="offset-di-frequenza-e-di-tempo-il-modello-a-temp">Offset di frequenza e di tempo: il modello a tempo discreto</h4>
+<ul>
+<li>A tempo discreto, sia <span class="math inline">\epsilon_f=\delta f/\Delta f</span> l'offset normalizzato alla spaziatura delle sottoportanti. Dopo la FFT</li>
+</ul>
+<div class="math block">Y[k]=\underbrace{C_0(\epsilon_f)H[k]a[k]}_{\text{utile}}+\underbrace{\sum_{i\neq k}C_{k-i}(\epsilon_f)H[i]a[i]}_{\text{ICI}}+W[k],\qquad C_m(\epsilon_f)=\frac1N\sum_{q=0}^{N-1}e^{j2\pi(\epsilon_f-m)q/N}</div><p>(il fattore campionato è <span class="math inline">e^{j2\pi\delta f\,qT_c}=e^{j2\pi\epsilon_fq/N}</span>; per <span class="math inline">\epsilon_f=0</span>, <span class="math inline">C_0=1</span> e <span class="math inline">C_{m\neq0}=0</span>).</p>
+<ul>
+<li>Un errore di timing <strong>dentro</strong> il CP, se la finestra FFT contiene ancora campioni periodici validi, provoca soprattutto una rampa di fase lungo le sottoportanti; errori oltre il CP possono causare ISI e ICI.</li>
+<li>Lo sviluppo presente assume un canale LTI per tutta la trasmissione considerata.</li>
+</ul>
+<h4 id="scelta-del-numero-di-sottoportanti-compromessi-d">Scelta del numero di sottoportanti: compromessi di base</h4>
+<ul>
+<li>Periodo di campionamento <span class="math inline">T_c</span> fisso e CP di <span class="math inline">L_{cp}=8</span> campioni:</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Dimensione IFFT <span class="math inline">N</span></th>
+<th><span class="math inline">T_u</span></th>
+<th>Frazione di CP</th>
+<th>Spaziatura <span class="math inline">\Delta f</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>16</td>
+<td><span class="math inline">16T_c</span></td>
+<td><span class="math inline">8/24=33.3\%</span></td>
+<td><span class="math inline">1/(16T_c)</span></td>
+</tr>
+<tr>
+<td>64</td>
+<td><span class="math inline">64T_c</span></td>
+<td><span class="math inline">8/72=11.1\%</span></td>
+<td><span class="math inline">1/(64T_c)</span></td>
+</tr>
+<tr>
+<td>128</td>
+<td><span class="math inline">128T_c</span></td>
+<td><span class="math inline">8/136=5.9\%</span></td>
+<td><span class="math inline">1/(128T_c)</span></td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><span class="math inline">N</span> più grande riduce l'overhead <strong>frazionario</strong> del CP a parità di memoria del canale; però riduce la spaziatura <span class="math inline">\Delta f=1/T_u</span> e aumenta la sensibilità a un errore fisso di offset di frequenza. Anche il PAPR possibile cresce con <span class="math inline">N</span>, e questo complica il progetto dell'amplificatore di potenza.</li>
+<li>Basato sui compromessi descritti in Goldsmith, par. 12.4–12.5. <span class="math inline">N</span> più piccolo non è sempre meglio né sempre peggio: si sceglie insieme alla memoria del canale, all'overhead di guardia e alla precisione di sincronizzazione.</li>
+</ul>
+<hr />
+
+</section>
+<section id="approfondimenti"><h2 class="ps">Spiegazioni e dimostrazioni passo-passo</h2>
+<p class="nota">Apri una voce per leggere la spiegazione in parole semplici e le dimostrazioni svolte riga per riga (🧩 = passaggio ricostruito da me).</p>
+<details class="conc"><summary><span class="n">OFDM: trasmissione multiportante con sottoportanti ortogonali</span></summary><div class="cb"><h4 id="ofdm-spiegazione">Spiegazione</h4>
+<ul>
+<li><strong>Perché multiportante.</strong> Nella Lezione 14 il canale a banda limitata con memoria era una convoluzione, e i contributi di simboli diversi si sovrapponevano (ISI). Gli appunti spiegano il trucco: se <span class="math inline">R_b</span> è alto il segnale varia rapidamente, la banda trasmessa cresce e l'ISI aumenta. Con la S/P ogni ramo ha un rate <span class="math inline">R_b/N</span> più basso, quindi banda minore: il sistema è &quot;rallentato&quot; e lotta meglio con l'ISI.</li>
+<li><strong>Il canale visto da una sottoportante.</strong> Gli appunti lo disegnano: un segnale a portante singola occupa tutta la banda del canale e ne vede la risposta non piatta; spezzato in tante sottoportanti strette, su ciascuna il canale è <strong>approssimabile piatto</strong>, quindi più robustezza all'ISI.</li>
+<li><strong>FDM.</strong> Trasmettitore: S/P, per ogni ramo un mapper, un impulso <span class="math inline">g(t)</span> e un esponenziale <span class="math inline">e^{j2\pi f_it}</span>; i rami si sommano in <span class="math inline">x(t)</span>, il <strong>segnale multiportante in banda base</strong>. Le <span class="math inline">f_i</span> non sono ancora la portante finale: poi l'upconverter trasla tutto alla radiofrequenza (appunti). Nella FDM l'ortogonalità è garantita dalla non sovrapposizione; ricevitore = <strong>banco di filtri</strong> passa-banda, un demodulatore per ramo, P/S.</li>
+<li><strong>OFDM.</strong> Le bande si sovrappongono, quindi la demodulazione è più difficile: serve una forma di ortogonalità <strong>che agisca anche nel dominio del tempo</strong>, cioè impulsi di forma particolare. Le frequenze <span class="math inline">f_i=i/T_u</span> non sono quelle finali: si passa ancora per l'upconverter.</li>
+<li><strong>Impulsi diversi per ramo.</strong> Nella slide ogni ramo ha il suo <span class="math inline">\phi_i(t)</span>: in generale possono essere diversi, e in alcuni casi non si può proprio usare lo stesso impulso di base (appunti). <span class="math inline">f_n(t)</span> è la <strong>frame multicanale</strong>, cioè quella prodotta nell'<span class="math inline">n</span>-esimo intervallo di simbolo.</li>
+<li><strong>Due ortogonalità.</strong> Sottoportanti diverse (<span class="math inline">i\neq k</span>) sono ortogonali <em>dentro</em> un blocco; blocchi diversi (<span class="math inline">n\neq m</span>) non si sovrappongono nel tempo.</li>
+<li><strong>Ricevitore.</strong> Un banco di <span class="math inline">N</span> correlatori, ciascuno moltiplica per <span class="math inline">\phi_i^\ast(t-nT_u)</span> e integra: un solo calcolo estrae l'<span class="math inline">i</span>-esimo simbolo, a meno del rumore, se il canale non distorce. Nella slide la prof sottolinea che l'OFDM sostituisce i filtri con un <strong>banco di proiezioni ortogonali, realizzato con una FFT</strong> (ofdm con fft).</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: saper scrivere <span class="math inline">\phi_i(t)</span>, dimostrare l'ortonormalità con l'integrale dell'esponenziale, dire perché <span class="math inline">\Delta f=1/T_u</span> è la spaziatura minima, e distinguere ISI (altri blocchi) e ICI (altre sottoportanti).</p>
+</blockquote>
+<h4 id="ofdm-perche-importa">Perché importa</h4>
+<p>L'OFDM è il terzo modo di trattare l'ISI della Lezione 14, dopo equalizzatori e MLSE: invece di correggere l'ISI, la rende trascurabile su ogni sottoportante e la elimina del tutto con il prefisso ciclico. È la base di Wi-Fi (ieee 802 11a) e del 5G.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Conversione serie/parallelo come decomposizione polifase</summary>
+<p>Il convertitore S/P mette il bit <span class="math inline">d[nN+i]</span> sull'uscita <span class="math inline">i</span> al passo <span class="math inline">n</span>: è la <strong>decomposizione polifase</strong> del flusso (appunti).</p>
+<div class="math block">
+\begin{aligned}
+n=0:&amp;\quad d_0(0)=d(0),\ d_1(0)=d(1),\ \dots,\ d_{N-1}(0)=d(N-1) &amp;&amp; \text{primo blocco di } N \text{ bit}\\
+n=1:&amp;\quad d_0(1)=d(N),\ d_1(1)=d(N+1),\ \dots &amp;&amp; \text{secondo istante: blocco successivo}\\
+R_{b,i}&amp;=\frac{R_b}{N}=\frac{1}{NT_b} &amp;&amp; \text{su ogni uscita esce un bit ogni } N
+\end{aligned}
+</div><p>Ogni uscita va al ritmo <span class="math inline">R_b/N</span> perché bisogna <strong>aspettare che il blocco sia completo</strong> (appunti). Gli impulsi <span class="math inline">\phi_i(t-nT_u)</span> non durano <span class="math inline">T_b</span> ma <span class="math inline">T_u=NT_b</span>, l'<strong>intervallo di blocco</strong>: il bit rate su ogni ramo è diminuito.</p>
+<p><strong>Sanity check:</strong> in <span class="math inline">T_u=NT_b</span> secondi entrano <span class="math inline">N</span> bit e ne escono <span class="math inline">N</span> (uno per ramo): il bit rate totale resta <span class="math inline">R_b</span>.
+<strong>Ipotesi:</strong> segnalazione binaria (un bit per ramo e per blocco), come. Con un mapper a <span class="math inline">b</span> bit per simbolo ogni ramo prende <span class="math inline">b</span> bit per blocco.</p>
+</details>
+<details class="der"><summary>Derivazione — Ortonormalità degli impulsi OFDM</summary>
+<div class="math block">
+\begin{aligned}
+\langle\phi_k(t-mT_u),\phi_i(t-nT_u)\rangle&amp;=\int_{-\infty}^{+\infty}R_{T_u}(t-mT_u)\,R_{T_u}(t-nT_u)\,e^{j2\pi\frac{k}{T_u}(t-mT_u)}e^{-j2\pi\frac{i}{T_u}(t-nT_u)}dt &amp;&amp; \text{definizione}\\
+&amp;=0\quad (m\neq n) &amp;&amp; \text{le finestre non si sovrappongono nel tempo}\\
+m=n:\quad&amp;=\frac{1}{T_u}\int_{nT_u}^{(n+1)T_u}e^{j2\pi\frac{k-i}{T_u}t}\,dt &amp;&amp; e^{-j2\pi km}=e^{-j2\pi in}=1\\
+&amp;=\frac{1}{T_u}\int_0^{T_u}e^{j2\pi\frac{k-i}{T_u}u}\,du &amp;&amp; u=t-nT_u\\
+&amp;=\begin{cases}1, &amp; k=i\\[4pt] \dfrac{e^{j2\pi(k-i)}-1}{j2\pi(k-i)}, &amp; k\neq i\end{cases} &amp;&amp; \text{integrale dell&#x27;esponenziale}\\
+&amp;=\delta_{k-i} &amp;&amp; k-i\in\mathbb Z\Rightarrow e^{j2\pi(k-i)}=1
+\end{aligned}
+</div><p>Quindi <span class="math inline">\langle\phi_k(t-mT_u),\phi_i(t-nT_u)\rangle=\delta_{k-i}\,\delta_{m-n}</span>. Gli appunti chiamano le due condizioni <strong>ortogonalità temporale</strong> (<span class="math inline">n=m</span>) e <strong>ortogonalità fra gli impulsi</strong> (<span class="math inline">i=k</span>).</p>
+<p><strong>Sanity check:</strong> per <span class="math inline">k=i</span> l'integrale vale <span class="math inline">\frac{1}{T_u}\cdot T_u=1</span>: l'impulso ha energia unitaria, come voluto dal fattore <span class="math inline">1/\sqrt{T_u}</span>.
+<strong>Ipotesi:</strong> frequenze esattamente multiple di <span class="math inline">1/T_u</span>; integrazione su un blocco intero. Se una delle due cade, il risultato non è più zero (vedi la derivazione seguente).</p>
+</details>
+<details class="der"><summary>Derivazione — Condizione sinc e spaziatura minima <span class="math inline">\Delta f=1/T_u</span></summary>
+<div class="math block">
+\begin{aligned}
+\langle\phi_k,\phi_i\rangle&amp;=\frac{1}{T_u}\int_0^{T_u}e^{j2\pi\nu t}\,dt &amp;&amp; \text{stesso blocco}\\
+&amp;=\frac{e^{j2\pi\nu T_u}-1}{j2\pi\nu T_u} &amp;&amp; \text{primitiva } \tfrac{e^{j2\pi\nu t}}{j2\pi\nu}\\
+&amp;=e^{j\pi\nu T_u}\,\frac{e^{j\pi\nu T_u}-e^{-j\pi\nu T_u}}{2j\,\pi\nu T_u} &amp;&amp; \text{raccolgo } e^{j\pi\nu T_u}\\
+&amp;=e^{j\pi\nu T_u}\,\frac{\sin(\pi\nu T_u)}{\pi\nu T_u}=e^{j\pi\nu T_u}\,\text{sinc}(\nu T_u) &amp;&amp; \text{Eulero}
+\end{aligned}
+</div><p>La sinc si annulla quando <span class="math inline">\nu T_u</span> è un intero non nullo: le sottoportanti sono ortogonali se <span class="math inline">(f_k-f_i)T_u\in\mathbb Z\setminus\{0\}</span>. La spaziatura <strong>uniforme più piccola</strong> che lo garantisce è <span class="math inline">\Delta f=1/T_u</span>.</p>
+<p><strong>Numeri:</strong> con <span class="math inline">T_u=3.2\ \mu</span>s <span class="math inline">\Delta f=1/T_u=312.5</span> kHz.
+<strong>Sanity check:</strong> per <span class="math inline">\nu=0</span> si ritrova <span class="math inline">\text{sinc}(0)=1</span>. Se <span class="math inline">\nu T_u=0.1</span> (errore del 10% della spaziatura), <span class="math inline">\lvert\langle\phi_k,\phi_i\rangle\rvert=\text{sinc}(0.1)\approx0.98</span>: due sottoportanti quasi uguali non sono quasi ortogonali, sono quasi parallele. L'ortogonalità vale solo sui multipli esatti.
+<strong>Ipotesi:</strong> stesso intervallo di integrazione <span class="math inline">[0,T_u)</span> per entrambe.</p>
+<blockquote class="co conn"><p>💡 Connessione: gli appunti lo dicono così: <strong>basta una minima variazione della frequenza e si ha ICI</strong>. Per questo l'OFDM non era di uso pubblico: servivano banchi di oscillatori molto precisi. La FFT ha risolto il problema, e oggi l'OFDM è alla base del 5G.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — ISI e ICI nella statistica di decisione</summary>
+<div class="math block">
+\begin{aligned}
+r_i[m]&amp;=\int\Big[\sum_{n\in\mathbb Z}\sum_{k=0}^{N-1}a_k[n]\phi_k(t-nT_u)+w(t)\Big]\phi_i^\ast(t-mT_u)\,dt &amp;&amp; \text{sostituisco } x(t)\\
+&amp;=\sum_{n\in\mathbb Z}\sum_{k=0}^{N-1}a_k[n]\,\langle\phi_k(t-nT_u),\phi_i(t-mT_u)\rangle+w_i[m] &amp;&amp; \text{linearità dell&#x27;integrale}\\
+&amp;=\underbrace{a_i[m]}_{n=m,\ k=i}+\underbrace{\sum_{n\neq m}\sum_k(\cdot)}_{\text{ISI}}+\underbrace{\sum_{k\neq i}(\cdot)\big|_{n=m}}_{\text{ICI}}+w_i[m] &amp;&amp; \text{separo i termini}\\
+&amp;=a_i[m]+w_i[m] &amp;&amp; \langle\cdot,\cdot\rangle=\delta_{k-i}\delta_{m-n}
+\end{aligned}
+</div><p>L'ISI viene dagli altri blocchi dello stesso ramo, l'ICI (<em>intercarrier interference</em>) dagli altri rami nello stesso blocco: gli appunti cerchiano <span class="math inline">d_1(0)</span>, che subisce l'interferenza dei simboli dello stesso stream e di fili diversi.</p>
+<p><strong>Ipotesi:</strong> sincronizzazione ideale di tempo e di portante, canale non dispersivo, impulsi di ricezione ortonormali.</p>
+</details>
+<details class="der"><summary>Derivazione — Statistica del rumore all'uscita dei correlatori</summary>
+<div class="math block">
+\begin{aligned}
+E\{w_i[n]\}&amp;=\int E\{w(t)\}\,\phi_i^\ast(t-nT_u)\,dt=0 &amp;&amp; \text{media nulla}\\
+E\{w_i[n]w_k^\ast[m]\}&amp;=\iint E\{w(t)w^\ast(u)\}\,\phi_i^\ast(t-nT_u)\,\phi_k(u-mT_u)\,dt\,du &amp;&amp; \text{scambio media e integrali}\\
+&amp;=N_0\int\phi_i^\ast(t-nT_u)\,\phi_k(t-mT_u)\,dt &amp;&amp; \delta(t-u)\text{ fa sparire l&#x27;integrale in } u\\
+&amp;=N_0\,\delta_{i-k}\,\delta_{n-m} &amp;&amp; \text{ortonormalità}
+\end{aligned}
+</div><p>I campioni di rumore sono incorrelati, con la stessa varianza <span class="math inline">N_0</span>; essendo gaussiani (trasformazione lineare di un processo gaussiano) sono anche <strong>indipendenti</strong>: <span class="math inline">w_i[n]\sim\mathcal{CN}(0,N_0)</span>.</p>
+<p><strong>Sanity check:</strong> è lo stesso risultato della Lezione 9 (proiezioni del rumore bianco su una base ortonormale): ogni correlatore vede rumore di varianza pari alla PSD.
+<strong>Ipotesi:</strong> rumore bianco; impulsi ortonormali. Se il rumore non è bianco i campioni restano gaussiani ma correlati.</p>
+</details>
+<details class="der"><summary>Derivazione — Autocorrelazione e PSD del segnale OFDM</summary>
+<div class="math block">
+\begin{aligned}
+R_{xx}(t,\tau)&amp;=E\{x(t)x^\ast(t-\tau)\} &amp;&amp; \text{definizione}\\
+&amp;=\sum_{n,m}\sum_{i,k}E\{a_i[n]a_k^\ast[m]\}\,\phi_i(t-nT_u)\,\phi_k^\ast(t-\tau-mT_u) &amp;&amp; \text{linearità della media}\\
+&amp;=E_s\sum_{n\in\mathbb Z}\sum_{i=0}^{N-1}\phi_i(t-nT_u)\,\phi_i^\ast(t-\tau-nT_u) &amp;&amp; \text{restano } i=k,\ n=m\\
+R_{xx}(t+T_u,\tau)&amp;=R_{xx}(t,\tau) &amp;&amp; n\to n+1 \text{ nella somma: ciclostazionario}\\
+\bar R_{xx}(\tau)&amp;=\frac{1}{T_u}\int_0^{T_u}R_{xx}(t,\tau)\,dt=\frac{E_s}{T_u}\sum_i\sum_n\int_{-nT_u}^{(1-n)T_u}\phi_i(u)\phi_i^\ast(u-\tau)\,du &amp;&amp; u=t-nT_u\\
+&amp;=\frac{E_s}{T_u}\sum_{i=0}^{N-1}\int_{-\infty}^{+\infty}\phi_i(u)\phi_i^\ast(u-\tau)\,du=\frac{E_s}{T_u}\sum_iR_{\phi_i\phi_i}(\tau) &amp;&amp; \text{gli intervalli coprono tutta la retta}\\
+\Phi_0(f)&amp;=\frac{1}{\sqrt{T_u}}\int_0^{T_u}e^{-j2\pi ft}dt=\sqrt{T_u}\,e^{-j\pi fT_u}\,\text{sinc}(fT_u) &amp;&amp; \text{trasformata della finestra}\\
+\Phi_i(f)&amp;=\Phi_0(f-i/T_u)\ \Rightarrow\ \lvert\Phi_i(f)\rvert^2=T_u\,\text{sinc}^2\big[T_u(f-i/T_u)\big] &amp;&amp; \text{modulazione} = \text{traslazione}\\
+S_{xx}(f)&amp;=\frac{E_s}{T_u}\sum_i\lvert\Phi_i(f)\rvert^2=E_s\sum_{i=0}^{N-1}\text{sinc}^2\Big[T_u\Big(f-\frac{i}{T_u}\Big)\Big] &amp;&amp; \text{Wiener-Khinchin}
+\end{aligned}
+</div><p><strong>Sanity check:</strong> potenza <span class="math inline">=\int S_{xx}df=E_s\sum_i\frac{1}{T_u}=NE_s/T_u</span>: <span class="math inline">N</span> simboli di energia <span class="math inline">E_s</span> ogni <span class="math inline">T_u</span> secondi. Corretto.
+<strong>Ipotesi:</strong> simboli indipendenti e a media nulla. Le sottoportanti si sovrappongono in frequenza, ma con simboli indipendenti le loro PSD <strong>si sommano</strong> e basta.</p>
+<img class="zoom" src="img/grafico-l15-psd-ofdm.png" alt="" loading="lazy">
+<p><em>🧩 La PSD per <span class="math inline">N=8</span> (script <code>output/grafici/genera_grafici_lezione15.py</code>). Ogni tratteggiata è la <span class="math inline">\text{sinc}^2</span> di una sottoportante, centrata in <span class="math inline">i/T_u</span>; nel picco di ciascuna tutte le altre passano per zero. La somma (nera) è quasi piatta su circa <span class="math inline">N/T_u</span>, con un'ondulazione di circa il 5% e lobi laterali fuori banda dovuti alla finestra rettangolare.</em></p>
+</details>
+<details class="der"><summary>Derivazione — Risparmio di banda con la sovrapposizione (esempio)</summary>
+<div class="math block">
+\begin{aligned}
+B_{\text{sottocanale}}&amp;=\frac{1+\beta}{T_u} &amp;&amp; \text{coseno rialzato in banda passante: } 2\cdot\tfrac{1+\beta}{2T_u}\\
+B_{FDM}&amp;\simeq N\,\frac{1+\beta+\varepsilon}{T_u} &amp;&amp; N \text{ bande separate, ognuna col suo margine}\\
+B_{overlap}&amp;\simeq\frac{N}{T_u}+\frac{\beta+\varepsilon}{T_u}=\frac{N+\beta+\varepsilon}{T_u} &amp;&amp; \text{portanti a } 1/T_u\text{; il bordo si conta una volta}
+\end{aligned}
+</div><p><strong>Numeri:</strong> <span class="math inline">N=128</span>, <span class="math inline">T_u=0.2</span> ms, <span class="math inline">\beta=1</span>, <span class="math inline">\varepsilon=0.1</span>:
+<span class="math inline">B_{FDM}=128\cdot2.1/(2\cdot10^{-4}\,\text{s})=1.344</span> MHz; <span class="math inline">B_{overlap}=129.1/(2\cdot10^{-4}\,\text{s})=645.5</span> kHz <span class="math inline">\approx0.646</span> MHz.
+<strong>Sanity check:</strong> <span class="math inline">0.646/1.344\approx0.48</span>: la sovrapposizione dimezza circa la banda. Il guadagno viene tutto dal roll-off: con <span class="math inline">\beta=\varepsilon=0</span> le due formule coinciderebbero.
+<strong>Ipotesi:</strong> confronto illustrativo (Goldsmith, esempi 12.2–12.3), non una formula esatta di banda occupata: l'OFDM a finestra rettangolare ha lobi laterali sinc.</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Prefisso ciclico e convoluzione circolare</span></summary><div class="cb"><h4 id="prefisso-ciclico-spiegazione">Spiegazione</h4>
+<ul>
+<li><strong>Il problema.</strong> Un canale con memoria <span class="math inline">T_h</span> &quot;spalma&quot; ogni blocco per <span class="math inline">T_h</span> secondi: la coda del blocco <span class="math inline">n</span> cade nel blocco <span class="math inline">n+1</span>. Ma c'è un danno peggiore: dentro la finestra di un blocco, una sottoportante ritardata è una sinusoide <strong>troncata</strong> (accesa a metà finestra), e una sinusoide troncata non è più ortogonale alle altre.</li>
+<li><strong>Perché non basta una guardia vuota.</strong> La guardia vuota risolve la sovrapposizione tra blocchi, ma il ritardato del blocco corrente resta troncato sulla finestra di <span class="math inline">T_u</span> secondi: l'ICI rimane.</li>
+<li><strong>Perché la copia della coda funziona.</strong> Le sottoportanti hanno periodo <span class="math inline">T_u</span> (l'indice <span class="math inline">i</span> è intero), quindi il prefisso è una vera estensione periodica. Qualunque ritardo <span class="math inline">\tau\le T_g</span> fa entrare nella finestra la coda copiata, che è la continuazione esatta della sinusoide: nella finestra si vede sempre un periodo intero di ogni sottoportante, e il canale la moltiplica soltanto per <span class="math inline">H(k/T_u)</span>.</li>
+<li><strong>A tempo discreto</strong> lo stesso fatto si chiama convoluzione circolare, e la DFT diagonalizza la convoluzione circolare: il sistema diventa <span class="math inline">N</span> canali scalari indipendenti (equalizzazione ofdm).</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: spiegare a parole e con la condizione <span class="math inline">T_g\ge T_h</span> perché il CP elimina l'ISI e l'ICI; scrivere <span class="math inline">Y_n[k]=H[k]a_k[n]+W_n[k]</span> e dire quanto costa il CP (<span class="math inline">\eta_{cp}</span>).</p>
+</blockquote>
+<h4 id="prefisso-ciclico-perche-importa">Perché importa</h4>
+<p>Il CP è ciò che rende l'OFDM robusto ai canali dispersivi senza un equalizzatore complicato: al posto di un equalizzatore a più prese o della MLSE della Lezione 14 basta una divisione per sottoportante. In cambio si paga una frazione <span class="math inline">L_{cp}/(N+L_{cp})</span> di tempo e di energia.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Il CP isola il blocco: la condizione <span class="math inline">T_g\ge T_h</span></summary>
+<div class="math block">
+\begin{aligned}
+x_{cp}(t)&amp;=\tilde f_n(t-nT-T_g) &amp;&amp; \text{per } nT\le t&lt;(n+1)T:\ t-nT-T_g\in[-T_g,T_u)\\
+t-\tau&amp;=nT+T_g+u-\tau &amp;&amp; \text{argomento dentro la convoluzione}\\
+&amp;\ge nT+T_g-T_h\ \ge\ nT &amp;&amp; u\ge0,\ \tau\le T_h,\ T_g\ge T_h\\
+&amp;&lt;nT+T_g+T_u=(n+1)T &amp;&amp; \tau\ge0,\ u&lt;T_u\\
+y_n(u)&amp;=\int_0^{T_h}h(\tau)\,x_{cp}(nT+T_g+u-\tau)\,d\tau+w_n(u) &amp;&amp; \text{tutto il ritardato appartiene al blocco } n\\
+&amp;=\int_0^{T_h}h(\tau)\,f_n\big((u-\tau)\bmod T_u\big)\,d\tau+w_n(u) &amp;&amp; x_{cp}=\tilde f_n(u-\tau),\ u-\tau\in[-T_g,T_u)
+\end{aligned}
+</div><p>I contributi di <span class="math inline">a_i[n-1]</span> spariscono: <strong>niente ISI tra blocchi</strong>. Il CP deve coprire la <strong>memoria del canale</strong>, non una frazione arbitraria del tempo di simbolo.</p>
+<p><strong>Sanity check:</strong> se fosse <span class="math inline">T_g&lt;T_h</span>, per <span class="math inline">u</span> piccolo e <span class="math inline">\tau</span> vicino a <span class="math inline">T_h</span> si avrebbe <span class="math inline">t-\tau&lt;nT</span>, cioè un campione del blocco <span class="math inline">n-1</span> dentro la finestra: è esattamente l'ISI della figura.
+<strong>Ipotesi:</strong> canale LTI causale di durata <span class="math inline">T_h</span>; finestra FFT che inizia esattamente a <span class="math inline">nT+T_g</span>.</p>
+</details>
+<details class="der"><summary>Derivazione — Perché sparisce anche l'ICI (tempo continuo)</summary>
+<div class="math block">
+\begin{aligned}
+f_n\big((u-\tau)\bmod T_u\big)&amp;=\frac{1}{\sqrt{T_u}}\sum_ka_k[n]\,e^{j2\pi k(u-\tau)/T_u} &amp;&amp; k\text{ intero: l&#x27;esponenziale è } T_u\text{-periodico, il mod si toglie}\\
+\int_0^{T_h}h(\tau)e^{j2\pi k(u-\tau)/T_u}d\tau&amp;=e^{j2\pi ku/T_u}\int_0^{T_h}h(\tau)e^{-j2\pi k\tau/T_u}d\tau=H\Big(\frac{k}{T_u}\Big)e^{j2\pi ku/T_u} &amp;&amp; h=0\text{ fuori da }[0,T_h]\\
+y_n(u)&amp;=\frac{1}{\sqrt{T_u}}\sum_{k=0}^{N-1}a_k[n]\,H\Big(\frac{k}{T_u}\Big)e^{j2\pi ku/T_u}+w_n(u) &amp;&amp; \text{linearità}\\
+r_i[n]&amp;=\frac{1}{\sqrt{T_u}}\int_0^{T_u}y_n(u)\,e^{-j2\pi iu/T_u}\,du &amp;&amp; \text{proiezione sulla sottoportante } i\\
+&amp;=\sum_ka_k[n]H\Big(\frac{k}{T_u}\Big)\underbrace{\frac{1}{T_u}\int_0^{T_u}e^{j2\pi(k-i)u/T_u}du}_{\delta_{k-i}}+w_i[n] &amp;&amp; \text{ortonormalità su } T_u\\
+&amp;=H\Big(\frac{i}{T_u}\Big)a_i[n]+w_i[n] &amp;&amp; \text{niente ICI}
+\end{aligned}
+</div><p>Grazie al CP, nell'intervallo utile ogni sottoportante è <strong>esattamente</strong> una sinusoide complessa (non una sinusoide troncata), quindi il canale la moltiplica soltanto per il numero complesso <span class="math inline">H(k/T_u)</span>.</p>
+<p><strong>Sanity check:</strong> canale ideale <span class="math inline">h(\tau)=\delta(\tau)</span> ⇒ <span class="math inline">H(f)=1</span> ⇒ si ritrova <span class="math inline">r_i[n]=a_i[n]+w_i[n]</span>.
+<strong>Ipotesi:</strong> <span class="math inline">T_g\ge T_h</span>; canale LTI per tutta la trasmissione; sincronizzazione ideale.</p>
+</details>
+<details class="der"><summary>Derivazione — Nota sulla normalizzazione degli impulsi</summary>
+<div class="math block">
+\begin{aligned}
+\frac{1}{T}\int_0^{T_u}e^{j2\pi(k-i)u/T_u}du&amp;=\frac{T_u}{T}\,\delta_{k-i} &amp;&amp; \text{l&#x27;integrale vale } T_u\text{ se }k=i\\
+r_i[n]&amp;=\frac{T_u}{T}\,H\Big(\frac{i}{T_u}\Big)a_i[n]+w_i[n] &amp;&amp; \text{stessa derivazione}
+\end{aligned}
+</div><p>Nella derivazione della slide gli impulsi utili hanno energia unitaria su <span class="math inline">T_u</span> e il fattore vale 1: le due formule differiscono solo per la normalizzazione, non per la proprietà OFDM. Il fattore <span class="math inline">T_u/T&lt;1</span> ricorda che l'energia spesa nel prefisso non arriva al decisore.</p>
+</details>
+<details class="der"><summary>Derivazione — Esempio numerico di inserimento del CP</summary>
+<div class="math block">x[5],x[6],x[7],\ x[0],x[1],x[2],x[3],x[4],x[5],x[6],x[7]</div><p>cioè <span class="math inline">\tilde x[q]=x[(q)_8]</span> con <span class="math inline">(q)_8=q\bmod 8</span>, <span class="math inline">q=-3,\dots,7</span>: per esempio <span class="math inline">\tilde x[-3]=x[5]</span> perché <span class="math inline">-3+8=5</span>. Il blocco trasmesso ha <span class="math inline">P=N+L_{cp}=11</span> campioni; il ricevitore scarta i primi 3 e tiene gli 8 successivi.</p>
+</details>
+<details class="der"><summary>Derivazione — Da convoluzione lineare a circolare (tempo discreto)</summary>
+<div class="math block">
+\begin{aligned}
+y_n[q]&amp;=\sum_{\ell=0}^{L_h}h[\ell]\,\tilde x_n[q-\ell]+w_n[q],\quad q=0,\dots,N-1 &amp;&amp; \text{convoluzione lineare, dopo aver tolto il CP}\\
+q-\ell&amp;\ge0-L_h\ge-L_{cp} &amp;&amp; \text{l&#x27;indice resta dentro il blocco esteso}\\
+y_n[q]&amp;=\sum_{\ell=0}^{L_h}h[\ell]\,x_n[(q-\ell)\bmod N]+w_n[q] &amp;&amp; \tilde x_n[q]=x_n[q\bmod N]
+\end{aligned}
+</div><p>Il canale fisico fa una convoluzione <strong>lineare</strong>; estensione ciclica e rimozione del CP fanno sì che gli <span class="math inline">N</span> campioni utili in uscita siano una convoluzione <strong>circolare</strong> su <span class="math inline">N</span> punti.</p>
+<p><strong>Sanity check:</strong> per <span class="math inline">q\ge L_h</span> non serve il prefisso (<span class="math inline">q-\ell\ge0</span>); il prefisso lavora solo per i primi <span class="math inline">L_h</span> campioni, quelli che altrimenti &quot;pescherebbero&quot; nel blocco precedente.</p>
+</details>
+<details class="der"><summary>Derivazione — Teorema della convoluzione circolare e relazione in frequenza</summary>
+<div class="math block">
+\begin{aligned}
+Y_n[k]&amp;=\frac{1}{\sqrt N}\sum_{q=0}^{N-1}\sum_{\ell=0}^{L_h}h[\ell]\,x_n[(q-\ell)\bmod N]\,e^{-j2\pi kq/N}+W_n[k] &amp;&amp; \text{DFT della convoluzione circolare}\\
+&amp;=\sum_{\ell=0}^{L_h}h[\ell]\,\frac{1}{\sqrt N}\sum_{q=0}^{N-1}x_n[(q-\ell)\bmod N]\,e^{-j2\pi kq/N}+W_n[k] &amp;&amp; \text{scambio le somme}\\
+&amp;=\sum_{\ell}h[\ell]\,e^{-j2\pi k\ell/N}\,\frac{1}{\sqrt N}\sum_{p=0}^{N-1}x_n[p]\,e^{-j2\pi kp/N}+W_n[k] &amp;&amp; p=(q-\ell)\bmod N:\ e^{-j2\pi kq/N}=e^{-j2\pi k(p+\ell)/N}\\
+&amp;=H[k]\,a_k[n]+W_n[k] &amp;&amp; \text{la DFT di } x_n \text{ è } a_n,\ H[k]=\textstyle\sum_\ell h[\ell]e^{-j2\pi k\ell/N}
+\end{aligned}
+</div><p>Il passaggio chiave è il terzo: l'esponenziale ha periodo <span class="math inline">N</span> in <span class="math inline">q</span>, quindi <span class="math inline">q</span> e <span class="math inline">p+\ell</span> danno lo stesso valore, e quando <span class="math inline">q</span> percorre <span class="math inline">0,\dots,N-1</span> anche <span class="math inline">p</span> percorre tutti i resti. La DFT del canale <span class="math inline">H[k]</span> è <strong>non unitaria</strong> (senza <span class="math inline">1/\sqrt N</span>).</p>
+<p><strong>Sanity check:</strong> <span class="math inline">H[k]</span> è la risposta in frequenza del canale campionato in <span class="math inline">f_k=k/T_u</span>: la controparte discreta di <span class="math inline">H(k/T_u)</span> trovata a tempo continuo. Il canale non mescola mai valori diversi di <span class="math inline">k</span>.
+<strong>Ipotesi:</strong> <span class="math inline">L_{cp}\ge L_h</span>, <span class="math inline">L_h&lt;N</span>, canale LTI, sincronizzazione ideale.</p>
+</details>
+<details class="der"><summary>Derivazione — Prezzo del CP e bit rate</summary>
+<div class="math block">
+\begin{aligned}
+\eta_{cp}&amp;=\frac{N}{N+L_{cp}}=\frac{NT_c}{NT_c+L_{cp}T_c}=\frac{T_u}{T_u+T_g} &amp;&amp; T_u=NT_c,\ T_g=L_{cp}T_c\\
+N_b&amp;=N_d\log_2M &amp;&amp; \text{bit non codificati per blocco}\\
+R_b&amp;=\frac{N_d\log_2M}{T_u+T_g}=\frac{N_d\log_2M}{T_u}\cdot\frac{T_u}{T_u+T_g}=\frac{N_d\log_2M}{T_u}\cdot\frac{N}{N+L_{cp}} &amp;&amp; \text{un simbolo OFDM dura } T_u+T_g
+\end{aligned}
+</div><p><strong>Numeri (Goldsmith, esempio 12.4):</strong> <span class="math inline">T_c=1\ \mu</span>s, memoria massima del canale <span class="math inline">5\ \mu</span>s, <span class="math inline">N=128</span>, <span class="math inline">L_{cp}=8</span>:
+<span class="math inline">T_u=128\ \mu</span>s, <span class="math inline">T_g=8\ \mu</span>s <span class="math inline">&gt;5\ \mu</span>s, <span class="math inline">T=136\ \mu</span>s, <span class="math inline">\eta_{cp}=128/136\approx94.1\%</span>; con tutti i 128 toni in 16-QAM non codificata <span class="math inline">R_b=128\cdot4/136\ \mu\text{s}=512/(1.36\cdot10^{-4}\ \text{s})\approx3.76</span> Mbit/s.
+<strong>Sanity check:</strong> senza CP sarebbe <span class="math inline">512/128\ \mu\text{s}=4</span> Mbit/s; il CP toglie il <span class="math inline">5.9\%</span>, cioè <span class="math inline">L_{cp}/P=8/136</span>.
+<strong>Ipotesi:</strong> il rate netto si riduce ancora per portanti riservate (pilota, guardie spettrali) e per il tasso del codice correttore.</p>
+<p>L'overhead del CP è <strong>in tempo e in energia trasmessa</strong>, non nel numero di sottoportanti che portano informazione.</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Realizzazione numerica dell&#x27;OFDM: IFFT e FFT</span></summary><div class="cb"><h4 id="ofdm-con-fft-spiegazione">Spiegazione</h4>
+<ul>
+<li><strong>Cosa cambia rispetto al banco analogico.</strong> Il banco di <span class="math inline">N</span> oscillatori a frequenze <span class="math inline">i/T_u</span>, che dovevano essere precisissimi, è sostituito da un calcolo: la IFFT genera direttamente i campioni della somma delle sottoportanti. In ricezione la FFT calcola in un colpo solo le <span class="math inline">N</span> proiezioni <span class="math inline">r_i[n]</span> dei correlatori.</li>
+<li><strong>Dove sta il prefisso.</strong> Nel trasmettitore il CP si aggiunge <strong>dopo</strong> la IFFT (si copiano campioni nel tempo); nel ricevitore si toglie <strong>prima</strong> della FFT. La FFT lavora sempre su <span class="math inline">N</span> campioni, il canale vede <span class="math inline">P=N+L_{cp}</span> campioni.</li>
+<li><strong>Cosa fa il ricevitore dopo la FFT.</strong> Ottiene <span class="math inline">Y_n[k]</span> su ogni sottoportante, stima <span class="math inline">H[k]</span>, equalizza gli <span class="math inline">N</span> canali scalari e decide (equalizzazione ofdm).</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: disegnare lo schema a blocchi di trasmettitore e ricevitore OFDM in banda base, con IFFT/FFT, aggiunta/rimozione del CP, P/S e DAC/ADC; spiegare perché campionando a <span class="math inline">T_c=T_u/N</span> compare la IDFT.</p>
+</blockquote>
+<h4 id="ofdm-con-fft-perche-importa">Perché importa</h4>
+<p>È la ragione per cui l'OFDM è diventato pratico: la FFT costa <span class="math inline">O(N\log N)</span> ed è precisa per costruzione, mentre un banco analogico di oscillatori a spaziatura esatta era irrealizzabile.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Il campionamento uniforme fa comparire la IDFT</summary>
+<div class="math block">
+\begin{aligned}
+f_n(qT_c)&amp;=\frac{1}{\sqrt{T_u}}\sum_{i=0}^{N-1}a_i[n]\,e^{j2\pi iqT_c/T_u} &amp;&amp; u=qT_c,\ q=0,\dots,N-1\\
+&amp;=\frac{1}{\sqrt{T_u}}\sum_{i=0}^{N-1}a_i[n]\,e^{j2\pi iq/N} &amp;&amp; T_c/T_u=1/N\\
+&amp;=\sqrt{\frac{N}{T_u}}\cdot\underbrace{\frac{1}{\sqrt N}\sum_{i=0}^{N-1}a_i[n]\,e^{j2\pi iq/N}}_{x_n[q]} &amp;&amp; \text{moltiplico e divido per }\sqrt N\\
+&amp;=\frac{1}{\sqrt{T_c}}\,x_n[q] &amp;&amp; \sqrt{N/T_u}=1/\sqrt{T_c}
+\end{aligned}
+</div><p>Il guadagno costante <span class="math inline">1/\sqrt{T_c}</span> tra <span class="math inline">f_n(qT_c)</span> e <span class="math inline">x_n[q]</span> lo assorbe il guadagno analogico del trasmettitore. La normalizzazione <span class="math inline">1/\sqrt N</span> rende DFT e IDFT unitarie.</p>
+<p><strong>Sanity check:</strong> <span class="math inline">f_s=N/T_u</span> è proprio la larghezza (circa <span class="math inline">N\Delta f</span>) dello spettro del blocco, la somma di sinc² di ofdm: si campiona alla frequenza di Nyquist di un segnale complesso che occupa circa <span class="math inline">N/T_u</span>.
+<strong>Ipotesi:</strong> campionamento sincrono con l'inizio del blocco utile. La IFFT calcola la IDFT in <span class="math inline">O(N\log N)</span> operazioni invece di <span class="math inline">N</span> oscillatori separati.</p>
+</details>
+<details class="der"><summary>Derivazione — DFT unitaria, inversa e Parseval</summary>
+<div class="math block">
+\begin{aligned}
+[\mathbf F_N\mathbf F_N^H]_{k,k&#x27;}&amp;=\sum_{q=0}^{N-1}\frac{1}{\sqrt N}e^{-j2\pi kq/N}\cdot\frac{1}{\sqrt N}e^{+j2\pi k&#x27;q/N} &amp;&amp; (\mathbf F^H)_{q,k&#x27;}=\overline{\mathbf F_{k&#x27;,q}}\\
+&amp;=\frac1N\sum_{q=0}^{N-1}\big(e^{-j2\pi(k-k&#x27;)/N}\big)^q &amp;&amp; \text{serie geometrica di ragione } z\\
+&amp;=\begin{cases}1, &amp; k=k&#x27;\ (z=1,\ N\text{ termini uguali a }1)\\[2pt]\dfrac1N\,\dfrac{1-z^N}{1-z}=0, &amp; k\neq k&#x27;\ (z^N=e^{-j2\pi(k-k&#x27;)}=1)\end{cases} &amp;&amp; \text{somma geometrica}\\
+\mathbf F_N\mathbf x_n&amp;=\mathbf F_N\mathbf F_N^H\mathbf a_n=\mathbf a_n &amp;&amp; \text{la DFT inverte la IDFT}\\
+\lVert\mathbf x_n\rVert^2&amp;=\mathbf a_n^H\mathbf F_N\mathbf F_N^H\mathbf a_n=\lVert\mathbf a_n\rVert^2 &amp;&amp; \text{Parseval}
+\end{aligned}
+</div><p><strong>Sanity check:</strong> è la versione discreta dell'ortonormalità delle sottoportanti: le righe di <span class="math inline">\mathbf F_N</span> sono le sottoportanti campionate, e sono ortonormali.</p>
+</details>
+<details class="der"><summary>Derivazione — Serializzazione dell'uscita IFFT</summary>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Equalizzazione nel dominio della frequenza, codifica e modulazione adattativa nell&#x27;OFDM</span></summary><div class="cb"><h4 id="equalizzazione-ofdm-spiegazione">Spiegazione</h4>
+<ul>
+<li><strong>Un'equalizzazione che costa una divisione.</strong> Dentro il modello ideale il ricevitore non ha bisogno di un equalizzatore multicanale o di sequenza: una divisione complessa per sottoportante compensa il canale. Se <span class="math inline">\lvert H(i/T_u)\rvert</span> è piccolo, la divisione amplifica il rumore.</li>
+<li><strong>Serve conoscere il canale.</strong> La rivelazione coerente richiede di stimare <span class="math inline">H[k]</span>: per questo alcune posizioni della IFFT sono riservate ai <strong>piloti</strong> (ofdm con fft).</li>
+<li><strong>Codifica e interleaving.</strong> Se <span class="math inline">\lvert H[k]\rvert</span> è piccolo su alcuni toni, i simboli rivelati lì sono poco affidabili. Il codice di canale aggiunge ridondanza; l'<strong>interleaver</strong> sparge i bit codificati su sottoportanti e blocchi OFDM diversi (la griglia tempo-frequenza della figura, con le celle colorate come schema, non un codice specifico). Il decodificatore usa i bit ricevuti bene per correggere quelli dei toni attenuati: è il motivo semplice per cui l'OFDM si combina con codifica e interleaving in frequenza.</li>
+<li><strong>Modulazione adattativa.</strong> Se il trasmettitore conosce i guadagni <span class="math inline">H[k]</span> può cambiare ordine della costellazione o potenza da un tono all'altro: costellazioni robuste (o nessun dato) sui toni deboli, più bit sui toni forti. Richiede che il trasmettitore abbia informazione sulla qualità del canale, e non è obbligatoria in tutti gli standard OFDM.</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: scrivere ZF e MMSE a una presa, dire perché bastano (matrice diagonale) e perché un nullo spettrale non si recupera; spiegare il ruolo di codifica, interleaving e modulazione adattativa.</p>
+</blockquote>
+<h4 id="equalizzazione-ofdm-perche-importa">Perché importa</h4>
+<p>Confrontata con la Lezione 14 è la grande semplificazione dell'OFDM: invece di un equalizzatore frazionario con il suo vettore di coefficienti o di un traliccio di Viterbi a <span class="math inline">M^L</span> stati, <span class="math inline">N</span> divisioni. Il prezzo è che i toni attenuati restano attenuati: l'OFDM sposta il problema dall'ISI alla diversità in frequenza, da recuperare con la codifica.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — Matrice diagonale ed equalizzazione indipendente</summary>
+<div class="math block">
+\underbrace{\begin{bmatrix}Y_n[0]\\ \vdots\\ Y_n[N-1]\end{bmatrix}}_{\mathbf Y_n}=\underbrace{\begin{bmatrix}H[0]&amp;&amp;0\\&amp;\ddots&amp;\\0&amp;&amp;H[N-1]\end{bmatrix}}_{\boldsymbol\Lambda_H}\underbrace{\begin{bmatrix}a_0[n]\\ \vdots\\ a_{N-1}[n]\end{bmatrix}}_{\mathbf a_n}+\mathbf W_n
+</div><p>Fuori diagonale ci sono zeri perché il canale non mescola sottoportanti diverse: invertire <span class="math inline">\boldsymbol\Lambda_H</span> vuol dire dividere ogni riga per il suo <span class="math inline">H[k]</span>. Il modello diagonale regge solo con le ipotesi dette: CP sufficiente, sincronizzazione, canale LTI.</p>
+</details>
+<details class="der"><summary>Derivazione — Esempio a due prese e nullo spettrale</summary>
+<div class="math block">
+\begin{aligned}
+H[k]&amp;=\sum_\ell h[\ell]e^{-j2\pi k\ell/N}=1+\alpha e^{-j2\pi k/N} &amp;&amp; \text{DFT non unitaria dei tap}\\
+Y_n[k]&amp;=\big(1+\alpha e^{-j2\pi k/N}\big)a_k[n]+W_n[k] &amp;&amp; \text{relazione in frequenza}\\
+\alpha=1:\ \lvert H[k]\rvert^2&amp;=\lvert1+e^{-j\theta}\rvert^2=(1+\cos\theta)^2+\sin^2\theta &amp;&amp; \theta=2\pi k/N\\
+&amp;=2+2\cos\theta=4\cos^2(\theta/2) &amp;&amp; 1+\cos\theta=2\cos^2(\theta/2)\\
+N=16:\ \lvert H[k]\rvert^2&amp;=4\cos^2\Big(\frac{\pi k}{16}\Big) &amp;&amp; \theta/2=\pi k/16
+\end{aligned}
+</div><p><strong>Numeri:</strong> <span class="math inline">k=0</span>: <span class="math inline">4</span>; <span class="math inline">k=4</span>: <span class="math inline">4\cos^2(\pi/4)=2</span>; <span class="math inline">k=8</span>: <span class="math inline">4\cos^2(\pi/2)=0</span>, cioè <span class="math inline">H[8]=1+e^{-j\pi}=0</span>.
+<strong>Sanity check:</strong> il canale <span class="math inline">1+z^{-1}</span> è un filtro a media mobile, passa-basso, con lo zero a metà banda: è il grafico, con i 16 valori campionati sulla curva continua.
+<strong>Ipotesi:</strong> canale noto e LTI.</p>
+<p>Sottoportanti diverse hanno coefficienti complessi diversi, ma restano relazioni scalari separate. Non serve un modello di propagazione radio: basta la risposta impulsiva elementare di un sistema LTI. In <span class="math inline">k=8</span> però il simbolo <strong>non arriva</strong> al ricevitore e nessun equalizzatore può recuperarlo: il CP elimina l'interferenza, <strong>non i nulli spettrali</strong>.</p>
+</details>
+<details class="der"><summary>Derivazione — Zero forcing e MMSE a una presa</summary>
+<div class="math block">
+\begin{aligned}
+\hat a_{ZF}&amp;=\frac{Y}{H}=a+\frac{W}{H} &amp;&amp; \text{divido per } H\neq0\\
+E\Big\{\Big\lvert\frac WH\Big\rvert^2\Big\}&amp;=\frac{N_0}{\lvert H\rvert^2} &amp;&amp; \text{rumore amplificato se }\lvert H\rvert\text{ è piccolo}\\
+\hat a&amp;=cY,\quad c=\arg\min_cE\{\lvert a-cY\rvert^2\} &amp;&amp; \text{MMSE lineare}\\
+E\{(a-cY)Y^\ast\}&amp;=0\ \Rightarrow\ c=\frac{E\{aY^\ast\}}{E\{\lvert Y\rvert^2\}} &amp;&amp; \text{principio di ortogonalità}\\
+E\{aY^\ast\}&amp;=E\{a(Ha+W)^\ast\}=H^\ast E_s,\qquad E\{\lvert Y\rvert^2\}=\lvert H\rvert^2E_s+N_0 &amp;&amp; \text{indipendenza di } a,\ W\\
+\hat a_{LMMSE}&amp;=\frac{E_sH^\ast}{E_s\lvert H\rvert^2+N_0}\,Y &amp;&amp; \text{sostituisco}
+\end{aligned}
+</div><p><strong>Sanity check:</strong> per <span class="math inline">N_0\to0</span> il coefficiente diventa <span class="math inline">E_sH^\ast/(E_s\lvert H\rvert^2)=1/H</span>: si ritrova lo ZF. Per <span class="math inline">\lvert H\rvert\to0</span> il coefficiente tende a <span class="math inline">0</span> invece di esplodere: l'MMSE limita l'amplificazione del rumore.
+<strong>Ipotesi:</strong> canale noto, simboli indipendenti. La stima MMSE è <strong>polarizzata</strong>: <span class="math inline">E\{\hat a\mid a\}=\frac{E_s\lvert H\rvert^2}{E_s\lvert H\rvert^2+N_0}\,a\neq a</span>.</p>
+<blockquote class="co conn"><p>💡 Connessione: sono le versioni scalari dello ZF e dell'MMSE della Lezione 14 (equalizzazione): là <span class="math inline">\mathbf c_{MMSE}=\sigma_s^2\mathbf R_{rr}^{-1}\mathbf p_0</span>, qui <span class="math inline">\mathbf p_0</span> si riduce al numero <span class="math inline">H</span> e <span class="math inline">\mathbf R_{rr}</span> al numero <span class="math inline">E_s\lvert H\rvert^2+N_0</span>. Anche il difetto dello ZF è lo stesso: amplifica il rumore dove il canale attenua.</p>
+</blockquote>
+</details>
+<details class="der"><summary>Derivazione — Bit per blocco con modulazione adattativa</summary>
+<div class="math block">\sum_{k\in\mathcal D}\log_2M_k=2+2+4+6+0+4+2=20\ \text{bit per blocco},\qquad R_{gross}=\frac{20}{T}</div><p>(🧩 conto mio sulla figura; il tono 4, debole, non porta dati ed è escluso da <span class="math inline">\mathcal D</span>.)</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">Limiti dell&#x27;OFDM: PAPR, offset di frequenza e di tempo, scelta di N</span></summary><div class="cb"><h4 id="limiti-dell-ofdm-spiegazione">Spiegazione</h4>
+<ul>
+<li><strong>Perché il PAPR è un problema.</strong> Un PAPR alto richiede un amplificatore di potenza lineare su un'ampia dinamica, quindi un grande <em>back-off</em> (si lavora lontano dalla saturazione), e questo abbassa l'efficienza in potenza. I picchi possono causare <em>clipping</em> e distorsione non lineare, con emissioni fuori banda.</li>
+<li><strong>Perché l'offset di frequenza è grave.</strong> La sinc delle sottoportanti è larga <span class="math inline">\Delta f</span>: spostarsi di una frazione di <span class="math inline">\Delta f</span> fa uscire dagli zeri delle altre sottoportanti. È la stessa sensibilità detta negli appunti (&quot;basta una minima variazione della frequenza e ho ICI&quot;), e il motivo per cui la sincronizzazione di portante della Lezione 13 è essenziale per l'OFDM.</li>
+<li><strong>La scelta di <span class="math inline">N</span></strong> non è &quot;più piccolo è meglio&quot; né il contrario: si sceglie insieme alla memoria del canale, all'overhead di guardia e alla precisione di sincronizzazione.</li>
+</ul>
+<blockquote class="co esame"><p>🎯 Esame: dare la definizione di PAPR e il caso peggiore <span class="math inline">N</span>; spiegare perché un offset di frequenza crea ICI e un offset di tempo dentro il CP solo una rampa di fase; discutere i compromessi nella scelta di <span class="math inline">N</span>.</p>
+</blockquote>
+<h4 id="limiti-dell-ofdm-perche-importa">Perché importa</h4>
+<p>Sono il rovescio della medaglia dell'ortogonalità esatta: l'OFDM elimina ISI e ICI solo se tempo e frequenza sono quelli giusti, e chiede un'elettronica lineare. Sono i punti da citare quando si confronta l'OFDM con la trasmissione a portante singola equalizzata.</p>
+<h4 class="sub">Dimostrazioni passo-passo</h4><details class="der"><summary>Derivazione — PAPR nel caso peggiore</summary>
+<div class="math block">
+\begin{aligned}
+x[0]&amp;=\frac{1}{\sqrt N}\sum_{k=0}^{N-1}a[k]=\frac{N}{\sqrt N}=\sqrt N &amp;&amp; q=0:\ \text{tutti gli esponenziali valgono }1\\
+\lvert x[0]\rvert^2&amp;=N &amp;&amp; \text{picco}\\
+\frac1N\sum_{q=0}^{N-1}\lvert x[q]\rvert^2&amp;=\frac1N\sum_{k=0}^{N-1}\lvert a[k]\rvert^2=\frac NN=1 &amp;&amp; \text{Parseval (IFFT unitaria)}\\
+\text{PAPR}&amp;=\frac{N}{1}=N\quad\big(10\log_{10}N\ \text{dB}\big) &amp;&amp; \text{rapporto}
+\end{aligned}
+</div><p><strong>Numeri:</strong> <span class="math inline">N=16</span> → <span class="math inline">12</span> dB; <span class="math inline">N=64</span> → <span class="math inline">18</span> dB (🧩). La figura, un blocco con <span class="math inline">N=16</span> simboli QPSK casuali, ha un picco di <span class="math inline">8.0</span> dB: un blocco tipico sta sotto il caso peggiore.
+<strong>Sanity check:</strong> con tutti i simboli in fase gli <span class="math inline">N</span> fasori si sommano in ampiezza (<span class="math inline">N</span> volte), mentre la potenza media cresce solo come <span class="math inline">N</span>: il rapporto è <span class="math inline">N</span>.
+<strong>Ipotesi:</strong> PAPR <strong>campionato</strong> (sui soli <span class="math inline">N</span> campioni); il segnale continuo può avere picchi tra un campione e l'altro.</p>
+<img class="zoom" src="img/grafico-l15-papr-ccdf.png" alt="" loading="lazy">
+<p><em>🧩 Probabilità che il PAPR di un blocco con simboli QPSK casuali superi una soglia, per <span class="math inline">N=16,64,256</span> (simulazione con IFFT sovracampionata, script <code>output/grafici/genera_grafici_lezione15.py</code>). Le curve si spostano a destra al crescere di <span class="math inline">N</span>, come dice la slide; il caso peggiore <span class="math inline">10\log_{10}N</span> dB è rarissimo, ma picchi di 8–11 dB sono frequenti.</em></p>
+</details>
+<details class="der"><summary>Derivazione — L'offset di frequenza rompe l'ortogonalità</summary>
+<div class="math block">
+\begin{aligned}
+\frac{1}{T_u}\int_0^{T_u}e^{j2\pi[(k-i)/T_u+\delta f]t}dt&amp;=e^{j\pi\nu T_u}\,\text{sinc}(\nu T_u),\quad\nu=\frac{k-i}{T_u}+\delta f &amp;&amp; \text{condizione sinc}\\
+\nu T_u&amp;=(k-i)+\delta fT_u=(k-i)+\epsilon_f &amp;&amp; \delta fT_u=\delta f/\Delta f
+\end{aligned}
+</div><p>La sinc si annulla solo se <span class="math inline">\nu T_u</span> è un intero non nullo: per <span class="math inline">k\neq i</span> e <span class="math inline">\epsilon_f</span> non intero l'integrale è diverso da zero, quindi la variabile di decisione <span class="math inline">i</span> contiene contributi delle altre sottoportanti (<strong>ICI</strong>); e per <span class="math inline">k=i</span> vale <span class="math inline">\text{sinc}(\epsilon_f)&lt;1</span>, cioè si perde anche segnale utile.</p>
+</details>
+<details class="der"><summary>Derivazione — Modello discreto con offset: i coefficienti <span class="math inline">C_m(\epsilon_f)</span></summary>
+<div class="math block">
+\begin{aligned}
+e^{j2\pi\delta f\,qT_c}&amp;=e^{j2\pi\delta f\,qT_u/N}=e^{j2\pi\epsilon_fq/N} &amp;&amp; T_c=T_u/N,\ \delta fT_u=\epsilon_f\\
+Y[k]&amp;=\frac{1}{\sqrt N}\sum_{q=0}^{N-1}e^{j2\pi\epsilon_fq/N}\,\frac{1}{\sqrt N}\sum_iH[i]a[i]e^{j2\pi iq/N}\,e^{-j2\pi kq/N} &amp;&amp; \text{DFT unitaria}\\
+&amp;=\sum_iH[i]a[i]\,\underbrace{\frac1N\sum_{q=0}^{N-1}e^{j2\pi(\epsilon_f-(k-i))q/N}}_{C_{k-i}(\epsilon_f)} &amp;&amp; \text{scambio le somme}\\
+&amp;=\underbrace{C_0(\epsilon_f)H[k]a[k]}_{i=k:\ \text{utile}}+\underbrace{\sum_{i\neq k}C_{k-i}(\epsilon_f)H[i]a[i]}_{\text{ICI}}\ (+W[k]) &amp;&amp; \text{separo } i=k
+\end{aligned}
+</div><p><strong>Sanity check:</strong> per <span class="math inline">\epsilon_f=0</span>: <span class="math inline">C_0=\frac1N\cdot N=1</span> e <span class="math inline">C_m=\frac1N\sum_qe^{-j2\pi mq/N}=0</span> per <span class="math inline">m\neq0</span> (serie geometrica): si ritrova <span class="math inline">Y[k]=H[k]a[k]+W[k]</span>. Inoltre <span class="math inline">\sum_m\lvert C_m(\epsilon_f)\rvert^2=1</span> (Parseval sulla sequenza <span class="math inline">e^{j2\pi\epsilon_fq/N}/N</span>): l'offset non distrugge potenza, la <strong>sposta</strong> dalla sottoportante giusta alle vicine.
+<strong>Ipotesi:</strong> offset costante sul blocco; canale LTI per tutta la trasmissione.</p>
+<img class="zoom" src="img/grafico-l15-ici-cfo.png" alt="" loading="lazy">
+<p><em>🧩 A sinistra la frazione di potenza che resta sulla sottoportante, <span class="math inline">\lvert C_0(\epsilon_f)\rvert^2</span>, e quella che finisce in ICI, <span class="math inline">1-\lvert C_0(\epsilon_f)\rvert^2</span>, per <span class="math inline">N=64</span>; a destra il loro rapporto in dB (script <code>output/grafici/genera_grafici_lezione15.py</code>). Con un offset del 10% della spaziatura (<span class="math inline">\epsilon_f=0.1</span>) il rapporto segnale/ICI è già sceso a circa 15 dB, per quanto basso sia il rumore: è un pavimento dovuto all'interferenza.</em></p>
+</details>
+<details class="der"><summary>Derivazione — Offset di tempo dentro il CP: rampa di fase</summary>
+<div class="math block">
+\begin{aligned}
+y&#x27;[q]&amp;=y[(q-d)\bmod N] &amp;&amp; \text{i campioni osservati sono una rotazione circolare}\\
+Y&#x27;[k]&amp;=e^{-j2\pi kd/N}\,Y[k]=e^{-j2\pi kd/N}H[k]a[k]+W&#x27;[k] &amp;&amp; \text{proprietà di traslazione circolare della DFT}
+\end{aligned}
+</div><p>🧩 Derivazione mia: la fase <span class="math inline">-2\pi kd/N</span> cresce <strong>linearmente</strong> con l'indice <span class="math inline">k</span>, è la rampa di fase della slide. Non c'è ICI e la si compensa insieme a <span class="math inline">H[k]</span> (sembra un canale con un ritardo in più). Se invece la finestra esce dalla zona valida, entra un pezzo del blocco precedente o successivo: ISI e ICI.</p>
+</details>
+<details class="der"><summary>Derivazione — Tabella della scelta di <span class="math inline">N</span></summary>
+<div class="tw"><table>
+<thead>
+<tr>
+<th><span class="math inline">N</span></th>
+<th><span class="math inline">T_u</span></th>
+<th>frazione di CP <span class="math inline">L_{cp}/(N+L_{cp})</span></th>
+<th>spaziatura <span class="math inline">\Delta f=1/T_u</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>16</td>
+<td><span class="math inline">16T_c</span></td>
+<td><span class="math inline">8/24=33.3\%</span></td>
+<td><span class="math inline">1/(16T_c)</span></td>
+</tr>
+<tr>
+<td>64</td>
+<td><span class="math inline">64T_c</span></td>
+<td><span class="math inline">8/72=11.1\%</span></td>
+<td><span class="math inline">1/(64T_c)</span></td>
+</tr>
+<tr>
+<td>128</td>
+<td><span class="math inline">128T_c</span></td>
+<td><span class="math inline">8/136=5.9\%</span></td>
+<td><span class="math inline">1/(128T_c)</span></td>
+</tr>
+</tbody>
+</table></div>
+<p><span class="math inline">N</span> più grande riduce l'overhead <strong>frazionario</strong> del CP a parità di memoria del canale, ma riduce la spaziatura <span class="math inline">\Delta f=1/T_u</span>: un offset di frequenza fisso <span class="math inline">\delta f</span> diventa un <span class="math inline">\epsilon_f=\delta f/\Delta f=\delta f\,NT_c</span> più grande, e l'ICI cresce. Anche il PAPR possibile cresce con <span class="math inline">N</span>, e questo complica il progetto dell'amplificatore di potenza.</p>
+<p><strong>Sanity check:</strong> passando da <span class="math inline">N=16</span> a <span class="math inline">N=128</span> l'overhead scende di circa 6 volte, ma <span class="math inline">\epsilon_f</span> cresce di 8 volte a parità di <span class="math inline">\delta f</span>.</p>
+</details>
+</div></details>
+<details class="conc"><summary><span class="n">IEEE 802.11a</span></summary><div class="cb"><h4 id="ieee-802-11a-cos-e">Cos'è</h4>
+<p>Standard di rete locale senza fili (Wi-Fi) con livello fisico <strong>OFDM</strong>: canale di 20 MHz, IFFT su <span class="math inline">N=64</span> punti, prefisso ciclico di 16 campioni, 48 sottoportanti che portano dati. Nella Lezione 15 è l'esempio numerico dei parametri temporali di un sistema ofdm.</p>
+<h4 id="ieee-802-11a-come-si-usa-nel-corso">Come si usa nel corso</h4>
+<p>Parametri temporali:</p>
+<div class="math block">
+\begin{aligned}
+T_c&amp;=\frac{1}{20\ \text{MHz}}=0.05\ \mu\text{s} &amp;&amp; \text{un campione ogni }1/B\\
+\Delta f&amp;=\frac{20\ \text{MHz}}{64}=312.5\ \text{kHz} &amp;&amp; \text{la banda divisa in 64 toni}\\
+T_u&amp;=NT_c=64\cdot0.05\ \mu\text{s}=3.2\ \mu\text{s} &amp;&amp; =1/\Delta f\\
+T_g&amp;=L_{cp}T_c=16\cdot0.05\ \mu\text{s}=0.8\ \mu\text{s} &amp;&amp; \text{prefisso}\\
+T&amp;=T_u+T_g=4\ \mu\text{s} &amp;&amp; \text{simbolo OFDM}
+\end{aligned}
+</div><p>Il prefisso è <span class="math inline">16/80=20\%</span> dei campioni trasmessi, i campioni utili <span class="math inline">64/80=80\%</span>.</p>
+<p>Bit rate non codificati con 48 portanti dati e simbolo da <span class="math inline">4\ \mu</span>s:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Modulazione</th>
+<th>Bit per portante dati</th>
+<th>Bit rate non codificato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BPSK</td>
+<td>1</td>
+<td><span class="math inline">48/4\ \mu\text{s}=12</span> Mbit/s</td>
+</tr>
+<tr>
+<td>QPSK</td>
+<td>2</td>
+<td><span class="math inline">96/4\ \mu\text{s}=24</span> Mbit/s</td>
+</tr>
+<tr>
+<td>16-QAM</td>
+<td>4</td>
+<td><span class="math inline">192/4\ \mu\text{s}=48</span> Mbit/s</td>
+</tr>
+<tr>
+<td>64-QAM</td>
+<td>6</td>
+<td><span class="math inline">288/4\ \mu\text{s}=72</span> Mbit/s</td>
+</tr>
+</tbody>
+</table></div>
+<p>Sono bit rate fisici lordi, prima dell'overhead del codice di canale: con un codice di tasso 1/2 il rate netto si dimezza (BPSK: 6 Mbit/s).</p>
+<p>🧩 Controllo: <span class="math inline">T_u=1/\Delta f=1/312.5\ \text{kHz}=3.2\ \mu</span>s, coerente con l'ortogonalità <span class="math inline">\Delta f=1/T_u</span>; <span class="math inline">T_g=0.8\ \mu</span>s è la memoria massima del canale che il sistema tollera senza ISI (prefisso ciclico). Delle 64 posizioni della IFFT solo 48 portano dati: le altre sono riservate (toni nulli, piloti), come previsto nel trasmettitore.</p>
+<h4 id="ieee-802-11a-concetti-correlati">Concetti correlati</h4>
+<ul>
+<li>ofdm — spaziatura <span class="math inline">\Delta f=1/T_u</span>.</li>
+<li>prefisso ciclico — <span class="math inline">L_{cp}=16</span>, <span class="math inline">\eta_{cp}=80\%</span>.</li>
+<li>ofdm con fft — IFFT su 64 punti, toni riservati.</li>
+<li>dimensionamento ofdm — gli stessi conti come esercizio.</li>
+</ul>
+</div></details>
+<details class="conc"><summary><span class="n">FFT e IFFT</span></summary><div class="cb"><h4 id="fft-cos-e">Cos'è</h4>
+<p>La <strong>FFT</strong> (<em>fast Fourier transform</em>) e la <strong>IFFT</strong> sono algoritmi veloci per calcolare la DFT e la IDFT su <span class="math inline">N</span> punti in <span class="math inline">O(N\log N)</span> operazioni invece di <span class="math inline">O(N^2)</span>. Non sono trasformate diverse dalla DFT/IDFT: danno lo stesso risultato, più in fretta.</p>
+<h4 id="fft-come-si-usa-nel-corso">Come si usa nel corso</h4>
+<ul>
+<li>Nel trasmettitore ofdm la IFFT su <span class="math inline">N</span> punti genera gli <span class="math inline">N</span> campioni del blocco utile a partire dagli <span class="math inline">N</span> simboli in frequenza, al posto di <span class="math inline">N</span> oscillatori a tempo continuo.</li>
+<li>Nel ricevitore la FFT calcola le <span class="math inline">N</span> proiezioni sulle sottoportanti, al posto del banco di correlatori (o di filtri passa-banda della FDM).</li>
+<li>Gli appunti: prima l'OFDM non era di uso pubblico perché servivano banchi di oscillatori molto precisi; la FFT ha risolto questi problemi, e oggi è alla base del 5G.</li>
+<li>🧩 Ordine di grandezza: per <span class="math inline">N=64</span> (802.11a) una DFT diretta richiede <span class="math inline">N^2=4096</span> moltiplicazioni complesse, una FFT radice 2 circa <span class="math inline">\frac N2\log_2N=192</span>.</li>
+</ul>
+<h4 id="fft-concetti-correlati">Concetti correlati</h4>
+<ul>
+<li>ofdm con fft — dove compare la IDFT campionando il blocco.</li>
+<li>prefisso ciclico — la DFT diagonalizza la convoluzione circolare.</li>
+<li>lab setup e spettro — la DFT come campionamento della DTFT (laboratorio).</li>
+</ul>
+</div></details>
+<details class="conc es"><summary><span class="n">Esercizio svolto · Dimensionamento di un sistema OFDM</span></summary><div class="cb"><h4 id="dimensionamento-ofdm-metodo">Metodo</h4>
+<p>Si applica quando si danno il passo di campionamento (o la banda), il numero di punti della IFFT e la memoria del canale, e si chiedono i tempi del simbolo OFDM, la lunghezza del prefisso, l'efficienza e il bit rate. È una catena di definizioni:</p>
+<ol>
+<li><strong>Campionamento</strong>: <span class="math inline">T_c=1/B</span> se si dà la banda <span class="math inline">B</span> del canale.</li>
+<li><strong>Tempo utile e spaziatura</strong>: <span class="math inline">T_u=NT_c</span>, <span class="math inline">\Delta f=1/T_u=B/N</span>.</li>
+<li><strong>Prefisso</strong>: scegliere <span class="math inline">L_{cp}</span> con <span class="math inline">T_g=L_{cp}T_c\ge T_h</span> (memoria del canale), cioè <span class="math inline">L_{cp}\ge\lceil T_h/T_c\rceil</span>.</li>
+<li><strong>Durata del simbolo OFDM</strong>: <span class="math inline">T=T_u+T_g</span>, <span class="math inline">P=N+L_{cp}</span> campioni.</li>
+<li><strong>Efficienza</strong>: <span class="math inline">\eta_{cp}=N/(N+L_{cp})=T_u/T</span>.</li>
+<li><strong>Bit rate lordo</strong>: <span class="math inline">R_b=N_d\log_2M/T</span> con <span class="math inline">N_d</span> portanti dati; netto: moltiplicare per il tasso del codice.</li>
+</ol>
+<h4 id="dimensionamento-ofdm-formule-usate">Formule usate</h4>
+<ul>
+<li>ofdm — <span class="math inline">\Delta f=1/T_u</span>; banda con sottocanali sovrapposti.</li>
+<li>prefisso ciclico — <span class="math inline">T_g\ge T_h</span>, <span class="math inline">\eta_{cp}=N/(N+L_{cp})</span>, <span class="math inline">R_b=\frac{N_d\log_2M}{T_u}\cdot\frac{N}{N+L_{cp}}</span>.</li>
+<li>limiti dell ofdm — offset normalizzato <span class="math inline">\epsilon_f=\delta f/\Delta f</span>, PAPR massimo <span class="math inline">N</span>.</li>
+</ul>
+<h4 id="dimensionamento-ofdm-casi-svolti">Casi svolti</h4>
+<h5 id="dimensionamento-ofdm-caso-1-scelta-del-prefisso-goldsmith-esempio-12-">Caso 1 — Scelta del prefisso (Goldsmith, esempio 12.4)</h5>
+<p><strong>Traccia:</strong> canale campionato con <span class="math inline">T_c=1\ \mu</span>s e memoria massima <span class="math inline">5\ \mu</span>s; <span class="math inline">N=128</span>, <span class="math inline">L_{cp}=8</span>; tutti i 128 toni in 16-QAM non codificata. Calcolare <span class="math inline">T_u</span>, <span class="math inline">T_g</span>, <span class="math inline">T</span>, <span class="math inline">\eta_{cp}</span> e il bit rate lordo.</p>
+<p><strong>Svolgimento:</strong></p>
+<div class="math block">
+\begin{aligned}
+T_u&amp;=NT_c=128\cdot1\ \mu\text{s}=128\ \mu\text{s} &amp;&amp; \text{passo 2}\\
+T_g&amp;=L_{cp}T_c=8\ \mu\text{s}&gt;5\ \mu\text{s} &amp;&amp; \text{passo 3: il CP copre la memoria}\\
+T&amp;=T_u+T_g=136\ \mu\text{s} &amp;&amp; \text{passo 4}\\
+\eta_{cp}&amp;=\frac{128}{136}\approx0.941 &amp;&amp; \text{passo 5}\\
+R_b&amp;=\frac{128\cdot\log_216}{136\ \mu\text{s}}=\frac{512\ \text{bit}}{1.36\cdot10^{-4}\ \text{s}}\approx3.76\ \text{Mbit/s} &amp;&amp; \text{passo 6}
+\end{aligned}
+</div><p><strong>Risultato:</strong> <span class="math inline">T=136\ \mu</span>s, <span class="math inline">\eta_{cp}\approx94.1\%</span>, <span class="math inline">R_b\approx3.76</span> Mbit/s.
+<strong>Verifica:</strong> basterebbe <span class="math inline">L_{cp}=5</span>; con 8 si ha margine. Con <span class="math inline">\Delta f=1/128\ \mu\text{s}\approx7.8</span> kHz.</p>
+<h5 id="dimensionamento-ofdm-caso-2-ieee-802-11a">Caso 2 — IEEE 802.11a</h5>
+<p><strong>Traccia:</strong> canale da 20 MHz, <span class="math inline">N=64</span>, <span class="math inline">L_{cp}=16</span>, 48 portanti dati. Calcolare tempi, frazione di prefisso e bit rate non codificati.</p>
+<p><strong>Svolgimento:</strong></p>
+<div class="math block">
+\begin{aligned}
+T_c&amp;=1/(20\ \text{MHz})=0.05\ \mu\text{s},\qquad \Delta f=20\ \text{MHz}/64=312.5\ \text{kHz} &amp;&amp; \text{passi 1–2}\\
+T_u&amp;=64\cdot0.05\ \mu\text{s}=3.2\ \mu\text{s},\qquad T_g=16\cdot0.05\ \mu\text{s}=0.8\ \mu\text{s} &amp;&amp; \text{passi 2–3}\\
+T&amp;=4\ \mu\text{s},\qquad L_{cp}/P=16/80=20\%,\qquad \eta_{cp}=64/80=80\% &amp;&amp; \text{passi 4–5}\\
+R_b&amp;=\frac{48\log_2M}{4\ \mu\text{s}}=12\log_2M\ \text{Mbit/s} &amp;&amp; \text{passo 6}
+\end{aligned}
+</div><p><strong>Risultato:</strong> 12, 24, 48, 72 Mbit/s per BPSK, QPSK, 16-QAM, 64-QAM; con codice di tasso 1/2 in BPSK, 6 Mbit/s.
+<strong>Verifica:</strong> <span class="math inline">T_u=1/\Delta f</span> ✓; il canale deve avere memoria <span class="math inline">\le0.8\ \mu</span>s.</p>
+<h5 id="dimensionamento-ofdm-caso-3-overhead-del-cp-al-variare-di-n">Caso 3 — Overhead del CP al variare di <span class="math inline">N</span></h5>
+<p><strong>Traccia:</strong> <span class="math inline">T_c</span> fisso, <span class="math inline">L_{cp}=8</span>; confrontare <span class="math inline">N=16,64,128</span>.</p>
+<p><strong>Svolgimento:</strong> frazione di CP <span class="math inline">=L_{cp}/(N+L_{cp})</span>: <span class="math inline">8/24=33.3\%</span>, <span class="math inline">8/72=11.1\%</span>, <span class="math inline">8/136=5.9\%</span>; spaziatura <span class="math inline">1/(NT_c)</span>: <span class="math inline">1/(16T_c)</span>, <span class="math inline">1/(64T_c)</span>, <span class="math inline">1/(128T_c)</span>.
+<strong>Risultato:</strong> <span class="math inline">N</span> grande ⇒ overhead piccolo ma <span class="math inline">\Delta f</span> piccolo, quindi a parità di <span class="math inline">\delta f</span> l'offset normalizzato <span class="math inline">\epsilon_f=\delta f\,NT_c</span> cresce (8 volte da 16 a 128) e cresce il PAPR possibile (<span class="math inline">10\log_{10}N</span>: 12 dB, 18 dB, 21 dB).</p>
+<h5 id="dimensionamento-ofdm-caso-4-banda-con-e-senza-sovrapposizione-goldsmi">Caso 4 — Banda con e senza sovrapposizione (Goldsmith, esempi 12.2–12.3)</h5>
+<p><strong>Traccia:</strong> <span class="math inline">N=128</span> sottocanali, <span class="math inline">T_u=0.2</span> ms, coseno rialzato con <span class="math inline">\beta=1</span>, margine <span class="math inline">\varepsilon=0.1</span>. Confrontare la banda FDM con quella a sottocanali sovrapposti.</p>
+<p><strong>Svolgimento:</strong></p>
+<div class="math block">
+\begin{aligned}
+B_{FDM}&amp;\simeq\frac{N(1+\beta+\varepsilon)}{T_u}=\frac{128\cdot2.1}{2\cdot10^{-4}\ \text{s}}=1.344\ \text{MHz} &amp;&amp; \text{bande separate}\\
+B_{overlap}&amp;\simeq\frac{N+\beta+\varepsilon}{T_u}=\frac{129.1}{2\cdot10^{-4}\ \text{s}}\approx0.646\ \text{MHz} &amp;&amp; \text{portanti a }1/T_u
+\end{aligned}
+</div><p><strong>Risultato:</strong> la sovrapposizione riduce la banda a circa il 48%.</p>
+<h5 id="dimensionamento-ofdm-caso-5-nullo-spettrale-di-un-canale-a-due-prese">Caso 5 — Nullo spettrale di un canale a due prese</h5>
+<p><strong>Traccia:</strong> <span class="math inline">h[0]=h[1]=1</span>, <span class="math inline">N=16</span>. Quali sottoportanti sono perse?</p>
+<p><strong>Svolgimento:</strong> <span class="math inline">\lvert H[k]\rvert^2=4\cos^2(\pi k/16)</span> (equalizzazione ofdm) si annulla per <span class="math inline">\pi k/16=\pi/2</span>, cioè <span class="math inline">k=8</span>.
+<strong>Risultato:</strong> il tono 8 è perso: nessun equalizzatore lo recupera; servono codifica e interleaving o non usarlo per i dati.</p>
+<h4 id="dimensionamento-ofdm-trappole">Trappole</h4>
+<ul>
+<li><span class="math inline">T_u</span> <strong>non</strong> è la durata del simbolo OFDM trasmesso: con il prefisso è <span class="math inline">T=T_u+T_g</span>. Il bit rate si divide per <span class="math inline">T</span>, la spaziatura è <span class="math inline">1/T_u</span>.</li>
+<li>Il CP si dimensiona sulla <strong>memoria del canale</strong> (<span class="math inline">T_h</span>), non come percentuale fissa del simbolo.</li>
+<li>Il bit rate lordo usa le <strong>portanti dati</strong> (<span class="math inline">N_d</span>), non tutte le <span class="math inline">N</span> posizioni della IFFT (in 802.11a 48 su 64).</li>
+<li>Rate lordo ≠ rate netto: va moltiplicato per il tasso del codice.</li>
+<li>La DFT del canale <span class="math inline">H[k]</span> è non unitaria (senza <span class="math inline">1/\sqrt N</span>), mentre quella dei simboli è unitaria.</li>
+</ul>
+</div></details>
+</section>
+<section id="domande"><h2 class="ps">Domande da esame</h2>
+<ul>
+<li>Perché un sistema multiportante combatte l'ISI? Che differenza c'è tra FDM e OFDM?</li>
+<li>Scrivi gli impulsi OFDM e dimostra che sono ortonormali. Perché la spaziatura minima è <span class="math inline">1/T_u</span>?</li>
+<li>Che cosa sono ISI e ICI nella statistica di decisione di un sistema multiportante? Quando si annullano?</li>
+<li>Ricava la statistica del rumore all'uscita dei correlatori OFDM.</li>
+<li>Ricava la PSD di un segnale OFDM. Perché il segnale è ciclostazionario?</li>
+<li>Che cos'è il prefisso ciclico? Perché una guardia vuota non basta? Qual è la condizione sulla sua durata?</li>
+<li>Dimostra che con il CP l'uscita del correlatore <span class="math inline">i</span> è <span class="math inline">H(i/T_u)a_i[n]+w_i[n]</span>.</li>
+<li>Come si realizza l'OFDM con IFFT/FFT? Disegna trasmettitore e ricevitore in banda base.</li>
+<li>Perché il CP trasforma la convoluzione lineare in circolare? Ricava <span class="math inline">Y_n[k]=H[k]a_k[n]+W_n[k]</span>.</li>
+<li>Equalizzazione a una presa: ZF e MMSE. Che succede su un nullo spettrale?</li>
+<li>Quanto costa il CP? Calcola efficienza e bit rate di un sistema dato (esempio 802.11a).</li>
+<li>Che cos'è il PAPR e perché è un problema? Qual è il caso peggiore?</li>
+<li>Perché l'OFDM è sensibile agli offset di frequenza? Che effetto ha un errore di timing dentro il CP?</li>
+<li>Come si sceglie il numero di sottoportanti?</li>
+</ul>
+
+</section>
+<blockquote class="co mia"><p>📚 <strong>Approfondimento facoltativo, non d'esame:</strong> <a href="approfondimenti.html#multiportante-ofdm-dmt-gelli">le note di G. Gelli su multiportante, OFDM e DMT (prestazioni QAM, bit loading, water filling)</a>. Sta in una pagina a parte, separata dal materiale delle lezioni.</p></blockquote>
+<nav class="pn"><a href="lezione-14.html">← Lezione 14</a><span></span></nav>
+</main>
+<footer>Appunti personali del corso di Trasmissione dei Segnali Digitali (LM Ingegneria Informatica, UNINA). Generato dal wiki con <code>output/crea_sito.py</code>.</footer>
+<div id="lb" hidden></div><a id="su" href="#" hidden aria-label="torna su">↑</a>
+</body></html>
