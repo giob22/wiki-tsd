@@ -291,3 +291,6 @@ Verificati i numeri: $\ln2=-1.59$ dB, $R_s\approx15$ Msimboli/s, $\text{SNR}_{re
 ## [2026-11-28] update | Lezione 15 — ridisegni degli appunti a mano | pagine: 4, 9, 10, 13, 14
 - 5 figure 🧩 rifatte in modo leggibile dai disegni a mano degli appunti (script `output/grafici/genera_figure_appunti_lezione15.py`), inserite in [[corso-completo]] nelle sezioni degli appunti corrispondenti
 - rimosso il ritaglio `ofdm-p10-appunti-canale-piatto.png` (screen del disegno a mano), sostituito dal ridisegno
+
+## [2026-11-28] update | Lezione 15 — ricevitore FDM ridisegnato con il flusso del segnale | pagine: 6
+- `grafico-l15-ricevitore-fdm-flusso.png` (funzione `ricevitore_fdm` in `output/grafici/genera_grafici_lezione15.py`) sostituisce in [[corso-completo]] il ritaglio della slide 5: interno del «demodulator» esplicitato (mixer, filtro adattato, campionatore, decisore, demapper) e sei pannelli 🧩 che seguono il ramo $i=1$ dallo spettro ricevuto fino ai bit

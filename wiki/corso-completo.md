@@ -3395,7 +3395,8 @@ $$d_i[n]=d[nN+i],\qquad i=0,\dots,N-1,\qquad R_{b,i}=\frac{R_b}{N}$$
 - Ogni filtro estrae una banda individuale non sovrapposta; ogni ramo è demodulato e rivelato separatamente e i flussi si ricombinano con la conversione P/S.
 - L'OFDM permetterà di sostituire i filtri con un **banco di proiezioni ortogonali, realizzato in modo efficiente con una FFT**.
 
-![[ofdm-p6-ricevitore-fdm.png|620]]
+![[grafico-l15-ricevitore-fdm-flusso.png|820]]
+*🧩 Ridisegno mio dello schema della slide, con l'interno del blocco «demodulator» esplicitato. Esempio: $N=4$ rami, QPSK, impulso complessivo di Nyquist $g(t)\ast g(-t)$ (coseno rialzato, $g$ reale), canale ideale, $T$ = durata di simbolo di un ramo. Il ramo $i=1$ è seguito blocco per blocco. ① $y(t)$ contiene tutte le sottobande più il rumore. ② Il passa-banda lascia solo la banda di $f_1$. ③ Moltiplicando per $e^{-j2\pi f_1 t}$ la banda torna attorno a 0. ④ Il filtro adattato dà $z_1(t)$, campionato in $t=mT$. ⑤ Ogni campione è simbolo più rumore, $r_1[m]=a_1[m]+w_1[m]$: punti sparsi attorno alla costellazione. ⑥ Il decisore sceglie il punto della costellazione più vicino, $\hat a_1[m]$, e il demapper lo traduce in bit $\hat d_1(m)$. Il P/S rimette in serie i bit di tutti i rami e dà $\hat d[\ell]$.*
 
 #### Slide 6 e appunti — FDM e OFDM a confronto · [[ofdm_goldsmith_slides.pdf#page=7|p. 7]]
 - Figura: in alto la FDM, bande separate da intervalli di guardia (*guard*); in basso l'OFDM, sottoportanti sovrapposte e ortogonali a distanza $\Delta f=1/T_u$, ognuna con il picco dove le altre passano per zero.
