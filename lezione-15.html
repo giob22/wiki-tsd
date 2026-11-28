@@ -555,9 +555,41 @@
 <li><strong>FDM.</strong> Trasmettitore: S/P, per ogni ramo un mapper, un impulso <span class="math inline">g(t)</span> e un esponenziale <span class="math inline">e^{j2\pi f_it}</span>; i rami si sommano in <span class="math inline">x(t)</span>, il <strong>segnale multiportante in banda base</strong>. Le <span class="math inline">f_i</span> non sono ancora la portante finale: poi l'upconverter trasla tutto alla radiofrequenza (appunti). Nella FDM l'ortogonalità è garantita dalla non sovrapposizione; ricevitore = <strong>banco di filtri</strong> passa-banda, un demodulatore per ramo, P/S.</li>
 <li><strong>OFDM.</strong> Le bande si sovrappongono, quindi la demodulazione è più difficile: serve una forma di ortogonalità <strong>che agisca anche nel dominio del tempo</strong>, cioè impulsi di forma particolare. Le frequenze <span class="math inline">f_i=i/T_u</span> non sono quelle finali: si passa ancora per l'upconverter.</li>
 <li><strong>Impulsi diversi per ramo.</strong> Nella slide ogni ramo ha il suo <span class="math inline">\phi_i(t)</span>: in generale possono essere diversi, e in alcuni casi non si può proprio usare lo stesso impulso di base (appunti). <span class="math inline">f_n(t)</span> è la <strong>frame multicanale</strong>, cioè quella prodotta nell'<span class="math inline">n</span>-esimo intervallo di simbolo.</li>
-<li><strong>Due ortogonalità.</strong> Sottoportanti diverse (<span class="math inline">i\neq k</span>) sono ortogonali <em>dentro</em> un blocco; blocchi diversi (<span class="math inline">n\neq m</span>) non si sovrappongono nel tempo.</li>
+<li><strong>Due ortogonalità.</strong> Sottoportanti diverse (<span class="math inline">i\neq k</span>) sono ortogonali <em>dentro</em> un blocco; blocchi diversi (<span class="math inline">n\neq m</span>) non si sovrappongono nel tempo. Insieme formano la <strong>biortogonalità</strong>, spiegata nella sezione qui sotto.</li>
 <li><strong>Ricevitore.</strong> Un banco di <span class="math inline">N</span> correlatori, ciascuno moltiplica per <span class="math inline">\phi_i^\ast(t-nT_u)</span> e integra: un solo calcolo estrae l'<span class="math inline">i</span>-esimo simbolo, a meno del rumore, se il canale non distorce. Nella slide la prof sottolinea che l'OFDM sostituisce i filtri con un <strong>banco di proiezioni ortogonali, realizzato con una FFT</strong> (ofdm con fft).</li>
 </ul>
+<h4 id="ofdm-biortogonalita-che-cosa-vuol-dire">Biortogonalità: che cosa vuol dire</h4>
+<p><strong>Definizione.</strong> Gli impulsi <span class="math inline">\phi_k(t-nT_u)</span> sono <strong>biortogonali</strong> se</p>
+<div class="math block">\langle\phi_k(t-nT_u),\,\phi_i(t-mT_u)\rangle=\delta_{k-i}\,\delta_{n-m}</div><p>cioè il prodotto scalare vale 1 solo se coincidono <strong>sia</strong> la sottoportante (<span class="math inline">k=i</span>) <strong>sia</strong> il blocco (<span class="math inline">n=m</span>), e vale 0 in tutti gli altri casi. Gli appunti la introducono con «si deve imporre una biortogonalità»; nelle note di Gelli è la condizione (4).</p>
+<p><strong>Perché «bi».</strong> Ogni simbolo <span class="math inline">a_k[n]</span> ha due indici: la sottoportante <span class="math inline">k</span> (la frequenza) e il blocco <span class="math inline">n</span> (il tempo). La condizione è il prodotto di due delta, una per indice, quindi l'ortogonalità vale <strong>in due direzioni</strong>:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Fattore</th>
+<th>Ortogonalità</th>
+<th>Che cosa elimina</th>
+<th>Come si ottiene con <span class="math inline">\phi_i(t)=R_{T_u}(t)\,e^{j2\pi it/T_u}</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\delta_{n-m}</span></td>
+<td>nel tempo, tra blocchi diversi</td>
+<td><strong>ISI</strong> (simboli di altri blocchi)</td>
+<td>le finestre <span class="math inline">R_{T_u}(t-nT_u)</span> e <span class="math inline">R_{T_u}(t-mT_u)</span> non si sovrappongono</td>
+</tr>
+<tr>
+<td><span class="math inline">\delta_{k-i}</span></td>
+<td>in frequenza, tra sottoportanti diverse dello stesso blocco</td>
+<td><strong>ICI</strong> (simboli di altre sottoportanti)</td>
+<td>in <span class="math inline">T_u</span> l'esponenziale <span class="math inline">e^{j2\pi(k-i)t/T_u}</span> compie un numero intero di periodi e l'integrale si annulla</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Che cosa ottiene.</strong> Il correlatore del ramo <span class="math inline">i</span> al blocco <span class="math inline">m</span> calcola <span class="math inline">r_i[m]=\sum_n\sum_k a_k[n]\langle\phi_k(t-nT_u),\phi_i(t-mT_u)\rangle+w_i[m]</span>. Con la biortogonalità la doppia somma collassa nell'unico termine <span class="math inline">k=i</span>, <span class="math inline">n=m</span>: <span class="math inline">r_i[m]=a_i[m]+w_i[m]</span>. Restano solo il simbolo cercato e il rumore.</p>
+<p><strong>Perché nell'OFDM serve e nella FDM no.</strong> Nella FDM le bande sono separate, quindi i rami si separano già con un filtro passa-banda. Nell'OFDM gli spettri delle sottoportanti si sovrappongono: un filtro non basta, e la separazione dipende tutta dal prodotto scalare, che deve annullarsi esattamente. Per questo servono impulsi «di forma particolare» e una spaziatura esatta <span class="math inline">\Delta f=1/T_u</span>: se la differenza di frequenza non è un multiplo di <span class="math inline">1/T_u</span> la sinc non si annulla e compare ICI.</p>
+<blockquote class="co mia"><p>🧩 Nota mia: in altri contesti «biortogonale» ha significati diversi, per esempio la segnalazione biortogonale (<span class="math inline">\pm</span> segnali ortogonali) o le basi biortogonali della matematica (due famiglie diverse con <span class="math inline">\langle\phi_k,\psi_i\rangle=\delta_{k-i}</span>). Nel corso, con le slide OFDM e con le note di Gelli, vuol dire solo ortogonalità doppia, nel tempo e in frequenza.</p>
+</blockquote>
 <blockquote class="co esame"><p>🎯 Esame: saper scrivere <span class="math inline">\phi_i(t)</span>, dimostrare l'ortonormalità con l'integrale dell'esponenziale, dire perché <span class="math inline">\Delta f=1/T_u</span> è la spaziatura minima, e distinguere ISI (altri blocchi) e ICI (altre sottoportanti).</p>
 </blockquote>
 <h4 id="ofdm-perche-importa">Perché importa</h4>
