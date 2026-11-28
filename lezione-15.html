@@ -107,6 +107,7 @@
 <li>La statistica di decisione per la portante <span class="math inline">i</span> e il blocco <span class="math inline">m</span> (appunti: si vuole ricavare il simbolo trasmesso nell'<span class="math inline">m</span>-esimo intervallo sull'<span class="math inline">i</span>-esimo ramo) contiene</li>
 </ul>
 <div class="math block">r_i[m]=\sum_{n\in\mathbb Z}\sum_{k=0}^{N-1}a_k[n]\,\langle\phi_k(t-nT_u),\phi_i(t-mT_u)\rangle+w_i[m]</div><ul>
+<li><span class="math inline">r_i[m]</span> è l'<strong>uscita del correlatore</strong> del ramo <span class="math inline">i</span> al blocco <span class="math inline">m</span>, cioè la proiezione del segnale ricevuto sull'impulso di quel ramo e di quel blocco: <span class="math inline">r_i[m]=\langle y(t),\phi_i(t-mT_u)\rangle</span>, con <span class="math inline">y(t)=x(t)+w(t)</span>. È il numero contenuto nella statistica di decisione, quello su cui si decide. L'energia del simbolo non compare qui ma nella regola di decisione applicata dopo a <span class="math inline">r_i[m]</span>: la regola ML della Lezione 9 sceglie <span class="math inline">\hat a=\arg\max_a\big[\text{Re}(r_i[m]\,a^\ast)-\frac12\lvert a\rvert^2\big]</span>, dove <span class="math inline">\lvert a\rvert^2=\lVert a\,\phi_i\rVert^2</span> è l'energia del segnale candidato, perché l'impulso ha energia unitaria.</li>
 <li>Termini con <span class="math inline">n\neq m</span>: <strong>ISI</strong>, interferenza da altri intervalli di simbolo. Termini con <span class="math inline">n=m</span> e <span class="math inline">k\neq i</span>: <strong>ICI</strong>, interferenza da altre sottoportanti. Il termine desiderato è <span class="math inline">n=m</span>, <span class="math inline">k=i</span>; tutti gli altri si annullano se gli impulsi sono ortonormali.</li>
 </ul>
 <h4 id="due-fonti-di-interferenza">Due fonti di interferenza</h4>
@@ -647,6 +648,30 @@ r_i[m]&amp;=\int\Big[\sum_{n\in\mathbb Z}\sum_{k=0}^{N-1}a_k[n]\phi_k(t-nT_u)+w(
 \end{aligned}
 </div><p>L'ISI viene dagli altri blocchi dello stesso ramo, l'ICI (<em>intercarrier interference</em>) dagli altri rami nello stesso blocco: gli appunti cerchiano <span class="math inline">d_1(0)</span>, che subisce l'interferenza dei simboli dello stesso stream e di fili diversi.</p>
 <p><strong>Ipotesi:</strong> sincronizzazione ideale di tempo e di portante, canale non dispersivo, impulsi di ricezione ortonormali.</p>
+</details>
+<details class="der"><summary>Derivazione — Dall'uscita del correlatore alla decisione: dov'è l'energia</summary>
+<p>Il ricevitore lavora su due livelli:</p>
+<ol>
+<li><strong>correlatore (proiezione):</strong> <span class="math inline">r_i[m]=\langle y(t),\phi_i(t-mT_u)\rangle</span> è l'uscita del correlatore, cioè le coordinate di <span class="math inline">y(t)</span> sull'impulso del ramo <span class="math inline">i</span> e del blocco <span class="math inline">m</span>. È il numero contenuto nella statistica di decisione e non contiene termini di energia;</li>
+<li><strong>decisore:</strong> confronta <span class="math inline">r_i[m]</span> con ogni simbolo candidato <span class="math inline">a</span>. È qui che compare l'energia.</li>
+</ol>
+<blockquote class="co mia"><p>🧩 Derivazione mia:</p>
+</blockquote>
+<div class="math block">
+\begin{aligned}
+\hat a&amp;=\arg\min_a\ \lvert r_i[m]-a\rvert^2 &amp;&amp; \text{ML con rumore gaussiano circolare = distanza minima}\\
+\lvert r_i[m]-a\rvert^2&amp;=\lvert r_i[m]\rvert^2-2\,\text{Re}(r_i[m]\,a^\ast)+\lvert a\rvert^2 &amp;&amp; \text{sviluppo del modulo quadro}\\
+\hat a&amp;=\arg\max_a\ \Big[\text{Re}(r_i[m]\,a^\ast)-\tfrac12\lvert a\rvert^2\Big] &amp;&amp; \lvert r_i[m]\rvert^2\text{ non dipende da } a\text{; divido per } -2
+\end{aligned}
+</div><p>Il confronto con la regola generale è diretto. Il segnale candidato è <span class="math inline">s(t)=a\,\phi_i(t-mT_u)</span>, quindi</p>
+<div class="math block">
+\begin{aligned}
+\langle y,s\rangle&amp;=a^\ast\,\langle y,\phi_i(t-mT_u)\rangle=a^\ast\,r_i[m] &amp;&amp; \text{il coniugato esce dal secondo argomento}\\
+\lVert s\rVert^2&amp;=\lvert a\rvert^2\,\lVert\phi_i\rVert^2=\lvert a\rvert^2 &amp;&amp; \text{energia unitaria dell&#x27;impulso}
+\end{aligned}
+</div><p>e <span class="math inline">\text{Re}\langle y,s\rangle-\frac12\lVert s\rVert^2=\text{Re}(r_i[m]\,a^\ast)-\frac12\lvert a\rvert^2</span>: è la stessa regola. L'energia non sparisce, ma con <span class="math inline">\lVert\phi_i\rVert=1</span> è tutta nel simbolo, <span class="math inline">\lVert s\rVert^2=\lvert a\rvert^2</span>.</p>
+<p><strong>Quando conta:</strong> per PSK e QPSK tutti i simboli hanno la stessa energia, il termine <span class="math inline">-\frac12\lvert a\rvert^2</span> è costante e si può togliere. Per QAM e PAM le energie sono diverse e il termine è indispensabile: senza, si sceglierebbero sempre i punti più esterni.
+<strong>Ipotesi:</strong> rumore gaussiano circolare con la stessa varianza su tutti i correlatori (derivazione seguente), simboli equiprobabili (ML), canale ideale.</p>
 </details>
 <details class="der"><summary>Derivazione — Statistica del rumore all'uscita dei correlatori</summary>
 <div class="math block">
