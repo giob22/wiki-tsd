@@ -37,6 +37,8 @@
 <li><span class="math inline">d(mN+i)=d_i(m)</span>, <span class="math inline">m\in\mathbb Z</span>, <span class="math inline">i=0,1,\dots,N-1</span>: il convertitore S/P realizza la <strong>decomposizione polifase</strong> del flusso <span class="math inline">\dots d(N)\,d(N-1)\dots d(2)\,d(1)\,d(0)</span>.</li>
 <li>Ogni uscita ha rate <span class="math inline">R_b/N</span>, dovuto al fatto che si deve attendere che il blocco sia completo. Si ottiene <span class="math inline">d_0(0)=d(0)</span>, <span class="math inline">d_1(0)=d(1)</span>, …, <span class="math inline">d_{N-1}(0)=d(N-1)</span> sulle <span class="math inline">N</span> uscite; al secondo istante di tempo <span class="math inline">d_0(1)=d(N)</span>, <span class="math inline">d_1(1)=d(N+1)</span>, …</li>
 </ul>
+<img class="zoom" src="img/grafico-l15-appunti-p4-polifase.png" alt="" loading="lazy">
+<p><em>🧩 Ridisegno mio dello schema degli appunti, con <span class="math inline">N=4</span>. Il colore dice su quale ramo finisce ogni simbolo seriale: <span class="math inline">d(\ell)</span> va sul ramo <span class="math inline">i=\ell \bmod N</span> come simbolo <span class="math inline">m=\lfloor \ell/N\rfloor</span>. Il ramo parte solo quando il blocco di <span class="math inline">N</span> simboli è completo, e ogni simbolo in uscita dura <span class="math inline">T_u=NT_b</span>: è per questo che il rate per ramo scende a <span class="math inline">R_b/N</span>.</em></p>
 <h4 id="trasmettitore-fdm-convenzionale">Trasmettitore FDM convenzionale</h4>
 <ul>
 <li>Schema: <span class="math inline">d[\ell]</span> → S/P → per ogni ramo mapper → <span class="math inline">g(t)</span> → <span class="math inline">e^{j2\pi f_it}</span> (<span class="math inline">i=0,\dots,N-1</span>) → somma → <span class="math inline">x(t)</span>.</li>
@@ -72,12 +74,15 @@
 <li>Quanto devono durare gli impulsi? Non <span class="math inline">T_b</span> ma <span class="math inline">T_u</span>, e il bit rate è diminuito: <span class="math inline">T_u=NT_b</span> è l'<strong>intervallo di blocco</strong>, <span class="math inline">R_b/N=1/(NT_b)</span>.</li>
 <li>Si è rallentato il sistema ⇒ si lotta con l'ISI. Se il segnale ha <span class="math inline">R_b</span> alto, varia rapidamente ⇒ aumenta la banda del segnale trasmesso ⇒ più ISI. Con lo S/P invece ogni ramo ha un rate più basso ⇒ banda minore.</li>
 </ul>
+<img class="zoom" src="img/grafico-l15-appunti-p9-rallentare.png" alt="" loading="lazy">
+<p><em>🧩 Ridisegno mio del ragionamento degli appunti, con <span class="math inline">N=4</span>. A sinistra lo stesso tratto di tempo: il flusso seriale cambia simbolo ogni <span class="math inline">T_b</span>, un ramo dopo lo S/P ogni <span class="math inline">T_u=NT_b</span>. A destra lo spettro di un simbolo rettangolare: durata <span class="math inline">N</span> volte maggiore vuol dire lobo principale <span class="math inline">N</span> volte più stretto, quindi ogni ramo occupa una banda piccola.</em></p>
 <h4 id="il-canale-visto-dalle-sottoportanti">Il canale visto dalle sottoportanti</h4>
 <ul>
 <li>Si supponga di dover trasmettere un segnale con spettro più largo della banda del canale (disegno: banda del canale in rosso, spettro del segnale in blu).</li>
 <li>Con la trasmissione multiportante lo spettro è fatto di tante sottoportanti strette (disegno in verde): su ciascuna il canale è approssimabile <strong>piatto</strong> ⇒ maggiore robustezza all'ISI, perché la banda del singolo ramo è minore.</li>
 </ul>
-<img class="zoom" src="img/ofdm-p10-appunti-canale-piatto.png" alt="" loading="lazy">
+<img class="zoom" src="img/grafico-l15-appunti-p10-canale-piatto.png" alt="" loading="lazy">
+<p><em>🧩 Ridisegno mio del disegno degli appunti. Il canale è disegnato come una curva <span class="math inline">\lvert H(f)\rvert</span> che sale e scende, e la «banda del canale» è il tratto in cui resta circa costante. In alto lo spettro a portante singola attraversa massimi e minimi del canale e viene distorto. In basso <span class="math inline">N=16</span> sottoportanti strette: su quella evidenziata il canale cambia pochissimo, quindi la sottoportante vede un canale piatto, cioè un solo coefficiente.</em></p>
 <h3 id="impulsi-ortogonali-isi-e-ici">Impulsi ortogonali, ISI e ICI</h3>
 <h4 id="impulsi-ofdm-ortogonali">Impulsi OFDM ortogonali</h4>
 <ul>
@@ -102,6 +107,8 @@
 <li>Due fonti di interferenza: ISI; ICI, interferenza generata da ciò che è stato trasmesso su rami differenti.</li>
 <li>Si deve imporre che il prodotto scalare sia diverso da zero solo per <span class="math inline">n=m</span> (ortogonalità temporale) e <span class="math inline">i=k</span> (ortogonalità fra gli impulsi).</li>
 </ul>
+<img class="zoom" src="img/grafico-l15-appunti-p13-isi-ici.png" alt="" loading="lazy">
+<p><em>🧩 Ridisegno mio del disegno degli appunti, con <span class="math inline">N=4</span>: ogni casella è un simbolo <span class="math inline">a_k[n]</span>, righe = rami, colonne = blocchi. Per ricavare <span class="math inline">a_1[1]</span> disturbano tutti i simboli degli altri blocchi (ISI, colonne arancioni, compreso lo stesso ramo) e gli altri rami dello stesso blocco (ICI, colonna blu). La doppia condizione <span class="math inline">\delta_{k-i}\,\delta_{n-m}</span> elimina le due cose insieme.</em></p>
 <h4 id="calcolo-dell-ortogonalita">Calcolo dell'ortogonalità</h4>
 <div class="math block">\int_{-\infty}^{+\infty}R_T(t-mT_u)\,e^{j2\pi\frac{k}{T_u}(t-mT_u)}\,R_T(t-nT_u)\,e^{-j2\pi\frac{i}{T_u}(t-nT_u)}\,dt</div><ul>
 <li>Se <span class="math inline">m\neq n</span> le finestre non si sovrappongono nel tempo (disegno: <span class="math inline">[mT,(m+1)T]</span> e <span class="math inline">[nT,(n+1)T]</span> disgiunti). Per <span class="math inline">m=n</span>:</li>
@@ -109,6 +116,8 @@
 <div class="math block">\int_{mT_u}^{(m+1)T_u}e^{j2\pi\frac{k}{T_u}t}\,e^{-j2\pi\frac{i}{T_u}t}\,dt=\begin{cases}1, &amp; k=i\\[2pt] \dfrac{e^{j2\pi(k-i)}-1}{j2\pi(k-i)}=\dots\ (\text{sinc}), &amp; k\neq i\end{cases}</div><ul>
 <li>Basta una minima variazione della frequenza perché si abbia ICI ⇒ motivo per cui prima l'OFDM non era di uso pubblico ⇒ erano necessari banchi di oscillatori molto precisi ⇒ la FFT ha risolto questi problemi ⇒ alla base del 5G.</li>
 </ul>
+<img class="zoom" src="img/grafico-l15-appunti-p14-ortogonalita.png" alt="" loading="lazy">
+<p><em>🧩 Ridisegno mio del calcolo degli appunti. A sinistra il disegno delle due finestre: per <span class="math inline">n\neq m</span> non si sovrappongono e il prodotto è nullo. Al centro, per <span class="math inline">n=m</span>, l'integranda <span class="math inline">e^{j2\pi(k-i)t/T_u}</span> con <span class="math inline">k-i=2</span>: in <span class="math inline">T_u</span> entrano periodi interi, le aree blu e rosse si compensano e il prodotto scalare è zero. A destra la «minima variazione di frequenza» degli appunti: con <span class="math inline">(f_k-f_i)T_u=2.25</span> le aree non si compensano più e resta <span class="math inline">\lvert\text{sinc}(2.25)\rvert\approx 0.10</span>, cioè ICI.</em></p>
 <h4 id="ortogonalita-delle-sottoportanti">Ortogonalità delle sottoportanti</h4>
 <ul>
 <li>Per uno stesso blocco OFDM:</li>
