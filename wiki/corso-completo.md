@@ -3450,6 +3450,7 @@ $$R_{T_u}(t)=\begin{cases}\dfrac{1}{\sqrt{T_u}}, & 0\le t<T_u\\[4pt] 0 & \text{a
 
 $$r_i[m]=\sum_{n\in\mathbb Z}\sum_{k=0}^{N-1}a_k[n]\,\langle\phi_k(t-nT_u),\phi_i(t-mT_u)\rangle+w_i[m]$$
 
+- $r_i[m]$ è l'**uscita del correlatore** del ramo $i$ al blocco $m$, cioè la proiezione del segnale ricevuto sull'impulso di quel ramo e di quel blocco: $r_i[m]=\langle y(t),\phi_i(t-mT_u)\rangle$, con $y(t)=x(t)+w(t)$. È il numero contenuto nella statistica di decisione, quello su cui si decide. L'energia del simbolo non compare qui ma nella regola di decisione applicata dopo a $r_i[m]$: la regola ML della Lezione 9 sceglie $\hat a=\arg\max_a\big[\text{Re}(r_i[m]\,a^\ast)-\frac12\lvert a\rvert^2\big]$, dove $\lvert a\rvert^2=\lVert a\,\phi_i\rVert^2$ è l'energia del segnale candidato, perché l'impulso ha energia unitaria.
 - Termini con $n\neq m$: **ISI**, interferenza da altri intervalli di simbolo. Termini con $n=m$ e $k\neq i$: **ICI**, interferenza da altre sottoportanti. Il termine desiderato è $n=m$, $k=i$; tutti gli altri si annullano se gli impulsi sono ortonormali.
 
 #### Appunti — Due fonti di interferenza · [[ofdm_goldsmith_slides.pdf#page=13|p. 13]]

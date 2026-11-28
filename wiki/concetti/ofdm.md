@@ -116,6 +116,38 @@ L'ISI viene dagli altri blocchi dello stesso ramo, l'ICI (*intercarrier interfer
 
 **Ipotesi:** sincronizzazione ideale di tempo e di portante, canale non dispersivo, impulsi di ricezione ortonormali (slide 13).
 
+### Derivazione — Dall'uscita del correlatore alla decisione: dov'è l'energia · [[ofdm_goldsmith_slides.pdf#page=12|p. 12]] · Synchro [[Synchro_Kay_example (1).pdf#page=26|p. 26]]
+
+**Fonte:** la slide 9 dice che la statistica di decisione per la portante $i$ e il blocco $m$ contiene $r_i[m]$. **Si parte da:** $r_i[m]=a_i[m]+w_i[m]$, $w_i[m]\sim\mathcal{CN}(0,N_0)$, e dalla regola ML $\text{Re}\langle y,s\rangle-\frac12\lVert s\rVert^2$ della Lezione 9, ripresa nella (8) della Lezione 13 ([[ricevitore-ottimo-awgn]]).
+
+Il ricevitore lavora su due livelli:
+1. **correlatore (proiezione):** $r_i[m]=\langle y(t),\phi_i(t-mT_u)\rangle$ è l'uscita del correlatore, cioè le coordinate di $y(t)$ sull'impulso del ramo $i$ e del blocco $m$. È il numero contenuto nella statistica di decisione e non contiene termini di energia;
+2. **decisore:** confronta $r_i[m]$ con ogni simbolo candidato $a$. È qui che compare l'energia.
+
+> 🧩 Derivazione mia:
+
+$$
+\begin{aligned}
+\hat a&=\arg\min_a\ \lvert r_i[m]-a\rvert^2 && \text{ML con rumore gaussiano circolare = distanza minima}\\
+\lvert r_i[m]-a\rvert^2&=\lvert r_i[m]\rvert^2-2\,\text{Re}(r_i[m]\,a^\ast)+\lvert a\rvert^2 && \text{sviluppo del modulo quadro}\\
+\hat a&=\arg\max_a\ \Big[\text{Re}(r_i[m]\,a^\ast)-\tfrac12\lvert a\rvert^2\Big] && \lvert r_i[m]\rvert^2\text{ non dipende da } a\text{; divido per } -2
+\end{aligned}
+$$
+
+Il confronto con la regola generale è diretto. Il segnale candidato è $s(t)=a\,\phi_i(t-mT_u)$, quindi
+
+$$
+\begin{aligned}
+\langle y,s\rangle&=a^\ast\,\langle y,\phi_i(t-mT_u)\rangle=a^\ast\,r_i[m] && \text{il coniugato esce dal secondo argomento}\\
+\lVert s\rVert^2&=\lvert a\rvert^2\,\lVert\phi_i\rVert^2=\lvert a\rvert^2 && \text{energia unitaria dell'impulso}
+\end{aligned}
+$$
+
+e $\text{Re}\langle y,s\rangle-\frac12\lVert s\rVert^2=\text{Re}(r_i[m]\,a^\ast)-\frac12\lvert a\rvert^2$: è la stessa regola. L'energia non sparisce, ma con $\lVert\phi_i\rVert=1$ è tutta nel simbolo, $\lVert s\rVert^2=\lvert a\rvert^2$.
+
+**Quando conta:** per PSK e QPSK tutti i simboli hanno la stessa energia, il termine $-\frac12\lvert a\rvert^2$ è costante e si può togliere. Per QAM e PAM le energie sono diverse e il termine è indispensabile: senza, si sceglierebbero sempre i punti più esterni.
+**Ipotesi:** rumore gaussiano circolare con la stessa varianza su tutti i correlatori (derivazione seguente), simboli equiprobabili (ML), canale ideale.
+
 ### Derivazione — Statistica del rumore all'uscita dei correlatori · [[ofdm_goldsmith_slides.pdf#page=18|p. 18]], [[ofdm_goldsmith_slides.pdf#page=19|19]]
 
 **Fonte:** slide 14. **Si parte da:** $w(t)$ gaussiano complesso bianco a media nulla, $E\{w(t)w^\ast(u)\}=N_0\delta(t-u)$.
@@ -232,4 +264,4 @@ L'OFDM è il terzo modo di trattare l'ISI della Lezione 14, dopo equalizzatori e
 
 - [[signaling-ofdm]] — Lezione 15, slide 2–17 e pagine di appunti 4, 9, 10, 13, 14.
 
-_Aggiornato: 2026-11-28 — sezione «Biortogonalità: che cosa vuol dire» con figura delle due ortogonalità; 2026-11-27 — creazione (ingest della Lezione 15, ofdm_goldsmith_slides.pdf)_
+_Aggiornato: 2026-11-28 — sezione «Biortogonalità: che cosa vuol dire» con figura delle due ortogonalità; derivazione «dall’uscita del correlatore alla decisione»; 2026-11-27 — creazione (ingest della Lezione 15, ofdm_goldsmith_slides.pdf)_

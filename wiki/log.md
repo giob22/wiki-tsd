@@ -300,3 +300,5 @@ Verificati i numeri: $\ln2=-1.59$ dB, $R_s\approx15$ Msimboli/s, $\text{SNR}_{re
 ## [2026-11-28] update | ofdm.md — sezione sulla biortogonalità (definizione, perché «bi», ISI/ICI, FDM vs OFDM) | pagine: Goldsmith 11–14, Gelli 3–4
 
 ## [2026-11-28] update | ofdm.md — figura 🧩 delle due ortogonalità (tempo δ_{n−m}, frequenza δ_{k−i}, matrice di Gram = identità) | pagine: Goldsmith 11–14
+
+## [2026-11-28] update | Lezione 15, slide 9 — r_i[m] come uscita del correlatore; l’energia entra nella regola ML (corso-completo, ofdm.md) | pagine: 12
