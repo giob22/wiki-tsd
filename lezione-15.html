@@ -73,7 +73,14 @@
 <ul>
 <li>Lo S/P manda <span class="math inline">\dots d(N)\,d(0)</span> sul primo filo (flusso sul filo <span class="math inline">i</span>-esimo: <span class="math inline">d_0(m)</span>), <span class="math inline">d_1(m)</span> sul secondo, …, <span class="math inline">d_{N-1}(m)</span> sull'ultimo; ogni mapper produce <span class="math inline">a_i(m)</span> (per esempio simboli QPSK), che modula <span class="math inline">\phi_i(t-mT_u)</span> alla frequenza <span class="math inline">f_i</span>.</li>
 <li>Quanto devono durare gli impulsi? Non <span class="math inline">T_b</span> ma <span class="math inline">T_u</span>, e il bit rate è diminuito: <span class="math inline">T_u=NT_b</span> è l'<strong>intervallo di blocco</strong>, <span class="math inline">R_b/N=1/(NT_b)</span>.</li>
-<li>Si è rallentato il sistema ⇒ si lotta con l'ISI. Se il segnale ha <span class="math inline">R_b</span> alto, varia rapidamente ⇒ aumenta la banda del segnale trasmesso ⇒ più ISI. Con lo S/P invece ogni ramo ha un rate più basso ⇒ banda minore.</li>
+<li>Rallentare i rami serve a <strong>combattere l'ISI</strong>. Il ragionamento degli appunti, un passaggio alla volta:
+<ol>
+<li><strong>Senza S/P:</strong> <span class="math inline">R_b</span> alto ⇒ simboli corti, <span class="math inline">T_b=1/R_b</span> ⇒ il segnale varia rapidamente ⇒ banda larga, dell'ordine di <span class="math inline">1/T_b</span>.</li>
+<li><strong>Banda larga ⇒ più ISI.</strong> Nel tempo: la risposta del canale dura un tempo fissato <span class="math inline">\tau</span>, che con simboli corti copre circa <span class="math inline">\tau/T_b</span> simboli (la memoria <span class="math inline">L</span> della Lezione 14 cresce). In frequenza: lo spettro è più largo del tratto in cui il canale è piatto, quindi viene distorto.</li>
+<li><strong>Con lo S/P:</strong> ogni ramo porta <span class="math inline">R_b/N</span> ⇒ simboli lunghi <span class="math inline">T_u=NT_b</span> ⇒ banda per ramo circa <span class="math inline">N</span> volte più stretta. La stessa <span class="math inline">\tau</span> copre ora solo <span class="math inline">\tau/(NT_b)</span> di simbolo ⇒ ISI ridotta, e su ogni ramo il canale è quasi piatto.</li>
+<li>Il rate complessivo non cambia: <span class="math inline">N</span> rami a <span class="math inline">R_b/N</span> danno ancora <span class="math inline">R_b</span>. Si rallenta il singolo ramo, non la trasmissione.</li>
+</ol>
+</li>
 </ul>
 <img class="zoom" src="img/grafico-l15-appunti-p9-rallentare.png" alt="" loading="lazy">
 <p><em>🧩 Ridisegno mio del ragionamento degli appunti, con <span class="math inline">N=4</span>. A sinistra lo stesso tratto di tempo: il flusso seriale cambia simbolo ogni <span class="math inline">T_b</span>, un ramo dopo lo S/P ogni <span class="math inline">T_u=NT_b</span>. A destra lo spettro di un simbolo rettangolare: durata <span class="math inline">N</span> volte maggiore vuol dire lobo principale <span class="math inline">N</span> volte più stretto, quindi ogni ramo occupa una banda piccola.</em></p>
