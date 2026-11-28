@@ -296,3 +296,5 @@ Verificati i numeri: $\ln2=-1.59$ dB, $R_s\approx15$ Msimboli/s, $\text{SNR}_{re
 - `grafico-l15-ricevitore-fdm-flusso.png` (funzione `ricevitore_fdm` in `output/grafici/genera_grafici_lezione15.py`) sostituisce in [[corso-completo]] il ritaglio della slide 5: interno del «demodulator» esplicitato (mixer, filtro adattato, campionatore, decisore, demapper) e sei pannelli 🧩 che seguono il ramo $i=1$ dallo spettro ricevuto fino ai bit
 
 ## [2026-11-28] update | Lezione 15 — ragionamento «sistema rallentato ⇒ meno ISI» reso esplicito in 4 passaggi | pagine: 9
+
+## [2026-11-28] update | ofdm.md — sezione sulla biortogonalità (definizione, perché «bi», ISI/ICI, FDM vs OFDM) | pagine: Goldsmith 11–14, Gelli 3–4

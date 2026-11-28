@@ -183,8 +183,29 @@ $B_{FDM}=128\cdot2.1/(2\cdot10^{-4}\,\text{s})=1.344$ MHz; $B_{overlap}=129.1/(2
 - **FDM.** Trasmettitore (slide 4): S/P, per ogni ramo un mapper, un impulso $g(t)$ e un esponenziale $e^{j2\pi f_it}$; i rami si sommano in $x(t)$, il **segnale multiportante in banda base**. Le $f_i$ non sono ancora la portante finale: poi l'upconverter trasla tutto alla radiofrequenza (appunti). Nella FDM l'ortogonalità è garantita dalla non sovrapposizione; ricevitore (slide 5) = **banco di filtri** passa-banda, un demodulatore per ramo, P/S.
 - **OFDM.** Le bande si sovrappongono, quindi la demodulazione è più difficile (appunti p. 5): serve una forma di ortogonalità **che agisca anche nel dominio del tempo** (appunti p. 7), cioè impulsi di forma particolare (appunti p. 11: "devo imporre una biortogonalità"). Le frequenze $f_i=i/T_u$ non sono quelle finali: si passa ancora per l'upconverter.
 - **Impulsi diversi per ramo.** Nella slide 7 ogni ramo ha il suo $\phi_i(t)$: in generale possono essere diversi, e in alcuni casi non si può proprio usare lo stesso impulso di base (appunti). $f_n(t)$ è la **frame multicanale**, cioè quella prodotta nell'$n$-esimo intervallo di simbolo.
-- **Due ortogonalità.** Sottoportanti diverse ($i\neq k$) sono ortogonali *dentro* un blocco; blocchi diversi ($n\neq m$) non si sovrappongono nel tempo (modello ideale senza prefisso ciclico, slide 8).
+- **Due ortogonalità.** Sottoportanti diverse ($i\neq k$) sono ortogonali *dentro* un blocco; blocchi diversi ($n\neq m$) non si sovrappongono nel tempo (modello ideale senza prefisso ciclico, slide 8). Insieme formano la **biortogonalità**, spiegata nella sezione qui sotto.
 - **Ricevitore.** Un banco di $N$ correlatori, ciascuno moltiplica per $\phi_i^\ast(t-nT_u)$ e integra (slide 12): un solo calcolo estrae l'$i$-esimo simbolo, a meno del rumore, se il canale non distorce. Nella slide 5 la prof sottolinea che l'OFDM sostituisce i filtri con un **banco di proiezioni ortogonali, realizzato con una FFT** ([[ofdm-con-fft]]).
+
+### Biortogonalità: che cosa vuol dire · Goldsmith [[ofdm_goldsmith_slides.pdf#page=11|p. 11]]–[[ofdm_goldsmith_slides.pdf#page=14|14]] · Gelli [[Note 2001 Gelli G.pdf#page=3|p. 3]], [[Note 2001 Gelli G.pdf#page=4|4]]
+
+**Definizione.** Gli impulsi $\phi_k(t-nT_u)$ sono **biortogonali** se
+
+$$\langle\phi_k(t-nT_u),\,\phi_i(t-mT_u)\rangle=\delta_{k-i}\,\delta_{n-m}$$
+
+cioè il prodotto scalare vale 1 solo se coincidono **sia** la sottoportante ($k=i$) **sia** il blocco ($n=m$), e vale 0 in tutti gli altri casi. Gli appunti di p. 11 la introducono con «si deve imporre una biortogonalità»; nelle note di Gelli è la condizione (4).
+
+**Perché «bi».** Ogni simbolo $a_k[n]$ ha due indici: la sottoportante $k$ (la frequenza) e il blocco $n$ (il tempo). La condizione è il prodotto di due delta, una per indice, quindi l'ortogonalità vale **in due direzioni**:
+
+| Fattore | Ortogonalità | Che cosa elimina | Come si ottiene con $\phi_i(t)=R_{T_u}(t)\,e^{j2\pi it/T_u}$ |
+|---|---|---|---|
+| $\delta_{n-m}$ | nel tempo, tra blocchi diversi | **ISI** (simboli di altri blocchi) | le finestre $R_{T_u}(t-nT_u)$ e $R_{T_u}(t-mT_u)$ non si sovrappongono |
+| $\delta_{k-i}$ | in frequenza, tra sottoportanti diverse dello stesso blocco | **ICI** (simboli di altre sottoportanti) | in $T_u$ l'esponenziale $e^{j2\pi(k-i)t/T_u}$ compie un numero intero di periodi e l'integrale si annulla |
+
+**Che cosa ottiene.** Il correlatore del ramo $i$ al blocco $m$ (slide 9) calcola $r_i[m]=\sum_n\sum_k a_k[n]\langle\phi_k(t-nT_u),\phi_i(t-mT_u)\rangle+w_i[m]$. Con la biortogonalità la doppia somma collassa nell'unico termine $k=i$, $n=m$: $r_i[m]=a_i[m]+w_i[m]$. Restano solo il simbolo cercato e il rumore.
+
+**Perché nell'OFDM serve e nella FDM no.** Nella FDM le bande sono separate, quindi i rami si separano già con un filtro passa-banda. Nell'OFDM gli spettri delle sottoportanti si sovrappongono: un filtro non basta, e la separazione dipende tutta dal prodotto scalare, che deve annullarsi esattamente. Per questo servono impulsi «di forma particolare» (appunti p. 11) e una spaziatura esatta $\Delta f=1/T_u$: se la differenza di frequenza non è un multiplo di $1/T_u$ la sinc non si annulla e compare ICI (appunti p. 14).
+
+> 🧩 Nota mia: in altri contesti «biortogonale» ha significati diversi, per esempio la segnalazione biortogonale ($\pm$ segnali ortogonali) o le basi biortogonali della matematica (due famiglie diverse con $\langle\phi_k,\psi_i\rangle=\delta_{k-i}$). Nel corso, con le slide OFDM e con le note di Gelli, vuol dire solo ortogonalità doppia, nel tempo e in frequenza.
 
 > 🎯 Esame: saper scrivere $\phi_i(t)$, dimostrare l'ortonormalità con l'integrale dell'esponenziale, dire perché $\Delta f=1/T_u$ è la spaziatura minima, e distinguere ISI (altri blocchi) e ICI (altre sottoportanti).
 
@@ -208,4 +229,4 @@ L'OFDM è il terzo modo di trattare l'ISI della Lezione 14, dopo equalizzatori e
 
 - [[signaling-ofdm]] — Lezione 15, slide 2–17 e pagine di appunti 4, 9, 10, 13, 14.
 
-_Aggiornato: 2026-11-27 — creazione (ingest della Lezione 15, ofdm_goldsmith_slides.pdf)_
+_Aggiornato: 2026-11-28 — sezione «Biortogonalità: che cosa vuol dire»; 2026-11-27 — creazione (ingest della Lezione 15, ofdm_goldsmith_slides.pdf)_
