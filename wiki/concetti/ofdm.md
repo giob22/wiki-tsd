@@ -201,6 +201,9 @@ cioè il prodotto scalare vale 1 solo se coincidono **sia** la sottoportante ($k
 | $\delta_{n-m}$ | nel tempo, tra blocchi diversi | **ISI** (simboli di altri blocchi) | le finestre $R_{T_u}(t-nT_u)$ e $R_{T_u}(t-mT_u)$ non si sovrappongono |
 | $\delta_{k-i}$ | in frequenza, tra sottoportanti diverse dello stesso blocco | **ICI** (simboli di altre sottoportanti) | in $T_u$ l'esponenziale $e^{j2\pi(k-i)t/T_u}$ compie un numero intero di periodi e l'integrale si annulla |
 
+![[grafico-l15-due-ortogonalita.png|900]]
+*🧩 Figura mia, $T_u=1$, impulsi $\phi_k(t)=R_{T_u}(t)\,e^{j2\pi kt/T_u}$ della slide 8. ① Nel tempo: la stessa sottoportante $i=1$ nei blocchi $n=1$ e $m=2$. Le finestre non si sovrappongono, quindi il prodotto è zero in ogni istante e il prodotto scalare è nullo anche se la sottoportante è la stessa: niente ISI. ② In frequenza: nello stesso blocco le sottoportanti $k=3$ e $i=1$ si sovrappongono nel tempo. La parte reale del prodotto $\phi_k\phi_i^\ast$ è un coseno con $k-i=2$ periodi interi dentro $T_u$: le aree positive (blu) e negative (rosse) sono uguali e l'integrale è zero, quindi niente ICI. La parte immaginaria è un seno e si annulla allo stesso modo. Il tratteggio è il caso $k=i$: prodotto costante $1/T_u$, area 1, cioè l'energia unitaria. ③ Tutti i prodotti scalari per $N=4$ sottoportanti e 3 blocchi, calcolati numericamente: dentro i riquadri blu (stesso blocco) gli zeri vengono da $\delta_{k-i}$, fuori (blocchi diversi) da $\delta_{n-m}$, e sulla diagonale c'è 1. La matrice è l'identità: questa è la biortogonalità.*
+
 **Che cosa ottiene.** Il correlatore del ramo $i$ al blocco $m$ (slide 9) calcola $r_i[m]=\sum_n\sum_k a_k[n]\langle\phi_k(t-nT_u),\phi_i(t-mT_u)\rangle+w_i[m]$. Con la biortogonalità la doppia somma collassa nell'unico termine $k=i$, $n=m$: $r_i[m]=a_i[m]+w_i[m]$. Restano solo il simbolo cercato e il rumore.
 
 **Perché nell'OFDM serve e nella FDM no.** Nella FDM le bande sono separate, quindi i rami si separano già con un filtro passa-banda. Nell'OFDM gli spettri delle sottoportanti si sovrappongono: un filtro non basta, e la separazione dipende tutta dal prodotto scalare, che deve annullarsi esattamente. Per questo servono impulsi «di forma particolare» (appunti p. 11) e una spaziatura esatta $\Delta f=1/T_u$: se la differenza di frequenza non è un multiplo di $1/T_u$ la sinc non si annulla e compare ICI (appunti p. 14).
@@ -229,4 +232,4 @@ L'OFDM è il terzo modo di trattare l'ISI della Lezione 14, dopo equalizzatori e
 
 - [[signaling-ofdm]] — Lezione 15, slide 2–17 e pagine di appunti 4, 9, 10, 13, 14.
 
-_Aggiornato: 2026-11-28 — sezione «Biortogonalità: che cosa vuol dire»; 2026-11-27 — creazione (ingest della Lezione 15, ofdm_goldsmith_slides.pdf)_
+_Aggiornato: 2026-11-28 — sezione «Biortogonalità: che cosa vuol dire» con figura delle due ortogonalità; 2026-11-27 — creazione (ingest della Lezione 15, ofdm_goldsmith_slides.pdf)_

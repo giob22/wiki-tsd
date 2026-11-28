@@ -6,6 +6,9 @@
                                 |C_0(eps)|^2 e potenza di ICI sum_{m!=0} |C_m(eps)|^2 = 1 - |C_0(eps)|^2, N = 64
   grafico-l15-papr-ccdf.png     PAPR di un blocco OFDM con simboli QPSK casuali (slide 49-50, 53): probabilità che
                                 il PAPR superi una soglia, per N = 16, 64, 256 (IFFT sovracampionata x4)
+  grafico-l15-due-ortogonalita.png  le due ortogonalità della biortogonalità (slide 8-9, appunti p. 13-14): nel tempo
+                                finestre disgiunte (delta_{n-m}), in frequenza periodi interi in T_u (delta_{k-i});
+                                matrice dei prodotti scalari calcolata numericamente = identità
 
 Uso: python genera_grafici_lezione15.py  (richiede numpy, matplotlib)
 """
@@ -255,7 +258,123 @@ def chiaro_fdm(c, a=0.3):
     return tuple(a * x + (1 - a) * y for x, y in zip(r, s))
 
 
+def due_ortogonalita(N=4, blocchi=3, k=3, i=1, n=1, campioni=2000):
+    """Le due ortogonalità della biortogonalità (slide 8-9, appunti p. 13-14), con T_u = 1 e
+    phi_k(t - n T_u) = R_Tu(t - n T_u) exp(j 2 pi k (t - n T_u) / T_u).
+    In alto il tempo (delta_{n-m}), in basso la frequenza (delta_{k-i}), a destra la matrice dei prodotti scalari."""
+    dt = 1 / campioni
+    t = np.arange(0, blocchi, dt)
+
+    def phi(kk, nn):
+        finestra = ((t >= nn) & (t < nn + 1)).astype(float)
+        return finestra * np.exp(2j * np.pi * kk * (t - nn))
+
+    # matrice di Gram: righe e colonne ordinate per (blocco, sottoportante)
+    base = np.array([phi(kk, nn) for nn in range(blocchi) for kk in range(N)])
+    G = base @ base.conj().T * dt
+
+    fig = plt.figure(figsize=(13.6, 7.6))
+    gs = fig.add_gridspec(2, 3, width_ratios=[1.25, 1.25, 1.15], hspace=0.85, wspace=0.42)
+    col = {"k": BLU, "i": ARANCIO}
+
+    def assi(ax, x0, x1, ylim):
+        ax.set_xlim(x0, x1), ax.set_ylim(*ylim)
+        ax.grid(False), ax.axhline(0, color=INK_2, lw=0.8)
+        for b in range(blocchi + 1):
+            ax.axvline(b, color=GRID, lw=1, ls="--", zorder=0)
+        ax.set_xlabel(r"$t/T_u$")
+
+    # ---- ① tempo: stessa sottoportante, blocchi diversi
+    m = n + 1
+    rit = lambda q: "T_u" if q == 1 else f"{q}T_u"
+    a1 = fig.add_subplot(gs[0, 0])
+    assi(a1, 0, blocchi, (-1.6, 1.9))
+    a1.plot(t, phi(i, n).real, color=col["k"])
+    a1.plot(t, phi(i, m).real, color=col["i"])
+    a1.text(n + 0.5, 1.12, rf"Re $\phi_{i}(t-{rit(n)})$", ha="center", color=col["k"], fontsize=9)
+    a1.text(m + 0.5, 1.12, rf"Re $\phi_{i}(t-{rit(m)})$", ha="center", color=col["i"], fontsize=9)
+    for b in range(blocchi):
+        a1.text(b + 0.5, 1.62, f"blocco {b}", ha="center", color=INK_2, fontsize=8.5)
+    a1.set_title("Le due forme d'onda: stessa sottoportante,\nblocchi diversi", fontsize=10)
+
+    a2 = fig.add_subplot(gs[0, 1])
+    assi(a2, 0, blocchi, (-1.6, 1.9))
+    a2.axvspan(n, n + 1, color=chiaro_fdm(col["k"], 0.18), lw=0)
+    a2.axvspan(m, m + 1, color=chiaro_fdm(col["i"], 0.18), lw=0)
+    prod_t = phi(i, n) * phi(i, m).conj()
+    a2.plot(t, prod_t.real, color=ROSSO, lw=2.6)
+    a2.text(n + 0.5, 1.0, "qui c'è solo\nil blocco $n$", ha="center", color=col["k"], fontsize=8.5)
+    a2.text(m + 0.5, 1.0, "qui c'è solo\nil blocco $m$", ha="center", color=col["i"], fontsize=8.5)
+    a2.text(1.5, -1.05, r"prodotto $\phi_i(t-nT_u)\,\phi_i^\ast(t-mT_u)\equiv 0$", ha="center", color=ROSSO, fontsize=9)
+    a2.set_title("Il prodotto è nullo ovunque: le finestre\nnon si sovrappongono", fontsize=10)
+    a2.text(1.5, -2.95, r"$\Rightarrow\ \langle\cdot,\cdot\rangle=0$ per $n\neq m$, anche se $k=i$:  niente ISI",
+            ha="center", color=INK, fontsize=9.5, transform=a2.transData)
+
+    # ---- ② frequenza: stesso blocco, sottoportanti diverse
+    b1 = fig.add_subplot(gs[1, 0])
+    assi(b1, n - 0.15, n + 1.15, (-1.6, 1.9))
+    b1.plot(t, phi(k, n).real, color=col["k"], label=rf"Re $\phi_{k}(t-{rit(n)})$  ($k={k}$: {k} periodi)")
+    b1.plot(t, phi(i, n).real, color=col["i"], label=rf"Re $\phi_{i}(t-{rit(n)})$  ($i={i}$: {i} periodo)")
+    b1.legend(loc="lower center", bbox_to_anchor=(0.5, -0.5), ncol=1, fontsize=8.5)
+    b1.set_title("Le due forme d'onda: stesso blocco,\nsottoportanti diverse (sovrapposte)", fontsize=10)
+
+    b2 = fig.add_subplot(gs[1, 1])
+    assi(b2, n - 0.15, n + 1.15, (-1.6, 1.9))
+    prod_f = (phi(k, n) * phi(i, n).conj()).real
+    dentro = (t >= n) & (t < n + 1)
+    b2.fill_between(t, 0, prod_f, where=dentro & (prod_f > 0), color=chiaro_fdm(BLU, 0.45), lw=0)
+    b2.fill_between(t, 0, prod_f, where=dentro & (prod_f < 0), color=chiaro_fdm(ROSSO, 0.45), lw=0)
+    b2.plot(t, prod_f, color=INK, lw=1.8)
+    b2.plot([n, n + 1], [1, 1], color=INK_2, lw=1.3, ls="--")
+    b2.text(n + 0.5, 1.12, r"per $k=i$: $|\phi_i|^2=1/T_u$, area 1 (energia unitaria)",
+            ha="center", color=INK_2, fontsize=8.3)
+    b2.set_title(rf"Re$[\phi_k\phi_i^\ast]=\cos(2\pi(k-i)t/T_u)/T_u$: $k-i={k-i}$" + "\nperiodi interi, aree + e − uguali",
+                 fontsize=10)
+    b2.text(n + 0.5, -2.95, r"$\Rightarrow\ \int_{T_u}\phi_k\phi_i^\ast\,dt=0$ per $k\neq i$:  niente ICI",
+            ha="center", color=INK, fontsize=9.5)
+
+    fig.text(0.02, a1.get_position().y1 + 0.085, r"①  Ortogonalità nel tempo, fattore $\delta_{n-m}$", fontsize=12.5, weight="bold", color=INK)
+    fig.text(0.02, b1.get_position().y1 + 0.085, r"②  Ortogonalità in frequenza, fattore $\delta_{k-i}$", fontsize=12.5, weight="bold", color=INK)
+
+    # ---- ③ matrice dei prodotti scalari
+    c = fig.add_subplot(gs[:, 2])
+    c.grid(False)
+    c.imshow(np.abs(G), cmap="Greys", vmin=0, vmax=1.25)
+    L = N * blocchi
+    for b in range(1, blocchi):
+        c.axhline(b * N - 0.5, color=INK_2, lw=1.2), c.axvline(b * N - 0.5, color=INK_2, lw=1.2)
+    for b in range(blocchi):                                     # blocchi diagonali: stesso n, qui agisce delta_{k-i}
+        c.add_patch(Rectangle((b * N - 0.5, b * N - 0.5), N, N, fill=False, ec=BLU, lw=2.2))
+    for r in range(L):
+        for s in range(L):
+            c.text(s, r, f"{abs(G[r, s]):.0f}", ha="center", va="center", fontsize=6.8,
+                   color=SURFACE if r == s else (BLU if r // N == s // N else ARANCIO))
+    etichette = [f"{kk}" for nn in range(blocchi) for kk in range(N)]
+    c.set_xticks(range(L), etichette, fontsize=7), c.set_yticks(range(L), etichette, fontsize=7)
+    for b in range(blocchi):
+        c.text(b * N + (N - 1) / 2, -1.1, f"$m={b}$", ha="center", fontsize=9)
+        c.text(-1.9, b * N + (N - 1) / 2, f"$n={b}$", va="center", ha="right", fontsize=9)
+    c.set_xlabel(r"sottoportante $i$ (raggruppate per blocco $m$)", fontsize=9)
+    c.set_ylabel(r"sottoportante $k$ (raggruppate per blocco $n$)", fontsize=9, labelpad=36)
+    c.set_title(r"③  Le due insieme: $|\langle\phi_k(t-nT_u),\phi_i(t-mT_u)\rangle|$" + "\n"
+                f"calcolati numericamente, N = {N}, {blocchi} blocchi", fontsize=10, pad=30)
+    c.text((L - 1) / 2, L + 1.3,
+           "diagonale: 1 (energia unitaria)\n"
+           "zeri blu, dentro i riquadri: stesso blocco, k ≠ i → δ$_{k-i}$ (no ICI)\n"
+           "zeri arancioni, fuori dai riquadri: blocchi diversi → δ$_{n-m}$ (no ISI)\n"
+           "risultato: matrice identità = biortogonalità",
+           ha="center", va="top", fontsize=8.8, color=INK)
+    for sp in c.spines.values():
+        sp.set_visible(False)
+
+    fig.savefig(OUT / "grafico-l15-due-ortogonalita.png")
+    plt.close(fig)
+    return G
+
+
 if __name__ == "__main__":
+    G = due_ortogonalita()
+    assert np.allclose(G, np.eye(len(G)), atol=1e-9), np.abs(G - np.eye(len(G))).max()   # biortogonalità
     errori, simboli = ricevitore_fdm()
     print("ricevitore FDM:", errori, "errori su", simboli)
     centro = psd_ofdm()
