@@ -3380,6 +3380,9 @@ $$d_i[n]=d[nN+i],\qquad i=0,\dots,N-1,\qquad R_{b,i}=\frac{R_b}{N}$$
 - $d(mN+i)=d_i(m)$, $m\in\mathbb Z$, $i=0,1,\dots,N-1$: il convertitore S/P realizza la **decomposizione polifase** del flusso $\dots d(N)\,d(N-1)\dots d(2)\,d(1)\,d(0)$.
 - Ogni uscita ha rate $R_b/N$, dovuto al fatto che si deve attendere che il blocco sia completo. Si ottiene $d_0(0)=d(0)$, $d_1(0)=d(1)$, …, $d_{N-1}(0)=d(N-1)$ sulle $N$ uscite; al secondo istante di tempo $d_0(1)=d(N)$, $d_1(1)=d(N+1)$, …
 
+![[grafico-l15-appunti-p4-polifase.png|700]]
+*🧩 Ridisegno mio dello schema degli appunti, con $N=4$. Il colore dice su quale ramo finisce ogni simbolo seriale: $d(\ell)$ va sul ramo $i=\ell \bmod N$ come simbolo $m=\lfloor \ell/N\rfloor$. Il ramo parte solo quando il blocco di $N$ simboli è completo, e ogni simbolo in uscita dura $T_u=NT_b$: è per questo che il rate per ramo scende a $R_b/N$.*
+
 #### Slide 4 e appunti — Trasmettitore FDM convenzionale · [[ofdm_goldsmith_slides.pdf#page=5|p. 5]]
 - Schema: $d[\ell]$ → S/P → per ogni ramo mapper → $g(t)$ → $e^{j2\pi f_it}$ ($i=0,\dots,N-1$) → somma → $x(t)$.
 - Appunti: $x(t)$ è il **segnale multiportante in banda base**; $e^{j2\pi f_it}$ non è ancora la portante finale: si costruisce un segnale multiportante, che poi l'upconverter trasla alla radiofrequenza, cioè alla portante.
@@ -3415,11 +3418,15 @@ $$f_n(t)=\sum_{i=0}^{N-1}a_i[n]\,\phi_i(t-nT_u),\qquad x(t)=\sum_{n\in\mathbb Z}
 - Quanto devono durare gli impulsi? Non $T_b$ ma $T_u$, e il bit rate è diminuito: $T_u=NT_b$ è l'**intervallo di blocco**, $R_b/N=1/(NT_b)$.
 - Si è rallentato il sistema ⇒ si lotta con l'ISI. Se il segnale ha $R_b$ alto, varia rapidamente ⇒ aumenta la banda del segnale trasmesso ⇒ più ISI. Con lo S/P invece ogni ramo ha un rate più basso ⇒ banda minore.
 
+![[grafico-l15-appunti-p9-rallentare.png|700]]
+*🧩 Ridisegno mio del ragionamento degli appunti, con $N=4$. A sinistra lo stesso tratto di tempo: il flusso seriale cambia simbolo ogni $T_b$, un ramo dopo lo S/P ogni $T_u=NT_b$. A destra lo spettro di un simbolo rettangolare: durata $N$ volte maggiore vuol dire lobo principale $N$ volte più stretto, quindi ogni ramo occupa una banda piccola.*
+
 #### Appunti — Il canale visto dalle sottoportanti · [[ofdm_goldsmith_slides.pdf#page=10|p. 10]]
 - Si supponga di dover trasmettere un segnale con spettro più largo della banda del canale (disegno: banda del canale in rosso, spettro del segnale in blu).
 - Con la trasmissione multiportante lo spettro è fatto di tante sottoportanti strette (disegno in verde): su ciascuna il canale è approssimabile **piatto** ⇒ maggiore robustezza all'ISI, perché la banda del singolo ramo è minore.
 
-![[ofdm-p10-appunti-canale-piatto.png|420]]
+![[grafico-l15-appunti-p10-canale-piatto.png|680]]
+*🧩 Ridisegno mio del disegno degli appunti. Il canale è disegnato come una curva $\lvert H(f)\rvert$ che sale e scende, e la «banda del canale» è il tratto in cui resta circa costante. In alto lo spettro a portante singola attraversa massimi e minimi del canale e viene distorto. In basso $N=16$ sottoportanti strette: su quella evidenziata il canale cambia pochissimo, quindi la sottoportante vede un canale piatto, cioè un solo coefficiente.*
 
 ### Impulsi ortogonali, ISI e ICI
 
@@ -3445,6 +3452,9 @@ $$r_i[m]=\sum_{n\in\mathbb Z}\sum_{k=0}^{N-1}a_k[n]\,\langle\phi_k(t-nT_u),\phi_
 - Due fonti di interferenza: ISI; ICI, interferenza generata da ciò che è stato trasmesso su rami differenti.
 - Si deve imporre che il prodotto scalare sia diverso da zero solo per $n=m$ (ortogonalità temporale) e $i=k$ (ortogonalità fra gli impulsi).
 
+![[grafico-l15-appunti-p13-isi-ici.png|680]]
+*🧩 Ridisegno mio del disegno degli appunti, con $N=4$: ogni casella è un simbolo $a_k[n]$, righe = rami, colonne = blocchi. Per ricavare $a_1[1]$ disturbano tutti i simboli degli altri blocchi (ISI, colonne arancioni, compreso lo stesso ramo) e gli altri rami dello stesso blocco (ICI, colonna blu). La doppia condizione $\delta_{k-i}\,\delta_{n-m}$ elimina le due cose insieme.*
+
 #### Appunti — Calcolo dell'ortogonalità · [[ofdm_goldsmith_slides.pdf#page=14|p. 14]]
 
 $$\int_{-\infty}^{+\infty}R_T(t-mT_u)\,e^{j2\pi\frac{k}{T_u}(t-mT_u)}\,R_T(t-nT_u)\,e^{-j2\pi\frac{i}{T_u}(t-nT_u)}\,dt$$
@@ -3454,6 +3464,9 @@ $$\int_{-\infty}^{+\infty}R_T(t-mT_u)\,e^{j2\pi\frac{k}{T_u}(t-mT_u)}\,R_T(t-nT_
 $$\int_{mT_u}^{(m+1)T_u}e^{j2\pi\frac{k}{T_u}t}\,e^{-j2\pi\frac{i}{T_u}t}\,dt=\begin{cases}1, & k=i\\[2pt] \dfrac{e^{j2\pi(k-i)}-1}{j2\pi(k-i)}=\dots\ (\text{sinc}), & k\neq i\end{cases}$$
 
 - Basta una minima variazione della frequenza perché si abbia ICI ⇒ motivo per cui prima l'OFDM non era di uso pubblico ⇒ erano necessari banchi di oscillatori molto precisi ⇒ la FFT ha risolto questi problemi ⇒ alla base del 5G.
+
+![[grafico-l15-appunti-p14-ortogonalita.png|760]]
+*🧩 Ridisegno mio del calcolo degli appunti. A sinistra il disegno delle due finestre: per $n\neq m$ non si sovrappongono e il prodotto è nullo. Al centro, per $n=m$, l'integranda $e^{j2\pi(k-i)t/T_u}$ con $k-i=2$: in $T_u$ entrano periodi interi, le aree blu e rosse si compensano e il prodotto scalare è zero. A destra la «minima variazione di frequenza» degli appunti: con $(f_k-f_i)T_u=2.25$ le aree non si compensano più e resta $\lvert\text{sinc}(2.25)\rvert\approx 0.10$, cioè ICI.*
 
 #### Slide 10 — Ortogonalità delle sottoportanti · [[ofdm_goldsmith_slides.pdf#page=15|p. 15]]
 - Per uno stesso blocco OFDM:

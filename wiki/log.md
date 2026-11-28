@@ -287,3 +287,7 @@ Verificati i numeri: $\ln2=-1.59$ dB, $R_s\approx15$ Msimboli/s, $\text{SNR}_{re
 - tabella delle notazioni a confronto con le slide ($T$ contro $T_u$, IDFT $1/N$ contro unitaria, rumore $2N_0$ contro $N_0$, energia RF)
 - derivazioni espanse: biortogonalità, banda $(N+1)/T$, potenza QAM $(M-1)d^2/6$, $P_{QAM}$, tempo di guardia e fattore $T_u/T$, convertitori ideali, varianza del rumore dopo la DFT, prefisso ciclico, bit loading, SNR gap (con esempi numerici 🧩), water filling con Lagrange; grafico 🧩 `grafico-gelli-water-filling.png`
 - segnalati con ⚠️ tre probabili refusi delle note (p. 1 «minore attenuazione»; (53)–(54) senza $\lvert H_i\rvert^2$; fase della (57))
+
+## [2026-11-28] update | Lezione 15 — ridisegni degli appunti a mano | pagine: 4, 9, 10, 13, 14
+- 5 figure 🧩 rifatte in modo leggibile dai disegni a mano degli appunti (script `output/grafici/genera_figure_appunti_lezione15.py`), inserite in [[corso-completo]] nelle sezioni degli appunti corrispondenti
+- rimosso il ritaglio `ofdm-p10-appunti-canale-piatto.png` (screen del disegno a mano), sostituito dal ridisegno
