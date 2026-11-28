@@ -3417,7 +3417,11 @@ $$f_n(t)=\sum_{i=0}^{N-1}a_i[n]\,\phi_i(t-nT_u),\qquad x(t)=\sum_{n\in\mathbb Z}
 #### Appunti — Schema con i mapper e perché il sistema rallentato aiuta · [[ofdm_goldsmith_slides.pdf#page=9|p. 9]]
 - Lo S/P manda $\dots d(N)\,d(0)$ sul primo filo (flusso sul filo $i$-esimo: $d_0(m)$), $d_1(m)$ sul secondo, …, $d_{N-1}(m)$ sull'ultimo; ogni mapper produce $a_i(m)$ (per esempio simboli QPSK), che modula $\phi_i(t-mT_u)$ alla frequenza $f_i$.
 - Quanto devono durare gli impulsi? Non $T_b$ ma $T_u$, e il bit rate è diminuito: $T_u=NT_b$ è l'**intervallo di blocco**, $R_b/N=1/(NT_b)$.
-- Si è rallentato il sistema ⇒ si lotta con l'ISI. Se il segnale ha $R_b$ alto, varia rapidamente ⇒ aumenta la banda del segnale trasmesso ⇒ più ISI. Con lo S/P invece ogni ramo ha un rate più basso ⇒ banda minore.
+- Rallentare i rami serve a **combattere l'ISI**. Il ragionamento degli appunti, un passaggio alla volta:
+  1. **Senza S/P:** $R_b$ alto ⇒ simboli corti, $T_b=1/R_b$ ⇒ il segnale varia rapidamente ⇒ banda larga, dell'ordine di $1/T_b$.
+  2. **Banda larga ⇒ più ISI.** Nel tempo: la risposta del canale dura un tempo fissato $\tau$, che con simboli corti copre circa $\tau/T_b$ simboli (la memoria $L$ della Lezione 14 cresce). In frequenza: lo spettro è più largo del tratto in cui il canale è piatto (appunti di p. 10), quindi viene distorto.
+  3. **Con lo S/P:** ogni ramo porta $R_b/N$ ⇒ simboli lunghi $T_u=NT_b$ ⇒ banda per ramo circa $N$ volte più stretta. La stessa $\tau$ copre ora solo $\tau/(NT_b)$ di simbolo ⇒ ISI ridotta, e su ogni ramo il canale è quasi piatto.
+  4. Il rate complessivo non cambia: $N$ rami a $R_b/N$ danno ancora $R_b$. Si rallenta il singolo ramo, non la trasmissione.
 
 ![[grafico-l15-appunti-p9-rallentare.png|700]]
 *🧩 Ridisegno mio del ragionamento degli appunti, con $N=4$. A sinistra lo stesso tratto di tempo: il flusso seriale cambia simbolo ogni $T_b$, un ramo dopo lo S/P ogni $T_u=NT_b$. A destra lo spettro di un simbolo rettangolare: durata $N$ volte maggiore vuol dire lobo principale $N$ volte più stretto, quindi ogni ramo occupa una banda piccola.*
